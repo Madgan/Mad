@@ -41,11 +41,18 @@ button{font-family:inherit}
 #act kbd{font:800 11px var(--f-num);background:rgba(255,255,255,.22);border-radius:5px;padding:1px 6px;margin-right:8px}
 #act:active{transform:translateY(1px)}
 #hint{left:max(16px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);color:var(--ink-2);font-size:12px;background:var(--glass);padding:7px 12px;border-radius:10px;box-shadow:var(--shadow)}
+#zoom{right:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;background:var(--glass);padding:4px;border-radius:14px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+#zoom button{appearance:none;border:0;background:transparent;width:40px;height:40px;border-radius:10px;font:700 20px var(--f-num);color:var(--ink);cursor:pointer}
+#zoom #z-fit{font:700 11px var(--f-body);height:34px}
+#zoom button:hover{background:var(--paper)}
+#zoom button:disabled{opacity:.3;cursor:default;background:transparent}
 @media (max-width:640px){
   #hud-menu{top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);right:auto;left:50%;transform:translateX(-50%)}
   #act{bottom:calc(env(safe-area-inset-bottom,0px) + 86px)}
   #act kbd{display:none}
   #hint{display:none}
+  #zoom{top:calc(env(safe-area-inset-top,0px) + 14px);transform:none;flex-direction:row}
+  #zoom #z-fit{height:40px;padding:0 10px;width:auto}
 }
 @media (pointer:coarse){#hint{display:none}#act kbd{display:none}}
 
@@ -221,7 +228,12 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 
 <div id="area" class="hud" hidden></div>
 <button id="act" type="button" hidden></button>
-<div id="hint" class="hud">点任意房间直接打开 · WASD 走动 · E 互动</div>
+<div id="hint" class="hud">点任意房间直接打开 · 滚轮缩放 · WASD 走动 · E 互动</div>
+<div id="zoom" class="hud" role="group" aria-label="缩放">
+  <button type="button" id="z-in" aria-label="放大">+</button>
+  <button type="button" id="z-out" aria-label="缩小">−</button>
+  <button type="button" id="z-fit" aria-label="查看整个办公室">全景</button>
+</div>
 <div id="toasts" aria-live="polite"></div>
 
 <section id="dialog" hidden role="dialog" aria-labelledby="dlg-name">
@@ -1127,20 +1139,39 @@ addEventListener('keydown', e => {
   if (typing || uiOpen()) return;
   if (MOVE_KEYS.includes(k)){ keys.add(k); e.preventDefault(); player.path=[]; player.pending=null; camFree=false; }
   if (k==='e' || k===' ' || k==='enter'){ const t=nearest(); if (t){ e.preventDefault(); openTarget(t); } }
+  if (k==='='||k==='+') setZoom(sc*1.3);
+  if (k==='-') setZoom(sc/1.3);
+  if (k==='0') setZoom(zFit);
 });
 addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
 addEventListener('blur', () => keys.clear());
 
 const cv=$('#game'), ctx=cv.getContext('2d');
 let vw=0, vh=0, sc=1, camX=0, camY=0, camInit=false, camFree=false, labelHits=[], hover=null;
+let zMin=.4, zMax=2.6, zFit=1, zoomed=false, repaintT=0;
 function resize(){
   dpr=Math.min(window.devicePixelRatio||1, 3); vw=innerWidth; vh=innerHeight;
   cv.width=Math.round(vw*dpr); cv.height=Math.round(vh*dpr);
-  const fit = Math.min(vw/WW, (vh-150)/WH);
-  sc = Math.max(fit, Math.min(vh/WH*.8, vw/(T*9)));
+  zFit = Math.min(vw/WW, (vh-150)/WH);
+  const zDefault = Math.max(zFit, Math.min(vh/WH*.8, vw/(T*9)));
+  zMin = Math.min(zFit, 1)*.9; zMax = Math.max(zDefault*2.2, 2);
+  sc = zoomed ? Math.max(zMin, Math.min(zMax, sc)) : zDefault;
   paintBase(Math.min(sc*dpr, 4096/WW));
-  updateHUD();
+  updateHUD(); updateZoomUI();
 }
+// Zoom around a screen point so whatever is under the finger or cursor stays put.
+function setZoom(next, fx=vw/2, fy=vh/2){
+  next = Math.max(zMin, Math.min(zMax, next));
+  if (Math.abs(next-sc)<1e-4) return;
+  const wx=fx/sc+camX, wy=fy/sc+camY;
+  sc=next; camX=wx-fx/sc; camY=wy-fy/sc; camFree=true; zoomed=true; clampCam();
+  clearTimeout(repaintT); repaintT=setTimeout(() => paintBase(Math.min(sc*dpr, 4096/WW)), 160);
+  updateZoomUI();
+}
+function updateZoomUI(){ $('#z-in').disabled = sc>=zMax-1e-3; $('#z-out').disabled = sc<=zMin+1e-3; }
+$('#z-in').addEventListener('click', () => setZoom(sc*1.3));
+$('#z-out').addEventListener('click', () => setZoom(sc/1.3));
+$('#z-fit').addEventListener('click', () => setZoom(zFit));
 addEventListener('resize', resize);
 function clampCam(){
   const viewW=vw/sc, viewH=vh/sc;
@@ -1168,9 +1199,21 @@ function tap(clientX,clientY){
   const p=bfs(tileOf(player), (x,y) => x===tx && y===ty);
   if (p){ player.path=p.map(tc); player.pending=null; camFree=false; tapFx={x:h.wx,y:h.wy,t:.5}; }
 }
-let ptr=null, tapFx=null;
-cv.addEventListener('pointerdown', e => { if (uiOpen()) return; ptr={id:e.pointerId,x:e.clientX,y:e.clientY,cx:camX,cy:camY,moved:false}; try { cv.setPointerCapture(e.pointerId); } catch(err) {} });
+let ptr=null, tapFx=null, pinch=null; const pts=new Map();
+const two = () => { const [a,b]=[...pts.values()]; return {d:Math.hypot(a.x-b.x,a.y-b.y)||1, x:(a.x+b.x)/2, y:(a.y+b.y)/2}; };
+cv.addEventListener('pointerdown', e => {
+  if (uiOpen()) return;
+  pts.set(e.pointerId,{x:e.clientX,y:e.clientY}); try { cv.setPointerCapture(e.pointerId); } catch(err) {}
+  if (pts.size===1) ptr={id:e.pointerId,x:e.clientX,y:e.clientY,cx:camX,cy:camY,moved:false};
+  else if (pts.size===2){ ptr=null; pinch=two(); }
+});
 cv.addEventListener('pointermove', e => {
+  if (pts.has(e.pointerId)) pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if (pinch && pts.size>=2){
+    const p=two(), r=cv.getBoundingClientRect();
+    setZoom(sc*p.d/pinch.d, p.x-r.left, p.y-r.top);
+    camX-=(p.x-pinch.x)/sc; camY-=(p.y-pinch.y)/sc; clampCam(); pinch=p; return;
+  }
   if (ptr && e.pointerId===ptr.id){
     const dx=e.clientX-ptr.x, dy=e.clientY-ptr.y;
     if (!ptr.moved && Math.hypot(dx,dy)>8) ptr.moved=true;
@@ -1180,8 +1223,14 @@ cv.addEventListener('pointermove', e => {
     cv.style.cursor = hover.kind==='floor' ? 'default' : 'pointer';
   }
 });
-cv.addEventListener('pointerup', e => { if (!ptr || e.pointerId!==ptr.id) return; const moved=ptr.moved; ptr=null; if (!moved && !uiOpen()) tap(e.clientX,e.clientY); });
-cv.addEventListener('pointercancel', () => { ptr=null; });
+const lift = e => { pts.delete(e.pointerId); if (pts.size<2) pinch=null; };
+cv.addEventListener('pointerup', e => { lift(e); if (!ptr || e.pointerId!==ptr.id) return; const moved=ptr.moved; ptr=null; if (!moved && !uiOpen()) tap(e.clientX,e.clientY); });
+cv.addEventListener('pointercancel', e => { lift(e); ptr=null; });
+cv.addEventListener('wheel', e => {
+  if (uiOpen()) return; e.preventDefault();
+  const r=cv.getBoundingClientRect();
+  setZoom(sc*Math.exp(-e.deltaY*(e.ctrlKey?.01:.0015)), e.clientX-r.left, e.clientY-r.top);
+}, {passive:false});
 cv.addEventListener('pointerleave', () => { hover=null; });
 $('#act').addEventListener('click', () => { const t=nearest(); if (t) openTarget(t); });
 $('#hud-me').addEventListener('click', () => openMe());
@@ -1320,14 +1369,16 @@ function roomLabel(sx,sy,z,hot){
   const small = sc < .8;
   ctx.font=`700 13px ${FONT}`; const nw=ctx.measureText(z.name).width;
   ctx.font=`500 11px ${FONT}`; const subw = (z.sub && !small) ? ctx.measureText(z.sub).width+10 : 0;
-  const W=30+nw+subw+12, H=30, x=Math.round(sx-W/2), y=Math.round(sy-H/2);
+  const W=30+nw+subw+12, H=30, k=Math.max(.62,Math.min(1,sc)), x=-W/2, y=-H/2;
+  ctx.save(); ctx.translate(Math.round(sx),Math.round(sy)); ctx.scale(k,k);
   ctx.save(); ctx.shadowColor='rgba(18,24,38,.22)'; ctx.shadowBlur=10; ctx.shadowOffsetY=3;
   pill(x,y,W,H,15, hot ? z.col : 'rgba(255,255,255,.95)'); ctx.restore();
   ctx.fillStyle = hot ? '#fff' : z.col; ctx.beginPath(); ctx.arc(x+16,y+15,5,0,Math.PI*2); ctx.fill();
   ctx.fillStyle = hot ? '#fff' : '#1c2333'; ctx.font=`700 13px ${FONT}`; ctx.fillText(z.name, x+27, y+19.5);
   if (subw){ ctx.fillStyle = hot ? 'rgba(255,255,255,.85)' : '#7a8496'; ctx.font=`500 11px ${FONT}`; ctx.fillText(z.sub, x+27+nw+10, y+19.5); }
   const b=zoneBadge(z.act); if (b) drawBadge(x+W-2, y+2, b);
-  labelHits.push({x,y,w:W,h:H,act:z.act,zone:z.r?z:null});
+  ctx.restore();
+  labelHits.push({x:sx-W*k/2,y:sy-H*k/2,w:W*k,h:H*k,act:z.act,zone:z.r?z:null});
 }
 function nameLabel(sx,sy,c){
   const name = c.id==='me' ? (S.name||'我') : c.name;
@@ -1434,6 +1485,7 @@ function render(t){
   SPOTS.forEach(z => { const [sx,sy]=S2(z.lab[0]*T, z.lab[1]*T); roomLabel(sx,sy,z,false); });
   const now=performance.now();
   for (const c of chars){
+    if (sc<.62 && c!==player) continue;
     const [sx,sy]=S2(c.x, c.y-60);
     if (sx<-90||sx>vw+90||sy<-40||sy>vh+90) continue;
     const top=nameLabel(sx,sy-2,c);
