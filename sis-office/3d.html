@@ -330,7 +330,7 @@ const OPT = {
   hair:[['short','短发'],['side','侧分'],['long','长发'],['pony','马尾'],['bun','丸子头'],['buzz','寸头'],['hijab','头巾']],
   top:[['tee','T 恤'],['shirt','衬衫'],['hoodie','卫衣'],['suit','西装',2]],
   bottom:[['pants','长裤'],['shorts','短裤'],['skirt','裙子']],
-  hat:[['none','无'],['cap','鸭舌帽'],['beanie','毛线帽'],['helmet','工地安全帽',3],['witch','巫师帽',0,'halloween'],['santa','圣诞帽',0,'christmas']],
+  hat:[['none','无'],['cap','鸭舌帽'],['beanie','毛线帽'],['helmet','工地安全帽',3],['witch','巫师帽',0,'halloween'],['santa','圣诞帽',0,'christmas'],['caishen','财神帽',0,'cny']],
   glasses:[['none','无'],['round','眼镜'],['sun','墨镜',2]],
   watch:[['none','无'],['silver','银表'],['gold','金表',3]],
 };
@@ -422,16 +422,27 @@ if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 const level = () => Math.floor(S.xp/100)+1;
 // Festival decorations are designed ahead and go live by date. Admins can preview one on their own device.
+// Lunar festivals move every year, so they carry dates per year (check against the official calendar).
 const FESTIVALS = [
+  {id:'cny', name:'农历新年', years:{2027:{from:[1,23], to:[2,20]}, 2028:{from:[1,12], to:[2,9]}}},
   {id:'halloween', name:'万圣节', from:[10,20], to:[11,1]},
   {id:'christmas', name:'圣诞节', from:[12,1], to:[1,1]},
 ];
 let festPreview = null;
+const festRange = (f, y) => f.years ? (f.years[y] || null) : {from:f.from, to:f.to};
 const festAuto = () => {
-  const d=new Date(), x=(d.getMonth()+1)*100+d.getDate();
-  const f=FESTIVALS.find(f => { const a=f.from[0]*100+f.from[1], b=f.to[0]*100+f.to[1]; return a<=b ? (x>=a && x<=b) : (x>=a || x<=b); });
+  const d=new Date(), y=d.getFullYear(), x=(d.getMonth()+1)*100+d.getDate();
+  const f=FESTIVALS.find(f => { const r=festRange(f,y); if (!r) return false; const a=r.from[0]*100+r.from[1], b=r.to[0]*100+r.to[1]; return a<=b ? (x>=a && x<=b) : (x>=a || x<=b); });
   return f ? f.id : null;
 };
+// Next time a festival goes live, for the back-office schedule.
+function festNext(f){
+  const d=new Date(), y=d.getFullYear(), x=(d.getMonth()+1)*100+d.getDate();
+  for (const yy of [y, y+1]){ const r=festRange(f,yy); if (!r) continue; const a=r.from[0]*100+r.from[1], b=r.to[0]*100+r.to[1]; if (yy>y || a>b || x<=b) return {y:yy, ...r}; }
+  return null;
+}
+const festWhen = f => { const n=festNext(f); return n ? `${n.y} 年 ${n.from[0]} 月 ${n.from[1]} 日至 ${n.to[0]} 月 ${n.to[1]} 日` : '日期待定'; };
+const festKey = f => { const n=festNext(f); return n ? n.y*10000+n.from[0]*100+n.from[1] : 99999999; };
 const festKind = () => festPreview || festAuto();
 const festOn = () => festKind()==='halloween';
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -917,8 +928,10 @@ function openMe(){
     <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button><button type="button" class="btn" data-act="tut-again">重看新手引导</button></div>
     <div><h3>画质</h3><div class="group" role="group" aria-label="画质">${[['auto','自动'],['low','流畅'],['medium','标准'],['high','精美']].map(([v,l]) => `<button type="button" class="chip sm" data-act="quality" data-v="${v}" aria-pressed="${(S.quality||'auto')===v}">${l}</button>`).join('')}</div>
     <p class="note" style="margin-top:6px">手机发烫或卡顿时选「流畅」。「自动」会按手机表现调整，现在是「${QNAME[qLevel]}」。</p></div>
-    <div><h3>节日排期（后台）</h3><div class="list">${FESTIVALS.map(f => { const live=festAuto()===f.id, pv=festPreview===f.id; return `<div class="rc"><div class="rc-main"><div class="rc-top"><b>${f.name}</b><span class="stage ${live?'ok':''}">${live?'进行中':'已排期'}</span></div><div class="rc-meta">${f.from[0]} 月 ${f.from[1]} 日至 ${f.to[0]} 月 ${f.to[1]} 日自动上线</div></div><button type="button" class="btn sm${pv?'':' primary'}" data-act="${pv?'fest-stop':'fest-preview'}" data-v="${f.id}">${pv?'结束预览':'预览'}</button></div>`; }).join('')}</div>
-    <p class="note" style="margin-top:6px">预览只在你这台设备上显示，其他人要等到日期才会看到。正式版里只有管理员能看到这一栏。</p></div>`;
+    <div><h3>节日排期（后台）</h3><div class="list">${[...FESTIVALS].sort((a,b) => festKey(a)-festKey(b)).map(f => { const live=festAuto()===f.id, pv=festPreview===f.id; return `<div class="rc"><div class="rc-main"><div class="rc-top"><b>${f.name}</b><span class="stage ${live?'ok':''}">${live?'进行中':'已排期'}</span></div><div class="rc-meta">${festWhen(f)}自动上线</div></div><button type="button" class="btn sm${pv?'':' primary'}" data-act="${pv?'fest-stop':'fest-preview'}" data-v="${f.id}">${pv?'结束预览':'预览'}</button></div>`; }).join('')}</div>
+    <p class="note" style="margin-top:6px">预览只在你这台设备上显示，其他人要等到日期才会看到。正式版里只有管理员能看到这一栏。</p></div>
+    <div><h3>时间预览</h3><div class="group" role="group" aria-label="时间预览">${[['auto','跟随时间'],['8','早上'],['13','中午'],['18','傍晚'],['22','夜晚']].map(([v,l]) => `<button type="button" class="chip sm" data-act="time-preview" data-v="${v}" aria-pressed="${String(timePreview==null ? 'auto' : timePreview)===v}">${l}</button>`).join('')}</div>
+    <p class="note" style="margin-top:6px">办公室的光线跟着手机时间变化。这里切换只是预览，只有你看得到。</p></div>`;
   openSheet({title:'我的工位', sub:'个人资料与进度', body, kind:'me'});
 }
 
@@ -1031,7 +1044,7 @@ sheet.addEventListener('click', async e => {
   const v=a.dataset.v, id=a.dataset.id;
   switch(a.dataset.act){
     case 'ed': {
-      if (a.dataset.lock){ toast(a.dataset.lock.startsWith('fest') ? (a.dataset.lock==='fest-christmas' ? '圣诞限定，12 月开放' : '万圣节限定，节日期间开放') : `LV ${a.dataset.lock} 解锁 · 完成今日任务获得经验`); return; }
+      if (a.dataset.lock){ toast(a.dataset.lock.startsWith('fest') ? `${(FESTIVALS.find(f => 'fest-'+f.id===a.dataset.lock)||{name:'节日'}).name}限定，节日期间开放` : `LV ${a.dataset.lock} 解锁 · 完成今日任务获得经验`); return; }
       const k=a.dataset.k, num=['skin','hairColor','topColor','bottomColor','shoes','hatColor'].includes(k);
       if (k==='role') ed.role=v;
       else if (k==='gender'){
@@ -1282,6 +1295,13 @@ function addWitch(hd,c){
   cyl(.205,.205,.06,'#e3a63b',0,.04,0,w,18);
   return w;
 }
+function addCaishen(hd){
+  const w=new THREE.Group(); w.position.y=.13; hd.add(w);
+  cyl(.2,.235,.16,'#c8302e',0,.08,0,w,20); cyl(.15,.2,.08,'#c8302e',0,.2,0,w,20);
+  cyl(.24,.24,.045,'#e3a63b',0,.01,0,w,20); box(.13,.06,.012,'#e3a63b',0,.1,.215,w,false);
+  [-1,1].forEach(s => { const wing=box(.26,.05,.02,'#2b2b30',s*.32,.14,-.13,w); wing.rotation.z=s*.18; });
+  return w;
+}
 function addSanta(hd){
   const w=new THREE.Group(); w.position.y=.12; hd.add(w);
   cyl(.255,.255,.07,'#f4f4f0',0,.02,0,w,22);
@@ -1345,6 +1365,7 @@ function makeChar(L){
     else if (L.hat==='cap'){ add(new THREE.Mesh(HALF(.25),M(hc)),hd,0,.04,0); cyl(.15,.15,.015,shadeHex(hc,-.2),0,.06,.2,hd,20); }
     else if (L.hat==='witch') addWitch(hd, hc);
     else if (L.hat==='santa') addSanta(hd);
+    else if (L.hat==='caishen') addCaishen(hd);
     else if (L.hat==='beanie'){ add(new THREE.Mesh(HALF(.255),M(hc)),hd,0,.04,0); cyl(.258,.258,.07,shadeHex(hc,-.2),0,.06,0,hd,22); sph(.06,'#f4f4f0',0,.31,0,hd,10); }
   }
   g.traverse(o => { if (o.isMesh){ o.castShadow=true; } });
@@ -1364,7 +1385,7 @@ function spawn(def, kind){
   g.position.set(c.x,0,c.z); g.rotation.y=c.yaw; g.userData.char=c; clickables.push(g);
   const el=document.createElement('div'); el.className='nl'+(c.npc?' npc':kind==='me'?' me':''); $('#labels').appendChild(el); c.el=el;
   const bub=document.createElement('div'); bub.className='bub'; bub.hidden=true; $('#labels').appendChild(bub); c.bubEl=bub;
-  if (c.npc){ c.witch=addWitch(P.head,'#8a5aa8'); c.witch.visible=false; c.santa=addSanta(P.head); c.santa.visible=false; }
+  if (c.npc){ c.witch=addWitch(P.head,'#8a5aa8'); c.witch.visible=false; c.santa=addSanta(P.head); c.santa.visible=false; c.caishen=addCaishen(P.head); c.caishen.visible=false; }
   chars.push(c); return c;
 }
 const player = spawn({id:'me', name:'我', look:S.look||DEFAULT_LOOK, tile:[14.5,17], face:'up'}, 'me');
@@ -1616,22 +1637,106 @@ const skyDome = new THREE.Mesh(new THREE.SphereGeometry(160,32,16), new THREE.Me
   const gr=g.createLinearGradient(0,0,0,h); gr.addColorStop(0,'#5d93c9'); gr.addColorStop(.47,'#cfe3f1'); gr.addColorStop(.53,'#e9f1f6'); gr.addColorStop(1,'#a9b9c6'); g.fillStyle=gr; g.fillRect(0,0,w,h);
 })}));
 skyDome.position.set(17,0,10); scene.add(skyDome);
-const winTex = canvasTex(64,128,(g,w,h) => {
-  g.fillStyle='#c6d2de'; g.fillRect(0,0,w,h);
-  for (let y=0;y<16;y++) for (let x=0;x<4;x++){ g.fillStyle=(x*7+y*3)%5===0?'#f6e7b8':'#7f9ab3'; g.fillRect(4+x*15,4+y*8,11,5); }
+// countryside: low hills, a lake east of the balcony, woods, mountains and birds
+const GROUND_Y = -1.2;
+const meadow = new THREE.Mesh(new THREE.PlaneGeometry(420,420), M('#8fb873')); meadow.rotation.x=-Math.PI/2; meadow.position.set(17,GROUND_Y-.02,10); scene.add(meadow);
+box(30.4,1.2,20.4,'#d9d4c8',15,GROUND_Y/2,10,null,false);
+[[30.2,7.2],[33.8,7.2],[30.2,12.8],[33.8,12.8]].forEach(([x,z]) => cyl(.08,.08,1.1,'#b9b2a4',x,GROUND_Y/2-.1,z,null,8));
+const lake = new THREE.Mesh(new THREE.CircleGeometry(15,48), new THREE.MeshLambertMaterial({color:'#5aa5c6'})); lake.rotation.x=-Math.PI/2; lake.position.set(52,GROUND_Y+.01,8); scene.add(lake);
+const shore = new THREE.Mesh(new THREE.RingGeometry(15,16.2,48), M('#d8cba2')); shore.rotation.x=-Math.PI/2; shore.position.set(52,GROUND_Y,8); scene.add(shore);
+box(5,.08,.9,'#a57a52',38.6,GROUND_Y+.15,8,null,false);
+[[36.6,7.6],[36.6,8.4],[40.6,7.6],[40.6,8.4]].forEach(([x,z]) => cyl(.05,.05,.4,'#7a5434',x,GROUND_Y,z,null,6));
+const PEAKS=[[-30,-70,26,22],[0,-82,34,30],[32,-76,28,25],[64,-72,32,27],[96,-44,30,28],[108,0,26,22],[102,42,24,19],[-58,-40,22,17]];
+PEAKS.forEach(([x,z,r,h],i) => {
+  const m=new THREE.Mesh(new THREE.ConeGeometry(r,h,7), new THREE.MeshLambertMaterial({color:['#6f8f7a','#7f9c86','#93ab98'][i%3], flatShading:true}));
+  m.position.set(x,GROUND_Y+h/2,z); m.rotation.y=i; scene.add(m);
+  if (h>=24){ const cap=new THREE.Mesh(new THREE.ConeGeometry(r*.28,h*.28,7), new THREE.MeshLambertMaterial({color:'#f2f4f2', flatShading:true})); cap.position.set(x,GROUND_Y+h-h*.14,z); cap.rotation.y=i; scene.add(cap); }
 });
-function tower(x,z,w,d,h,tint){
-  const t=winTex.clone(); t.needsUpdate=true; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(Math.max(1,Math.round(w/4)), Math.max(1,Math.round(h/8)));
-  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d), [new THREE.MeshLambertMaterial({map:t,color:tint}),new THREE.MeshLambertMaterial({map:t,color:tint}),M('#9aa8b6'),M('#9aa8b6'),new THREE.MeshLambertMaterial({map:t,color:tint}),new THREE.MeshLambertMaterial({map:t,color:tint})]);
-  m.position.set(x,-10+h/2,z); scene.add(m); return m;
+{
+  let seed=11; const rnd=() => (seed=(seed*16807)%2147483647)/2147483647;
+  const spots=[];
+  while (spots.length<120){
+    const x=-40+rnd()*130, z=-45+rnd()*105;
+    if (!(z<-4 || x>38)) continue;
+    if (Math.hypot(x-52,z-8)<17.5) continue;
+    if (x>34 && x<42 && Math.abs(z-8)<2) continue;
+    spots.push([x,z,.7+rnd()*.9]);
+  }
+  const leafGeo=new THREE.IcosahedronGeometry(1,0), trunkGeo=new THREE.CylinderGeometry(.12,.16,1,6);
+  const leaves=new THREE.InstancedMesh(leafGeo, new THREE.MeshLambertMaterial({flatShading:true}), spots.length);
+  const trunks=new THREE.InstancedMesh(trunkGeo, M('#7a5434'), spots.length);
+  const m4=new THREE.Matrix4(), q=new THREE.Quaternion(), sc=new THREE.Vector3(), pos=new THREE.Vector3();
+  const LEAF=['#4f8f5a','#5c9e62','#3f7f50','#6aa86a'].map(c => new THREE.Color(c));
+  spots.forEach(([x,z,s],i) => {
+    m4.compose(pos.set(x,GROUND_Y+.6*s,z), q.identity(), sc.set(s,1.2*s,s)); trunks.setMatrixAt(i,m4);
+    m4.compose(pos.set(x,GROUND_Y+1.7*s,z), q.identity(), sc.set(1.1*s,1.4*s,1.1*s)); leaves.setMatrixAt(i,m4); leaves.setColorAt(i, LEAF[i%4]);
+  });
+  scene.add(leaves, trunks);
 }
-const cityGround = new THREE.Mesh(new THREE.PlaneGeometry(400,400), M('#9eae96')); cityGround.rotation.x=-Math.PI/2; cityGround.position.set(17,-10.02,10); scene.add(cityGround);
-[[17,-6],[48,10],[17,32]].forEach(([x,z],i) => { const r=new THREE.Mesh(new THREE.PlaneGeometry(i===1?6:160, i===1?160:6), M('#7d858f')); r.rotation.x=-Math.PI/2; r.position.set(x,-9.99,z); scene.add(r); });
-tower(15,10,30.2,20.2,10,'#ffffff');
-let seed=7; const rnd=() => (seed=(seed*16807)%2147483647)/2147483647;
-const TINTS=['#ffffff','#dfe7ef','#c9d6e4','#eef0e8'];
-for (let i=0;i<24;i++){ const z=-36+i*3.6+rnd()*2, x=50+rnd()*32; tower(x,z,3+rnd()*5,3+rnd()*5,6+rnd()*16,TINTS[i%4]); }
-for (let i=0;i<18;i++){ const x=-14+i*3.4+rnd()*2, z=-26-rnd()*28; if (x>44) continue; tower(x,z,3+rnd()*5,3+rnd()*5,4+rnd()*10,TINTS[(i+1)%4]); }
+const birdMat=new THREE.MeshBasicMaterial({color:'#3a3f4a', side:THREE.DoubleSide});
+const birds=Array.from({length:7}, (_,i) => {
+  const g=new THREE.Group(); scene.add(g);
+  const wing = s => { const pv=new THREE.Group(); g.add(pv); const m=new THREE.Mesh(new THREE.PlaneGeometry(.5,.16), birdMat); m.position.x=s*.25; m.rotation.x=-Math.PI/2; pv.add(m); return pv; };
+  return {g, l:wing(-1), r:wing(1), rad:7+i*1.8, sp:.18+i*.03, y:5+(i%3)*1.4, ph:i*.9};
+});
+
+// office pets: a dog and a cat that roam the office and the balcony
+function makeDog(){
+  const g=new THREE.Group();
+  box(.2,.19,.46,'#d9a35b',0,.28,0,g); box(.2,.2,.2,'#d9a35b',0,.42,.3,g); box(.1,.08,.12,'#c48a45',0,.37,.44,g);
+  sph(.025,'#1c1c24',0,.4,.5,g,6); sph(.02,'#1c1c24',-.05,.46,.4,g,6); sph(.02,'#1c1c24',.05,.46,.4,g,6);
+  [-.08,.08].forEach(x => box(.05,.1,.03,'#8a5a2e',x,.54,.27,g));
+  const legs=[[-.07,.16],[.07,.16],[-.07,-.16],[.07,-.16]].map(([x,z]) => { const pv=new THREE.Group(); pv.position.set(x,.2,z); g.add(pv); cyl(.03,.03,.2,'#c48a45',0,-.1,0,pv,6); return pv; });
+  const tail=new THREE.Group(); tail.position.set(0,.33,-.23); g.add(tail); { const t=cyl(.025,.015,.2,'#d9a35b',0,.08,-.04,tail,6); t.rotation.x=-.6; }
+  return {g, legs, tail};
+}
+function makeCat(){
+  const g=new THREE.Group();
+  box(.14,.13,.32,'#8f8a86',0,.2,0,g); sph(.09,'#8f8a86',0,.3,.2,g,10);
+  [-.05,.05].forEach(x => add(new THREE.Mesh(new THREE.ConeGeometry(.03,.07,6), M('#8f8a86')), g, x,.39,.2));
+  sph(.015,'#7fbf4a',-.035,.32,.28,g,6); sph(.015,'#7fbf4a',.035,.32,.28,g,6);
+  const legs=[[-.05,.11],[.05,.11],[-.05,-.11],[.05,-.11]].map(([x,z]) => { const pv=new THREE.Group(); pv.position.set(x,.14,z); g.add(pv); cyl(.02,.02,.14,'#7a7570',0,-.07,0,pv,6); return pv; });
+  const tail=new THREE.Group(); tail.position.set(0,.24,-.16); g.add(tail); { const t=cyl(.018,.014,.26,'#8f8a86',0,.12,-.02,tail,6); t.rotation.x=-.25; }
+  return {g, legs, tail};
+}
+const pets=[['dog','狗狗',makeDog(),[16,11],'汪汪！','摸了摸狗狗'],['cat','猫咪',makeCat(),[13,4],'喵～','猫咪蹭了蹭你']].map(([kind,name,m,tile,say,pat]) => {
+  scene.add(m.g); m.g.userData.act='pet-'+kind; clickables.push(m.g);
+  const bub=document.createElement('div'); bub.className='bub'; bub.hidden=true; $('#labels').appendChild(bub);
+  const p={kind,name,...m,x:tile[0]+.5,z:tile[1]+.6,yaw:0,path:[],wait:2+Math.random()*3,ph:0,bub,until:0,say,pat,rest:false};
+  ACTS['pet-'+kind] = () => { p.path=[]; p.wait=4; p.until=performance.now()+2500; p.bub.textContent=say; bubble(player,'好可爱'); toast(pat); };
+  return p;
+});
+const petV=new THREE.Vector3();
+function petTick(dt,t){
+  for (const p of pets){
+    let moving=false;
+    if (p.path.length){
+      const [tx,tz]=p.path[0], dx=tx-p.x, dz=tz-p.z, d=Math.hypot(dx,dz), st=dt*(p.kind==='dog'?1.4:1);
+      if (d<=st){ p.x=tx; p.z=tz; p.path.shift(); } else { p.x+=dx/d*st; p.z+=dz/d*st; }
+      if (d>.01) p.yaw=Math.atan2(dx,dz); moving=true; p.rest=false;
+    } else {
+      p.wait-=dt;
+      if (p.wait<=0){
+        const w=walkable[Math.floor(Math.random()*walkable.length)];
+        p.path=(bfs(Math.floor(p.x),Math.floor(p.z-.1),w[0],w[1])||[]).slice(0,12); p.wait=4+Math.random()*7; p.rest=Math.random()<.4;
+      }
+    }
+    let dy=p.yaw-p.g.rotation.y; dy=Math.atan2(Math.sin(dy),Math.cos(dy)); p.g.rotation.y+=dy*Math.min(1,dt*8);
+    p.g.position.set(p.x,0,p.z);
+    const s = moving && !reduce ? Math.sin((p.ph+=dt*14)) : 0;
+    p.legs.forEach((l,i) => { l.rotation.x = (i===0||i===3 ? s : -s)*.6; });
+    p.tail.rotation.y = reduce ? 0 : Math.sin(t*(p.kind==='dog'?10:2))*(p.kind==='dog'?.6:.25);
+    p.g.scale.y += ((!moving && p.rest ? .72 : 1)-p.g.scale.y)*Math.min(1,dt*4);
+    const show = performance.now()<p.until && wrap.hidden;
+    if (show){ petV.set(p.x,.85,p.z).project(camera); const vis=petV.z<1 && Math.abs(petV.x)<1.1 && Math.abs(petV.y)<1.1; p.bub.hidden=!vis; if (vis) p.bub.style.transform=`translate(${(petV.x+1)/2*innerWidth}px,${(1-petV.y)/2*innerHeight}px) translate(-50%,-100%)`; }
+    else p.bub.hidden=true;
+  }
+  birds.forEach(b => {
+    const a = reduce ? b.ph : t*b.sp+b.ph;
+    b.g.position.set(52+Math.cos(a)*b.rad, b.y+Math.sin(t*.9+b.ph)*.4, 8+Math.sin(a)*b.rad*.7);
+    b.g.rotation.y=-a; const w = reduce ? .2 : Math.sin(t*9+b.ph)*.6; b.l.rotation.z=w; b.r.rotation.z=-w;
+  });
+}
 // balcony deck, railing and furniture (tiles x 30-33, rows 7-12)
 const deck = add(new THREE.Mesh(new THREE.PlaneGeometry(4,6), new THREE.MeshLambertMaterial({map:canvasTex(128,128,(g,w,h) => { g.fillStyle='#b98d62'; g.fillRect(0,0,w,h); g.fillStyle='#a57a52'; for (let k=0;k<8;k++) g.fillRect(k*16+15,0,2,h); }, [4,6])})), scene, 32, .004, 10, false);
 deck.rotation.x=-Math.PI/2; deck.userData.ground=true; clickables.push(deck);
@@ -1671,7 +1776,7 @@ doorLeaf(29.5,9.04,'z',1,29.5,10,1.6); doorLeaf(29.5,10.96,'z',-1,29.5,10,1.6);
 function doorTick(dt){
   for (const d of DOORS){
     let near=null, best=d.range;
-    for (const c of chars){ const dist=Math.hypot(c.x-d.cx, c.z-d.cz); if (dist<best){ best=dist; near=c; } }
+    for (const c of [...chars, ...pets]){ const dist=Math.hypot(c.x-d.cx, c.z-d.cz); if (dist<best){ best=dist; near=c; } }
     if (near){
       d.hold=.6;
       if (d.target===0){ const side = d.axis==='x' ? (Math.sign(near.z-d.cz)||1) : (Math.sign(near.x-d.cx)||1); d.target = d.axis==='x' ? side*1.35*d.sign : -side*1.35*d.sign; }
@@ -1682,7 +1787,7 @@ function doorTick(dt){
 
 // colleagues sometimes step out to the balcony to relax, chat or smoke
 const BALCONY_SPOTS=[[33,8],[33,9],[33,10],[33,11],[32,12],[31,10]];
-const RELAX_LINES=['外面风好舒服。','看那边，又起了一栋新盘。','抽根烟再回去。','下午的阳光不错。','刚谈完一个客户，出来透透气。','这个景，拍房源视频很好用。'];
+const RELAX_LINES=['外面风好舒服。','看那边的山，空气真好。','湖边好像有人在钓鱼。','抽根烟再回去。','听，有鸟在叫。','这个景，拍房源视频很好用。'];
 const CHATS=[['那个 Bangsar 的单搞定了吗？','差不多了，下周签。'],['你们组这个月几单？','4 单，还差一点。'],['周末要不要一起去看新盘？','好啊，叫上美玲。'],['最近客户都在问贷款利率。','我也是，准备拍一条视频讲讲。']];
 function nextWander(c){
   c.settled=false; c.relax=false; c.spot=null; if (c.cig) c.cig.visible=false;
@@ -1722,6 +1827,101 @@ function balconyTick(dt,t){
 ACTS.balcony = () => walkTo({act:'balconyArrive', tile:[32,10]});
 ACTS.balconyArrive = () => { player.yaw=Math.PI/2; bubble(player,'出来透透气'); };
 makeRoomLabel({name:'阳台', sub:'休息区', act:'balcony', lab:[32,9.2], col:'#3fa58a'});
+
+/* ---------------- festival: Chinese New Year ---------------- */
+const cny = new THREE.Group(); cny.visible=false; scene.add(cny);
+const CNY_RED='#d42b2b', CNY_GOLD='#e8b44a';
+const cnyYear = (() => { const d=new Date(); return d.getMonth()<=2 ? d.getFullYear() : d.getFullYear()+1; })();
+const ZODIAC = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'][((cnyYear-2020)%12+12)%12];
+function redPlaque(text, w, h, vertical){
+  return canvasTex(vertical?64:256, vertical?256:64, (g,W,H) => {
+    g.fillStyle='#c8202a'; g.fillRect(0,0,W,H); g.strokeStyle='#f2c56b'; g.lineWidth=4; g.strokeRect(4,4,W-8,H-8);
+    g.fillStyle='#f6d27a'; g.textAlign='center'; g.textBaseline='middle'; g.font=`700 ${vertical?42:40}px "Noto Sans SC", serif`;
+    [...text].forEach((ch,i,a) => vertical ? g.fillText(ch, W/2, H/(a.length)*(i+.5)) : g.fillText(ch, W/(a.length)*(i+.5), H/2));
+  });
+}
+function plaque(tex,w,h,x,y,z,rotY){ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({map:tex})); m.position.set(x,y,z); m.rotation.y=rotY||0; cny.add(m); return m; }
+// couplets beside every room door, facing the open office
+const COUPLET_L=redPlaque('生意兴隆',0,0,true), COUPLET_R=redPlaque('财源广进',0,0,true);
+[[5,7.01,0],[24,7.01,0],[5,12.99,Math.PI],[24,12.99,Math.PI]].forEach(([x,z,r]) => {
+  const flip = r ? -1 : 1;
+  plaque(COUPLET_L,.17,.62,x+.5-flip*.68,.45,z,r); plaque(COUPLET_R,.17,.62,x+.5+flip*.68,.45,z,r);
+});
+plaque(redPlaque(`${ZODIAC}年大吉`), 2.6, .5, 26, .5, 7.01);
+const fuTex = canvasTex(128,128,(g,W,H) => { g.fillStyle='#c8202a'; g.fillRect(0,0,W,H); g.strokeStyle='#f2c56b'; g.lineWidth=6; g.strokeRect(8,8,W-16,H-16); g.fillStyle='#f6d27a'; g.font='700 80px "Noto Sans SC", serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('福',W/2,H/2+4); });
+[13.2,16.8].forEach(x => { const m=plaque(fuTex,.32,.32,x,.3,15.86); m.rotation.z=Math.PI/4; });
+// hanging lanterns over the open office and front desk
+const lanterns=[];
+[[12,7.6],[17.5,7.6],[10.5,10],[19.4,10],[12,12.4],[17.5,12.4],[13,14.4],[17,14.4],[31,8.2],[31,11.8]].forEach(([x,z],i) => {
+  const g=new THREE.Group(); g.position.set(x,1.55,z); cny.add(g);
+  cyl(.006,.006,.3,'#7a4b2a',0,-.15,0,g,4);
+  const body=sph(.17,CNY_RED,0,-.42,0,g,16); body.scale.set(1,.82,1);
+  cyl(.09,.09,.04,CNY_GOLD,0,-.29,0,g,12); cyl(.09,.09,.04,CNY_GOLD,0,-.55,0,g,12);
+  cyl(.012,.012,.16,CNY_GOLD,0,-.65,0,g,4);
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex, color:'#ff8a5a', blending:THREE.AdditiveBlending, depthWrite:false, transparent:true, opacity:.55}));
+  glow.scale.set(.9,.9,1); glow.position.y=-.42; g.add(glow);
+  lanterns.push({g, glow, k:i*1.3});
+});
+// mandarin oranges: bowls on desks, potted trees at the entrance
+function orangeBowl(x,y,z){
+  cyl(.16,.12,.04,'#c8202a',x,y,z,cny,16);
+  [[0,0],[.07,.05],[-.07,.05],[.07,-.05],[-.07,-.05]].forEach(([dx,dz]) => sph(.05,'#f08a1c',x+dx,y+.06,z+dz,cny,10));
+  sph(.05,'#f08a1c',x,y+.13,z,cny,10);
+}
+orangeBowl(15.9,.6,15.1); orangeBowl(24,.5,4); orangeBowl(4.2,.55,14.4); orangeBowl(31.6,.48,11.4);
+[[11.3,17.7],[18.7,17.7],[28.6,7.6]].forEach(([x,z]) => {
+  const g=new THREE.Group(); g.position.set(x,0,z); cny.add(g);
+  cyl(.2,.16,.3,'#c8202a',0,.15,0,g,14); cyl(.205,.205,.04,CNY_GOLD,0,.24,0,g,14);
+  sph(.34,'#2f7a45',0,.66,0,g,14);
+  for (let i=0;i<12;i++){ const a=i*2.4, yy=.5+(i%4)*.09, r=.3; sph(.04,'#f39a1e',Math.cos(a)*r,yy,Math.sin(a)*r,g,8); }
+});
+// red and gold string lights
+const cBulbMats=[new THREE.MeshBasicMaterial(), new THREE.MeshBasicMaterial()];
+const CCOLS=['#e8323a','#ffc93c'].map(c => new THREE.Color(c));
+cBulbMats.forEach((mat,j) => {
+  const list=bulbPos.filter((_,i) => i%2===j); const im=new THREE.InstancedMesh(bulbGeo, mat, list.length); const m4=new THREE.Matrix4();
+  list.forEach((p,i) => { m4.makeTranslation(p[0],p[1],p[2]); im.setMatrixAt(i,m4); im.setColorAt(i, CCOLS[(i+j)%2]); });
+  cny.add(im);
+});
+// lion dance: walks a loop around the open office, tap it for a daily red packet
+const lion=new THREE.Group(); cny.add(lion);
+const lionHead=new THREE.Group(); lionHead.position.set(0,.78,.42); lion.add(lionHead);
+box(.56,.44,.46,CNY_RED,0,0,0,lionHead); box(.6,.12,.48,CNY_GOLD,0,.2,0,lionHead);
+box(.5,.12,.06,'#7a1418',0,-.14,.24,lionHead,false);
+[-.14,.14].forEach(x => { sph(.075,'#ffffff',x,.06,.22,lionHead,10); sph(.04,'#1c1c24',x,.06,.28,lionHead,8); sph(.06,'#3fbf6a',x*2.1,-.02,.18,lionHead,8); });
+{ const horn=add(new THREE.Mesh(new THREE.ConeGeometry(.05,.16,8), M(CNY_GOLD)), lionHead, 0,.32,.08); horn.rotation.x=.3; }
+box(.62,.06,.5,'#f4f4f0',0,-.24,0,lionHead);
+box(.5,.3,1.0,CNY_GOLD,0,.68,-.25,lion); box(.52,.06,1.02,CNY_RED,0,.62,-.25,lion); box(.52,.06,1.02,CNY_RED,0,.76,-.25,lion);
+sph(.1,'#f4f4f0',0,.7,-.8,lion,8);
+const lionLegs=[[-.14,.3],[.14,.3],[-.14,-.6],[.14,-.6]].map(([x,z]) => { const pv=new THREE.Group(); pv.position.set(x,.5,z); lion.add(pv); cyl(.06,.06,.42,'#c8302e',0,-.21,0,pv,8); box(.12,.06,.17,'#1c1c24',0,-.44,.03,pv); return pv; });
+lion.userData.act='lion'; clickables.push(lion);
+const LION_PATH=[[11.6,7.6],[18.4,7.6],[18.4,12.4],[11.6,12.4]];
+let lionSeg=0, lionPos=new THREE.Vector3(11.6,0,7.6), lionDrum=6;
+lion.position.copy(lionPos);
+const lionBub=document.createElement('div'); lionBub.className='bub'; lionBub.hidden=true; $('#labels').appendChild(lionBub);
+let lionBubUntil=0; const lionV=new THREE.Vector3();
+function lionSay(text,sec=2.5){ lionBub.textContent=text; lionBubUntil=performance.now()+sec*1000; }
+function animCny(t,dt){
+  lanterns.forEach(l => { l.g.rotation.z = reduce ? 0 : Math.sin(t*1.1+l.k)*.06; l.glow.material.opacity = reduce ? .5 : .45+.15*Math.sin(t*2.3+l.k); });
+  const blink = reduce ? 0 : Math.floor(t*1.5)%2; cBulbMats[0].color.setScalar(blink ? 1 : .55); cBulbMats[1].color.setScalar(blink ? .55 : 1);
+  if (!reduce){
+    const [tx,tz]=LION_PATH[(lionSeg+1)%LION_PATH.length]; const dx=tx-lionPos.x, dz=tz-lionPos.z, d=Math.hypot(dx,dz), st=dt*.75;
+    if (d<=st){ lionPos.set(tx,0,tz); lionSeg=(lionSeg+1)%LION_PATH.length; } else lionPos.set(lionPos.x+dx/d*st,0,lionPos.z+dz/d*st);
+    let yaw=Math.atan2(dx,dz), dy=yaw-lion.rotation.y; dy=Math.atan2(Math.sin(dy),Math.cos(dy)); lion.rotation.y+=dy*Math.min(1,dt*4);
+    lion.position.copy(lionPos);
+    const s=Math.sin(t*9); lionLegs.forEach((l,i) => { l.rotation.x = (i%2 ? s : -s)*.5; });
+    lionHead.position.y=.78+Math.abs(Math.sin(t*4))*.08; lionHead.rotation.y=Math.sin(t*2.2)*.35; lionHead.rotation.x=Math.sin(t*4)*.12;
+  }
+  lionDrum-=dt; if (lionDrum<=0){ lionDrum=7+Math.random()*5; lionSay('咚咚锵！'); }
+  const show = performance.now()<lionBubUntil && wrap.hidden;
+  if (show){ lionV.set(lionPos.x,1.45,lionPos.z).project(camera); const vis=lionV.z<1 && Math.abs(lionV.x)<1.1 && Math.abs(lionV.y)<1.1; lionBub.hidden=!vis; if (vis) lionBub.style.transform=`translate(${(lionV.x+1)/2*innerWidth}px,${(1-lionV.y)/2*innerHeight}px) translate(-50%,-100%)`; }
+  else lionBub.hidden=true;
+}
+ACTS.lion = () => {
+  lionSay('采青！恭喜发财！',3);
+  if (S.daily.angpao){ toast('今天的红包已经领过了，明天再来'); return; }
+  S.daily.angpao=true; save(); gainXP(8,'新年红包'); bubble(player,'恭喜发财！'); burst(lionPos.x,1.2,lionPos.z,40);
+};
 
 /* ---------------- festival: Christmas ---------------- */
 const xmas = new THREE.Group(); xmas.visible=false; scene.add(xmas);
@@ -1779,26 +1979,71 @@ function animXmas(t,dt){
     snowGeo.attributes.position.needsUpdate=true;
   }
 }
+const FEST_TINT = {halloween:'#c8b8ff', christmas:'#d8e2ff', cny:'#ffe4d2'};
 function applyFest(){
   const k=festKind();
-  fest.visible = k==='halloween'; xmas.visible = k==='christmas';
-  hemi.intensity = k==='halloween' ? .5 : k==='christmas' ? .62 : .78;
-  hemi.color.set(k==='halloween' ? '#c9b8ff' : k==='christmas' ? '#ffe6c9' : '#ffffff');
-  sun.intensity = k==='halloween' ? .42 : k==='christmas' ? .55 : .72;
-  scene.background.set(k==='halloween' ? '#1a1428' : k==='christmas' ? '#142036' : '#222a3a');
-  chars.forEach(c => { if (c.witch) c.witch.visible = k==='halloween'; if (c.santa) c.santa.visible = k==='christmas'; });
-  skyDome.material.color.set(k==='halloween' ? '#4b3d7a' : k==='christmas' ? '#6d7ea8' : '#ffffff');
+  fest.visible = k==='halloween'; xmas.visible = k==='christmas'; cny.visible = k==='cny';
+  chars.forEach(c => { if (c.witch) c.witch.visible = k==='halloween'; if (c.santa) c.santa.visible = k==='christmas'; if (c.caishen) c.caishen.visible = k==='cny'; });
+  if (lightReady){ festTint.set(FEST_TINT[k] || '#ffffff'); applyLighting(); }
   const bar=$('#fest-bar'); bar.hidden=!festPreview;
-  if (festPreview){ const f=FESTIVALS.find(x => x.id===festPreview); $('#fest-bar-t').textContent=`预览中：${f.name} · 用户 ${f.from[0]} 月 ${f.from[1]} 日起才会看到`; }
+  if (festPreview){ const f=FESTIVALS.find(x => x.id===festPreview), n=festNext(f); $('#fest-bar-t').textContent=`预览中：${f.name} · 用户${n ? ` ${n.y} 年 ${n.from[0]} 月 ${n.from[1]} 日` : '到日期'}起才会看到`; }
 }
 function startPreview(id){
   festPreview=id; applyFest(); closeSheet(); goal=homeView();
   const f=FESTIVALS.find(x => x.id===id); toast(`预览：${f.name}装饰（只有你看得到）`,'gold');
-  bubble(N.lisa, id==='christmas' ? '圣诞快乐！' : '不给糖就捣蛋！');
+  bubble(N.lisa, {christmas:'圣诞快乐！', halloween:'不给糖就捣蛋！', cny:'新年快乐，恭喜发财！'}[id]);
 }
 function stopPreview(){ festPreview=null; applyFest(); toast('已结束预览'); }
 $('#fest-stop').onclick = stopPreview;
 applyFest();
+
+/* ---------------- time of day ---------------- */
+// Lighting follows the device clock: soft morning, strong noon, sunset, then night with stars and lamps.
+// Keyframes by hour: sun strength/colour, sky light, sky tint, page background.
+const DAY_KEYS = [
+  [0,   .16,'#9fb4ff', .30,'#6f7fb8', '#1d2747','#0f1626'],
+  [5.5, .2, '#ffb48a', .38,'#8f8fb8', '#5a5f8a','#2a2c44'],
+  [7,   .5, '#ffd9b0', .66,'#ffe9d6', '#ffe0c8','#2f3448'],
+  [10,  .66,'#fff6e6', .68,'#ffffff', '#ffffff','#222a3a'],
+  [13,  .82,'#fffdf6', .7, '#ffffff', '#eef7ff','#222a3a'],
+  [16,  .68,'#fff0d8', .66,'#fff4e6', '#ffffff','#222a3a'],
+  [18,  .58,'#ff9a5a', .55,'#ffc49a', '#ff9f78','#3a2a2e'],
+  [19.5,.24,'#c07aa0', .4, '#8a7fb8', '#4a4878','#1a1a2c'],
+  [21,  .16,'#9fb4ff', .30,'#6f7fb8', '#1d2747','#0f1626'],
+  [24,  .16,'#9fb4ff', .30,'#6f7fb8', '#1d2747','#0f1626'],
+];
+var timePreview = null, lightReady = false;
+let festTint = new THREE.Color('#ffffff');
+const _ca=new THREE.Color(), _cb=new THREE.Color();
+const lerpCol = (a,b,u,out) => out.copy(_ca.set(a)).lerp(_cb.set(b),u);
+const starGeo=new THREE.BufferGeometry(), starArr=new Float32Array(360*3);
+{ let s=3; const r=() => (s=(s*16807)%2147483647)/2147483647; for (let i=0;i<360;i++){ const th=r()*Math.PI*2, ph=r()*Math.PI*.42; starArr[i*3]=17+150*Math.sin(ph)*Math.cos(th); starArr[i*3+1]=150*Math.cos(ph)*.9+8; starArr[i*3+2]=10+150*Math.sin(ph)*Math.sin(th); } }
+starGeo.setAttribute('position', new THREE.BufferAttribute(starArr,3));
+const stars=new THREE.Points(starGeo, new THREE.PointsMaterial({color:'#ffffff', size:1.1, transparent:true, opacity:0, depthWrite:false}));
+scene.add(stars);
+const lampGlows=[...ZONES.map(z => [z.r[0]+z.r[2]/2, z.r[1]+z.r[3]/2]), [8,10],[14.5,10],[23.5,10],[32,10]].map(([x,z]) => {
+  const s=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex, color:'#ffd9a0', blending:THREE.AdditiveBlending, depthWrite:false, transparent:true, opacity:0}));
+  s.scale.set(5,5,1); s.position.set(x,1.1,z); scene.add(s); return s;
+});
+let nightK=0;
+function hourNow(){ if (timePreview!=null) return timePreview; const d=new Date(); return d.getHours()+d.getMinutes()/60; }
+function applyLighting(){
+  const h=hourNow();
+  let i=0; while (i<DAY_KEYS.length-2 && DAY_KEYS[i+1][0]<=h) i++;
+  const A=DAY_KEYS[i], B=DAY_KEYS[i+1], u=Math.min(1,Math.max(0,(h-A[0])/(B[0]-A[0])));
+  sun.intensity=A[1]+(B[1]-A[1])*u; lerpCol(A[2],B[2],u,sun.color);
+  hemi.intensity=A[3]+(B[3]-A[3])*u; lerpCol(A[4],B[4],u,hemi.color);
+  lerpCol(A[5],B[5],u,skyDome.material.color).multiply(festTint);
+  lerpCol(A[6],B[6],u,scene.background);
+  const day = h>=6 && h<=18.5, ang = day ? (h-6)/12.5*Math.PI : Math.PI*.35;
+  sun.position.set(17+Math.cos(ang)*30, 6+Math.sin(ang)*22, 10+16);
+  nightK = h<5.5 || h>=20 ? 1 : h<7 ? (7-h)/1.5 : h>18 ? Math.min(1,(h-18)/2) : 0;
+  stars.material.opacity=nightK*.9;
+  lampGlows.forEach(s => { s.material.opacity = qLevel==='low' ? 0 : nightK*.5; });
+}
+let lightT=0;
+function lightTick(dt){ lightT-=dt; if (lightT<=0){ lightT=5; applyLighting(); } }
+lightReady=true; applyFest();
 
 /* ---------------- quality ---------------- */
 function applyQuality(l){
@@ -1810,6 +2055,7 @@ function applyQuality(l){
   if (sun.shadow.mapSize.x!==ms){ sun.shadow.mapSize.set(ms,ms); if (sun.shadow.map){ sun.shadow.map.dispose(); sun.shadow.map=null; } }
   scene.traverse(o => { if (o.material) (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { m.needsUpdate=true; }); });
   glows.forEach(gl => { gl.sp.visible = l!=='low'; });
+  lanterns.forEach(ln => { ln.glow.visible = l!=='low'; });
   bats.forEach(b => { b.g.visible = l!=='low'; });
   snow.visible = l!=='low'; starGlow.visible = l!=='low';
   renderer.setSize(innerWidth, innerHeight, false);
@@ -1829,6 +2075,7 @@ sheet.addEventListener('click', e => {
   if (a.dataset.act==='tut-again'){ closeSheet(); startTutorial(); }
   if (a.dataset.act==='fest-preview') startPreview(a.dataset.v);
   if (a.dataset.act==='fest-stop'){ stopPreview(); openMe(); }
+  if (a.dataset.act==='time-preview'){ timePreview = a.dataset.v==='auto' ? null : Number(a.dataset.v); applyLighting(); openMe(); }
 });
 
 /* ---------------- onboarding ---------------- */
@@ -1911,7 +2158,8 @@ function loop(){
   }
   if (fest.visible) animFest(t);
   if (xmas.visible) animXmas(t, dt);
-  doorTick(dt); balconyTick(dt,t);
+  if (cny.visible) animCny(t, dt);
+  doorTick(dt); balconyTick(dt,t); petTick(dt,t); lightTick(dt);
   if (follow && player.path.length) rig.target.lerp(v3.set(player.x,0,player.z), Math.min(1,dt*3));
   if (goal){
     const k=Math.min(1,dt*4); rig.target.lerp(goal.target,k); rig.r+=(goal.r-rig.r)*k; rig.th+=(goal.th-rig.th)*k; rig.ph+=(goal.ph-rig.ph)*k;
@@ -1934,7 +2182,7 @@ function loop(){
   const showNames = rig.r < 30;
   for (const c of chars){
     if (doBadges){ const h=labelHTML(c); if (h!==c._lh){ c.el.innerHTML=h; c._lh=h; } }
-    const hatTop = (c.witch && c.witch.visible) || (c.santa && c.santa.visible) || (c.kind==='me' && (player.look.hat==='witch' || player.look.hat==='santa')) ? 1.6 : 1.32;
+    const hatTop = (c.witch && c.witch.visible) || (c.santa && c.santa.visible) || (c.caishen && c.caishen.visible) || (c.kind==='me' && ['witch','santa','caishen'].includes(player.look.hat)) ? 1.6 : 1.32;
     v3.set(c.x, hatTop, c.z).project(camera);
     const onScreen = v3.z<1 && Math.abs(v3.x)<1.1 && Math.abs(v3.y)<1.1;
     const sx=(v3.x+1)/2*W, sy=(1-v3.y)/2*H;
