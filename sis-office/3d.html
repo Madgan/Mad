@@ -332,7 +332,7 @@ const SHOES = ['#2b2b30','#f0f0ec','#7a4b2a','#b23a3a'];
 const EYE = '#2a2230';
 const OPT = {
   gender:[['f','女'],['m','男'],['x','不透露']],
-  role:[['leader','团队主管'],['agent','房产经纪'],['content','内容编导'],['admin','行政 / 客服'],['other','其他']],
+  role:[['photo','摄影师'],['video','摄像 / 剪辑'],['makeup','化妆师'],['stylist','服装造型'],['producer','制片 / 统筹'],['other','其他']],
   hair:[['short','短发'],['side','侧分'],['long','长发'],['pony','马尾'],['bun','丸子头'],['buzz','寸头'],['hijab','头巾']],
   top:[['tee','T 恤'],['shirt','衬衫'],['hoodie','卫衣'],['suit','西装',2]],
   bottom:[['pants','长裤'],['shorts','短裤'],['skirt','裙子']],
@@ -358,16 +358,16 @@ const NPC_DEF = [
    look:{gender:'m',skin:3,hair:'buzz',hairColor:0,top:'shirt',topColor:4,bottom:'pants',bottomColor:5,shoes:0,hat:'cap',hatColor:0,glasses:'none',watch:'silver'}},
 ];
 const PEER_DEF = [
-  {id:'p1', name:'陈美玲', role:'leader', team:'Team Mei · Mont Kiara', lvl:7, tile:[16,7],
+  {id:'p1', name:'陈美玲', role:'producer', team:'Team Mei · Mont Kiara', lvl:7, tile:[16,7],
    look:{gender:'f',skin:0,hair:'bun',hairColor:0,top:'suit',topColor:5,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'round',watch:'gold'},
    lines:['这个月第 3 单了，继续。','Mont Kiara 新盘的客户问得很多。','下午 3 点开组会。']},
-  {id:'p2', name:'Jason Tan', role:'agent', team:'Team Mei · Mont Kiara', lvl:4, tile:[12,10],
+  {id:'p2', name:'Jason Tan', role:'video', team:'Team Mei · Mont Kiara', lvl:4, tile:[12,10],
    look:{gender:'m',skin:1,hair:'side',hairColor:1,top:'shirt',topColor:1,bottom:'pants',bottomColor:5,shoes:2,hat:'none',hatColor:0,glasses:'none',watch:'silver'},
    lines:['刚带看完 Bangsar South。','客户说视频里的阳台很加分。','谁有 Mont Kiara 停车位资料？']},
-  {id:'p3', name:'Aisyah', role:'agent', team:'Team Farah · Shah Alam', lvl:5, tile:[17,3],
+  {id:'p3', name:'Aisyah', role:'makeup', team:'Team Farah · Shah Alam', lvl:5, tile:[17,3],
    look:{gender:'f',skin:2,hair:'hijab',hairColor:8,top:'shirt',topColor:6,bottom:'pants',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'none',watch:'silver'},
    lines:['Shah Alam 排屋这周很抢手。','我在同行圈问了 MOT 费用。','下午要拍短视频。']},
-  {id:'p4', name:'黄家伟', role:'leader', team:'Team Wei · Cheras', lvl:6, tile:[4,15],
+  {id:'p4', name:'黄家伟', role:'photo', team:'Team Wei · Cheras', lvl:6, tile:[4,15],
    look:{gender:'m',skin:1,hair:'buzz',hairColor:0,top:'tee',topColor:0,bottom:'shorts',bottomColor:9,shoes:1,hat:'cap',hatColor:5,glasses:'sun',watch:'none'},
    lines:['Cheras 换房客户越来越多。','视频开头直接报价，询问多了 40%。','周末两组带看。']},
 ];
@@ -423,7 +423,9 @@ const dkey = (d=new Date()) => `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate
 const freshDaily = () => ({checkin:false,coffee:false,follow:0,review:0,social:0,dash:false,claimed:{}});
 let S = null;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch(e) { S = null; }
-if (!S || !S.posts) S = {look:null,name:'',role:'agent',xp:0,day:'',daily:freshDaily(),posts:SEED_POSTS(),leads:SEED_LEADS(),content:SEED_CONTENT(),seen:0,streak:0,last:'',deals:0,posted:0};
+if (!S || !S.posts) S = {look:null,name:'',role:'photo',xp:0,day:'',daily:freshDaily(),posts:SEED_POSTS(),leads:SEED_LEADS(),content:SEED_CONTENT(),seen:0,streak:0,last:'',deals:0,posted:0};
+// Older saves used real-estate roles; map them onto the production jobs.
+if (!ROLE[S.role]) S.role = ({leader:'producer', agent:'photo', content:'video', admin:'other'})[S.role] || 'other';
 if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED_CONTENT(); S.leads = SEED_LEADS(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 const level = () => Math.floor(S.xp/100)+1;
@@ -970,7 +972,7 @@ function edHTML(){
     <div class="ed-opts">
       <div><h3><label for="ed-name">名字</label></h3><input type="text" id="ed-name" maxlength="12" value="${esc(ed.name)}" placeholder="同事会看到这个名字"></div>
       <div><h3>性别</h3>${chips('gender',OPT.gender,L.gender)}<p class="note" style="margin-top:6px">所有发型和服装对所有人开放。</p></div>
-      <div><h3>职位</h3>${chips('role',OPT.role,ed.role)}</div>
+      <div><h3>职业</h3>${chips('role',OPT.role,ed.role)}<div class="note" style="margin-top:6px">你的私人办公室会按职业布置</div></div>
       <div><h3>肤色</h3>${sws('skin',SKIN,L.skin)}</div>
       <div><h3>发型</h3>${chips('hair',OPT.hair,L.hair)}</div>
       <div><h3>${L.hair==='hijab'?'头巾颜色':'发色'}</h3>${sws('hairColor',L.hair==='hijab'?CLOTH:HAIRC,L.hairColor)}</div>
@@ -1071,7 +1073,7 @@ sheet.addEventListener('click', async e => {
     case 'rand': ed.look=randomLook(); setBody(edHTML()); break;
     case 'ed-save': {
       const first=ed.first;
-      S.look=ed.look; S.name=(ed.name||'').trim()||'新同事'; S.role=ed.role; save();
+      S.look=ed.look; S.name=(ed.name||'').trim()||'新同事'; S.role=ed.role; save(); if (typeof applyJobOffice==='function') applyJobOffice();
       player.look=S.look; rebuildPlayer(); sheetLocked=false; closeSheet(); ed=null;
       toast(first?'欢迎加入 SIS 办公室':'造型已保存');
       if (first) setTimeout(() => startTutorial(() => ACTS.lisa()), 400);
@@ -1901,8 +1903,156 @@ function doorLeaf(hx,hz,axis,sign,cx,cz,range){
 [[5,6],[24,6],[5,13],[24,13]].forEach(([x,y]) => doorLeaf(x+.04,y+.5,'x',1,x+.5,y+.5,1.25));
 doorLeaf(29.5,9.04,'z',1,29.5,10,1.6); doorLeaf(29.5,10.96,'z',-1,29.5,10,1.6);
 doorLeaf(4.5,10.04,'z',1,4.5,10.5,1.2);
-{ const tag=new THREE.Mesh(new THREE.PlaneGeometry(.62,.16), new THREE.MeshBasicMaterial({map:canvasTex(256,64,(g,W,H) => { g.fillStyle='#2b3448'; g.fillRect(0,0,W,H); g.fillStyle='#f2c56b'; g.font='700 30px "Noto Sans SC", sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('我的办公室',W/2,H/2+1); })}));
-  tag.position.set(5.012,.6,9.4); tag.rotation.y=Math.PI/2; scene.add(tag); }
+const officeTag=new THREE.Mesh(new THREE.PlaneGeometry(.62,.16), new THREE.MeshBasicMaterial());
+officeTag.position.set(5.012,.6,9.4); officeTag.rotation.y=Math.PI/2; scene.add(officeTag);
+/* ---------------- private office by job ---------------- */
+// The player's office is furnished for their job (chosen at sign-up, changeable in the wardrobe editor).
+// Each set: a big floor piece by the west wall, a second piece by the door, desk-top kit, and a wall piece.
+const JOB_OFFICE = {photo:'摄影工作室', video:'影像工作室', makeup:'化妆间', stylist:'造型工作室', producer:'制片办公室', other:'我的办公室'};
+const jobSets = {};
+const UP = new THREE.Vector3(0,1,0);
+function rod(g, a, b, r, c){ // thin rounded pole from point a to point b
+  const d=new THREE.Vector3().subVectors(b,a), m=cyl(r,r,d.length(),c,(a.x+b.x)/2,(a.y+b.y)/2,(a.z+b.z)/2,g,8);
+  m.quaternion.setFromUnitVectors(UP, d.normalize()); return m;
+}
+function tripodLegs(g, x, z, h, c='#2a2f3a', spread=.22){
+  [0,2.1,4.2].forEach(a => rod(g, new THREE.Vector3(x,h,z), new THREE.Vector3(x+Math.cos(a)*spread,0,z+Math.sin(a)*spread), .012, c));
+  return h;
+}
+const facing = (x,z,tx,tz) => Math.atan2(tx-x, tz-z);
+const glowMat = c => new THREE.MeshBasicMaterial({color:c});
+function wallArt(g, draw){ // sits on the inside of the east wall, between the visitor chairs and the wall top
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(.92,.3), new THREE.MeshBasicMaterial({map:canvasTex(368,120,draw)}));
+  m.position.set(3.992,.63,8.85); m.rotation.y=-Math.PI/2; g.add(m); return m;
+}
+const frame = (g2,x,y,w,h) => { g2.fillStyle='#3a3026'; g2.fillRect(x-5,y-5,w+10,h+10); };
+
+const JOB_BUILD = {
+  photo(g){
+    // camera on a tripod, aimed at the desk
+    const top=tripodLegs(g,1.5,11.35,.62); cyl(.02,.02,.1,'#2a2f3a',1.5,top+.03,11.35,g,8);
+    const cam=new THREE.Group(); cam.position.set(1.5,top+.15,11.35); cam.rotation.y=facing(1.5,11.35,2.5,9); g.add(cam);
+    box(.2,.13,.1,'#22262e',0,0,0,cam); box(.07,.05,.06,'#22262e',-.04,.08,0,cam);
+    { const l=cyl(.045,.05,.13,'#15181d',0,0,.11,cam,14); l.rotation.x=Math.PI/2; const r=cyl(.047,.047,.02,'#d65f4c',0,0,.15,cam,14); r.rotation.x=Math.PI/2; }
+    // softbox on a light stand by the door
+    tripodLegs(g,3.5,11.55,.3,'#3b4354',.16); cyl(.014,.014,.6,'#3b4354',3.5,.6,11.55,g,8);
+    const sb=new THREE.Group(); sb.position.set(3.5,.92,11.55); sb.rotation.y=facing(3.5,11.55,2,10); g.add(sb);
+    { const c=add(new THREE.Mesh(new THREE.ConeGeometry(.26,.24,4,1,true), M('#2a2f3a',{side:THREE.DoubleSide})),sb,0,0,0); c.rotation.x=-Math.PI/2; c.rotation.y=Math.PI/4;
+      const f=add(new THREE.Mesh(new THREE.PlaneGeometry(.36,.36), glowMat('#fff8ea')),sb,0,0,.12,false); }
+    // spare body and lens on the desk
+    box(.16,.1,.08,'#22262e',2.36,.6,8.3,g); { const l=cyl(.035,.04,.08,'#15181d',2.36,.6,8.38,g,12); l.rotation.x=Math.PI/2; }
+    cyl(.035,.035,.1,'#15181d',2.2,.6,8.5,g,12);
+    wallArt(g,(c,W,H) => { c.fillStyle='#eef1f5'; c.fillRect(0,0,W,H);
+      [[14,'#9fd0ea','#5c8f6a'],[134,'#f2b38a','#7a5a8a'],[254,'#cfe6f2','#3f6f8a']].forEach(([x,sky,hill]) => { frame(c,x,14,100,92);
+        c.fillStyle=sky; c.fillRect(x,14,100,92); c.fillStyle=hill; c.beginPath(); c.moveTo(x,106); c.lineTo(x+40,52); c.lineTo(x+70,80); c.lineTo(x+100,46); c.lineTo(x+100,106); c.fill();
+        c.fillStyle='#fff3c2'; c.beginPath(); c.arc(x+74,34,9,0,7); c.fill(); }); });
+  },
+  video(g){
+    // cinema camera on a tripod: body, matte box, top handle, side monitor
+    const top=tripodLegs(g,1.5,11.35,.6,'#1d2028',.25); cyl(.03,.03,.08,'#1d2028',1.5,top+.03,11.35,g,8);
+    const cam=new THREE.Group(); cam.position.set(1.5,top+.17,11.35); cam.rotation.y=facing(1.5,11.35,2.6,9.6); g.add(cam);
+    box(.16,.16,.3,'#1d2028',0,0,0,cam); box(.2,.16,.06,'#15181d',0,0,.22,cam); box(.03,.04,.2,'#3b4354',0,.11,-.02,cam);
+    box(.11,.08,.015,'#15181d',.13,.07,.02,cam).rotation.y=-.5; box(.09,.06,.005,glowMat('#7fc8e8'),.128,.07,.03,cam,false).rotation.y=-.5;
+    sph(.016,glowMat('#ff3b30'),-.06,.06,.15,cam,8);
+    // LED panel on a stand
+    tripodLegs(g,3.5,11.55,.3,'#3b4354',.16); cyl(.014,.014,.55,'#3b4354',3.5,.57,11.55,g,8);
+    const led=new THREE.Group(); led.position.set(3.5,.9,11.55); led.rotation.y=facing(3.5,11.55,2,10); g.add(led);
+    box(.36,.24,.04,'#2a2f3a',0,0,0,led); add(new THREE.Mesh(new THREE.PlaneGeometry(.32,.2), glowMat('#eaf4ff')),led,0,0,.022,false);
+    // second monitor with an edit timeline, headphones
+    box(.04,.3,.52,'#2a303d',2.62,.72,8.72,g);
+    { const s=new THREE.Mesh(new THREE.PlaneGeometry(.46,.25), new THREE.MeshBasicMaterial({map:canvasTex(184,100,(c,W,H) => { c.fillStyle='#1b2130'; c.fillRect(0,0,W,H);
+        c.fillStyle='#2b3448'; c.fillRect(0,0,W,46); c.fillStyle='#e05a46'; c.fillRect(60,0,2,H);
+        [['#5b8def',10,58,50],['#5b8def',64,58,70],['#3fbf9a',20,72,90],['#e3a63b',8,86,40],['#e3a63b',52,86,80]].forEach(([col,x,y,w]) => { c.fillStyle=col; c.fillRect(x,y,w,10); }); })}));
+      s.position.set(2.597,.72,8.72); s.rotation.y=-Math.PI/2; g.add(s); }
+    { const hp=add(new THREE.Mesh(new THREE.TorusGeometry(.07,.012,8,20,Math.PI), M('#22262e')),g,2.34,.58,8.32); hp.rotation.x=-Math.PI/2;
+      cyl(.035,.035,.03,'#22262e',2.27,.56,8.32,g,12); cyl(.035,.035,.03,'#22262e',2.41,.56,8.32,g,12); }
+    wallArt(g,(c,W,H) => { c.fillStyle='#1d2028'; c.fillRect(0,0,W,H);
+      for (let i=0;i<23;i++){ c.fillStyle='#eef1f5'; c.fillRect(8+i*16,8,8,8); c.fillRect(8+i*16,H-16,8,8); }
+      c.fillStyle='#e05a46'; c.beginPath(); c.arc(60,60,12,0,7); c.fill();
+      c.fillStyle='#eef1f5'; c.font='800 34px Manrope, sans-serif'; c.textBaseline='middle'; c.fillText('REC  00:12:48', 86, 62); });
+  },
+  makeup(g){
+    // vanity with a bulb-lit mirror, facing the room, and a stool
+    box(.6,.04,.32,'#f2ebe2',1.55,.44,11.25,g); [[-.26,-.12],[.26,-.12],[-.26,.12],[.26,.12]].forEach(([dx,dz]) => cyl(.015,.015,.42,'#c9b8a2',1.55+dx,.21,11.25+dz,g,8));
+    box(.5,.42,.03,'#e9dccb',1.55,.73,11.11,g); add(new THREE.Mesh(new THREE.PlaneGeometry(.42,.34), new THREE.MeshLambertMaterial({color:'#d6e4ee'})),g,1.55,.73,11.128,false);
+    const bulb=glowMat('#fff1c9'); [-.2,-.1,0,.1,.2].forEach(dx => sph(.022,bulb,1.55+dx,.93,11.13,g,8)); [-.08,.04,.16].forEach(dy => { sph(.022,bulb,1.31,.65+dy,11.13,g,8); sph(.022,bulb,1.79,.65+dy,11.13,g,8); });
+    [['#d65f4c',-.18],['#c46f95',-.12],['#e3a63b',.14]].forEach(([col,dx]) => cyl(.014,.014,.07,col,1.55+dx,.5,11.2,g,8));
+    cyl(.12,.1,.04,'#c46f95',1.55,.36,11.62,g,16); cyl(.02,.02,.34,'#c9b8a2',1.55,.17,11.62,g,8);
+    // rolling train case by the door
+    box(.3,.2,.22,'#c46f95',3.5,.14,11.6,g); box(.3,.14,.22,'#d98bae',3.5,.31,11.6,g); box(.14,.03,.03,'#8a3f63',3.5,.4,11.6,g);
+    [-.11,.11].forEach(dx => sph(.03,'#2b2b30',3.5+dx,.03,11.68,g,8));
+    // brushes, palette and lipsticks on the desk
+    cyl(.035,.03,.08,'#f2ebe2',2.3,.58,8.3,g,12);
+    [[-.012,.2],[.012,-.2],[0,.05],[.018,.35]].forEach(([dx,t],i) => { const b=rod(g,new THREE.Vector3(2.3+dx,.58,8.3),new THREE.Vector3(2.3+dx*6+Math.sin(t)*.04,.72,8.3+Math.cos(t)*.03),.006,'#3a3026'); sph(.012,['#e8c4a8','#c46f95','#3a3026','#e3a63b'][i],2.3+dx*6+Math.sin(t)*.04,.73,8.3+Math.cos(t)*.03,g,8); });
+    box(.16,.015,.11,'#22262e',2.42,.55,8.5,g,false); ['#e8c4a8','#c98f6a','#c46f95','#d65f4c','#8a5aa8','#e3a63b'].forEach((col,i) => cyl(.016,.016,.006,col,2.37+(i%3)*.05,.56,8.47+Math.floor(i/3)*.05,g,10));
+    wallArt(g,(c,W,H) => { c.fillStyle='#fbf6f0'; c.fillRect(0,0,W,H);
+      c.strokeStyle='#8a7a6a'; c.lineWidth=3; c.beginPath(); c.ellipse(70,60,34,44,0,0,7); c.stroke();
+      c.fillStyle='#c46f95'; c.beginPath(); c.ellipse(70,84,10,4,0,0,7); c.fill(); c.fillStyle='#8a5aa8'; c.fillRect(52,48,12,4); c.fillRect(76,48,12,4);
+      ['#f3d9c2','#e8c4a8','#c98f6a','#a36d47','#c46f95','#d65f4c','#8a5aa8','#e3a63b'].forEach((col,i) => { c.fillStyle=col; c.beginPath(); c.arc(150+(i%4)*56,38+Math.floor(i/4)*46,17,0,7); c.fill(); }); });
+  },
+  stylist(g){
+    // garment rack with hanging clothes
+    [1.17,1.85].forEach(x => { cyl(.014,.014,.82,'#9aa3b2',x,.41,11.35,g,8); box(.04,.02,.3,'#9aa3b2',x,.02,11.35,g); });
+    rod(g,new THREE.Vector3(1.17,.82,11.35),new THREE.Vector3(1.85,.82,11.35),.012,'#9aa3b2');
+    ['#3b5bab','#f2f2ee','#c46f95','#2b2f3a','#e3a63b','#2f7d6d'].forEach((col,i) => { const x=1.27+i*.1;
+      cyl(.005,.005,.05,'#7a8496',x,.79,11.35,g,6); box(.03,.04,.2,'#7a8496',x,.76,11.35,g,false); box(.035,i%2?.42:.32,.2,col,x,i%2?.53:.58,11.35,g); });
+    // dress form with a draped sash
+    tripodLegs(g,3.5,11.55,.32,'#7a5434',.15); cyl(.014,.014,.2,'#7a5434',3.5,.42,11.55,g,8);
+    { const t=sph(.13,'#efe3d0',3.5,.66,11.55,g,16); t.scale.set(1,1.5,.75); } cyl(.03,.035,.06,'#efe3d0',3.5,.88,11.55,g,10); sph(.03,'#7a5434',3.5,.93,11.55,g,8);
+    { const s=box(.05,.34,.12,'#d65f4c',3.47,.66,11.6,g); s.rotation.z=.5; }
+    // swatch book, scissors, tape measure on the desk
+    ['#d65f4c','#e3a63b','#2f7d6d','#3b5bab','#c46f95'].forEach((col,i) => { const b=box(.16,.008,.06,col,2.38,.548+i*.008,8.32,g,false); b.rotation.y=i*.18; });
+    cyl(.035,.035,.025,'#f2c56b',2.22,.555,8.55,g,14);
+    { const a=box(.13,.008,.014,'#9aa3b2',2.44,.548,8.6,g,false); a.rotation.y=.3; const b=box(.13,.008,.014,'#9aa3b2',2.44,.548,8.6,g,false); b.rotation.y=-.3; }
+    wallArt(g,(c,W,H) => { c.fillStyle='#f4efe6'; c.fillRect(0,0,W,H);
+      [['#d65f4c',14,14,70,50],['#e3a63b',92,14,50,92],['#2f7d6d',14,72,70,34],['#c46f95',150,14,90,60],['#3b5bab',150,80,40,26],['#f2f2ee',198,80,42,26],['#8a5aa8',250,14,104,40],['#2b2f3a',250,62,50,44],['#e8c4a8',306,62,48,44]].forEach(([col,x,y,w,h]) => { c.fillStyle=col; c.fillRect(x,y,w,h); });
+      c.fillStyle='#d65f4c'; [[40,10],[170,10],[290,10]].forEach(([x,y]) => { c.beginPath(); c.arc(x,y,5,0,7); c.fill(); }); });
+  },
+  producer(g){
+    // whiteboard on a stand with today's call sheet
+    [1.2,1.9].forEach(x => { cyl(.014,.014,.9,'#9aa3b2',x,.45,11.3,g,8); box(.04,.02,.32,'#9aa3b2',x,.02,11.3,g); });
+    box(.76,.48,.03,'#d8dee6',1.55,.7,11.3,g);
+    { const m=new THREE.Mesh(new THREE.PlaneGeometry(.7,.42), new THREE.MeshBasicMaterial({map:canvasTex(280,168,(c,W,H) => { c.fillStyle='#ffffff'; c.fillRect(0,0,W,H);
+        c.fillStyle='#2b3448'; c.font='800 22px "Noto Sans SC", sans-serif'; c.fillText('通告单',12,28);
+        c.font='600 15px Manrope, "Noto Sans SC", sans-serif'; [['07:00','集合 · 化妆'],['09:30','开机'],['12:30','午饭'],['14:00','外景'],['18:00','收工']].forEach(([t,s],i) => { c.fillStyle='#d65f4c'; c.fillText(t,12,56+i*24); c.fillStyle='#2b3448'; c.fillText(s,72,56+i*24); });
+        c.strokeStyle='#2f7d6d'; c.lineWidth=3; c.beginPath(); c.moveTo(200,50); c.lineTo(212,62); c.lineTo(236,38); c.stroke(); })}));
+      m.position.set(1.55,.7,11.318); g.add(m); }
+    // director's chair, back to the camera, with 制片 on the canvas
+    const ch=new THREE.Group(); ch.position.set(3.45,0,11.6); ch.rotation.y=Math.PI/2; g.add(ch);
+    [-1,1].forEach(s => { rod(ch,new THREE.Vector3(s*.15,0,-.12),new THREE.Vector3(s*.15,.32,.12),.012,'#7a5434'); rod(ch,new THREE.Vector3(s*.15,0,.12),new THREE.Vector3(s*.15,.32,-.12),.012,'#7a5434'); cyl(.012,.012,.32,'#7a5434',s*.15,.48,-.13,ch,8); });
+    box(.3,.02,.24,'#2b2f3a',0,.32,0,ch);
+    { const back=new THREE.Mesh(new THREE.PlaneGeometry(.3,.13), new THREE.MeshBasicMaterial({side:THREE.DoubleSide, map:canvasTex(160,70,(c,W,H) => { c.fillStyle='#2b2f3a'; c.fillRect(0,0,W,H); c.fillStyle='#f2c56b'; c.font='800 36px "Noto Sans SC", sans-serif'; c.textAlign='center'; c.textBaseline='middle'; c.fillText('制片',W/2,H/2+2); })}));
+      back.position.set(0,.55,-.13); back.rotation.y=Math.PI; ch.add(back); }
+    // walkie-talkies and a clapperboard on the desk
+    [[2.26,8.3],[2.34,8.32]].forEach(([x,z]) => { box(.05,.11,.03,'#22262e',x,.6,z,g); cyl(.006,.006,.08,'#22262e',x+.012,.69,z,g,6); });
+    box(.18,.012,.13,'#22262e',2.45,.55,8.56,g,false);
+    { const st=new THREE.Mesh(new THREE.PlaneGeometry(.18,.03), new THREE.MeshBasicMaterial({map:canvasTex(96,16,(c,W,H) => { for (let i=0;i<6;i++){ c.fillStyle=i%2?'#ffffff':'#22262e'; c.fillRect(i*16,0,16,H); } })}));
+      st.rotation.x=-Math.PI/2; st.position.set(2.45,.558,8.49); g.add(st); }
+    wallArt(g,(c,W,H) => { c.fillStyle='#ffffff'; c.fillRect(0,0,W,H);
+      c.fillStyle='#2b3448'; c.font='800 18px "Noto Sans SC", sans-serif'; c.fillText('拍摄排期',10,22);
+      for (let d=0; d<14; d++){ const x=10+(d%7)*50, y=32+Math.floor(d/7)*42; c.strokeStyle='#d8dee6'; c.strokeRect(x,y,46,38);
+        const col=[null,'#d65f4c',null,'#2f7d6d','#2f7d6d',null,null,'#e3a63b',null,null,'#d65f4c',null,'#3b5bab',null][d]; if (col){ c.fillStyle=col; c.fillRect(x+4,y+22,38,10); } } });
+  },
+  other(){},
+};
+// tiles the floor pieces stand on, so nobody walks through them
+const JOB_TILES=[[1,11],[3,11]];
+let officeTagTex=null;
+function setOfficeTag(text){
+  const t=canvasTex(256,64,(g,W,H) => { g.fillStyle='#2b3448'; g.fillRect(0,0,W,H); g.fillStyle='#f2c56b'; g.font='700 30px "Noto Sans SC", sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText(text,W/2,H/2+1); });
+  if (officeTagTex) officeTagTex.dispose(); officeTagTex=t; officeTag.material.map=t; officeTag.material.needsUpdate=true;
+}
+function applyJobOffice(){
+  const role = JOB_BUILD[S.role] ? S.role : 'other';
+  if (!jobSets[role]){ const g=new THREE.Group(); scene.add(g); JOB_BUILD[role](g); jobSets[role]=g; }
+  Object.entries(jobSets).forEach(([k,g]) => { g.visible = k===role; });
+  JOB_TILES.forEach(([x,y]) => { solid[y][x] = role!=='other'; });
+  setOfficeTag(JOB_OFFICE[role]);
+  const lab=labels.find(l => l.z.id==='boss'); if (lab){ const sm=lab.el.querySelector('small'); if (sm) sm.textContent=JOB_OFFICE[role]==='我的办公室'?'私人空间':JOB_OFFICE[role]; }
+  if (renderer.shadowMap) renderer.shadowMap.needsUpdate=true;
+}
+applyJobOffice();
+
 // Doors swing away from whoever walks up, stay open while someone is close, then close.
 function doorTick(dt){
   for (const d of DOORS){
