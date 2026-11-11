@@ -231,6 +231,15 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 .books-sum b.neg{color:var(--rose)}
 .remind{display:grid;gap:12px}
 .remind textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:10px;font:14px/1.55 var(--f-body);color:var(--ink);background:#fbfbfc;resize:vertical;margin-bottom:8px}
+#gate{position:fixed;inset:0;z-index:60;background:rgba(18,24,38,.72);display:grid;place-items:center;padding:16px}
+#gate>div{background:var(--card);border-radius:20px;padding:22px;max-width:340px;text-align:center;display:grid;gap:10px}
+#gate b{font-size:17px} #gate p{margin:0;color:#5b6474;font-size:14px}
+#me-live{margin-left:6px;padding:0 6px;border-radius:999px;font-size:10px;line-height:16px;background:#d8dee6;color:#2b3448}
+#me-live.ok{background:#2f7d6d;color:#fff} #me-live.error{background:var(--rose);color:#fff}
+.live-box{background:#f2f7f5;border-radius:12px;padding:10px 12px}
+.live-box p{margin:4px 0 0;font-size:13px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#9aa4b3;vertical-align:1px}
+.dot.ok{background:#2f9d6d} .dot.error{background:var(--rose)}
 .rank .you,.champ .you{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#e3a63b;color:#fff;font-size:10px;line-height:16px;vertical-align:1px}
 .rl.hot small{color:rgba(255,255,255,.75)}
 .rl.here{box-shadow:0 0 0 3px var(--gold,#e8b44a),0 4px 14px rgba(18,24,38,.22);animation:rlPulse 1.6s ease-in-out infinite}
@@ -291,7 +300,7 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
   <canvas id="me-pt"></canvas>
   <div>
     <div class="me-name" id="me-name">新同事</div>
-    <div class="me-sub"><span class="lv" id="me-lv">LV 1</span><span id="me-role"></span></div>
+    <div class="me-sub"><span class="lv" id="me-lv">LV 1</span><span id="me-role"></span><span id="me-live" hidden>测试版</span></div>
     <div class="xp"><i id="me-xp"></i></div>
   </div>
 </button>
@@ -567,6 +576,76 @@ const SIS = {
     return SIS.createPost('接单喜报', text);
   },
 };
+
+/* ---------------- live SIS connection (beta) ---------------- */
+// Served from sistudio.app, the host page sets, before this script:
+//   window.SIS_OFFICE_CONFIG = {live:true, apiBase:'/api', loginUrl:'/login', headers:{'X-CSRF-Token':'…'}, paths:{me:'/me', ranking:'/ranking', jobLogs:'/job-logs'}}
+// Live: name, job, ranking opt-in, peer ranking, job log. Everything else is still sample data.
+// Anywhere else (the claude.ai preview) the office runs on sample data only.
+const CFG = Object.assign({live:false, apiBase:'/api', loginUrl:'/login', headers:{}, paths:{}}, window.SIS_OFFICE_CONFIG||{});
+const LIVE = !!CFG.live;
+const API_PATH = Object.assign({me:'/me', ranking:'/ranking', jobLogs:'/job-logs'}, CFG.paths);
+let liveMe = null, liveState = LIVE ? 'connecting' : 'off';
+class ApiError extends Error { constructor(status, msg){ super(msg); this.status=status; } }
+async function api(path, {method='GET', body, query}={}){
+  const url = CFG.apiBase + path + (query ? '?'+new URLSearchParams(query) : '');
+  let res;
+  try { res = await fetch(url, {method, credentials:'include', body: body ? JSON.stringify(body) : undefined,
+    headers: Object.assign({'Accept':'application/json'}, body ? {'Content-Type':'application/json'} : {}, CFG.headers)}); }
+  catch(e){ throw new ApiError(0, `${method} ${path} 连不上`); }
+  if (!res.ok) throw new ApiError(res.status, `${method} ${path} → ${res.status}`);
+  if (res.status===204) return null;
+  const j = await res.json(); return j && typeof j==='object' && 'data' in j && !Array.isArray(j) ? j.data : j;
+}
+const ym = back => { const d=new Date(monthStart(back)); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; };
+function applyMe(me){
+  if (!me) return; liveMe = Object.assign(liveMe||{}, me);
+  if (me.name) S.name = me.name;
+  if (me.job) S.role = me.job;
+  if ('job_other' in me) S.jobOther = me.job_other || '';
+  if ('show_in_ranking' in me) S.showInRanking = !!me.show_in_ranking;
+  save();
+}
+const asList = r => Array.isArray(r) ? r : (r && (r.items || r.rows)) || [];
+if (LIVE) Object.assign(SIS, {
+  async profile(){ applyMe(await api(API_PATH.me)); return {name:S.name, job:S.role, jobOther:S.jobOther||'', showInRanking:!!S.showInRanking}; },
+  async setJob(job, other=''){
+    const job_other = job==='other' ? String(other).trim().slice(0,20) : null;
+    const me = await api(API_PATH.me, {method:'PATCH', body:{job, job_other}});
+    applyMe(me && me.job ? me : {job, job_other}); return SIS.profile();
+  },
+  async setRanking(on){
+    const me = await api(API_PATH.me, {method:'PATCH', body:{show_in_ranking:!!on}});
+    applyMe(me && 'show_in_ranking' in me ? me : {show_in_ranking:!!on});
+  },
+  async ranking(back=0){
+    return asList(await api(API_PATH.ranking, {query:{month:ym(back)}})).map(r => ({name:r.name, studio:r.studio||'', job:r.job, jobs:Number(r.jobs)||0, me:!!r.is_me}));
+  },
+  async logJob({area, amt, client}){
+    const r = await api(API_PATH.jobLogs, {method:'POST', body:{project:area, amount:amt, client:client||null}});
+    (S.jobLogs=S.jobLogs||[]).push({t:Date.parse(r && r.created_at)||Date.now(), id:r && r.id, area, amt, client:client||''}); save();
+  },
+});
+// Pull the real profile and this user's job log for the last three months (job counts, recap, unbilled jobs).
+async function liveSync(){
+  applyMe(await api(API_PATH.me));
+  const months = await Promise.all([0,1,2].map(k => api(API_PATH.jobLogs, {query:{month:ym(k)}}).then(asList)));
+  S.jobLogs = months.flat().map(j => ({t:Date.parse(j.created_at), id:j.id, area:j.project, amt:Number(j.amount)||0, client:j.client||''}));
+  save();
+}
+function showGate(kind){
+  const g=document.createElement('div'); g.id='gate';
+  g.innerHTML = kind==='login'
+    ? `<div><b>请先登录 SIS</b><p>虚拟办公室用的是你的 SIS 账号。</p><a class="btn primary" href="${CFG.loginUrl}?next=${encodeURIComponent(location.pathname)}">去登录</a></div>`
+    : `<div><b>测试版还没开放给这个账号</b><p>虚拟办公室目前只开放给受邀账号。</p><a class="btn" href="/">回到 SIS</a></div>`;
+  document.body.appendChild(g);
+}
+function liveFail(err){
+  if (err.status===401) return showGate('login');
+  if (err.status===403) return showGate('beta');
+  toast(`SIS 接口出错：${err.message}`);
+}
+addEventListener('unhandledrejection', e => { if (e.reason instanceof ApiError){ e.preventDefault(); liveFail(e.reason); } });
 const DB = {leads:[], content:[], posts:[]};
 async function refresh(){ [DB.leads, DB.content, DB.posts] = await Promise.all([SIS.leads(), SIS.content(), SIS.posts()]); updateHUD(); }
 
@@ -847,6 +926,7 @@ const tasksLeft = () => TASKS.filter(t => !S.daily.claimed[t.id]).length;
 function updateHUD(){
   $('#me-name').textContent = S.name || '新同事';
   $('#me-role').textContent = jobName();
+  const lv=$('#me-live'); lv.hidden=!LIVE; lv.className=liveState;
   $('#me-lv').textContent = 'LV '+level();
   $('#me-xp').style.width = (S.xp%100)+'%';
   drawPortrait($('#me-pt'), player.look);
@@ -1114,6 +1194,8 @@ function openMe(){
       <div style="font-weight:700;font-size:16px">${esc(S.name||'新同事')}</div><div class="note">${esc(jobName())} · LV ${level()}</div>
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
     <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${monthJobsNow()}</b><span>本月接单</span></div></div>
+    ${LIVE ? `<div class="live-box"><h3>测试版连接</h3><p><span class="dot ${liveState}"></span>${liveState==='ok' ? `已连接 SIS · ${esc(S.name)}` : liveState==='connecting' ? '正在连接 SIS…' : '连接 SIS 出错'}</p>
+      <p class="note">真实资料：名字、职业、排行开关、同行排行、接单钟记录。<br>还是示例数据：同行圈、询价、项目、发票与账目、数据大屏上方的数字。</p></div>` : ''}
     <div><h3>职业</h3>${chips2('job',OPT.role,S.role)}
       ${S.role==='other'?`<div class="group" style="margin-top:8px"><input type="text" id="me-jobother" maxlength="20" value="${esc(meJobOther)}" placeholder="你的职业，例：灯光师" style="flex:1;min-width:0"><button type="button" class="btn sm primary" data-act="job-other">保存</button></div>`:''}
       <p class="note" style="margin-top:6px">转行了就在这里换，办公室摆设会跟着换。</p></div>
@@ -1151,9 +1233,9 @@ function edHTML(){
       <div class="ed-rot"><button type="button" data-act="rot" data-v="-1" aria-label="向左转">◀</button><span id="ed-dir">${DIR_NAME[ed.dir]}</span><button type="button" data-act="rot" data-v="1" aria-label="向右转">▶</button></div>
       <button type="button" class="btn sm" data-act="rand">随机造型</button></div></div>
     <div class="ed-opts">
-      <div><h3><label for="ed-name">名字</label></h3><input type="text" id="ed-name" maxlength="12" value="${esc(ed.name)}" placeholder="同事会看到这个名字"></div>
+      ${LIVE && liveMe && liveMe.name ? `<div><h3>名字</h3><p class="note">${esc(S.name)} · 跟 SIS 账号同步，要改请到 SIS 个人资料。</p></div>` : `<div><h3><label for="ed-name">名字</label></h3><input type="text" id="ed-name" maxlength="12" value="${esc(ed.name)}" placeholder="同事会看到这个名字"></div>`}
       <div><h3>性别</h3>${chips('gender',OPT.gender,L.gender)}<p class="note" style="margin-top:6px">所有发型和服装对所有人开放。</p></div>
-      ${ed.first ? `<div><h3>职业</h3>${chips('role',OPT.role,ed.role)}${ed.role==='other'?`<input type="text" id="ed-jobother" maxlength="20" value="${esc(ed.jobOther||'')}" placeholder="你的职业，例：灯光师" style="margin-top:8px">`:''}<div class="note" style="margin-top:6px">你的私人办公室会按职业布置。之后可以在个人资料里更换。</div></div>` : ''}
+      ${ed.first && !(LIVE && liveMe && liveMe.job) ? `<div><h3>职业</h3>${chips('role',OPT.role,ed.role)}${ed.role==='other'?`<input type="text" id="ed-jobother" maxlength="20" value="${esc(ed.jobOther||'')}" placeholder="你的职业，例：灯光师" style="margin-top:8px">`:''}<div class="note" style="margin-top:6px">你的私人办公室会按职业布置。之后可以在个人资料里更换。</div></div>` : ''}
       <div><h3>肤色</h3>${sws('skin',SKIN,L.skin)}</div>
       <div><h3>发型</h3>${chips('hair',OPT.hair,L.hair)}</div>
       <div><h3>${L.hair==='hijab'?'头巾颜色':'发色'}</h3>${sws('hairColor',L.hair==='hijab'?CLOTH:HAIRC,L.hairColor)}</div>
@@ -1263,8 +1345,8 @@ sheet.addEventListener('click', async e => {
     case 'rand': ed.look=randomLook(); setBody(edHTML()); break;
     case 'ed-save': {
       const first=ed.first;
-      S.look=ed.look; S.name=(ed.name||'').trim()||'新同事'; save();
-      if (first){ await SIS.setJob(ed.role, ed.jobOther); applyJobOffice(); }
+      S.look=ed.look; if (!(LIVE && liveMe && liveMe.name)) S.name=(ed.name||'').trim()||'新同事'; save();
+      if (first && !(LIVE && liveMe && liveMe.job)){ await SIS.setJob(ed.role, ed.jobOther); applyJobOffice(); }
       player.look=S.look; rebuildPlayer(); sheetLocked=false; closeSheet(); ed=null;
       toast(first?'欢迎加入 SIS 办公室':'造型已保存');
       if (first) setTimeout(() => startTutorial(() => ACTS.lisa()), 400);
@@ -2847,7 +2929,12 @@ function loop(){
 /* ---------------- boot ---------------- */
 applyQuality(qLevel);
 applyCam();
-refresh().then(() => {
+refresh().then(async () => {
+  if (LIVE){
+    try { await liveSync(); liveState='ok'; }
+    catch(err){ liveState='error'; liveFail(err); if (err.status===401 || err.status===403) return; }
+    applyJobOffice(); updateHUD();
+  }
   if (!S.look) openEditor(true);
   else { toast(`欢迎回来，${S.name}`); if (!S.tutDone) setTimeout(() => startTutorial(), 900); }
 });
