@@ -215,6 +215,8 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 .rl i{width:9px;height:9px;border-radius:50%;flex:none}
 .rl small{font-weight:500;color:#7a8496;font-size:11px}
 .rl.hot{background:var(--ink);color:#fff}
+.rank.me{background:#fff4dc;border-radius:10px;padding-left:6px;padding-right:6px}
+.rank .you{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#e3a63b;color:#fff;font-size:10px;line-height:16px;vertical-align:1px}
 .rl.hot small{color:rgba(255,255,255,.75)}
 .rl.here{box-shadow:0 0 0 3px var(--gold,#e8b44a),0 4px 14px rgba(18,24,38,.22);animation:rlPulse 1.6s ease-in-out infinite}
 .rl .tip{position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%);background:var(--ink);color:#fff;font-size:15px;font-weight:700;padding:7px 12px;border-radius:10px;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(18,24,38,.25);animation:tipIn .25s ease-out}
@@ -495,7 +497,14 @@ const SIS = {
   async comment(id, text){ const p=S.posts.find(x => String(x.id)===String(id)); p.cmts.push({a:'me', text}); save(); return p; },
   // Job is picked on the SIS sign-up form and changed in the SIS profile. The office only reads it.
   // Real version: GET /me -> {name, job, job_other};  PATCH /me {job, job_other}.
-  async profile(){ return {name:S.name, job:S.role, jobOther:S.jobOther||''}; },
+  async profile(){ return {name:S.name, job:S.role, jobOther:S.jobOther||'', showInRanking:!!S.showInRanking}; },
+  // Peer ranking: opt-in (off by default), job count only. Real version: GET /ranking, PATCH /me {show_in_ranking}.
+  async setRanking(on){ S.showInRanking=!!on; save(); return SIS.profile(); },
+  async ranking(){
+    const r=DASH.rank.map(([name,studio,jobs]) => ({name, studio, jobs}));
+    if (S.showInRanking) r.push({name:S.name||'新同事', studio:jobName(), jobs:S.deals||0, me:true});
+    return r.sort((a,b) => b.jobs-a.jobs || (a.me?-1:b.me?1:0)).slice(0,20);
+  },
   async setJob(job, other=''){ S.role=job; S.jobOther = job==='other' ? String(other).trim().slice(0,20) : ''; save(); return SIS.profile(); },
   async logDeal({area, amt, client}){
     const text=`接到新项目：${area}，RM ${amt.toLocaleString('en-MY')}${client?`。客户：${client}`:''}。`;
@@ -865,13 +874,14 @@ async function openDash(){
   const svg = `<svg viewBox="0 0 ${W} ${Hh}" class="chart" role="img" aria-label="近 7 天新询价">`+
     [0,4,8,12].map(v => `<line x1="${pad}" x2="${W-4}" y1="${yv(v)}" y2="${yv(v)}" class="grid"/><text x="${pad-6}" y="${yv(v)+3}" class="ax" text-anchor="end">${v}</text>`).join('')+
     D.week.map((v,i) => { const x=pad+4+i*(bw+gap), y=yv(v); return `<rect x="${x}" y="${y}" width="${bw}" height="${Hh-24-y}" rx="5" class="bar${i===6?' now':''}"/><text x="${x+bw/2}" y="${y-5}" class="val" text-anchor="middle">${v}</text><text x="${x+bw/2}" y="${Hh-8}" class="ax" text-anchor="middle">${labels[i]}</text>`; }).join('')+`</svg>`;
-  const rank=[...D.rank].sort((a,b) => b[2]-a[2]), maxR=rank[0][2];
+  const rank=await SIS.ranking(), maxR=Math.max(1, ...rank.map(r => r.jobs)), meIn=rank.some(r => r.me);
   const body = `
     <div class="kpis">${D.kpi.map(([l,v,dl]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="delta${dl.startsWith('-')?' down':''}">${dl} 较上月</div></div>`).join('')}</div>
     <div class="panel"><h3>近 7 天新询价（个）</h3>${svg}</div>
     <div class="panel"><h3>同行接单排行 · 本月接单数</h3>
-      ${rank.map(([n,area,c],i) => `<div class="rank${i<3?' top':''}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="who">${n}<small>${area}</small></span><span class="bar"><i style="width:${(c/maxR*100).toFixed(1)}%"></i></span><span class="amt">${c} 单</span></div>`).join('')}
+      ${rank.map(({name:n,studio:area,jobs:c,me},i) => `<div class="rank${i<3?' top':''}${me?' me':''}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="who">${esc(n)}${me?'<b class="you">你</b>':''}<small>${esc(area)}</small></span><span class="bar"><i style="width:${(c/maxR*100).toFixed(1)}%"></i></span><span class="amt">${c} 单</span></div>`).join('')}
     </div>
+    <p class="note">${meIn ? '你在排行上，同行只看得到你的名字和接单数。' : '你目前没有上榜。'}<button type="button" class="lk" data-act="rank-settings" style="margin-left:6px">${meIn?'上榜设置':'我要上榜'}</button></p>
     <p class="note"><span class="sample">SAMPLE</span> 示例数据。接入 SIS 后自动更新。上面的金额只有你自己看得到，排行只显示接单数。</p>`;
   openSheet({title:'数据大屏', sub:'我的本月表现', body, kind:'dash'});
   if (!S.daily.dash){ S.daily.dash=true; checkTasks(); }
@@ -965,6 +975,8 @@ function openMe(){
     <div><h3>职业</h3>${chips2('job',OPT.role,S.role)}
       ${S.role==='other'?`<div class="group" style="margin-top:8px"><input type="text" id="me-jobother" maxlength="20" value="${esc(meJobOther)}" placeholder="你的职业，例：灯光师" style="flex:1;min-width:0"><button type="button" class="btn sm primary" data-act="job-other">保存</button></div>`:''}
       <p class="note" style="margin-top:6px">转行了就在这里换，办公室摆设会跟着换。</p></div>
+    <div><h3>同行接单排行</h3><div class="group"><button type="button" class="chip sm" data-act="rank-toggle" aria-pressed="${!!S.showInRanking}">${S.showInRanking?'✓ ':''}在同行接单排行显示我</button></div>
+      <p class="note" style="margin-top:6px">只显示你的名字和本月接单数，不会显示金额。可以随时关闭。</p></div>
     <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button><button type="button" class="btn" data-act="go-office">走去我的办公室</button><button type="button" class="btn" data-act="tut-again">重看新手引导</button></div>
     <div><h3>画质</h3><div class="group" role="group" aria-label="画质">${[['auto','自动'],['low','流畅'],['medium','标准'],['high','精美']].map(([v,l]) => `<button type="button" class="chip sm" data-act="quality" data-v="${v}" aria-pressed="${(S.quality||'auto')===v}">${l}</button>`).join('')}</div>
     <p class="note" style="margin-top:6px">手机发烫或卡顿时选「流畅」。「自动」会按手机表现调整，现在是「${QNAME[qLevel]}」。</p></div>
@@ -1112,6 +1124,10 @@ sheet.addEventListener('click', async e => {
       if (v===S.role) break;
       await SIS.setJob(v, v==='other' ? meJobOther : ''); applyJobOffice(); updateHUD();
       openMe(); toast(v==='other' ? '填写你的职业后点保存' : `办公室已换成「${JOB_OFFICE[v]}」`); break; }
+    case 'rank-toggle': {
+      const on=!S.showInRanking; await SIS.setRanking(on); openMe();
+      toast(on ? '已加入同行接单排行' : '已退出排行，同行看不到你的接单数'); break; }
+    case 'rank-settings': openMe(); break;
     case 'job-other': {
       if (!meJobOther.trim()){ toast('先填写你的职业'); break; }
       await SIS.setJob('other', meJobOther); updateHUD(); openMe(); toast('职业已更新'); break; }
