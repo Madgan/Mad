@@ -224,6 +224,13 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 .champ b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .champ small{color:#c88a1f;font-weight:700}
 .champ.me{box-shadow:0 0 0 2px #e3a63b}
+.books-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:8px}
+.books-sum div{background:#f6f7f9;border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.books-sum span{font-size:11px;color:#7a8496}
+.books-sum b{font:800 15px var(--f-num)}
+.books-sum b.neg{color:var(--rose)}
+.remind{display:grid;gap:12px}
+.remind textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:10px;font:14px/1.55 var(--f-body);color:var(--ink);background:#fbfbfc;resize:vertical;margin-bottom:8px}
 .rank .you,.champ .you{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#e3a63b;color:#fff;font-size:10px;line-height:16px;vertical-align:1px}
 .rl.hot small{color:rgba(255,255,255,.75)}
 .rl.here{box-shadow:0 0 0 3px var(--gold,#e8b44a),0 4px 14px rgba(18,24,38,.22);animation:rlPulse 1.6s ease-in-out infinite}
@@ -365,6 +372,8 @@ const NPC_DEF = [
    look:{gender:'m',skin:2,hair:'side',hairColor:0,top:'suit',topColor:9,bottom:'pants',bottomColor:9,shoes:2,hat:'none',hatColor:0,glasses:'none',watch:'gold'}},
   {id:'mia', name:'Mia', title:'项目统筹', tile:[24,10], face:'down', act:'mia',
    look:{gender:'f',skin:0,hair:'bun',hairColor:5,top:'tee',topColor:3,bottom:'pants',bottomColor:1,shoes:1,hat:'none',hatColor:0,glasses:'round',watch:'none'}},
+  {id:'grace', name:'Grace', title:'会计 · 发票与账目', tile:[7,17], face:'up', act:'acct',
+   look:{gender:'f',skin:1,hair:'bun',hairColor:0,top:'suit',topColor:7,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'round',watch:'silver'}},
   {id:'kai', name:'Kai', title:'任务官', tile:[26,2], face:'down', act:'kai',
    look:{gender:'m',skin:3,hair:'buzz',hairColor:0,top:'shirt',topColor:4,bottom:'pants',bottomColor:5,shoes:0,hat:'cap',hatColor:0,glasses:'none',watch:'silver'}},
 ];
@@ -421,6 +430,23 @@ const SEED_CONTENT = () => [
   {id:'C6',title:'Nadia 毕业照',stage:'已交付',owner:'—',date:'已交给客户'},
 ];
 const STAGES = ['筹备','拍摄','后期','待交付','已交付'];
+const DAY = 864e5;
+const SEED_INVOICES = () => { const n=Date.now(); return [
+  {id:'INV-0007', client:'Aurora 咖啡店', project:'品牌短片 3 × 30 秒', amt:18000, issued:n-40*DAY, due:n-26*DAY, paid:n-8*DAY},
+  {id:'INV-0008', client:'陈氏夫妇', project:'婚礼跟拍 + 精修 80 张', amt:4500, issued:n-26*DAY, due:n-12*DAY},
+  {id:'INV-0009', client:'TechCon 2026', project:'活动跟拍 · 定金 50%', amt:2800, issued:n-20*DAY, due:n-6*DAY},
+  {id:'INV-0010', client:'Nadia', project:'毕业照', amt:650, issued:n-5*DAY, due:n+9*DAY, paid:n-2*DAY},
+  {id:'INV-0011', client:'Kopi Lab', project:'品牌短片 · 首期', amt:3400, issued:n-3*DAY, due:n+11*DAY},
+  {id:'INV-0012', client:'Lim & Wong', project:'订婚宴 · 定金', amt:1000},
+]; };
+const SEED_EXPENSES = () => { const n=Date.now(); return [
+  {id:1, cat:'外包', note:'修图外包 · 陈氏婚礼', amt:800, t:n-6*DAY},
+  {id:2, cat:'场地', note:'Shah Alam 影棚半天', amt:350, t:n-9*DAY},
+  {id:3, cat:'器材', note:'租 85mm 镜头 2 天', amt:180, t:n-4*DAY},
+  {id:4, cat:'交通', note:'Grab · TechCon 场地', amt:64, t:n-2*DAY},
+  {id:5, cat:'器材', note:'SD 卡 2 张', amt:120, t:n-35*DAY},
+]; };
+const EXP_CATS = ['外包','器材','场地','交通','其他'];
 const DASH = {
   week:[5,8,4,9,6,11,7],
   kpi:[['本月接单额','RM 38.6K','+12%'],['接单数','9','+3'],['新询价','46','+21%'],['询价 → 定档','31%','+4pt'],['准时交付','96%','+2pt'],['同行圈互动','128','+18%']],
@@ -456,6 +482,8 @@ if (!S || !S.posts) S = {look:null,name:'',role:'photo',xp:0,day:'',daily:freshD
 // Older saves used real-estate roles; map them onto the production jobs.
 if (!ROLE[S.role]) S.role = ({leader:'producer', agent:'photo', content:'video', admin:'other'})[S.role] || 'other';
 if (S.cv !== 2) { S.cv = 2; S.posts = SEED_POSTS(); S.leads = SEED_LEADS(); S.content = SEED_CONTENT(); S.seen = 0; }
+if (!S.invoices) S.invoices = SEED_INVOICES();
+if (!S.expenses) S.expenses = SEED_EXPENSES();
 if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED_CONTENT(); S.leads = SEED_LEADS(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 const level = () => Math.floor(S.xp/100)+1;
@@ -522,6 +550,17 @@ const SIS = {
   // Job log (amount and client stay private to the owner). Ranking counts this calendar month only.
   async logJob({area, amt, client}){ (S.jobLogs=S.jobLogs||[]).push({t:Date.now(), area, amt, client:client||''}); save(); },
   async monthJobs(){ return monthJobsNow(); },
+  // Invoices and books: private to the owner. Real version: /invoices and /expenses endpoints.
+  async invoices(){ return S.invoices; },
+  async createInvoice({client, project, amt, jobT}){
+    const n=Math.max(0, ...S.invoices.map(i => Number(i.id.slice(4))||0))+1;
+    const inv={id:'INV-'+String(n).padStart(4,'0'), client:client||'客户', project, amt, jobT}; S.invoices.push(inv); save(); return inv;
+  },
+  async sendInvoice(id){ const i=S.invoices.find(x => x.id===id); i.issued=Date.now(); i.due=Date.now()+14*DAY; save(); return i; },
+  async markPaid(id){ const i=S.invoices.find(x => x.id===id); i.paid=Date.now(); save(); return i; },
+  async remind(id){ const i=S.invoices.find(x => x.id===id); i.reminded=(i.reminded||0)+1; save(); return i; },
+  async expenses(){ return S.expenses; },
+  async addExpense({cat, note, amt}){ const e={id:Date.now(), cat, note, amt, t:Date.now()}; S.expenses.push(e); save(); return e; },
   async logDeal({area, amt, client}){
     await SIS.logJob({area, amt, client});
     const text=`接到新项目：${area}，RM ${amt.toLocaleString('en-MY')}${client?`。客户：${client}`:''}。`;
@@ -535,7 +574,7 @@ async function refresh(){ [DB.leads, DB.content, DB.posts] = await Promise.all([
 const G = Array.from({length:MH}, () => Array(MW).fill('.'));
 const fillR = (x0,y0,x1,y1,c) => { for (let y=y0;y<=y1;y++) for (let x=x0;x<=x1;x++) G[y][x]=c; };
 fillR(1,1,9,5,':'); fillR(11,1,18,6,','); fillR(20,1,28,5,';');
-fillR(1,14,8,18,'~'); fillR(10,14,19,18,'r'); fillR(21,14,28,18,'=');
+fillR(1,14,4,18,'~'); fillR(5,15,5,18,'#'); fillR(6,14,8,18,'$');  // (5,14): shared entrance, pantry west, accountant east fillR(10,14,19,18,'r'); fillR(21,14,28,18,'=');
 fillR(0,0,MW-1,0,'#'); fillR(0,MH-1,MW-1,MH-1,'#'); fillR(0,0,0,MH-1,'#'); fillR(MW-1,0,MW-1,MH-1,'#');
 fillR(10,0,10,6,'#'); fillR(0,6,10,6,'#'); G[6][5]='d';
 fillR(19,0,19,6,'#'); fillR(19,6,MW-1,6,'#'); G[6][24]='d';
@@ -556,7 +595,8 @@ fur(21,3,7,2,'mtable'); [[22,2],[24,2],[22,5],[24,5],[26,5]].forEach(([x,y]) => 
 [[6,8],[6,11],[21,8],[21,11],[25,8],[25,11]].forEach(([x,y]) => fur(x,y,3,2,'desks'));
 fur(2,8,1,2,'bossdesk'); fur(2,7,2,1,'bookshelf'); fur(1,12,2,1,'sofa');
 fur(14,9,1,1,'bell'); fur(20,7,1,1,'cooler'); fur(1,7,1,1,'plant'); fur(28,7,1,1,'plant');
-fur(1,14,4,1,'counter'); fur(7,14,1,1,'fridge'); fur(3,16,2,2,'rtable'); fur(8,18,1,1,'plant');
+fur(1,14,3,1,'counter'); fur(1,17,1,1,'fridge'); fur(3,16,2,2,'rtable');
+fur(6,16,2,1,'acctdesk'); fur(8,14,1,1,'cabinet'); fur(8,15,1,1,'cabinet'); fur(8,18,1,1,'plant');
 fur(12,15,6,1,'fdesk'); fur(10,18,1,1,'plant'); fur(19,18,1,1,'plant');
 fur(22,15,1,1,'mirror'); fur(25,14,3,1,'rack'); fur(25,18,3,1,'rack'); fur(21,18,1,1,'plant');
 F.forEach(f => { if (f.solid) for (let y=f.y;y<f.y+f.h;y++) for (let x=f.x;x<f.x+f.w;x++) solid[y][x]=true; });
@@ -565,7 +605,8 @@ const ZONES = [
   {id:'data',   r:[1,1,9,5],   act:'dash',     name:'数据室', sub:'团队数据',   lab:[5.5,5.45],  col:'#3b5bab'},
   {id:'lounge', r:[11,1,8,6],  act:'board',    name:'同行圈', sub:'留言板',     lab:[15,6.45],   col:'#2f7d6d'},
   {id:'meet',   r:[20,1,9,5],  act:'tasks',    name:'会议室', sub:'今日任务',   lab:[24.5,5.45], col:'#d99a2b'},
-  {id:'pantry', r:[1,14,8,5],  act:'coffee',   name:'茶水间', sub:'每日贴士',   lab:[5.6,14.6],  col:'#d65f4c'},
+  {id:'pantry', r:[1,14,4,5],  act:'coffee',   name:'茶水间', sub:'每日贴士',   lab:[2.6,14.6],  col:'#d65f4c'},
+  {id:'acct',   r:[6,14,3,5],  act:'books',    name:'账务室', sub:'发票 · 账目', lab:[7.5,14.6],  col:'#4f8a76'},
   {id:'recep',  r:[10,14,10,5],act:'lisa',     name:'前台',   sub:'签到 · 导览', lab:[15,18.5],   col:'#2f7d6d'},
   {id:'ward',   r:[21,14,8,5], act:'wardrobe', name:'衣帽间', sub:'换造型',     lab:[23.6,14.6], col:'#c46f95'},
   {id:'boss',   r:[1,7,3,6],   act:'me',       name:'我的办公室', sub:'私人空间', lab:[2.5,10.7], col:'#3b5bab'},
@@ -573,12 +614,13 @@ const ZONES = [
 const SPOTS = [
   {name:'接单钟', sub:'登记接单', act:'bell', lab:[14.5,10.5], col:'#d99a2b'},
 ];
-const ROOMS = {data:['数据室','团队数据 · 实时大屏'], lounge:['同行圈','留言板 · 交流区'], meet:['会议室','今日任务 · 白板'], pantry:['茶水间','咖啡机 · 每日小贴士'], ward:['衣帽间','换造型'], recep:['前台','签到 · 新手引导'], office:['开放办公区','询价跟进 · 交付确认 · 接单钟']};
+const ROOMS = {data:['数据室','团队数据 · 实时大屏'], lounge:['同行圈','留言板 · 交流区'], meet:['会议室','今日任务 · 白板'], pantry:['茶水间','咖啡机 · 每日小贴士'], acct:['账务室','Grace · 发票与账目'], ward:['衣帽间','换造型'], recep:['前台','签到 · 新手引导'], office:['开放办公区','询价跟进 · 交付确认 · 接单钟']};
 function roomAt(tx,ty){
   if (tx<=9 && ty<=5) return 'data';
   if (tx>=11 && tx<=18 && ty<=6) return 'lounge';
   if (tx>=20 && ty<=5) return 'meet';
-  if (tx<=8 && ty>=14) return 'pantry';
+  if (tx<=4 && ty>=14) return 'pantry';
+  if (tx>=6 && tx<=8 && ty>=14) return 'acct';
   if (tx>=21 && ty>=14) return 'ward';
   if (tx>=10 && tx<=19 && ty>=14) return 'recep';
   return 'office';
@@ -916,6 +958,73 @@ async function dashBody(){
     <p class="note"><span class="sample">SAMPLE</span> 示例数据。接入 SIS 后自动更新。上面的金额只有你自己看得到，排行只显示接单数。</p>`;
 }
 
+/* ---------------- invoices & books (Grace) ---------------- */
+const rm = n => 'RM '+Math.round(n).toLocaleString('en-MY');
+const md = t => { const d=new Date(t); return `${d.getMonth()+1}月${d.getDate()}日`; };
+const invStatus = i => i.paid ? 'paid' : !i.issued ? 'draft' : i.due < Date.now() ? 'overdue' : 'sent';
+const INV_ST = {overdue:['逾期','hot'], draft:['草稿',''], sent:['已发出','warm'], paid:['已收款','ok']};
+const overdueInv = () => S.invoices.filter(i => invStatus(i)==='overdue').sort((a,b) => a.due-b.due);
+const daysLate = i => Math.max(1, Math.floor((Date.now()-i.due)/DAY));
+const unbilled = () => (S.jobLogs||[]).filter(j => !S.invoices.some(i => i.jobT===j.t));
+function booksSummary(){
+  const m0=monthStart(0), inc=S.invoices.filter(i => i.paid && i.paid>=m0).reduce((a,i) => a+i.amt,0);
+  const exp=S.expenses.filter(e => e.t>=m0), out=exp.reduce((a,e) => a+e.amt,0);
+  const pend=S.invoices.filter(i => invStatus(i)==='sent').reduce((a,i) => a+i.amt,0), od=overdueInv();
+  return {inc, out, net:inc-out, pend, odSum:od.reduce((a,i) => a+i.amt,0), odN:od.length, exp};
+}
+let booksTab='inv', expCat='外包', remindId=null;
+function booksHTML(){
+  if (remindId) return remindHTML(S.invoices.find(i => i.id===remindId));
+  const B=booksSummary();
+  const kpis=[['本月收入',rm(B.inc),'已收款'],['本月支出',rm(B.out),`${B.exp.length} 笔`],['待收',rm(B.pend),'未到期'],['逾期',rm(B.odSum),B.odN?`${B.odN} 张要催`:'没有']];
+  const head=`<div class="kpis">${kpis.map(([l,v,d],i) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="delta${i===3&&B.odN?' down':''}">${d}</div></div>`).join('')}</div>
+    <div class="group" role="group" aria-label="切换">${[['inv','发票'],['books','账目']].map(([k,l]) => `<button type="button" class="chip sm" data-act="books-tab" data-v="${k}" aria-pressed="${booksTab===k}">${l}</button>`).join('')}</div>`;
+  const foot=`<p class="note"><span class="sample">SAMPLE</span> 示例数据。发票和账目只有你自己看得到，不会出现在排行或同行圈。</p>`;
+  if (booksTab==='books'){
+    const cats=EXP_CATS.map(c => [c, B.exp.filter(e => e.cat===c).reduce((a,e) => a+e.amt,0)]).filter(([,v]) => v>0), mx=Math.max(1,...cats.map(c => c[1]));
+    return head+`<div class="panel"><h3>${monthName(0)}账目</h3>
+      <div class="books-sum"><div><span>收入</span><b>${rm(B.inc)}</b></div><div><span>支出</span><b class="neg">${rm(B.out)}</b></div><div><span>净收入</span><b>${rm(B.net)}</b></div></div>
+      ${cats.map(([c,v]) => `<div class="rank"><span class="n"></span><span class="who">${c}</span><span class="bar"><i style="width:${(v/mx*100).toFixed(1)}%;background:var(--rose)"></i></span><span class="amt">${rm(v)}</span></div>`).join('')}</div>
+    <div class="panel"><h3>记一笔支出</h3>
+      <form class="form" data-form="expense">
+        <div class="group" role="group" aria-label="类别">${EXP_CATS.map(c => `<button type="button" class="chip sm" data-act="exp-cat" data-v="${c}" aria-pressed="${expCat===c}">${c}</button>`).join('')}</div>
+        <label>金额（RM）<input type="number" id="exp-amt" min="1" step="any" placeholder="例：350" required></label>
+        <label>说明<input type="text" id="exp-note" maxlength="40" placeholder="例：租影棚半天"></label>
+        <button class="btn primary" type="submit">记一笔</button>
+      </form></div>
+    <div class="list">${[...B.exp].sort((a,b) => b.t-a.t).map(e => `<div class="rc"><div class="rc-main"><div class="rc-top"><b>${esc(e.note||e.cat)}</b><span class="stage">${e.cat}</span></div><div class="rc-meta">${md(e.t)} · ${rm(e.amt)}</div></div></div>`).join('') || '<p class="empty">这个月还没有支出。</p>'}</div>`+foot;
+  }
+  const ub=unbilled(), order={overdue:0, draft:1, sent:2, paid:3};
+  const list=[...S.invoices].sort((a,b) => order[invStatus(a)]-order[invStatus(b)] || (b.issued||9e15)-(a.issued||9e15));
+  return head+(ub.length ? `<div class="panel"><h3>接单钟登记了，还没开发票（${ub.length}）</h3>${ub.map(j => `<div class="rc"><div class="rc-main"><div class="rc-top"><b>${esc(j.area||'项目')}</b></div><div class="rc-meta">${md(j.t)} 登记 · ${rm(j.amt||0)}${j.client?' · '+esc(j.client):''}</div></div><button type="button" class="btn sm primary" data-act="inv-new" data-v="${j.t}">开发票</button></div>`).join('')}</div>` : '')+
+    `<div class="list">${list.map(i => { const st=invStatus(i), [lb,cl]=INV_ST[st];
+      const meta = st==='draft' ? '还没发出' : st==='paid' ? `${md(i.paid)} 收款` : st==='overdue' ? `期限 ${md(i.due)} · 逾期 ${daysLate(i)} 天${i.reminded?` · 已催 ${i.reminded} 次`:''}` : `期限 ${md(i.due)}`;
+      const btns = st==='draft' ? `<button type="button" class="btn sm primary" data-act="inv-send" data-id="${i.id}">发出</button>`
+        : st==='overdue' ? `<button type="button" class="btn sm primary" data-act="inv-remind" data-id="${i.id}">催款</button><button type="button" class="btn sm" data-act="inv-paid" data-id="${i.id}">已收款</button>`
+        : st==='sent' ? `<button type="button" class="btn sm" data-act="inv-paid" data-id="${i.id}">已收款</button>` : '';
+      return `<div class="rc"><div class="rc-main"><div class="rc-top"><b>${esc(i.client)}</b><span class="stage ${cl}">${lb}</span></div><div class="rc-sub">${esc(i.project)}</div><div class="rc-meta">${i.id} · ${rm(i.amt)} · ${meta}</div></div>${btns?`<div class="rc-btns">${btns}</div>`:''}</div>`; }).join('')}</div>`+foot;
+}
+// Payment reminder in Chinese and English: firm, polite, with a new deadline. The user copies it into WhatsApp or email.
+function remindTexts(i){
+  const nd=md(Date.now()+7*DAY), who=S.name||'我', dEn=t => new Date(t).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  return {
+    zh:`${i.client} 您好，\n\n提醒一下，发票 ${i.id}（${i.project}）金额 ${rm(i.amt)}，付款期限是 ${md(i.due)}，目前已经逾期 ${daysLate(i)} 天。\n\n麻烦在 ${nd} 前安排付款。如果已经付了，请把付款记录发给我，我这边核对。\n\n谢谢！\n${who}`,
+    en:`Hi ${i.client},\n\nA quick reminder that invoice ${i.id} for ${i.project} (${rm(i.amt)}) was due on ${dEn(i.due)} and is now ${daysLate(i)} days overdue.\n\nCould you arrange payment by ${dEn(Date.now()+7*DAY)}? If it has already been paid, please send me the payment slip so I can match it.\n\nThank you,\n${who}`,
+  };
+}
+function remindHTML(i){
+  const T=remindTexts(i);
+  return `<p class="lede">${esc(i.client)} · ${i.id} · ${rm(i.amt)} · 逾期 ${daysLate(i)} 天</p>
+    <div class="remind">${[['zh','中文'],['en','English']].map(([k,l]) => `<div><h3>${l}</h3><textarea id="rm-${k}" readonly rows="8">${esc(T[k])}</textarea>
+      <button type="button" class="btn sm primary" data-act="copy-remind" data-v="${k}">复制${l==='中文'?'中文版':'英文版'}</button></div>`).join('')}</div>
+    <p class="note">复制后贴到 WhatsApp 或 Email 发给客户。连续催了还是不付，可以在同行圈用匿名发「拖款警示」，提醒其他同行。</p>
+    <div class="group"><button type="button" class="btn" data-act="remind-back">返回发票</button></div>`;
+}
+async function openBooks(remind=null){
+  booksTab='inv'; remindId=remind;
+  openSheet({title:'发票与账目', sub:'Grace 整理 · 只有你看得到', body:booksHTML(), kind:'books'});
+}
+
 let bf='', ba='', ptag='日常', boardDraft='', anonPost=false;
 function boardHTML(){
   const tags=['接单喜报','求助','拖款警示','场地推荐','经验','日常'];
@@ -1095,6 +1204,13 @@ const ACTS = {
   leo(){ const d=dueLeads(); say(N.leo, d.length ? `今天有 ${d.length} 个询价要回复，最急的是 ${d[0].name}：${d[0].need}。` : '今天的询价都回复完了。明天还有 1 个。', [{label:'查看询价', primary:true, fn:openLeads}]); },
   mia(){ const n=pendingReview().length; say(N.mia, n ? `有 ${n} 个项目后期做好了，等你确认交付。最急的今天 18:00 前要交给客户。` : '目前没有要交付的项目，下一个还在后期。', [{label:'打开项目进度', primary:true, fn:openContent}]); },
   kai(){ say(N.kai, `今日任务完成 ${TASKS.length-tasksLeft()}/${TASKS.length}。完成任务拿经验，升级解锁新服装。`, [{label:'查看今日任务', primary:true, fn:openTasks}]); },
+  acct(){
+    const od=overdueInv(), ub=unbilled(), B=booksSummary();
+    if (od.length){ const o=od[0]; say(N.grace, `你有 ${od.length} 张发票逾期，共 ${rm(B.odSum)}。最久的是 ${o.client}，已经过期 ${daysLate(o)} 天，我帮你把催款信写好了。`, [{label:'看催款信', primary:true, fn:() => openBooks(o.id)}, {label:'打开发票与账目', fn:() => openBooks()}]); return; }
+    if (ub.length){ say(N.grace, `接单钟登记了 ${ub.length} 个项目还没开发票，要我帮你开吗？`, [{label:'去开发票', primary:true, fn:() => openBooks()}]); return; }
+    say(N.grace, `${monthName(0)}收入 ${rm(B.inc)}，支出 ${rm(B.out)}，净收入 ${rm(B.net)}。账目都整理好了。`, [{label:'打开发票与账目', primary:true, fn:() => openBooks()}]);
+  },
+  books: () => openBooks(),
   dash: openDash, board: () => openBoard(), tasks: openTasks, me: openMe, bell: openBell,
   wardrobe: () => openEditor(),
   candy(){
@@ -1161,6 +1277,17 @@ sheet.addEventListener('click', async e => {
       const on=!S.showInRanking; await SIS.setRanking(on); openMe();
       toast(on ? '已加入同行接单排行' : '已退出排行，同行看不到你的接单数'); break; }
     case 'rank-settings': openMe(); break;
+    case 'books-tab': booksTab=v; setBody(booksHTML()); break;
+    case 'exp-cat': expCat=v; a.parentElement.querySelectorAll('[data-act="exp-cat"]').forEach(b => b.setAttribute('aria-pressed', b.dataset.v===v)); break;
+    case 'inv-new': { const j=(S.jobLogs||[]).find(x => String(x.t)===v); if (!j) break; const inv=await SIS.createInvoice({client:j.client, project:j.area, amt:j.amt, jobT:j.t}); setBody(booksHTML()); toast(`已开发票 ${inv.id}，确认后点「发出」`); break; }
+    case 'inv-send': { const inv=await SIS.sendInvoice(id); setBody(booksHTML()); toast(`${inv.id} 已发出，付款期限 ${md(inv.due)}`); break; }
+    case 'inv-paid': { const inv=await SIS.markPaid(id); setBody(booksHTML()); toast(`${inv.client} 的 ${rm(inv.amt)} 已入账`,'gold'); bubble(N.grace,'收到钱了！'); updateHUD(); break; }
+    case 'inv-remind': remindId=id; setBody(booksHTML()); break;
+    case 'remind-back': remindId=null; setBody(booksHTML()); break;
+    case 'copy-remind': {
+      const ta=$('#rm-'+v), txt=ta.value, done=async () => { await SIS.remind(remindId); toast('已复制，贴到 WhatsApp 或 Email 发给客户'); };
+      try { await navigator.clipboard.writeText(txt); await done(); } catch(err){ ta.select(); try { document.execCommand('copy'); await done(); } catch(e2){ toast('请长按文字手动复制'); } }
+      break; }
     case 'rank-month': rankBack=Number(v); setBody(await dashBody()); break;
     case 'job-other': {
       if (!meJobOther.trim()){ toast('先填写你的职业'); break; }
@@ -1194,6 +1321,11 @@ sheet.addEventListener('submit', async e => {
     await SIS.comment(f.dataset.id, text); S.daily.social++; save();
     setBody(boardHTML()); toast('评论已发送'); checkTasks();
   }
+  if (f.dataset.form==='expense'){
+    const amt=Number($('#exp-amt').value), note=$('#exp-note').value.trim();
+    if (!(amt>0)){ toast('填写金额'); return; }
+    await SIS.addExpense({cat:expCat, note, amt}); setBody(booksHTML()); toast(`已记一笔${expCat}支出 ${rm(amt)}`);
+  }
   if (f.dataset.form==='deal'){
     const area=$('#deal-area').value.trim(), amt=Number($('#deal-amt').value), client=$('#deal-client').value.trim();
     if (!area || !(amt>0)){ toast('填写项目和金额'); return; }
@@ -1220,7 +1352,7 @@ const QNAME = {low:'流畅', medium:'标准', high:'精美'};
 function autoLevel(){ const hc=navigator.hardwareConcurrency||8, mem=navigator.deviceMemory||8; if (hc<=4 || mem<=3) return 'low'; return coarse ? 'medium' : 'high'; }
 let qLevel = (S.quality && S.quality!=='auto') ? S.quality : autoLevel();
 try { renderer = new THREE.WebGLRenderer({antialias:qLevel!=='low'}); } catch(e){ $('#err').hidden=false; return; }
-const ZF = {boss:['#dcc7a8','tile'], data:['#2c3754','grid'], lounge:['#d4e6e1','dot'], meet:['#e6eaf0','tile'], pantry:['#f6f1e9','check'], recep:['#f1f3f6','tile'], ward:['#f2e4df','tile']};
+const ZF = {boss:['#dcc7a8','tile'], data:['#2c3754','grid'], lounge:['#d4e6e1','dot'], meet:['#e6eaf0','tile'], pantry:['#f6f1e9','check'], acct:['#eef1ea','tile'], recep:['#f1f3f6','tile'], ward:['#f2e4df','tile']};
 ZONES.forEach(z => { z.floor=ZF[z.id][0]; z.pat=ZF[z.id][1]; });
 /* ---------------- three.js setup ---------------- */
 renderer.setPixelRatio(Math.min(devicePixelRatio||1, 2));
@@ -1372,6 +1504,19 @@ function buildFur(f){
     case 'server':
       box(.7,1.5,.7,'#262f42',0,.75,0,g);
       for (let j=0;j<6;j++) box(.08,.04,.01,B(j%3?'#4fd1b5':'#e05a46'),.2,.4+j*.18,.351,g,false);
+      break;
+    case 'acctdesk': {
+      box(W-.1,.06,D-.25,'#f4efe6',0,.48,0,g); [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b]) => cyl(.03,.03,.46,'#8a93a3',a*(W/2-.15),.23,b*(D/2-.22),g,8));
+      box(.5,.3,.03,'#2a303d',.25,.7,.12,g); box(.46,.26,.01,B('#9fd3c2'),.25,.7,.104,g,false); box(.08,.12,.06,'#2a303d',.25,.56,.15,g);
+      box(.16,.02,.22,'#3b4354',-.25,.52,-.05,g); [0,1,2].forEach(r => [0,1,2].forEach(c => box(.03,.008,.03,'#e9edf2',-.29+c*.04,.535,-.12+r*.05,g,false)));
+      [0,1,2,3].forEach(i => box(.24,.012,.32,i%2?'#ffffff':'#f6f1e3',-.6,.52+i*.013,.02,g,false));
+      box(.26,.06,.34,'#c7a46a',-.6,.53,-.25,g); cyl(.03,.035,.02,'#4f8a76',.6,.52,-.1,g,10); cyl(.008,.008,.28,'#4f8a76',.6,.66,-.1,g,6);
+      { const sh=add(new THREE.Mesh(new THREE.ConeGeometry(.08,.1,16,1,true), M('#4f8a76',{side:THREE.DoubleSide})),g,.55,.8,-.05); sh.rotation.z=.5; }
+      break; }
+    case 'cabinet':
+      box(.6,1.0,.5,'#9aa6b2',0,.5,0,g);
+      [.2,.45,.7].forEach(y => { box(.54,.2,.02,'#aeb9c4',0,y,.255,g,false); box(.16,.03,.02,'#5d6876',0,y+.04,.27,g,false); box(.12,.05,.005,'#f4efe6',0,y-.03,.268,g,false); });
+      box(.34,.06,.24,'#f6f1e3',0,1.03,0,g,false); box(.3,.012,.22,'#ffffff',.02,1.07,.01,g,false);
       break;
     case 'plant': plant(g,0,0); break;
     case 'sofa':
@@ -1556,7 +1701,7 @@ function burst(x,y,z,n=40){
   }
 }
 const npcBadge = c => c.id==='leo' ? dueLeads().length : c.id==='mia' ? pendingReview().length : c.id==='kai' ? tasksLeft() : c.id==='lisa' ? (S.daily.checkin?0:'!') : 0;
-const zoneBadge = act => act==='board' ? unread() : act==='tasks' ? tasksLeft() : act==='lisa' ? (S.daily.checkin?0:'!') : 0;
+const zoneBadge = act => act==='books' ? overdueInv().length : act==='board' ? unread() : act==='tasks' ? tasksLeft() : act==='lisa' ? (S.daily.checkin?0:'!') : 0;
 function labelHTML(c){
   const tag = c.npc ? 'SIS' : 'LV '+(c.kind==='me' ? level() : c.lvl);
   const b = c.npc ? npcBadge(c) : 0;
@@ -1574,7 +1719,7 @@ function bfs(sx,sy,gx,gy){
   }
   return null;
 }
-const walkable=[]; for (let y=0;y<MH;y++) for (let x=0;x<GW;x++) if (!solid[y][x] && G[y][x]!=='d' && G[y][x]!=='D' && !(x<=3 && y>=7 && y<=12)) walkable.push([x,y]);
+const walkable=[]; for (let y=0;y<MH;y++) for (let x=0;x<GW;x++) if (!solid[y][x] && G[y][x]!=='d' && G[y][x]!=='D' && !(x<=3 && y>=7 && y<=12) && !(x>=6 && x<=8 && y>=14)) walkable.push([x,y]);
 
 /* ---------------- festival: Halloween ---------------- */
 const fest = new THREE.Group(); fest.visible=false; scene.add(fest);
@@ -1659,7 +1804,7 @@ function makeRoomLabel(z){
 }
 ZONES.forEach(makeRoomLabel); SPOTS.forEach(makeRoomLabel);
 // First time the player walks into each room: a tip above its label points at what to tap. Shown once per room, remembered.
-const TIP_VERB={dash:'看团队数据', board:'打开留言板', tasks:'看今日任务', coffee:'看每日贴士', lisa:'签到 · 导览', wardrobe:'换造型', me:'进我的办公室', bell:'登记接单'};
+const TIP_VERB={dash:'看团队数据', board:'打开留言板', tasks:'看今日任务', coffee:'看每日贴士', lisa:'签到 · 导览', wardrobe:'换造型', me:'进我的办公室', bell:'登记接单', books:'处理发票和账目'};
 function roomEnter(l){
   if (uiOpen()) return;
   S.roomTips = S.roomTips || {}; if (S.roomTips[l.z.act]) return;
@@ -1990,6 +2135,13 @@ function doorLeaf(hx,hz,axis,sign,cx,cz,range){
 [[5,6],[24,6],[5,13],[24,13]].forEach(([x,y]) => doorLeaf(x+.04,y+.5,'x',1,x+.5,y+.5,1.25));
 doorLeaf(29.5,9.04,'z',1,29.5,10,1.6); doorLeaf(29.5,10.96,'z',-1,29.5,10,1.6);
 doorLeaf(4.5,10.04,'z',1,4.5,10.5,1.2);
+doorLeaf(6.0,14.04,'z',1,6.0,14.5,1.0);  // accountant room
+{ const m=new THREE.Mesh(new THREE.PlaneGeometry(.9,.3), new THREE.MeshBasicMaterial({map:canvasTex(360,120,(c,W,H) => {
+    c.fillStyle='#ffffff'; c.fillRect(0,0,W,H); c.fillStyle='#2b3448'; c.font='800 20px "Noto Sans SC", sans-serif'; c.fillText('本月收支',12,26);
+    [[40,60,'#4f8a76'],[60,30,'#d65f4c'],[52,70,'#4f8a76'],[48,26,'#d65f4c'],[66,84,'#4f8a76'],[56,34,'#d65f4c']].forEach(([x,h,col],i) => { c.fillStyle=col; c.fillRect(150+i*32,108-h,22,h); });
+    c.fillStyle='#4f8a76'; c.fillRect(12,48,12,12); c.fillStyle='#2b3448'; c.font='600 15px "Noto Sans SC", sans-serif'; c.fillText('收入',30,59);
+    c.fillStyle='#d65f4c'; c.fillRect(12,74,12,12); c.fillStyle='#2b3448'; c.fillText('支出',30,85); })}));
+  m.position.set(8.992,.6,16.3); m.rotation.y=-Math.PI/2; scene.add(m); }
 const officeTag=new THREE.Mesh(new THREE.PlaneGeometry(.62,.16), new THREE.MeshBasicMaterial());
 officeTag.position.set(5.012,.6,9.4); officeTag.rotation.y=Math.PI/2; scene.add(officeTag);
 /* ---------------- private office by job ---------------- */
