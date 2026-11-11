@@ -216,6 +216,9 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 .rl small{font-weight:500;color:#7a8496;font-size:11px}
 .rl.hot{background:var(--ink);color:#fff}
 .rl.hot small{color:rgba(255,255,255,.75)}
+.rl.here{box-shadow:0 0 0 3px var(--gold,#e8b44a),0 4px 14px rgba(18,24,38,.22);animation:rlPulse 1.6s ease-in-out infinite}
+@keyframes rlPulse{50%{box-shadow:0 0 0 6px rgba(232,180,74,.35),0 4px 14px rgba(18,24,38,.22)}}
+@media (prefers-reduced-motion:reduce){.rl.here{animation:none}}
 .bdg{display:inline-block;min-width:18px;height:18px;line-height:18px;padding:0 5px;box-sizing:border-box;border-radius:9px;background:var(--rose);color:#fff;font:800 10px/18px var(--f-num);text-align:center;margin-left:2px}
 .nl{position:absolute;left:0;top:0;display:flex;align-items:center;gap:2px;padding:2px 8px;border-radius:10px;background:rgba(28,35,51,.78);color:#fff;font-size:11px;font-weight:600;white-space:nowrap}
 .nl em{font:800 9px var(--f-num);font-style:normal;color:#f2c56b;margin-right:4px}
@@ -262,7 +265,7 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 #err{position:fixed;inset:0;display:grid;place-items:center;color:#fff;text-align:center;padding:24px;font-size:14px;z-index:80;background:var(--night)}
 </style>
 
-<div id="app" aria-label="SIS 3D 办公室。点房间直接打开功能，拖动平移，双指缩放和旋转"></div>
+<div id="app" aria-label="SIS 3D 办公室。点地面让角色走过去，点房间名字标签打开功能，拖动平移，双指缩放和旋转"></div>
 <div id="labels"></div>
 <button id="hud-me" class="hud" type="button" aria-label="我的工位">
   <canvas id="me-pt"></canvas>
@@ -286,7 +289,7 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
   <button type="button" id="c-r" aria-label="向右旋转">⟳</button>
   <button type="button" id="c-home" class="t" aria-label="回到全景">全景</button>
 </div>
-<div id="hint" class="hud">点房间直接打开 · 拖动平移 · 右键拖动旋转 · 滚轮缩放</div>
+<div id="hint" class="hud">点地面走过去 · 点名字标签打开功能 · 拖动平移 · 滚轮缩放</div>
 <div id="tut" hidden>
   <div class="tut-ring" id="tut-ring" hidden></div>
   <div class="tut-g" id="tut-g" hidden><span></span><span></span></div>
@@ -1009,7 +1012,7 @@ const ACTS = {
   lisa(){
     const opts=[]; if (!S.daily.checkin) opts.push({label:'今日签到 +20 XP', primary:true, fn:checkin});
     opts.push({label:'办公室导览', fn:tour}, {label:'换造型', fn:() => openEditor()});
-    say(N.lisa, S.daily.checkin ? `${S.name||'你'}，今天已经签到了，连续 ${S.streak} 天。` : `早安，${S.name||'新同事'}。先签到，再开始今天的工作。点任何房间都能直接打开对应的 SIS 功能。`, opts);
+    say(N.lisa, S.daily.checkin ? `${S.name||'你'}，今天已经签到了，连续 ${S.streak} 天。` : `早安，${S.name||'新同事'}。先签到，再开始今天的工作。点地面就能走过去，点房间的名字标签打开对应的 SIS 功能。`, opts);
   },
   shu(){ say(N.shu,'本月团队成交额 RM 4.82M，比上月高 12%。线索到带看的转化是 35.8%，Team Mei 排第一。',[{label:'打开数据大屏', primary:true, fn:openDash}]); },
   leo(){ const d=dueLeads(); say(N.leo, d.length ? `今天有 ${d.length} 位客户要跟进，最急的是 ${d[0].name}：${d[0].need}。` : '今天的客户都跟进完了。明天还有 1 位。', [{label:'查看客户', primary:true, fn:openLeads}]); },
@@ -1611,12 +1614,28 @@ function tap(cx,cy){
     if (c.kind==='me'){ openMe(); return; }
     flyTo(new THREE.Vector3(c.x,0,c.z)); openTarget({char:c, act:c.npc?c.act:'peer'}); return;
   }
+  // Room floors and room furniture only walk the player there; the room's name label is what opens the feature.
+  if (ud.zone || ud.ground || LABEL_ACTS.has(ud.act)){ walkToPoint(point); return; }
   if (ud.act){ if (ud.act!=='candy') flyTo(point); ACTS[ud.act](); return; }
-  if (ud.zone){ flyTo(zoneCenter(ud.zone)); ACTS[ud.zone.act](); return; }
-  if (ud.ground){
-    const p=bfs(Math.floor(player.x), Math.floor(player.z-.1), Math.floor(point.x), Math.floor(point.z));
-    if (p){ player.path=p; player.pending=null; }
-  }
+}
+const LABEL_ACTS = new Set([...ZONES, ...SPOTS].map(z => z.act));
+// Walk to the tapped spot, or to the nearest reachable tile if it lands on furniture or a wall.
+function walkToPoint(point){
+  const sx=Math.floor(player.x), sy=Math.floor(player.z-.1), tx=Math.floor(point.x), ty=Math.floor(point.z);
+  const cand=[];
+  for (let dy=-3; dy<=3; dy++) for (let dx=-3; dx<=3; dx++){ const x=tx+dx, y=ty+dy; if (solid[y]?.[x]===false) cand.push([dx*dx+dy*dy, x, y]); }
+  cand.sort((a,b) => a[0]-b[0]);
+  for (const [,x,y] of cand){ const p=bfs(sx,sy,x,y); if (p){ player.path=p; player.pending=null; goal=null; follow=true; markTap(x+.5,y+.6); return; } }
+}
+// Small ring on the floor where the player is heading.
+const tapRing = new THREE.Mesh(new THREE.RingGeometry(.22,.3,28), new THREE.MeshBasicMaterial({color:'#ffffff', transparent:true, opacity:0, depthWrite:false}));
+tapRing.rotation.x=-Math.PI/2; tapRing.renderOrder=2; scene.add(tapRing);
+let tapRingT=0;
+function markTap(x,z){ tapRing.position.set(x,.03,z); tapRingT=1; }
+function tapRingTick(dt){
+  if (tapRingT<=0){ tapRing.visible=false; return; }
+  tapRingT=Math.max(0,tapRingT-dt*.8); tapRing.visible=true;
+  tapRing.material.opacity=tapRingT*.9; tapRing.scale.setScalar(1+(1-tapRingT)*.6);
 }
 let hovered=null;
 function hoverZone(z){
@@ -1648,8 +1667,7 @@ cv.addEventListener('pointermove', e => {
   }
   if (e.pointerType==='mouse' && !uiOpen()){
     const h=pick(e.clientX,e.clientY);
-    hoverZone(h && h.ud.zone ? h.ud.zone : null);
-    cv.style.cursor = h && (h.ud.zone||h.ud.act||h.ud.char) ? 'pointer' : 'grab';
+    cv.style.cursor = h && (h.ud.char || (h.ud.act && !LABEL_ACTS.has(h.ud.act))) ? 'pointer' : 'grab';
   }
 });
 const lift = e => { pts.delete(e.pointerId); if (pts.size<2) pinch=null; };
@@ -2298,7 +2316,7 @@ sheet.addEventListener('click', e => {
 
 /* ---------------- onboarding ---------------- */
 const TUT = [
-  {id:'tap', title:'点房间，直接打开功能', body:'每个房间对应一个 SIS 功能。试试点一下发光的「数据室」。', target:() => (labels.find(l => l.z.act==='dash')||{}).el},
+  {id:'tap', title:'点名字标签，打开功能', body:'点地面或房间，角色会走过去。要打开功能，点房间的名字标签（走进房间时标签会亮起金边）。试试点一下发光的「数据室」标签。', target:() => (labels.find(l => l.z.act==='dash')||{}).el},
   {id:'pan', title:'拖动画面，看看其他地方', body: coarse ? '单指按住画面，往任意方向拖。' : '按住鼠标左键，往任意方向拖。', gesture:'pan'},
   {id:'zoom', title: coarse ? '双指捏合放大缩小' : '滚轮放大缩小', body: coarse ? '双指转动可以换角度。也可以用右边的 + − 按钮。' : '右键拖动可以换角度。也可以用右边的 + − 按钮。', gesture: coarse ? 'pinch' : 'wheel'},
   {id:'badge', title:'红点 = 有事等你', body:'名牌和按钮上的红点，代表待跟进的客户、待审核的视频和没做完的任务。', target:() => $('[data-hud="tasks"]'), final:true},
@@ -2398,7 +2416,9 @@ function loop(){
     const vis = v3.z<1 && Math.abs(v3.x)<1.2 && Math.abs(v3.y)<1.2; l.el.style.display = vis?'':'none';
     if (vis) l.el.style.transform = `translate(${(v3.x+1)/2*W}px,${(1-v3.y)/2*H}px) translate(-50%,-50%) scale(${k})`;
     if (doBadges){ const b=zoneBadge(l.z.act); l.bdg.hidden=!b; if (b) l.bdg.textContent=b; }
+    if (doBadges){ const z=l.z, here = z.r ? (player.x>=z.r[0] && player.x<z.r[0]+z.r[2] && player.z>=z.r[1] && player.z<z.r[1]+z.r[3]) : Math.hypot(player.x-z.lab[0], player.z-z.lab[1])<1.6; l.el.classList.toggle('here', here); }
   }
+  tapRingTick(dt);
   const showNames = rig.r < 30;
   for (const c of chars){
     if (doBadges){ const h=labelHTML(c); if (h!==c._lh){ c.el.innerHTML=h; c._lh=h; } }
