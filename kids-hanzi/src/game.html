@@ -67,7 +67,8 @@ svg.g{display:block;width:100%;height:100%;fill:var(--ink)}
 .gear .ring{position:absolute;inset:-4px;border-radius:22px;border:4px solid var(--coral);clip-path:inset(0 100% 0 0);pointer-events:none}
 .gear.holding .ring{transition:clip-path 1.5s linear;clip-path:inset(0 0 0 0)}
 .island{margin:6px auto 0;max-width:980px;background:radial-gradient(closest-side,var(--grass) 0 82%,var(--sand) 83% 100%);border-radius:48% 52% 46% 54%/40% 44% 56% 60%;padding:clamp(28px,5vw,56px) clamp(18px,4vw,48px)}
-.places{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,2vw,22px)}
+.places{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(8px,1.6vw,18px)}
+.place .ic{width:clamp(80px,11vw,112px)!important}
 @media (max-width:700px){.places{grid-template-columns:repeat(2,1fr)}.island{border-radius:40px}}
 .place{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px}
 .place .ic{width:clamp(86px,13vw,120px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:clamp(46px,7vw,64px);background:var(--paper);box-shadow:var(--shadow);transition:transform .2s}
@@ -261,6 +262,146 @@ svg.g{display:block;width:100%;height:100%;fill:var(--ink)}
 .cite{font-size:13px!important;color:var(--ink-2)!important}
 .smallbtn{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 14px;font:800 15px var(--f-body)}
 .danger{color:#b34a37;border-color:#efc2b8}
+
+
+/* Picture book + brain games + body map */
+.catgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;max-width:1000px;margin:6px auto 0}
+.cat{position:relative;background:var(--cc,var(--paper));border-radius:28px;box-shadow:var(--shadow);padding:18px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.cat .ce{font-size:62px;line-height:1.1;height:72px;display:grid;place-items:center}
+.cat b{font:400 26px var(--f-title)}
+.cat small{font:800 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.cat .prog{margin-top:4px;background:rgba(255,255,255,.75);border-radius:999px;padding:3px 12px;font:800 14px var(--f-body);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.wgrid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:14px;max-width:1000px;margin:0 auto}
+.wcard{position:relative;background:var(--paper);border-radius:24px;box-shadow:var(--shadow);padding:14px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;border:4px solid transparent}
+.wcard b{font:400 22px var(--f-title)}
+.wcard.seen::after{content:"✓";position:absolute;top:6px;right:8px;width:24px;height:24px;border-radius:50%;background:var(--leaf);color:#fff;font:800 14px var(--f-body);display:grid;place-items:center}
+.wv{display:grid;place-items:center;width:84px;height:84px}
+.vemo{font-size:64px;line-height:1}
+.vsvg{display:block;width:84px;height:84px}
+.vsvg svg{width:100%;height:100%}
+.swatch{display:grid;place-items:center;width:78px;height:78px;border-radius:50%;box-shadow:inset 0 -6px 0 rgba(0,0,0,.12),0 0 0 3px rgba(61,58,80,.12);font-size:34px}
+.shp{width:84px;height:84px;overflow:visible}
+.shp path{stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.numbig{font:800 64px var(--f-body);color:var(--coral);line-height:1}
+
+.ov.spot{background:rgba(61,58,80,.45)}
+.spotcard{position:relative;overflow:hidden;background:var(--paper);border-radius:36px;box-shadow:0 20px 50px rgba(61,58,80,.3);padding:22px 22px 18px;width:min(560px,100%);box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.rays{position:absolute;left:50%;top:150px;width:640px;height:640px;margin:-320px 0 0 -320px;background:repeating-conic-gradient(var(--cc) 0 12deg,transparent 12deg 24deg);opacity:.75;border-radius:50%;animation:spin 40s linear infinite;pointer-events:none;-webkit-mask:radial-gradient(closest-side,#000 30%,transparent);mask:radial-gradient(closest-side,#000 30%,transparent)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sp-stage{position:relative;width:100%;height:230px;display:grid;place-items:center}
+.sp-vis{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1}
+.sp-vis .vemo{font-size:150px}
+.sp-vis .vsvg{width:190px;height:190px}
+.sp-vis .swatch{width:170px;height:170px;font-size:80px}
+.sp-vis .shp{width:180px;height:180px}
+.sp-vis .numbig{font-size:110px}
+.sp-name{position:relative;font:400 clamp(40px,7vw,56px) var(--f-title);line-height:1.1}
+.sp-en{position:relative;font:800 22px var(--f-body);color:var(--leaf)}
+.sp-fact{position:relative;margin:0;font-size:19px;line-height:1.6;color:var(--ink);max-width:440px}
+.cnt{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:330px}
+.cobj{position:relative;font-size:38px;line-height:1}
+.cobj b{position:absolute;right:-4px;bottom:-4px;background:var(--coral);color:#fff;font:800 12px var(--f-body);min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center}
+.pop{animation:popin .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes popin{from{transform:scale(0)}}
+.fx-bounce{animation:fxb .9s cubic-bezier(.3,1.6,.5,1)}
+@keyframes fxb{0%{transform:scale(.2)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.fx-hop{animation:fxh 1.1s ease}
+@keyframes fxh{0%,40%,80%,100%{transform:translateY(0)}20%,60%{transform:translateY(-34px)}}
+.fx-swim{animation:fxs 1.6s ease-out}
+@keyframes fxs{0%{transform:translateX(-120%) rotate(-6deg)}30%{transform:translateX(-40%) translateY(-14px) rotate(6deg)}60%{transform:translateX(10%) translateY(10px) rotate(-4deg)}100%{transform:none}}
+.fx-drive{animation:fxd 1.2s cubic-bezier(.2,.8,.3,1)}
+@keyframes fxd{0%{transform:translateX(130%) skewX(-12deg)}70%{transform:translateX(-6%) skewX(6deg)}100%{transform:none}}
+.fx-draw path{stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0;animation:draw 1.3s ease forwards,fillin .5s ease 1.2s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fillin{to{fill-opacity:1}}
+.bubbleup{position:absolute;bottom:-20px;font-size:26px;color:#7fc3d3;pointer-events:none;animation:bub 3s ease-in forwards}
+@keyframes bub{to{transform:translateY(-560px);opacity:0}}
+.sparkle{position:absolute;top:40%;font-size:24px;pointer-events:none;animation:spk 1.6s ease-out forwards;opacity:0}
+@keyframes spk{0%{opacity:0;transform:scale(.3)}30%{opacity:1}100%{opacity:0;transform:translateY(-120px) scale(1.2)}}
+.tool{position:absolute;left:50%;top:50%;font-size:44px;margin:-22px;opacity:0;animation:toolout .7s cubic-bezier(.3,1.5,.5,1) forwards;z-index:1}
+@keyframes toolout{from{opacity:0;transform:rotate(var(--a)) translateX(0) rotate(calc(-1*var(--a)))}to{opacity:1;transform:rotate(var(--a)) translateX(120px) rotate(calc(-1*var(--a)))}}
+.wash{position:absolute;left:50%;top:150px;width:40px;height:40px;margin:-20px;border-radius:50%;opacity:.45;pointer-events:none;animation:wash 1.6s ease-out forwards}
+@keyframes wash{to{transform:scale(40);opacity:0}}
+
+/* round-based mini games */
+.dots{display:flex;gap:8px;justify-content:center;padding:0 0 6px}
+.dots i{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.6)}
+.dots i.on{background:var(--sun);box-shadow:0 0 0 2px #fff}
+.bgame{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:900px;margin:0 auto}
+.bprompt{font:400 clamp(28px,5vw,40px) var(--f-title);text-align:center;background:var(--paper);border-radius:22px;padding:8px 24px;box-shadow:var(--shadow)}
+.opts{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.opt{min-width:118px;min-height:118px;background:var(--paper);border-radius:26px;box-shadow:var(--shadow);display:grid;place-items:center;padding:10px;border:4px solid transparent}
+.opt .vemo{font-size:clamp(56px,9vw,80px)}
+.opt.right{border-color:var(--leaf);animation:fxb .6s cubic-bezier(.3,1.6,.5,1)}
+.opt.glow{box-shadow:0 0 0 6px var(--sun),0 0 26px 6px rgba(244,194,94,.7)}
+.opt.wiggle{animation:wiggle .45s ease 2}
+.nopt{display:flex;flex-direction:column;align-items:center;font:800 54px var(--f-body);color:var(--coral);line-height:1}
+.nopt small{font:400 26px var(--f-title);color:var(--ink)}
+.patrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;background:rgba(255,255,255,.55);border-radius:24px;padding:14px;min-height:80px}
+.pcell{width:clamp(56px,9vw,78px);height:clamp(56px,9vw,78px);display:grid;place-items:center;font-size:clamp(40px,6.5vw,58px);background:var(--paper);border-radius:18px}
+.pcell.q{border:4px dashed var(--coral);color:var(--coral);font:400 40px var(--f-title);background:#fff}
+.shadow{width:min(46vw,220px);aspect-ratio:1;display:grid;place-items:center;background:var(--paper);border-radius:50%;box-shadow:var(--shadow)}
+.shadow .vemo{font-size:min(30vw,150px);filter:brightness(0);opacity:.78;transition:filter .9s ease,opacity .9s ease}
+.shadow.lit .vemo{filter:none;opacity:1;animation:fxb .8s cubic-bezier(.3,1.6,.5,1)}
+.shelf{position:relative;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;background:#d9b48a;border-bottom:10px solid #b88b5c;border-radius:20px;padding:18px 18px 10px;overflow:hidden;min-height:110px;min-width:min(90vw,320px);box-sizing:border-box}
+.slotx{width:clamp(70px,11vw,96px);height:clamp(70px,11vw,96px);display:grid;place-items:center;background:rgba(255,255,255,.55);border-radius:18px}
+.slotx .vemo{font-size:clamp(46px,7vw,64px)}
+.slotx.empty .vemo{visibility:hidden}
+.curtain{position:absolute;inset:0;pointer-events:none}
+.curtain i{position:absolute;top:0;bottom:0;width:50%;background:repeating-linear-gradient(90deg,#c0554a 0 18px,#a8443b 18px 36px);transition:transform .8s ease}
+.curtain i:first-child{left:0;transform:translateX(-101%)}
+.curtain i:last-child{right:0;transform:translateX(101%)}
+.curtain.close i{transform:none}
+.field{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:center;min-height:180px}
+.sz{line-height:1;padding:6px;border-radius:20px}
+.sz.wiggle{animation:wiggle .45s ease 2}
+.line{display:flex;gap:10px;align-items:flex-end;justify-content:center;min-height:120px;width:100%;border-bottom:6px solid var(--leaf);padding-bottom:6px}
+.cfield{position:relative;width:min(92vw,620px);height:clamp(230px,38vh,320px);background:rgba(255,255,255,.55);border-radius:28px}
+.cobj2{position:absolute;font-size:clamp(40px,7vw,58px);line-height:1;width:1.4em;height:1.4em;display:grid;place-items:center}
+.cobj2 b{position:absolute;right:-2px;top:-6px;background:var(--coral);color:#fff;font:800 16px var(--f-body);min-width:26px;height:26px;border-radius:13px;display:grid;place-items:center;animation:popin .3s}
+.echip{font-size:44px;line-height:1}
+
+/* colour mixing */
+.mixview{display:flex;flex-direction:column;align-items:center;gap:18px;max-width:800px;margin:0 auto}
+.mixfound{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.mf{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.6);font:400 24px var(--f-title);color:var(--ink-2);border:3px dashed rgba(61,58,80,.25)}
+.mf.on{background:var(--c);border:3px solid #fff;font-size:26px}
+.bowl{position:relative;width:min(56vw,250px);aspect-ratio:1.5;background:#fff;border-radius:20px 20px 50% 50%/20px 20px 80% 80%;box-shadow:inset 0 -12px 0 rgba(61,58,80,.08),var(--shadow);overflow:hidden;display:grid;place-items:center}
+.paint{position:absolute;left:8%;right:8%;bottom:8%;height:0;border-radius:50%;transition:height .5s ease}
+.paint.fill{height:70%}
+.paint.swirl{animation:spin 1.4s linear}
+.bres{position:relative;font-size:64px;z-index:1}
+.mixname{font:400 clamp(24px,4vw,32px) var(--f-title);text-align:center;background:var(--paper);border-radius:18px;padding:8px 20px}
+.pots{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.pot2{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pot2 span{width:78px;height:70px;border-radius:14px 14px 26px 26px;background:var(--c);box-shadow:inset 0 -8px 0 rgba(0,0,0,.15),0 0 0 4px #fff,var(--shadow)}
+.pot2 b{font:400 20px var(--f-title)}
+.pot2.pour span{animation:pour .6s ease}
+@keyframes pour{50%{transform:translateY(-16px) rotate(-18deg)}}
+
+/* body map */
+.bodyview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;max-width:960px;margin:0 auto;align-items:start}
+@media (max-width:700px){.bodyview{grid-template-columns:1fr}.bodyview .bodysvg{max-height:42vh}.bodyview .bodymap{padding:6px}}
+.bodymap{background:var(--paper);border-radius:32px;box-shadow:var(--shadow);padding:12px;display:grid;place-items:center}
+.bodysvg{width:100%;max-height:calc(100vh - 150px);height:auto;touch-action:manipulation}
+.quizmap .bodysvg{max-height:calc(100vh - 230px)}
+.quizmap{width:min(92vw,420px);box-sizing:border-box}
+.bp{cursor:pointer}
+.bp.hl{filter:drop-shadow(0 0 3px #f4c25e) drop-shadow(0 0 7px #f4c25e);animation:hlp 1.4s ease-in-out infinite}
+@keyframes hlp{50%{opacity:.75}}
+.bodyside{display:flex;flex-direction:column;gap:14px;min-width:0}
+.seg{display:flex;gap:8px}
+.bcap{background:var(--paper);border-radius:24px;box-shadow:var(--shadow);padding:16px 18px;min-height:120px}
+.bcap>b{font:400 26px var(--f-title)}
+.bcap p{margin:6px 0 0;font-size:19px;line-height:1.6}
+.capname{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.capname span{font-size:44px;line-height:1}
+.capname b{font:400 44px var(--f-title)}
+.capname small{font:800 20px var(--f-body);color:var(--leaf)}
+.capch{display:flex;align-items:center;gap:10px;margin-top:10px;background:var(--sun-2);border-radius:16px;padding:8px 12px;font:800 16px var(--f-body)}
+.capch .tzg{width:52px;border-width:2px}
+.bchips{display:flex;flex-wrap:wrap;gap:8px}
+.bchip.on{background:var(--sun);color:var(--ink)}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
@@ -607,12 +748,12 @@ function petals(){
     p.style.left=(5+Math.random()*90)+'vw';p.style.animationDelay=(Math.random()*.8)+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),5600)}
 }
 const PRAISE=['你一个一个仔细看，好专心！','遇到难的字也没有放弃，真了不起！','你听得很认真！','你越来越会认字啦！','慢慢想，就找到了，做得好！'];
-function summary(title,chars,again){
+function summary(title,chars,again,emos=[]){
   const g=GEN; petals(); SFX.magic();
   const uniq=[...new Set(chars)];
   const praise=rnd(PRAISE);
   const o=overlay(`<div class="card"><div style="font-size:72px;line-height:1">🐼</div><h2>${title}</h2>
-    <div class="got">${uniq.map(c=>`<button data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('')}</div>
+    <div class="got">${uniq.map(c=>`<button data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('')}${emos.filter(Boolean).map(e=>`<span class="echip">${e}</span>`).join('')}</div>
     <p>${praise}</p><div class="row" id="sumbtns"></div></div>`);
   $$('.got button',o).forEach(b=>b.onclick=()=>{const x=B(b.dataset.c);say(x.c,x.w,{en:x.en})});
   const btns=$('#sumbtns',o);
@@ -667,6 +808,8 @@ const PLACES=[
   {id:'train',e:'🚂',name:'词语火车',en:'Word Train',go:()=>goTrain()},
   {id:'sort',e:'🧺',name:'分一分',en:'Sorting',go:()=>goSort()},
   {id:'garden',e:'🌻',name:'我的花园',en:'My Garden',go:()=>goGarden()},
+  {id:'world',e:'📚',name:'百宝书',en:'Picture Book',go:()=>goWorld()},
+  {id:'brain',e:'🧩',name:'智慧乐园',en:'Brain Games',go:()=>goBrain()},
 ];
 function goHub(first){
   closeOverlays(); GEN++;
@@ -684,7 +827,7 @@ function goHub(first){
   let tip;
   if(met.length<3)tip='你好！我是圆圆。我们先去「字的故事」认识新朋友吧！';
   else if(thirsty>=3)tip=`花园里有${thirsty}朵花口渴了，去给它们浇浇水吧！`;
-  else tip=rnd(['今天想玩什么？你来选！','去魔法锅里变一个新的字吧！','小猫想去钓鱼啦，一起去吗？','坐上小火车，拼一个词语吧！','去「字的故事」看看字是怎么变出来的！']);
+  else tip=rnd(['今天想玩什么？你来选！','去百宝书看看海洋朋友吧！','去智慧乐园动动小脑筋吧！','去百宝书认识一下自己的身体吧！','去魔法锅里变一个新的字吧！','小猫想去钓鱼啦，一起去吗？','坐上小火车，拼一个词语吧！','去「字的故事」看看字是怎么变出来的！']);
   $('#tip').textContent=tip;
   $('#panda').onclick=()=>say(tip);
   if(first)say('你好！我是圆圆。',tip); else say(tip);
@@ -1063,6 +1206,522 @@ function waterQuiz(list){
   one();
 }
 
+/* ============================================================
+   百宝书 World Book — 看图认识世界（分类、分辨、量词）
+   ============================================================ */
+const it_=(zh,en,e,f,extra)=>Object.assign({zh,en,e,f},extra||{});
+const WORLD={
+  fruit:{name:'水果',en:'Fruits',e:'🍎',c:'#fde3dc',sfx:'pop',fx:'bounce',kind:'水果',items:[
+    it_('苹果','apple','🍎','苹果红红的，咬一口咔嚓咔嚓。'),it_('香蕉','banana','🍌','香蕉是黄色的，弯弯的像月亮。'),
+    it_('葡萄','grapes','🍇','葡萄一串一串的，紫紫的。'),it_('西瓜','watermelon','🍉','西瓜外面绿绿的，里面红红的，还有黑黑的籽。'),
+    it_('草莓','strawberry','🍓','草莓红红的，身上有很多小点点。'),it_('橙子','orange','🍊','橙子是橙色的，有很多甜甜的汁。'),
+    it_('梨','pear','🍐','梨水水的，甜甜的。'),it_('桃子','peach','🍑','桃子粉粉的，摸起来毛茸茸的。'),
+    it_('樱桃','cherries','🍒','樱桃小小的，常常两个连在一起。'),it_('菠萝','pineapple','🍍','菠萝头上有尖尖的叶子，身上有一格一格的花纹。'),
+    it_('芒果','mango','🥭','芒果黄黄的，又香又甜。'),it_('椰子','coconut','🥥','椰子硬硬的，里面有椰子水。'),
+    it_('柠檬','lemon','🍋','柠檬好酸好酸！'),it_('猕猴桃','kiwi','🥝','猕猴桃外面毛毛的，里面是绿色的。'),
+    it_('榴莲','durian',null,'榴莲身上有很多尖尖的刺，味道很特别，是水果之王。',{svg:'durian'}),
+    it_('红毛丹','rambutan',null,'红毛丹红红的，身上有很多软软的毛。',{svg:'rambutan'}),
+    it_('山竹','mangosteen',null,'山竹是紫色的，里面的果肉白白的，像一瓣一瓣的小蒜。',{svg:'mangosteen'})]},
+  veg:{name:'蔬菜',en:'Vegetables',e:'🥕',c:'#e2f1d8',sfx:'crunch',fx:'bounce',kind:'蔬菜',items:[
+    it_('胡萝卜','carrot','🥕','胡萝卜是橙色的，小兔子最爱吃。'),it_('西兰花','broccoli','🥦','西兰花像一棵绿色的小树。'),
+    it_('玉米','corn','🌽','玉米上有一粒一粒黄黄的玉米粒。'),it_('茄子','eggplant','🍆','茄子是紫色的，长长的。'),
+    it_('土豆','potato','🥔','土豆长在泥土下面，可以做成薯条。'),it_('黄瓜','cucumber','🥒','黄瓜绿绿的，咬一口脆脆的。'),
+    it_('番茄','tomato','🍅','番茄红红的，可以做番茄炒蛋。',{amb:1}),it_('辣椒','chilli','🌶️','辣椒吃起来好辣好辣！'),
+    it_('洋葱','onion','🧅','切洋葱的时候，会让人流眼泪。'),it_('蘑菇','mushroom','🍄','蘑菇像一把小伞。'),
+    it_('生菜','lettuce','🥬','生菜绿绿的，可以夹在汉堡里。'),it_('大蒜','garlic','🧄','大蒜白白的，炒菜放一点，好香。'),
+    it_('甜椒','bell pepper','🫑','甜椒不辣，是甜甜的。'),it_('红薯','sweet potato','🍠','烤红薯又香又甜。'),
+    it_('豌豆','peas','🫛','打开豆荚，里面有一颗一颗圆圆的豌豆。')]},
+  sea:{name:'海洋朋友',en:'Sea animals',e:'🐠',c:'#d6eef5',sfx:'bubble',fx:'swim',kind:'住在海里的动物',items:[
+    it_('鲨鱼','shark','🦈','鲨鱼有很多尖尖的牙齿，游得飞快。'),it_('鲸鱼','whale','🐋','鲸鱼是海里最大的动物，会从头顶喷水。'),
+    it_('海豚','dolphin','🐬','海豚很聪明，喜欢跳出水面玩。'),it_('热带鱼','tropical fish','🐠','热带鱼颜色好漂亮，住在珊瑚旁边。'),
+    it_('河豚','pufferfish','🐡','河豚一生气，就把自己鼓成一个圆球。'),it_('小鱼','fish','🐟','小鱼摇摇尾巴，在水里游来游去。'),
+    it_('章鱼','octopus','🐙','章鱼有八条长长的腿。'),it_('鱿鱼','squid','🦑','鱿鱼会喷出黑黑的墨汁，躲起来。'),
+    it_('螃蟹','crab','🦀','螃蟹横着走路，有两只大钳子。'),it_('虾','shrimp','🦐','虾的身体弯弯的，煮熟了会变红。'),
+    it_('龙虾','lobster','🦞','龙虾有一对很大很大的钳子。'),it_('水母','jellyfish','🪼','水母软软的，透明的，像一把小伞。'),
+    it_('海龟','sea turtle','🐢','海龟背着硬硬的壳，可以活很久很久。',{amb:1}),it_('海豹','seal','🦭','海豹胖胖的，喜欢躺在冰上晒太阳。',{amb:1})]},
+  animal:{name:'动物',en:'Animals',e:'🐼',c:'#f6ead2',sfx:'hop',fx:'hop',kind:'住在陆地上的动物',items:[
+    it_('小狗','dog','🐶','小狗汪汪汪。'),it_('小猫','cat','🐱','小猫喵喵喵。'),it_('小鸡','chick','🐤','小鸡叽叽叽。'),
+    it_('鸭子','duck','🦆','鸭子嘎嘎嘎，会游泳。',{amb:1}),it_('牛','cow','🐮','牛哞哞哞，给我们牛奶。'),it_('羊','sheep','🐑','羊咩咩咩，身上的毛软软的。'),
+    it_('小猪','pig','🐷','小猪噜噜噜。'),it_('青蛙','frog','🐸','青蛙呱呱呱，会捉虫子。',{amb:1}),it_('老虎','tiger','🐯','老虎嗷呜！身上有条纹。'),
+    it_('狮子','lion','🦁','狮子是森林之王。'),it_('猴子','monkey','🐵','猴子爱吃香蕉，吱吱吱。'),it_('大象','elephant','🐘','大象有长长的鼻子。'),
+    it_('熊猫','panda','🐼','熊猫爱吃竹子，就像圆圆！'),it_('长颈鹿','giraffe','🦒','长颈鹿的脖子好长好长。'),
+    it_('斑马','zebra','🦓','斑马身上有黑白的条纹。'),it_('兔子','rabbit','🐰','兔子蹦蹦跳跳，耳朵长长的。')]},
+  ride:{name:'交通工具',en:'Vehicles',e:'🚗',c:'#e3e8f6',sfx:'vroom',fx:'drive',kind:'交通工具',items:[
+    it_('汽车','car','🚗','汽车有四个轮子，在马路上跑。'),it_('公交车','bus','🚌','公交车长长的，可以坐很多人。'),
+    it_('火车','train','🚆','火车在铁轨上开，呜呜呜！'),it_('飞机','aeroplane','✈️','飞机在天上飞，又高又快。'),
+    it_('轮船','ship','🚢','轮船在大海上航行。'),it_('自行车','bicycle','🚲','自行车有两个轮子，要用脚踩。'),
+    it_('摩托车','motorbike','🏍️','摩托车跑得很快，要戴头盔。'),it_('直升机','helicopter','🚁','直升机头上有转转转的螺旋桨。'),
+    it_('消防车','fire engine','🚒','消防车红红的，去灭火。'),it_('救护车','ambulance','🚑','救护车送生病的人去医院。'),
+    it_('警车','police car','🚓','警车响着警笛去帮助别人。'),it_('火箭','rocket','🚀','火箭飞到太空去。'),
+    it_('帆船','sailboat','⛵','帆船靠风吹着走。'),it_('拖拉机','tractor','🚜','拖拉机在田里干活。')]},
+  job:{name:'职业',en:'Jobs',e:'🧑‍🚒',c:'#ece6f5',sfx:'fanfare',fx:'tools',kind:'职业',items:[
+    it_('医生','doctor','🧑‍⚕️','医生帮生病的人看病。',{x:'🩺💊🩹'}),it_('老师','teacher','🧑‍🏫','老师教小朋友认字、唱歌和画画。',{x:'📚✏️🍎'}),
+    it_('厨师','chef','🧑‍🍳','厨师会做好吃的饭菜。',{x:'🍳🥘🍜'}),it_('警察','police officer','👮','警察保护大家的安全。',{x:'🚓🚨🦺'}),
+    it_('消防员','firefighter','🧑‍🚒','消防员勇敢地去灭火。',{x:'🚒🔥💦'}),it_('农民','farmer','🧑‍🌾','农民在田里种米、种菜。',{x:'🌾🚜🥕'}),
+    it_('宇航员','astronaut','🧑‍🚀','宇航员坐火箭飞到太空。',{x:'🚀🌙⭐'}),it_('飞行员','pilot','🧑‍✈️','飞行员开飞机，带大家去很远的地方。',{x:'✈️☁️🧳'}),
+    it_('画家','artist','🧑‍🎨','画家用颜色画出漂亮的画。',{x:'🎨🖌️🖼️'}),it_('歌手','singer','🧑‍🎤','歌手唱好听的歌。',{x:'🎤🎶🎵'}),
+    it_('科学家','scientist','🧑‍🔬','科学家做实验，发现新的知识。',{x:'🔬🧪💡'}),it_('建筑工人','builder','👷','建筑工人盖高高的房子。',{x:'🏗️🧱🔨'}),
+    it_('修理工','mechanic','🧑‍🔧','修理工会把坏掉的东西修好。',{x:'🔧🔩🚗'}),it_('程序员','programmer','🧑‍💻','程序员用电脑做出游戏。',{x:'💻🖱️🎮'})]},
+  color:{name:'颜色',en:'Colours',e:'🎨',c:'#fdf1d2',sfx:'gliss',fx:'wash',kind:'颜色',items:[
+    it_('红色','red','🍎','苹果是红色的。',{hex:'#e5484d'}),it_('橙色','orange','🍊','橙子是橙色的。',{hex:'#f28c28'}),
+    it_('黄色','yellow','🍌','香蕉是黄色的。',{hex:'#f5c518'}),it_('绿色','green','🥦','西兰花是绿色的。',{hex:'#46a758'}),
+    it_('蓝色','blue','🐳','大海和天空是蓝色的。',{hex:'#3b82f6'}),it_('紫色','purple','🍇','葡萄是紫色的。',{hex:'#8e4ec6'}),
+    it_('粉色','pink','🌸','花朵是粉色的。',{hex:'#f38bb5'}),it_('棕色','brown','🐻','小熊是棕色的。',{hex:'#8d5a3b'}),
+    it_('黑色','black','🐜','蚂蚁是黑色的。',{hex:'#2b2b2b'}),it_('白色','white','☁️','白云是白色的。',{hex:'#ffffff'}),
+    it_('灰色','grey','🐘','大象是灰色的。',{hex:'#9aa0a6'})]},
+  num:{name:'数字',en:'Numbers',e:'🔢',c:'#fbe3da',sfx:'count',fx:'count',kind:'数字',items:[
+    it_('一','one','🍉','',{n:1,ph:'一个西瓜'}),it_('二','two','🐟','',{n:2,ph:'两条鱼'}),it_('三','three','🍓','',{n:3,ph:'三个草莓'}),
+    it_('四','four','🐞','',{n:4,ph:'四只瓢虫'}),it_('五','five','⭐','',{n:5,ph:'五颗星星'}),it_('六','six','🍪','',{n:6,ph:'六块饼干'}),
+    it_('七','seven','🎈','',{n:7,ph:'七个气球'}),it_('八','eight','🍬','',{n:8,ph:'八颗糖果'}),it_('九','nine','🌼','',{n:9,ph:'九朵花'}),
+    it_('十','ten','🍎','',{n:10,ph:'十个苹果'})]},
+  shape:{name:'形状',en:'Shapes',e:'🔷',c:'#d9eef0',sfx:'ding',fx:'draw',kind:'形状',items:[
+    it_('圆形','circle','🍪','饼干是圆形的。',{d:'M10 50a40 40 0 1 0 80 0a40 40 0 1 0-80 0Z',fill:'#f4c25e'}),
+    it_('正方形','square','🎁','礼物盒是正方形的。',{d:'M15 15H85V85H15Z',fill:'#e5806b'}),
+    it_('三角形','triangle','🍕','披萨是三角形的。',{d:'M50 12L90 86H10Z',fill:'#7cc49a'}),
+    it_('长方形','rectangle','🚪','门是长方形的。',{d:'M8 28H92V72H8Z',fill:'#8fb8ea'}),
+    it_('星形','star','⭐','星星是星形的。',{d:'M50 8l11.8 25.6 28 3.2-20.8 19 5.8 27.6L50 69.4 25.2 83.4 31 55.8 10.2 36.8l28-3.2Z',fill:'#f6c945'}),
+    it_('心形','heart','❤️','爱心是心形的。',{d:'M50 86C20 64 8 48 8 32 8 18 19 9 31 9c8 0 15 4 19 11 4-7 11-11 19-11 12 0 23 9 23 23 0 16-12 32-42 54Z',fill:'#ef7f97'}),
+    it_('椭圆形','oval','🥚','鸡蛋是椭圆形的。',{d:'M8 50a42 30 0 1 0 84 0a42 30 0 1 0-84 0Z',fill:'#c7a6e6'}),
+    it_('菱形','diamond','🪁','风筝是菱形的。',{d:'M50 6L86 50L50 94L14 50Z',fill:'#5fb7c4'}),
+    it_('半圆形','semicircle','🌈','彩虹是半圆形的。',{d:'M10 70a40 40 0 0 1 80 0Z',fill:'#f29e6b'})]},
+};
+const WORLD_ORDER=['fruit','veg','sea','animal','ride','job','color','num','shape'];
+const NUMZH=['零','一','二','三','四','五','六','七','八','九','十'];
+const PENTA=[523.25,587.33,659.25,783.99,880,1046.5,1174.66,1318.51,1567.98,1760,2093];
+
+/* Malaysian fruits that have no emoji: tiny SVG drawings */
+const CUSTOM={};
+CUSTOM.durian=()=>{let p=[];for(let k=0;k<44;k++){const a=k/44*Math.PI*2,r=k%2?1:1.18;p.push((50+Math.cos(a)*30*r).toFixed(1)+','+(56+Math.sin(a)*36*r).toFixed(1))}
+  return `<svg viewBox="0 0 100 100"><polygon points="${p.join(' ')}" fill="#a3bf4f" stroke="#6f8a2e" stroke-width="2" stroke-linejoin="round"/><ellipse cx="50" cy="56" rx="22" ry="28" fill="#b6cf62"/><rect x="47" y="6" width="6" height="16" rx="3" fill="#7a5a3a"/></svg>`};
+CUSTOM.rambutan=()=>{let h='';for(let k=0;k<36;k++){const a=k/36*Math.PI*2,x1=50+Math.cos(a)*26,y1=56+Math.sin(a)*26,x2=50+Math.cos(a+.25)*38,y2=56+Math.sin(a+.25)*38;
+  h+=`<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}Q${(50+Math.cos(a)*36).toFixed(1)} ${(56+Math.sin(a)*36).toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${k%3?'#d8434d':'#8fb04a'}" stroke-width="3" fill="none" stroke-linecap="round"/>`}
+  return `<svg viewBox="0 0 100 100">${h}<circle cx="50" cy="56" r="27" fill="#d6333d"/><circle cx="42" cy="47" r="7" fill="#e86a70"/></svg>`};
+CUSTOM.mangosteen=()=>`<svg viewBox="0 0 100 100"><circle cx="50" cy="58" r="32" fill="#5b2a4a"/><circle cx="40" cy="48" r="8" fill="#7a3d63"/>
+  ${[0,72,144,216,288].map(r=>`<ellipse cx="50" cy="20" rx="7" ry="14" fill="#6e9b4a" transform="rotate(${r} 50 30)"/>`).join('')}<circle cx="50" cy="30" r="6" fill="#557a37"/><rect x="47" y="8" width="6" height="14" rx="3" fill="#6b4a2f"/></svg>`;
+
+function vis(cat,it){
+  if(cat==='color')return `<span class="swatch" style="background:${it.hex}"><span>${it.e}</span></span>`;
+  if(cat==='shape')return `<svg class="shp" viewBox="0 0 100 100"><path d="${it.d}" pathLength="1" style="fill:${it.fill}"/></svg>`;
+  if(cat==='num')return `<span class="numbig">${it.n}</span>`;
+  if(it.svg)return `<span class="vsvg">${CUSTOM[it.svg]()}</span>`;
+  return `<span class="vemo">${it.e}</span>`;
+}
+function WS(){return S.world||(S.world={seen:{},mix:[]})}
+function markSeen(cat,zh){const w=WS();(w.seen[cat]=w.seen[cat]||{})[zh]=1;save()}
+const isSeen=(cat,zh)=>!!(WS().seen[cat]&&WS().seen[cat][zh]);
+const seenCount=cat=>Object.keys(WS().seen[cat]||{}).length;
+
+/* ---- richer sound effects (soft, synthesized) ---- */
+function sweep(f1,f2,dur,vol,type='sine',lp=0,delay=0){
+  if(!S.settings.sfx)return; const a=ac(); if(!a)return;
+  const t=a.currentTime+delay,o=a.createOscillator(),g=a.createGain();o.type=type;
+  o.frequency.setValueAtTime(f1,t);o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur+.15);
+  let node=o.connect(g); if(lp){const f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=lp;g.connect(f);f.connect(a.destination)}else g.connect(a.destination);
+  o.start(t);o.stop(t+dur+.2);
+}
+function noise(dur,freq,vol,delay=0){
+  if(!S.settings.sfx)return; const a=ac(); if(!a)return;
+  const len=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+  const s=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();s.buffer=buf;f.type='bandpass';f.frequency.value=freq;f.Q.value=1.2;g.gain.value=vol;
+  s.connect(f).connect(g).connect(a.destination);s.start(a.currentTime+delay);
+}
+const SND={
+  bubble:()=>{for(let i=0;i<5;i++)sweep(300+Math.random()*250,800+Math.random()*500,.08,.03,'sine',0,i*.13)},
+  crunch:()=>{[0,.13,.27].forEach(t=>noise(.07,2400,.12,t))},
+  pop:()=>{sweep(720,200,.12,.06);sweep(900,300,.1,.03,'sine',0,.12)},
+  fanfare:()=>tone([523.25,659.25,783.99,1046.5],.24,.13,.04,'triangle'),
+  gliss:()=>sweep(330,990,.55,.04),
+  ding:()=>tone([1318.5,1975.5],.7,.0,.03),
+  vroom:()=>{sweep(70,180,.9,.06,'sawtooth',500);tone([392,392],.12,.18,.03,'square')},
+  hop:()=>{sweep(300,650,.12,.05);sweep(300,650,.12,.05,'sine',0,.26)},
+  count:()=>{},
+  swish:()=>noise(.35,900,.08),
+};
+
+/* ---- visual effects for the spotlight card ---- */
+function fxBits(host,chars,n,cls){
+  for(let k=0;k<n;k++){const s=document.createElement('span');s.className=cls;s.textContent=chars[k%chars.length];
+    s.style.left=(10+Math.random()*80)+'%';s.style.animationDelay=(Math.random()*.9)+'s';host.appendChild(s);setTimeout(()=>s.remove(),4200)}
+}
+function runFx(cat,it,el,host,g){
+  const fx=WORLD[cat].fx; (SND[WORLD[cat].sfx]||(()=>{}))();
+  const add=c=>{el.classList.remove(c);void el.offsetWidth;el.classList.add(c)};
+  if(fx==='swim'){add('fx-swim');fxBits(host,['◦','○','◦'],12,'bubbleup')}
+  if(fx==='bounce'){add('fx-bounce');fxBits(host,['✨','⭐','✨'],8,'sparkle')}
+  if(fx==='hop')add('fx-hop');
+  if(fx==='drive')add('fx-drive');
+  if(fx==='draw')add('fx-draw');
+  if(fx==='tools'){add('fx-bounce');
+    const tools=window.Intl&&Intl.Segmenter?[...new Intl.Segmenter().segment(it.x||'')].map(x=>x.segment):Array.from(it.x||'');
+    tools.forEach((t,k)=>{const s=document.createElement('span');s.className='tool';s.textContent=t;s.style.setProperty('--a',(k*120-90)+'deg');s.style.animationDelay=(.25+k*.15)+'s';el.parentNode.appendChild(s)})}
+  if(fx==='wash'){add('fx-bounce');const w=document.createElement('span');w.className='wash';w.style.background=it.hex;host.appendChild(w);setTimeout(()=>w.remove(),1800)}
+}
+async function countFx(it,host,g){
+  const box=$('.cnt',host); if(!box)return; box.innerHTML='';
+  for(let k=1;k<=it.n;k++){
+    if(!alive(g)||!box.isConnected)return;
+    const s=document.createElement('span');s.className='cobj pop';s.innerHTML=`${it.e}<b>${k}</b>`;box.appendChild(s);
+    tone([PENTA[k-1]],.18,0,.04);
+    await Promise.all([say(NUMZH[k]),new Promise(r=>setTimeout(r,450))]);
+  }
+  if(alive(g)&&box.isConnected)say(it.ph+'！',{en:it.en});
+}
+
+/* ---- picture book screens ---- */
+function goWorld(){
+  GEN++; closeOverlays();
+  stage.innerHTML=bar('百宝书','Picture book')+`<main class="scene-main"><div class="catgrid">
+    ${WORLD_ORDER.map(k=>{const c=WORLD[k];return `<button class="cat" data-k="${k}" style="--cc:${c.c}"><span class="ce">${k==='color'?'🎨':k==='num'?'<span class="numbig" style="font-size:1em">123</span>':k==='shape'?'🔷':c.e}</span>
+      <b>${c.name}</b>${S.settings.en?`<small>${c.en}</small>`:''}<span class="prog">${seenCount(k)} / ${c.items.length}</span></button>`}).join('')}
+  </div></main>`;
+  $$('.cat').forEach(b=>b.onclick=()=>{SFX.pop();say(WORLD[b.dataset.k].name);goCat(b.dataset.k)});
+  say('百宝书里有好多好多东西。你想看什么？');
+}
+function goCat(k){
+  if(k==='body')return goBody();
+  GEN++; closeOverlays();
+  const C_=WORLD[k];
+  stage.innerHTML=bar(C_.name,C_.en,`<button class="ib" id="quiz" aria-label="考考我">🎯</button>`)+`<main class="scene-main"><div class="wgrid2">
+    ${C_.items.map((it,i)=>`<button class="wcard ${isSeen(k,it.zh)?'seen':''}" data-i="${i}" style="--cc:${C_.c}"><span class="wv">${vis(k,it)}</span><b>${it.zh}</b></button>`).join('')}
+  </div></main>`;
+  $('[data-act="home"]').textContent='⬅️';
+  $('[data-act="home"]').onclick=e=>{e.stopPropagation();goWorld()};
+  $$('.wcard').forEach(b=>b.onclick=()=>spot(k,+b.dataset.i));
+  $('#quiz').onclick=()=>catQuiz(k);
+  say(`这是${C_.name}。点一点，听听它们叫什么。看完了，点右上角的靶子，考考自己！`);
+}
+function spot(k,i){
+  const g=++GEN; closeOverlays();
+  const list=WORLD[k].items, it=list[i]; markSeen(k,it.zh);
+  const big=k==='num'?`<span class="numbig">${it.n}</span><div class="cnt"></div>`:vis(k,it);
+  const o=overlay(`<div class="spotcard" style="--cc:${WORLD[k].c}"><div class="rays"></div>
+    <div class="sp-stage"><div class="sp-vis" id="spv">${big}</div></div>
+    <div class="sp-name">${it.zh}</div>${S.settings.en?`<div class="sp-en">${esc(it.en)}</div>`:''}
+    ${it.f||it.ph?`<p class="sp-fact">${esc(it.f||it.ph)}</p>`:''}
+    <div class="row"><button class="ib" id="pv" aria-label="上一个">⬅️</button><button class="ib" id="ag" aria-label="再听">🔊</button><button class="ib" id="nx" aria-label="下一个">➡️</button><button class="ib" id="cl" aria-label="关闭">✖️</button></div></div>`);
+  o.classList.add('spot');
+  const play=()=>{runFx(k,it,$('#spv',o),o,g); if(k==='num')countFx(it,o,g); else say(it.zh,{en:it.en},it.f)};
+  play();
+  $('#ag',o).onclick=play;
+  $('#pv',o).onclick=()=>spot(k,(i-1+list.length)%list.length);
+  $('#nx',o).onclick=()=>spot(k,(i+1)%list.length);
+  $('#cl',o).onclick=()=>{goCat(k)};
+  // swipe left/right
+  let sx=null; o.addEventListener('pointerdown',e=>{sx=e.clientX});o.addEventListener('pointerup',e=>{if(sx==null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>70)spot(k,(i+(dx<0?1:-1)+list.length)%list.length)});
+}
+function optRow(box,opts,isRight,onRight,onWrong){
+  box.innerHTML=opts.map((o,k)=>`<button class="opt" data-k="${k}">${o.html}</button>`).join('');
+  let misses=0,done=false;
+  $$('.opt',box).forEach(b=>b.onclick=()=>{
+    if(done)return; const o=opts[+b.dataset.k];
+    if(isRight(o)){done=true;b.classList.add('right');onRight(o,misses===0,b)}
+    else{misses++;SFX.soft();b.classList.remove('wiggle');void b.offsetWidth;b.classList.add('wiggle');onWrong(o,misses);
+      if(misses>=2){const r=$$('.opt',box).find(x=>isRight(opts[+x.dataset.k]));if(r)r.classList.add('glow')}}
+  });
+}
+function runRounds(key,title,en,n,roundFn,endTitle,back){
+  GEN++; const g=GEN; closeOverlays();
+  stage.innerHTML=bar(title,en)+`<div class="dots" id="dots">${'<i></i>'.repeat(n)}</div><main class="scene-main"><div class="bgame" id="bg"></div></main>`;
+  if(back){$('[data-act="home"]').textContent='⬅️';$('[data-act="home"]').onclick=e=>{e.stopPropagation();back()}}
+  let i=0; const got=[];
+  const again=()=>runRounds(key,title,en,n,roundFn,endTitle,back);
+  const next=()=>{
+    if(!alive(g))return;
+    if(i>=n){summary(endTitle,[],again,got);return}
+    const el=$('#bg'); el.innerHTML='';
+    roundFn({g,i,el,done:(ok,emo)=>{adapt(key,ok);got.push(emo);const d=$$('#dots i')[i];if(d)d.classList.add('on');i++;later(g,1900,next)}});
+  };
+  next();
+}
+function catQuiz(k){
+  const C_=WORLD[k];
+  const T=shuffle(C_.items).slice(0,6);
+  runRounds('q-'+k,'考考我：'+C_.name,'Quiz',6,({g,i,el,done})=>{
+    const t=T[i], m=Math.min(4,2+GD('q-'+k));
+    const opts=shuffle([t,...shuffle(C_.items.filter(x=>x.zh!==t.zh)).slice(0,m)]);
+    el.innerHTML=`<div class="bprompt">哪个是「${t.zh}」？</div><div class="opts" id="o"></div>`;
+    say(`哪个是${t.zh}？`);
+    optRow($('#o',el),opts.map(x=>({...x,html:`<span class="wv">${vis(k,x)}</span>`})),o=>o.zh===t.zh,
+      (o,first,b)=>{(SND[C_.sfx]||SFX.ok)();if(k==='num'||k==='color')SFX.ok();b.querySelector('.wv').classList.add('fx-bounce');markSeen(k,t.zh);say('对啦！',t.zh,{en:t.en});done(first,k==='num'?String(t.n):k==='color'?'🎨':k==='shape'?t.e:(t.e||'🍈'))},
+      o=>say(`这是${o.zh}。`,`再找找${t.zh}。`));
+  },'考完啦，你认识好多'+C_.name+'！',()=>goCat(k));
+}
+
+/* ============================================================
+   智慧乐园 Brain games — 分类、规律、观察、记忆、排序、数数、调色
+   ============================================================ */
+const EMOCATS=['fruit','veg','sea','animal','ride','job'];
+const pool=k=>WORLD[k].items.filter(x=>x.e).map(x=>({...x,cat:k}));
+const allEmo=()=>EMOCATS.flatMap(pool);
+const BRAIN=[
+  {id:'odd',e:'🔍',name:'谁不一样',en:'Odd one out',go:()=>goOdd()},
+  {id:'pat',e:'🔁',name:'接下来是谁',en:'What comes next',go:()=>goPattern()},
+  {id:'shadow',e:'👤',name:'影子配对',en:'Shadow match',go:()=>goShadow()},
+  {id:'miss',e:'🎩',name:'少了谁',en:'What is missing',go:()=>goMissing()},
+  {id:'size',e:'📏',name:'大小排队',en:'Small to big',go:()=>goSize()},
+  {id:'count',e:'🧮',name:'数一数',en:'Count',go:()=>goCount()},
+  {id:'mix',e:'🎨',name:'颜色魔法',en:'Mix colours',go:()=>goMix()},
+];
+function goBrain(){
+  GEN++; closeOverlays();
+  stage.innerHTML=bar('智慧乐园','Brain games')+`<main class="scene-main"><div class="catgrid">
+    ${BRAIN.map((b,k)=>`<button class="cat" data-id="${b.id}" style="--cc:${['#fde3dc','#fdf1d2','#e2f1d8','#d6eef5','#ece6f5','#f6ead2','#fbe3da'][k]}"><span class="ce">${b.e}</span><b>${b.name}</b>${S.settings.en?`<small>${b.en}</small>`:''}${b.id!=='mix'?`<span class="prog">${'★'.repeat(GD(b.id)+1)}${'☆'.repeat(3-GD(b.id))}</span>`:''}</button>`).join('')}
+  </div></main>`;
+  $$('.cat').forEach(b=>b.onclick=()=>{const x=BRAIN.find(y=>y.id===b.dataset.id);SFX.pop();say(x.name);x.go()});
+  say('智慧乐园，动动小脑筋！你想玩哪一个？');
+}
+const backBrain=()=>goBrain();
+
+function goOdd(){
+  runRounds('odd','谁不一样','Odd one out',6,({el,done})=>{
+    const d=GD('odd'); let A,Bc;
+    if(d>=2)[A,Bc]=rnd([['fruit','veg'],['veg','fruit'],['sea','animal'],['animal','sea']]);
+    else[A,Bc]=shuffle(['fruit','veg','sea','animal','ride','job']).slice(0,2);
+    const clean=k=>pool(k).filter(x=>!x.amb);
+    const as=shuffle(clean(A)).slice(0,d>=1?4:3), odd=rnd(clean(Bc));
+    const opts=shuffle([...as,odd]);
+    el.innerHTML=`<div class="bprompt">哪一个和别人不一样？</div><div class="opts" id="o"></div>`;
+    say('哪一个和别人不一样？');
+    optRow($('#o',el),opts.map(x=>({...x,html:`<span class="vemo">${x.e}</span>`})),o=>o.zh===odd.zh,
+      (o,first)=>{SFX.ok();say(`对啦！${as.slice(0,3).map(x=>x.zh).join('、')}都是${WORLD[A].kind}，${odd.zh}是${WORLD[Bc].kind}。`);done(first,odd.e)},
+      o=>say(`${o.zh}是${WORLD[o.cat].kind}。再看看，谁和别人不一样？`));
+  },'你真会动脑筋！',backBrain);
+}
+function goPattern(){
+  runRounds('pat','接下来是谁','What comes next',6,({g,el,done})=>{
+    const d=GD('pat'); const u=rnd([['AB'],['AAB','ABB'],['ABC'],['AABB','ABCC','ABAC']][d]);
+    const letters=[...new Set(u)]; const cat=rnd(['fruit','veg','sea','animal','ride']);
+    const its=shuffle(pool(cat)).slice(0,letters.length+1);
+    const map=Object.fromEntries(letters.map((L,k)=>[L,its[k]])); const extra=its[letters.length];
+    const showN=Math.max(5,u.length*2); let seq=''; while(seq.length<=showN)seq+=u;
+    const ans=map[seq[showN]]; const PITCH={A:523.25,B:659.25,C:783.99};
+    el.innerHTML=`<div class="bprompt">接下来是谁？</div><div class="patrow" id="pr"></div><div class="opts" id="o"></div>`;
+    const pr=$('#pr',el);
+    [...seq.slice(0,showN)].forEach((L,k)=>later(g,k*420,()=>{const s=document.createElement('span');s.className='pcell pop';s.innerHTML=map[L].e;pr.appendChild(s);tone([PITCH[L]],.16,0,.035)}));
+    later(g,showN*420,()=>{pr.insertAdjacentHTML('beforeend','<span class="pcell q" id="pq">?</span>');say('接下来是谁？');
+      const opts=shuffle([...letters.map(L=>map[L]),extra]);
+      optRow($('#o',el),opts.map(x=>({...x,html:`<span class="vemo">${x.e}</span>`})),o=>o.zh===ans.zh,
+        (o,first)=>{const q=$('#pq',el);q.className='pcell pop';q.textContent=ans.e;
+          [...seq.slice(0,showN+1)].forEach((L,k)=>later(g,k*200,()=>tone([PITCH[L]],.14,0,.035)));
+          say('对啦！是'+ans.zh+'！');done(first,ans.e)},
+        o=>say(`是${o.zh}吗？再看看前面是怎么排队的。`));
+    });
+  },'你找到了排队的秘密！',backBrain);
+}
+function goShadow(){
+  runRounds('shadow','影子配对','Shadow match',6,({el,done})=>{
+    const d=GD('shadow'); const cats=d>=3?EMOCATS:EMOCATS.filter(c=>c!=='job');
+    const cat=rnd(cats), t=rnd(pool(cat)), k=Math.min(4,2+d);
+    const others=d>=1?shuffle(pool(cat).filter(x=>x.zh!==t.zh)):shuffle(allEmo().filter(x=>x.cat!==cat));
+    const opts=shuffle([t,...others.slice(0,k)]);
+    el.innerHTML=`<div class="bprompt">这是谁的影子？</div><div class="shadow" id="sh"><span class="vemo">${t.e}</span></div><div class="opts" id="o"></div>`;
+    say('这是谁的影子？');
+    optRow($('#o',el),opts.map(x=>({...x,html:`<span class="vemo">${x.e}</span>`})),o=>o.zh===t.zh,
+      (o,first)=>{$('#sh',el).classList.add('lit');SND.ding();say('是'+t.zh+'！',{en:t.en});done(first,t.e)},
+      o=>say(`这是${o.zh}，影子不一样哦。`));
+  },'你的眼睛真亮！',backBrain);
+}
+function goMissing(){
+  runRounds('miss','少了谁','What is missing',6,({g,el,done})=>{
+    const d=GD('miss'); const n=3+d;
+    const items=[]; for(const x of shuffle(allEmo().filter(x=>x.cat!=='job'))){if(items.length>=n)break;if(!items.some(y=>y.e===x.e))items.push(x)}
+    const gone=rnd(items);
+    el.innerHTML=`<div class="bprompt" id="bp">仔细看，记住它们！</div><div class="shelf" id="sh">${items.map(x=>`<span class="slotx" data-z="${x.zh}"><span class="vemo">${x.e}</span></span>`).join('')}<div class="curtain" id="cur"><i></i><i></i></div></div><div class="opts" id="o"><button class="cta" id="ready">记住了 👀</button></div>`;
+    say('仔细看，记住它们！',items.map(x=>x.zh).join('，'));
+    $('#ready',el).onclick=()=>{
+      const cur=$('#cur',el); cur.classList.add('close'); SND.swish(); say('');
+      later(g,1000,()=>{
+        const slot=$(`.slotx[data-z="${gone.zh}"]`,el); if(d>=2)slot.remove(); else slot.classList.add('empty');
+        cur.classList.remove('close'); $('#bp',el).textContent='谁不见了？'; say('谁不见了？');
+        const outside=shuffle(allEmo().filter(x=>!items.some(y=>y.e===x.e)&&x.cat!=='job')).slice(0,2);
+        const present=d>=2?shuffle(items.filter(x=>x!==gone)).slice(0,1):[];
+        const opts=shuffle([gone,...outside,...present]);
+        optRow($('#o',el),opts.map(x=>({...x,html:`<span class="vemo">${x.e}</span>`})),o=>o.zh===gone.zh,
+          (o,first)=>{if(d<2){slot.classList.remove('empty');slot.classList.add('pop')}SFX.ok();say(`对啦，${gone.zh}不见了！`);done(first,gone.e)},
+          o=>say(items.includes(o)?`${o.zh}还在架子上呢。`:`${o.zh}刚才不在这里哦。`));
+      });
+    };
+  },'你的记性真好！',backBrain);
+}
+function goSize(){
+  runRounds('size','大小排队','Small to big',6,({el,done})=>{
+    const d=GD('size'); const n=3+Math.min(d,2); const it=rnd(allEmo().filter(x=>x.cat!=='job'));
+    const desc=d>=2&&Math.random()<.5;
+    const sizes=Array.from({length:n},(_,k)=>Math.round(40+k*(100/(n-1))));
+    const order=desc?[...sizes].reverse():sizes;
+    const word=desc?'从大到小':'从小到大';
+    el.innerHTML=`<div class="bprompt">${word}，排一排！</div><div class="field" id="f">${shuffle(sizes).map(s=>`<button class="sz" data-s="${s}" style="font-size:${s}px">${it.e}</button>`).join('')}</div><div class="line" id="ln"></div>`;
+    say(word+'，把'+it.zh+'排一排！');
+    let k=0,misses=0;
+    $$('.sz',el).forEach(b=>b.onclick=()=>{
+      if(+b.dataset.s===order[k]){tone([PENTA[k]],.2,0,.04);$('#ln',el).appendChild(b);b.disabled=true;k++;
+        if(k===n){SFX.ok();say('排好啦！'+word+'，一个一个排得整整齐齐。');done(misses===0,it.e)}}
+      else{misses++;SFX.soft();b.classList.remove('wiggle');void b.offsetWidth;b.classList.add('wiggle');say(desc?'还有更大的哦。':'还有更小的哦。')}
+    });
+  },'排得真整齐！',backBrain);
+}
+function goCount(){
+  runRounds('count','数一数','Count',6,({el,done})=>{
+    const d=GD('count'); const [lo,hi]=[[1,5],[3,7],[5,9],[6,10]][d]; const n=lo+Math.floor(Math.random()*(hi-lo+1));
+    const it=rnd([...pool('fruit'),...pool('veg')]);
+    const cells=shuffle([...Array(15).keys()]).slice(0,n);
+    el.innerHTML=`<div class="bprompt">有几个${it.zh}？</div><div class="cfield" id="cf">${cells.map(c=>`<button class="cobj2" style="left:${(c%5)*19+3+Math.random()*5}%;top:${Math.floor(c/5)*32+4+Math.random()*8}%">${it.e}</button>`).join('')}</div><div class="opts" id="o"></div>`;
+    say(`有几个${it.zh}？一个一个点一点，数一数。`);
+    let counted=0;
+    $$('.cobj2',el).forEach(b=>b.onclick=()=>{if(b.dataset.n)return;counted++;b.dataset.n=counted;b.insertAdjacentHTML('beforeend',`<b>${counted}</b>`);tone([PENTA[counted-1]],.16,0,.04);say(NUMZH[counted])});
+    const vals=new Set([n]); for(const v of shuffle([n-1,n+1,n+2,n-2]))if(v>=1&&v<=10&&vals.size<3)vals.add(v);
+    optRow($('#o',el),shuffle([...vals]).map(v=>({v,html:`<span class="nopt">${v}<small>${NUMZH[v]}</small></span>`})),o=>o.v===n,
+      (o,first)=>{SFX.ok();say(`对啦，${n===2?'两':NUMZH[n]}个${it.zh}！`);done(first,it.e)},
+      o=>say(`是${NUMZH[o.v]}个吗？一个一个点一点，再数一数。`));
+  },'你数得真仔细！',backBrain);
+}
+const PAINTS={red:['红色','#e5484d'],yellow:['黄色','#f5c518'],blue:['蓝色','#3b82f6'],white:['白色','#ffffff'],black:['黑色','#2b2b2b']};
+const MIX={'red+yellow':['橙色','orange','#f28c28','🍊'],'blue+yellow':['绿色','green','#46a758','🥦'],'blue+red':['紫色','purple','#8e4ec6','🍇'],
+  'red+white':['粉色','pink','#f38bb5','🌸'],'blue+white':['浅蓝色','light blue','#9cc9f5','🧊'],'black+white':['灰色','grey','#9aa0a6','🐘']};
+function goMix(){
+  GEN++; const g=GEN; closeOverlays();
+  const w=WS(); w.mix=w.mix||[];
+  stage.innerHTML=bar('颜色魔法','Mix colours')+`<main class="scene-main"><div class="mixview">
+    <div class="mixfound">${Object.entries(MIX).map(([k,m])=>`<span class="mf ${w.mix.includes(k)?'on':''}" style="--c:${m[2]}">${w.mix.includes(k)?m[3]:'?'}</span>`).join('')}</div>
+    <div class="bowl" id="bowl"><span class="paint" id="paint"></span><span class="bres" id="bres"></span></div>
+    <div class="mixname" id="mn">选两种颜色，倒进碗里</div>
+    <div class="pots">${Object.entries(PAINTS).map(([k,p])=>`<button class="pot2" data-k="${k}" style="--c:${p[1]}" aria-label="${p[0]}"><span></span><b>${p[0]}</b></button>`).join('')}</div>
+  </div></main>`;
+  $('[data-act="home"]').textContent='⬅️';$('[data-act="home"]').onclick=e=>{e.stopPropagation();goBrain()};
+  let pick=[];
+  const paint=$('#paint'),bres=$('#bres');
+  $$('.pot2').forEach(b=>b.onclick=()=>{
+    if(pick.length>=2)return; const k=b.dataset.k; pick.push(k); SND.pop(); say(PAINTS[k][0]);
+    b.classList.remove('pour');void b.offsetWidth;b.classList.add('pour');
+    bres.textContent='';
+    paint.style.background=pick.length===1?PAINTS[k][1]:`conic-gradient(${PAINTS[pick[0]][1]} 0 25%,${PAINTS[pick[1]][1]} 0 50%,${PAINTS[pick[0]][1]} 0 75%,${PAINTS[pick[1]][1]} 0)`;
+    paint.className='paint fill';
+    if(pick.length===2)later(g,700,()=>{
+      paint.classList.add('swirl'); SND.gliss();
+      later(g,1500,()=>{
+        const key=[...pick].sort().join('+'); const [a,b2]=pick;
+        let name,hex,emo,en,isNew=false;
+        if(a===b2){name=PAINTS[a][0];hex=PAINTS[a][1];emo='';en=''}
+        else if(MIX[key]){[name,en,hex,emo]=MIX[key];if(!w.mix.includes(key)){w.mix.push(key);isNew=true;save()}}
+        else{const h=x=>[1,3,5].map(i=>parseInt(PAINTS[x][1].slice(i,i+2),16));const m=h(a).map((v,i)=>Math.round((v+h(b2)[i])/2));hex='#'+m.map(v=>v.toString(16).padStart(2,'0')).join('');name='一种新的颜色';emo='✨';en=''}
+        paint.className='paint fill';paint.style.background=hex;bres.textContent=emo;bres.className='bres pop';
+        $('#mn').innerHTML=`${PAINTS[a][0]} + ${PAINTS[b2][0]} = <b style="color:${hex==='#ffffff'?'var(--ink)':hex}">${name}</b>`;
+        if(isNew){petals();SFX.magic()}else SFX.ok();
+        say(a===b2?`${PAINTS[a][0]}加${PAINTS[a][0]}，还是${name}。`:`${PAINTS[a][0]}加${PAINTS[b2][0]}，变成了${name}！`,...(en?[{en}]:[]));
+        pick=[];
+        if(isNew)later(g,2600,()=>goMix());
+      });
+    });
+  });
+  say(w.mix.length?`你已经发现了${w.mix.length}种颜色。再试试别的！`:'欢迎来到颜色魔法！选两种颜色倒进碗里，看看会变成什么颜色！');
+}
+
+/* ============================================================
+   身体地图 My body — 从头到脚，外面和里面
+   ============================================================ */
+WORLD.body={name:'我的身体',en:'My body',e:'🧍',c:'#fbe3da',sfx:'pop',fx:'bounce',kind:'身体',items:[
+  it_('头发','hair','💇','头发长在头上，要常常梳一梳。',{p:'hair',ch:'头'}),
+  it_('眉毛','eyebrows',null,'眉毛在眼睛上面，可以挡住汗水。',{p:'brow'}),
+  it_('眼睛','eyes','👀','眼睛用来看东西。看一会儿屏幕，就要看看远处，让眼睛休息。',{p:'eye',ch:'目'}),
+  it_('耳朵','ears','👂','耳朵用来听声音。',{p:'ear',ch:'耳'}),
+  it_('鼻子','nose','👃','鼻子用来闻味道，还可以呼吸。',{p:'nose'}),
+  it_('嘴巴','mouth','👄','嘴巴用来吃东西、说话和唱歌。',{p:'mouth',ch:'口'}),
+  it_('牙齿','teeth','🦷','牙齿咬碎食物。早上晚上都要刷牙！',{p:'mouth',ch:'牙',noquiz:1}),
+  it_('脸','face','🙂','开心的时候，脸上会笑。',{p:'face'}),
+  it_('脖子','neck',null,'脖子连着头和身体，可以转来转去。',{p:'neck'}),
+  it_('肩膀','shoulders',null,'肩膀可以背书包。',{p:'shoulder'}),
+  it_('手臂','arms','💪','手臂可以抱抱爸爸妈妈。',{p:'arm'}),
+  it_('手','hands','🖐️','手可以拿东西、画画。吃饭前要洗手！',{p:'hand',ch:'手'}),
+  it_('肚子','tummy',null,'吃饱了，肚子圆圆的。',{p:'belly'}),
+  it_('腿','legs','🦵','腿可以走路、跑步、跳跳。',{p:'leg'}),
+  it_('膝盖','knees',null,'膝盖弯一弯，就可以蹲下来。',{p:'knee'}),
+  it_('脚','feet','🦶','脚可以踢球。每只脚有五个脚趾头。',{p:'foot',ch:'足'}),
+  it_('大脑','brain','🧠','大脑在头里面，帮我们想事情、记东西。',{p:'brain',inside:1}),
+  it_('心脏','heart','🫀','心脏扑通扑通跳，把血送到全身。',{p:'heart',inside:1,ch:'心'}),
+  it_('肺','lungs','🫁','肺帮我们呼吸，吸进新鲜的空气。',{p:'lung',inside:1}),
+  it_('胃','stomach',null,'吃下去的食物，会先到胃里。',{p:'stomach',inside:1}),
+  it_('骨头','bones','🦴','骨头硬硬的，撑起我们的身体。多喝牛奶，骨头长得壮。',{p:'bone',inside:1}),
+]};
+WORLD_ORDER.splice(WORLD_ORDER.indexOf('animal')+1,0,'body');
+
+function bodySVG(mode,hl){
+  const H=id=>`data-p="${id}" class="bp${hl===id?' hl':''}"`;
+  const skin='#f7d2b5',skin2='#efbf9c',shirt='#8fc7e8',shorts='#6f5a8e',shoe='#e5806b',hair='#5a3d2b',T='fill="transparent"';
+  const out=`<g ${H('leg')}><rect x="72" y="240" width="22" height="80" rx="10" fill="${skin}"/><rect x="106" y="240" width="22" height="80" rx="10" fill="${skin}"/></g>
+  <g ${H('knee')}><circle cx="83" cy="282" r="9" fill="${skin2}"/><circle cx="117" cy="282" r="9" fill="${skin2}"/><circle cx="83" cy="282" r="13" ${T}/><circle cx="117" cy="282" r="13" ${T}/></g>
+  <g ${H('foot')}><ellipse cx="80" cy="326" rx="18" ry="10" fill="${shoe}"/><ellipse cx="120" cy="326" rx="18" ry="10" fill="${shoe}"/></g>
+  <g ${H('arm')}><rect x="38" y="128" width="20" height="82" rx="10" fill="${skin}" transform="rotate(10 48 128)"/><rect x="142" y="128" width="20" height="82" rx="10" fill="${skin}" transform="rotate(-10 152 128)"/></g>
+  <g ${H('hand')}><circle cx="34" cy="214" r="12" fill="${skin}"/><circle cx="166" cy="214" r="12" fill="${skin}"/><circle cx="34" cy="214" r="16" ${T}/><circle cx="166" cy="214" r="16" ${T}/></g>
+  <rect x="66" y="208" width="68" height="40" rx="10" fill="${shorts}"/>
+  <rect x="62" y="122" width="76" height="98" rx="22" fill="${shirt}"/>
+  <g ${H('shoulder')}><circle cx="70" cy="134" r="13" fill="${shirt}" stroke="#74aed2" stroke-width="2"/><circle cx="130" cy="134" r="13" fill="${shirt}" stroke="#74aed2" stroke-width="2"/></g>
+  <g ${H('belly')}><ellipse cx="100" cy="190" rx="25" ry="18" fill="#a9d6ef"/><circle cx="100" cy="192" r="2.5" fill="#6aa7cc"/></g>
+  <rect ${H('neck')} x="89" y="104" width="22" height="22" rx="6" fill="${skin2}"/>
+  <g ${H('ear')}><ellipse cx="56" cy="72" rx="9" ry="13" fill="${skin2}"/><ellipse cx="144" cy="72" rx="9" ry="13" fill="${skin2}"/><ellipse cx="54" cy="72" rx="13" ry="17" ${T}/><ellipse cx="146" cy="72" rx="13" ry="17" ${T}/></g>
+  <circle ${H('face')} cx="100" cy="70" r="44" fill="${skin}"/>
+  <circle cx="76" cy="86" r="7" fill="#f4b3a8" opacity=".6" pointer-events="none"/><circle cx="124" cy="86" r="7" fill="#f4b3a8" opacity=".6" pointer-events="none"/>
+  <path ${H('hair')} d="M56 66C54 34 76 20 100 20s46 14 44 46c-10-14-26-20-44-20S66 52 56 66Z" fill="${hair}"/>
+  <g ${H('brow')}><path d="M76 55q8-5 16 0" stroke="${hair}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M108 55q8-5 16 0" stroke="${hair}" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="72" y="48" width="24" height="11" ${T}/><rect x="104" y="48" width="24" height="11" ${T}/></g>
+  <g ${H('eye')}><circle cx="84" cy="68" r="6" fill="#3d3a50"/><circle cx="116" cy="68" r="6" fill="#3d3a50"/><circle cx="86" cy="66" r="2" fill="#fff"/><circle cx="118" cy="66" r="2" fill="#fff"/><circle cx="84" cy="69" r="10" ${T}/><circle cx="116" cy="69" r="10" ${T}/></g>
+  <g ${H('nose')}><ellipse cx="100" cy="81" rx="5" ry="6" fill="#eaa98a"/><circle cx="100" cy="81" r="9" ${T}/></g>
+  <g ${H('mouth')}><path d="M86 93q14 15 28 0Z" fill="#c9505c"/><path d="M88 94h24v3H88z" fill="#fff"/><rect x="84" y="90" width="32" height="15" ${T}/></g>`;
+  const inside=`<g opacity=".38" pointer-events="none">${out.replace(/data-p="[a-z]+" class="bp[^"]*"/g,'')}</g>
+  <g ${H('bone')} stroke="#ffffff" stroke-width="6" stroke-linecap="round" fill="none"><line x1="83" y1="248" x2="83" y2="314"/><line x1="117" y1="248" x2="117" y2="314"/><line x1="47" y1="136" x2="36" y2="202"/><line x1="153" y1="136" x2="164" y2="202"/><path d="M84 132h32M100 128v80"/><path d="M86 146q14 4 28 0M86 158q14 4 28 0M86 170q14 4 28 0"/></g>
+  <g ${H('brain')}><path d="M66 52c0-20 16-30 34-30s34 10 34 30c0 11-9 17-34 17S66 63 66 52Z" fill="#f6b3c3" stroke="#e38aa2" stroke-width="2"/><path d="M100 24v42M84 32q7 9 0 18M116 32q-7 9 0 18M76 50q6 4 12 0M112 50q6 4 12 0" stroke="#e38aa2" stroke-width="2" fill="none"/></g>
+  <g ${H('lung')}><ellipse cx="84" cy="154" rx="15" ry="23" fill="#f9c3cb" stroke="#ef9aa8" stroke-width="2"/><ellipse cx="116" cy="154" rx="15" ry="23" fill="#f9c3cb" stroke="#ef9aa8" stroke-width="2"/></g>
+  <path ${H('heart')} d="M106 148c-6-6-15-2-15 5 0 8 9 13 15 18 6-5 15-10 15-18 0-7-9-11-15-5Z" fill="#e5484d" stroke="#b9333a" stroke-width="2"/>
+  <path ${H('stomach')} d="M92 182c8-6 26-4 26 10s-12 18-24 15c-7-2-8-8-2-10 6-2 7-8 0-15Z" fill="#f2c26b" stroke="#d9a440" stroke-width="2"/>`;
+  return `<svg class="bodysvg" viewBox="0 0 200 345" role="img" aria-label="身体">${mode==='in'?inside:out}</svg>`;
+}
+function goBody(mode,sel){
+  GEN++; closeOverlays();
+  mode=mode||'out';
+  const C_=WORLD.body, list=C_.items.filter(x=>!!x.inside===(mode==='in'));
+  stage.innerHTML=bar('我的身体','My body',`<button class="ib" id="quiz" aria-label="指一指">🎯</button>`)+`<main class="scene-main"><div class="bodyview">
+    <div class="bodymap" id="map">${bodySVG(mode,null)}</div>
+    <div class="bodyside">
+      <div class="seg"><button class="pill ${mode==='out'?'on':''}" id="m-out">🧍 外面</button><button class="pill ${mode==='in'?'on':''}" id="m-in">🫀 里面</button></div>
+      <div class="bcap" id="cap"><b>点一点身体</b><p>${mode==='out'?'从头到脚，看看每个地方叫什么。':'看看身体里面藏着什么。'}</p></div>
+      <div class="bchips">${list.map(x=>`<button class="pill bchip" data-z="${x.zh}">${x.e||'•'} ${x.zh}</button>`).join('')}</div>
+    </div></div></main>`;
+  $('[data-act="home"]').textContent='⬅️';$('[data-act="home"]').onclick=e=>{e.stopPropagation();goWorld()};
+  const show=x=>{
+    markSeen('body',x.zh); SND.pop();
+    $('#map').innerHTML=bodySVG(mode,x.p);
+    $('#cap').innerHTML=`<div class="capname">${x.e?`<span>${x.e}</span>`:''}<b>${x.zh}</b>${S.settings.en?`<small>${esc(x.en)}</small>`:''}</div><p>${esc(x.f)}</p>
+      ${x.ch?`<button class="capch" id="capch">${TZ(x.ch)}<span>认识这个字：「${x.ch}」</span></button>`:''}`;
+    if($('#capch'))$('#capch').onclick=()=>{expose(x.ch);say(x.ch,B(x.ch)?B(x.ch).w:'')};
+    $$('.bchip').forEach(b=>b.classList.toggle('on',b.dataset.z===x.zh));
+    say(x.zh,{en:x.en},x.f);
+  };
+  $('#map').addEventListener('click',e=>{const p=e.target.closest('[data-p]');if(!p)return;const x=list.find(y=>y.p===p.dataset.p);if(x)show(x)});
+  $$('.bchip').forEach(b=>b.onclick=()=>show(list.find(y=>y.zh===b.dataset.z)));
+  $('#m-out').onclick=()=>goBody('out'); $('#m-in').onclick=()=>goBody('in');
+  $('#quiz').onclick=bodyQuiz;
+  if(sel)show(list.find(y=>y.zh===sel));
+  else say(mode==='out'?'这是我的身体。从头到脚，点一点，听听每个地方叫什么。':'这是身体的里面。点一点，看看大脑、心脏、肺、胃和骨头。');
+}
+function bodyQuiz(){
+  const out=WORLD.body.items.filter(x=>!x.inside&&!x.noquiz), inn=WORLD.body.items.filter(x=>x.inside);
+  const d=GD('q-body'); const T=shuffle(d>=2?[...shuffle(out).slice(0,4),...shuffle(inn).slice(0,2)]:shuffle(out).slice(0,6));
+  runRounds('q-body','指一指','Point to it',6,({i,el,done})=>{
+    const t=T[i], mode=t.inside?'in':'out';
+    el.innerHTML=`<div class="bprompt">「${t.zh}」在哪里？</div><div class="bodymap quizmap" id="qm">${bodySVG(mode,null)}</div>`;
+    say(`${t.zh}在哪里？点一点！`);
+    let misses=0,fin=false;
+    $('#qm',el).addEventListener('click',e=>{
+      if(fin)return; const p=e.target.closest('[data-p]'); if(!p)return;
+      if(p.dataset.p===t.p){fin=true;$('#qm',el).innerHTML=bodySVG(mode,t.p);SFX.ok();markSeen('body',t.zh);
+        say('对啦！这是'+t.zh+'。',t.inside?'':'你也摸摸自己的'+t.zh+'！');done(misses===0,t.e||'🧍')}
+      else{misses++;SFX.soft();const w=WORLD.body.items.find(y=>y.p===p.dataset.p&&!!y.inside===!!t.inside);
+        say(w?`这是${w.zh}。`:'',`再找找${t.zh}。`);
+        if(misses>=2){$('#qm',el).innerHTML=bodySVG(mode,t.p);const h=$('#qm .hl',el);if(h)h.classList.add('hint')}}
+    });
+  },'你认识好多身体部位！',()=>goBody());
+}
+
 /* ---------- 家长区 Parent corner ---------- */
 let parentTab='progress';
 function goParent(tab){
@@ -1093,6 +1752,8 @@ function parentProgress(body){
     <div class="kpi"><b>${mastered}</b><span>已开花（多次隔天答对）</span></div>
     <div class="kpi"><b>${td}<small style="font-size:16px"> 分钟</small></b><span>今天玩了</span></div>
     <div class="kpi"><b>${Math.round(week/60)}<small style="font-size:16px"> 分钟</small></b><span>最近 7 天 · 连续 ${streak} 天</span></div></div>
+    <h4>百宝书 · 看过的图</h4><p>${WORLD_ORDER.map(k=>`${WORLD[k].name} ${seenCount(k)}/${WORLD[k].items.length}`).join(' · ')}</p>
+    <h4>智慧乐园 · 当前难度（★ 越多越难，会自动调整）</h4><p>${BRAIN.filter(b=>b.id!=='mix').map(b=>`${b.name} ${'★'.repeat(GD(b.id)+1)}`).join(' · ')} · 颜色魔法发现 ${(WS().mix||[]).length}/${Object.keys(MIX).length}</p>
     <h4>需要多陪练的字</h4><p>${hard.length?hard.map(c=>`<b style="font-size:22px">${c}</b>（${B(c).w}）`).join('、')+'。可以在生活里指给孩子看：路牌、包装、绘本。':'还没有明显的难字。'}</p>
     <h4>每个字的状态</h4><p class="cite">花的阶段：🌰 刚认识 → 🌱 → 🌿 → 🌷 → 🌸 → 🌻。只有隔一段时间再答对，花才会长大，这样记得更牢。</p>
     <div class="tbl"><table><thead><tr><th>字</th><th>拼音</th><th>词语</th><th>English</th><th>阶段</th><th>答对/答错</th><th>描写</th><th>下次复习</th><th>最近</th></tr></thead><tbody>
@@ -1167,6 +1828,20 @@ const WHY_HTML=`
 <ul><li>美国儿科学会（AAP）建议 2–5 岁每天高质量屏幕时间约 1 小时以内，并且大人陪同；WHO（2019）对 3–4 岁的建议同样是不超过 1 小时。</li>
 <li>默认每次 15 分钟。时间到了不会中途打断，而是在一轮结束后让圆圆"困了"，孩子有一个温和、可预期的结束。家长可以按住按钮延长。</li></ul>
 
+<h4>10. 百宝书：分类，是孩子理解世界的方式</h4>
+<ul><li>4–6 岁是词汇和"类别概念"快速增长的阶段。把东西按类别学（水果、蔬菜、交通工具、职业），比零散地学更容易形成知识网络，也更容易迁移到新东西上（"这个我没见过，但它有轮子，应该是交通工具"）。</li>
+<li>每样东西都配一句"它是做什么的 / 有什么特点"（"消防员勇敢地去灭火""鱿鱼会喷墨汁"），比只说名字记得更深（加工深度效应，Craik & Lockhart 1972）。</li>
+<li>数字页用"两条鱼、四只瓢虫、五颗星星"，顺带教量词；颜色、形状都配一个生活里的例子。马来西亚本地水果（榴莲、红毛丹、山竹）也在里面。</li>
+<li>「我的身体」是一张可以点的身体图，从头到脚，还能切换看里面的器官。「指一指」游戏答对后会说"你也摸摸自己的鼻子"，把屏幕上的学习连回孩子自己的身体（具身学习）。</li>
+<li>音效和动画只在孩子点了以后出现，跟内容有关（海洋朋友有泡泡、交通工具有引擎声），不会自己闪个不停。</li></ul>
+
+<h4>11. 智慧乐园：练的是以后上学最用得上的几种能力</h4>
+<ul><li><b>接下来是谁（规律）</b>：Rittle-Johnson 等（2017，《Child Development》）发现，学前孩子找规律的能力能预测之后几年的数学成绩。规律从 AB 到 AAB、ABC 逐步变难，每个东西还有自己的音高，规律也能"听"出来。</li>
+<li><b>少了谁（工作记忆）</b>和<b>大小排队（排序）</b>：都属于执行功能。Diamond & Lee（2011，《Science》）的综述指出，4–12 岁孩子的执行功能和入学准备、之后的学业关系密切，而且可以通过游戏和活动来练。</li>
+<li><b>数一数</b>：每点一个就读一个数，练"一个对一个"地数（Gelman & Gallistel 的计数原则），而不是背数字。</li>
+<li><b>谁不一样 / 影子配对</b>：练分类推理和视觉辨别。答对后圆圆会说出理由（"苹果、香蕉、葡萄都是水果，胡萝卜是蔬菜"），把"感觉对了"变成"说得出为什么"。</li>
+<li><b>颜色魔法</b>：完全自由的探索，没有对错，任何两种颜色都能混出东西来。</li></ul>
+
 <h3>陪玩建议（每天 10–15 分钟就够）</h3>
 <ul>
 <li><b>陪着玩，比放着玩效果好得多。</b>坐在旁边，孩子答对时说出具体的事："你刚才看出了「日」和「目」不一样！"</li>
@@ -1174,9 +1849,10 @@ const WHY_HTML=`
 <li><b>让孩子当小老师。</b>请孩子教你「魔法锅」里的配方，讲给别人听是最好的复习。</li>
 <li><b>先浇花，再玩别的。</b>每天第一件事去「我的花园」给口渴的花浇水，就是完成当天的复习。</li>
 <li><b>看「需要多陪练的字」。</b>不用刻意补课，生活里多指几次就好。</li>
+<li><b>百宝书适合一起聊。</b>看到「消防员」可以问："你长大想做什么？"看到「榴莲」可以问："你喜欢吃吗？"一句对话，比多看十张图更有用。</li>
 <li><b>不追求速度。</b>一个星期稳定认识 5–10 个新字，就是很好的节奏。</li>
 </ul>
-<p class="cite">参考：Paivio (1986) Mental Representations; Roediger & Karpicke (2006) Psychological Science; Cepeda et al. (2006) Psychological Bulletin; Wilson, Shenhav, Straccia & Cohen (2019) Nature Communications; McBride-Chang et al. (2003, 2005) 语素意识与中文阅读; Hirsh-Pasek et al. (2015) Psychological Science in the Public Interest; Mueller & Dweck (1998) JPSP; Lepper, Greene & Nisbett (1973) JPSP; Tan et al. (2005) PNAS（中文阅读与书写）; AAP (2016) Media and Young Minds; WHO (2019) 5 岁以下儿童身体活动、久坐和睡眠指南; 教育部《3–6 岁儿童学习与发展指南》(2012)。</p>
+<p class="cite">参考：Paivio (1986) Mental Representations; Roediger & Karpicke (2006) Psychological Science; Cepeda et al. (2006) Psychological Bulletin; Wilson, Shenhav, Straccia & Cohen (2019) Nature Communications; McBride-Chang et al. (2003, 2005) 语素意识与中文阅读; Hirsh-Pasek et al. (2015) Psychological Science in the Public Interest; Mueller & Dweck (1998) JPSP; Lepper, Greene & Nisbett (1973) JPSP; Tan et al. (2005) PNAS（中文阅读与书写）; Craik & Lockhart (1972) JVLVB; Rittle-Johnson, Fyfe, Hofer & Farran (2017) Child Development; Diamond & Lee (2011) Science; Gelman & Gallistel (1978) The Child's Understanding of Number; AAP (2016) Media and Young Minds; WHO (2019) 5 岁以下儿童身体活动、久坐和睡眠指南; 教育部《3–6 岁儿童学习与发展指南》(2012)。</p>
 `;
 
 /* ---------- boot ---------- */
