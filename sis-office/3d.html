@@ -230,6 +230,31 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 #ctl button.on{background:#3a2a55;color:#ffb347}
 @media (max-width:640px){#ctl{top:calc(env(safe-area-inset-top,0px) + 12px)}}
 #ed-prev canvas{display:block}
+#tut{position:fixed;inset:0;z-index:25;pointer-events:none}
+#tut.away .tut-card,#tut.away .tut-ring,#tut.away .tut-g{display:none}
+.tut-card{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);width:min(400px,calc(100% - 32px));box-sizing:border-box;background:var(--ink);color:#fff;border-radius:18px;padding:16px 18px;box-shadow:0 16px 40px rgba(0,0,0,.35);pointer-events:auto;animation:tin .25s ease-out}
+@media (max-width:640px){.tut-card{bottom:calc(env(safe-area-inset-bottom,0px) + 92px)}}
+.tut-card b{display:block;font-size:16px;margin:10px 0 4px}
+.tut-card p{margin:0 0 12px;font-size:13px;line-height:1.65;color:rgba(255,255,255,.82)}
+.tut-dots{display:flex;gap:5px}
+.tut-dots i{width:18px;height:4px;border-radius:2px;background:rgba(255,255,255,.25)}
+.tut-dots i.on{background:#f2c56b}
+.tut-row{display:flex;justify-content:space-between;gap:8px}
+.tut-card .btn.ghost{color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.25)}
+.tut-ring{position:fixed;border:3px solid #f2c56b;border-radius:999px;box-shadow:0 0 0 9999px rgba(10,14,22,.45),0 0 18px rgba(242,197,107,.8);animation:tpulse 1.4s ease-in-out infinite}
+@keyframes tpulse{50%{box-shadow:0 0 0 9999px rgba(10,14,22,.45),0 0 30px rgba(242,197,107,1)}}
+.tut-g{position:absolute;left:50%;top:42%;width:120px;height:120px;transform:translate(-50%,-50%)}
+.tut-g span{position:absolute;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 4px 16px rgba(0,0,0,.35);left:43px;top:43px}
+.tut-g.pan span:first-child{animation:gpan 1.6s ease-in-out infinite}
+.tut-g.pan span+span{display:none}
+@keyframes gpan{0%,100%{transform:translateX(-40px)}50%{transform:translateX(40px)}}
+.tut-g.pinch span:first-child{animation:gp1 1.6s ease-in-out infinite}
+.tut-g.pinch span+span{animation:gp2 1.6s ease-in-out infinite}
+@keyframes gp1{0%,100%{transform:translate(-8px,8px)}50%{transform:translate(-38px,38px)}}
+@keyframes gp2{0%,100%{transform:translate(8px,-8px)}50%{transform:translate(38px,-38px)}}
+.tut-g.wheel span:first-child{border-radius:18px;width:38px;height:56px;left:41px;top:32px}
+.tut-g.wheel span+span{width:6px;height:12px;border-radius:3px;background:#1c2333;left:57px;top:42px;box-shadow:none;animation:gw 1.2s ease-in-out infinite}
+@keyframes gw{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
 #err{position:fixed;inset:0;display:grid;place-items:center;color:#fff;text-align:center;padding:24px;font-size:14px;z-index:80;background:var(--night)}
 </style>
 
@@ -259,6 +284,15 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
   <button type="button" id="c-fest" class="t" aria-label="节日装饰" aria-pressed="false">节日</button>
 </div>
 <div id="hint" class="hud">点房间直接打开 · 拖动平移 · 右键拖动旋转 · 滚轮缩放</div>
+<div id="tut" hidden>
+  <div class="tut-ring" id="tut-ring" hidden></div>
+  <div class="tut-g" id="tut-g" hidden><span></span><span></span></div>
+  <div class="tut-card" role="dialog" aria-labelledby="tut-t">
+    <div class="tut-dots"><i></i><i></i><i></i><i></i></div>
+    <b id="tut-t"></b><p id="tut-b"></p>
+    <div class="tut-row"><button type="button" class="btn ghost sm" id="tut-skip">跳过引导</button><button type="button" class="btn primary sm" id="tut-next">下一步</button></div>
+  </div>
+</div>
 <div id="toasts" aria-live="polite"></div>
 <section id="dialog" hidden role="dialog" aria-labelledby="dlg-name">
   <canvas id="dlg-cv"></canvas>
@@ -861,7 +895,9 @@ function openMe(){
       <div style="font-weight:700;font-size:16px">${esc(S.name||'新同事')}</div><div class="note">${ROLE[S.role]||''} · LV ${level()}</div>
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
     <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${S.deals||0}</b><span>成交登记</span></div></div>
-    <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button></div>`;
+    <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button><button type="button" class="btn" data-act="tut-again">重看新手引导</button></div>
+    <div><h3>画质</h3><div class="group" role="group" aria-label="画质">${[['auto','自动'],['low','流畅'],['medium','标准'],['high','精美']].map(([v,l]) => `<button type="button" class="chip sm" data-act="quality" data-v="${v}" aria-pressed="${(S.quality||'auto')===v}">${l}</button>`).join('')}</div>
+    <p class="note" style="margin-top:6px">手机发烫或卡顿时选「流畅」。「自动」会按手机表现调整，现在是「${QNAME[qLevel]}」。</p></div>`;
   openSheet({title:'我的工位', sub:'个人资料与进度', body, kind:'me'});
 }
 
@@ -989,7 +1025,7 @@ sheet.addEventListener('click', async e => {
       S.look=ed.look; S.name=(ed.name||'').trim()||'新同事'; S.role=ed.role; save();
       player.look=S.look; rebuildPlayer(); sheetLocked=false; closeSheet(); ed=null;
       toast(first?'欢迎加入 SIS 办公室':'造型已保存');
-      if (first) setTimeout(() => { ACTS.lisa(); if (matchMedia('(pointer:coarse)').matches) setTimeout(() => toast('拖动地图浏览 · 点任意房间直接打开'), 1500); }, 400);
+      if (first) setTimeout(() => startTutorial(() => ACTS.lisa()), 400);
       break; }
     case 'ptag': ptag=v; setBody(boardHTML()); break;
     case 'filter': bf=v; setBody(boardHTML()); break;
@@ -1039,7 +1075,11 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const keys = new Set();
 if (!window.THREE){ $('#err').hidden=false; return; }
 let renderer;
-try { renderer = new THREE.WebGLRenderer({antialias:true}); } catch(e){ $('#err').hidden=false; return; }
+// Quality tier: picked from the device's cores/memory, then lowered automatically if frames run slow.
+const QNAME = {low:'流畅', medium:'标准', high:'精美'};
+function autoLevel(){ const hc=navigator.hardwareConcurrency||8, mem=navigator.deviceMemory||8; if (hc<=4 || mem<=3) return 'low'; return coarse ? 'medium' : 'high'; }
+let qLevel = (S.quality && S.quality!=='auto') ? S.quality : autoLevel();
+try { renderer = new THREE.WebGLRenderer({antialias:qLevel!=='low'}); } catch(e){ $('#err').hidden=false; return; }
 const ZF = {data:['#2c3754','grid'], lounge:['#d4e6e1','dot'], meet:['#e6eaf0','tile'], pantry:['#f6f1e9','check'], recep:['#f1f3f6','tile'], ward:['#f2e4df','tile']};
 ZONES.forEach(z => { z.floor=ZF[z.id][0]; z.pat=ZF[z.id][1]; });
 /* ---------------- three.js setup ---------------- */
@@ -1446,7 +1486,9 @@ function applyCam(){
   camera.lookAt(t);
 }
 const clampRig = () => { rig.r=Math.max(6,Math.min(52,rig.r)); rig.ph=Math.max(.32,Math.min(1.25,rig.ph)); rig.target.x=Math.max(0,Math.min(MW,rig.target.x)); rig.target.z=Math.max(0,Math.min(MH,rig.target.z)); };
+let panAcc=0;
 function pan(dx,dy){
+  panAcc += Math.abs(dx)+Math.abs(dy);
   const k=rig.r*.0016, s=Math.sin(rig.th), c=Math.cos(rig.th);
   rig.target.x -= (c*dx + s*dy)*k; rig.target.z -= (-s*dx + c*dy)*k; clampRig();
 }
@@ -1546,6 +1588,69 @@ function previewFrame(host, dt, t){
   if (!reduce){ const s=Math.sin(t*7); prevChar.P.legL.rotation.x=s*.5; prevChar.P.legR.rotation.x=-s*.5; prevChar.P.armL.rotation.x=-s*.4; prevChar.P.armR.rotation.x=s*.4; }
   prevR.render(prevScene, prevCam);
 }
+/* ---------------- quality ---------------- */
+function applyQuality(l){
+  qLevel=l;
+  renderer.setPixelRatio(l==='high' ? Math.min(devicePixelRatio||1,2) : l==='medium' ? Math.min(devicePixelRatio||1,1.5) : 1);
+  const sh = l!=='low', ms = l==='high' ? 2048 : 1024;
+  renderer.shadowMap.enabled = sh; sun.castShadow = sh;
+  renderer.shadowMap.type = l==='high' ? THREE.PCFSoftShadowMap : THREE.PCFShadowMap;
+  if (sun.shadow.mapSize.x!==ms){ sun.shadow.mapSize.set(ms,ms); if (sun.shadow.map){ sun.shadow.map.dispose(); sun.shadow.map=null; } }
+  scene.traverse(o => { if (o.material) (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { m.needsUpdate=true; }); });
+  glows.forEach(gl => { gl.sp.visible = l!=='low'; });
+  bats.forEach(b => { b.g.visible = l!=='low'; });
+  renderer.setSize(innerWidth, innerHeight, false);
+}
+let perfAcc=0, perfN=0, frameN=0;
+function perfWatch(raw){
+  if ((S.quality||'auto')!=='auto' || !wrap.hidden || elapsed<3 || qLevel==='low' || document.hidden || raw>.5){ perfAcc=0; perfN=0; return; }
+  perfAcc+=raw; perfN++;
+  if (perfAcc>2.5){
+    const avg=perfAcc/perfN; perfAcc=0; perfN=0;
+    if (avg>1/28){ const next = qLevel==='high' ? 'medium' : 'low'; applyQuality(next); toast(`画面有点卡，已自动切换到「${QNAME[next]}」画质`); }
+  }
+}
+sheet.addEventListener('click', e => {
+  const a=e.target.closest('[data-act]'); if (!a) return;
+  if (a.dataset.act==='quality'){ S.quality=a.dataset.v; save(); applyQuality(S.quality==='auto' ? autoLevel() : S.quality); openMe(); toast(`画质：${S.quality==='auto' ? '自动（'+QNAME[qLevel]+'）' : QNAME[qLevel]}`); }
+  if (a.dataset.act==='tut-again'){ closeSheet(); startTutorial(); }
+});
+
+/* ---------------- onboarding ---------------- */
+const TUT = [
+  {id:'tap', title:'点房间，直接打开功能', body:'每个房间对应一个 SIS 功能。试试点一下发光的「数据室」。', target:() => (labels.find(l => l.z.act==='dash')||{}).el},
+  {id:'pan', title:'拖动画面，看看其他地方', body: coarse ? '单指按住画面，往任意方向拖。' : '按住鼠标左键，往任意方向拖。', gesture:'pan'},
+  {id:'zoom', title: coarse ? '双指捏合放大缩小' : '滚轮放大缩小', body: coarse ? '双指转动可以换角度。也可以用右边的 + − 按钮。' : '右键拖动可以换角度。也可以用右边的 + − 按钮。', gesture: coarse ? 'pinch' : 'wheel'},
+  {id:'badge', title:'红点 = 有事等你', body:'名牌和按钮上的红点，代表待跟进的客户、待审核的视频和没做完的任务。', target:() => $('[data-hud="tasks"]'), final:true},
+];
+let tut=null;
+function startTutorial(done){ closeDialog(); goal=homeView(); tut={i:0, done}; showStep(); }
+function showStep(){
+  const st=TUT[tut.i]; $('#tut').hidden=false;
+  $('#tut-t').textContent=st.title; $('#tut-b').textContent=st.body;
+  document.querySelectorAll('.tut-dots i').forEach((d,k) => d.classList.toggle('on', k===tut.i));
+  $('#tut-next').textContent = st.final ? '开始使用' : '下一步';
+  const g=$('#tut-g'); g.className='tut-g '+(st.gesture||''); g.hidden=!st.gesture; $('#tut-ring').hidden=true;
+  Object.assign(tut, {pan0:panAcc, r0:rig.r, th0:rig.th, sawOpen:false});
+}
+function nextStep(){ if (!tut) return; if (TUT[tut.i].final){ endTutorial(); return; } tut.i++; showStep(); }
+function endTutorial(){ const done=tut && tut.done; tut=null; $('#tut').hidden=true; S.tutDone=true; save(); goal=homeView(); if (done) done(); }
+$('#tut-next').onclick = nextStep;
+$('#tut-skip').onclick = endTutorial;
+function tutTick(){
+  if (!tut) return;
+  const st=TUT[tut.i], open=uiOpen();
+  $('#tut').classList.toggle('away', open);
+  if (st.id==='tap'){ if (open) tut.sawOpen=true; else if (tut.sawOpen){ nextStep(); return; } }
+  if (st.id==='pan' && panAcc-tut.pan0>140){ nextStep(); return; }
+  if (st.id==='zoom' && !goal && (Math.abs(rig.r/tut.r0-1)>.15 || Math.abs(rig.th-tut.th0)>.3)){ nextStep(); return; }
+  const ring=$('#tut-ring'), el=st.target && st.target();
+  if (el && el.style.display!=='none' && !open){
+    const r=el.getBoundingClientRect();
+    Object.assign(ring.style, {left:(r.left-6)+'px', top:(r.top-6)+'px', width:(r.width+12)+'px', height:(r.height+12)+'px'}); ring.hidden=false;
+  } else ring.hidden=true;
+}
+
 /* ---------------- loop ---------------- */
 function resize(){ renderer.setSize(innerWidth, innerHeight, false); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }
 addEventListener('resize', resize); resize();
@@ -1558,7 +1663,8 @@ function step(c,dt,speed){
   c.moving=true;
 }
 function loop(){
-  const dt=Math.min(.05, clock.getDelta()), t=clock.elapsedTime, now=performance.now();
+  const raw=clock.getDelta(), dt=Math.min(.05, raw), t=clock.elapsedTime, now=performance.now();
+  frameN++; perfWatch(raw);
   elapsed+=dt;
   for (const c of chars){
     c.moving=false;
@@ -1593,6 +1699,10 @@ function loop(){
     const k=Math.min(1,dt*4); rig.target.lerp(goal.target,k); rig.r+=(goal.r-rig.r)*k; rig.th+=(goal.th-rig.th)*k; rig.ph+=(goal.ph-rig.ph)*k;
     if (rig.target.distanceTo(goal.target)<.02 && Math.abs(goal.r-rig.r)<.02 && Math.abs(goal.th-rig.th)<.002) goal=null;
   }
+  // While a full-screen sheet covers the office, skip drawing it: saves battery and heat on phones.
+  const sheetOpen = !wrap.hidden;
+  if (qLevel==='medium'){ renderer.shadowMap.autoUpdate=false; if (frameN%3===0) renderer.shadowMap.needsUpdate=true; } else renderer.shadowMap.autoUpdate=true;
+  if (!sheetOpen){
   applyCam();
   renderer.render(scene, camera);
   const W=innerWidth, H=innerHeight, k=Math.max(.7, Math.min(1, 18/rig.r));
@@ -1617,16 +1727,19 @@ function loop(){
     const bv = onScreen && !!c.bubble; c.bubEl.hidden = !bv;
     if (bv) c.bubEl.style.transform = `translate(${sx}px,${sy-24}px) translate(-50%,-100%)`;
   }
+  }
+  tutTick();
   const host=document.getElementById('ed-prev');
   if (host && ed) previewFrame(host, dt, t);
   requestAnimationFrame(loop);
 }
 
 /* ---------------- boot ---------------- */
+applyQuality(qLevel);
 applyCam();
 refresh().then(() => {
   if (!S.look) openEditor(true);
-  else toast(`欢迎回来，${S.name}`);
+  else { toast(`欢迎回来，${S.name}`); if (!S.tutDone) setTimeout(() => startTutorial(), 900); }
 });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(updateHUD);
 requestAnimationFrame(loop);
