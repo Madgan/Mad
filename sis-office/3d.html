@@ -500,10 +500,12 @@ if (!S || !S.posts) S = {look:null,name:'',role:'photo',xp:0,day:'',daily:freshD
 // Older saves used real-estate roles; map them onto the production jobs.
 if (!ROLE[S.role]) S.role = ({leader:'producer', agent:'photo', content:'video', admin:'other'})[S.role] || 'other';
 if (S.cv !== 2) { S.cv = 2; S.posts = SEED_POSTS(); S.leads = SEED_LEADS(); S.content = SEED_CONTENT(); S.seen = 0; }
+if (S.look) S.look = cleanLook(S.look);  // repair a partial or outdated saved avatar
 if (!S.invoices) S.invoices = SEED_INVOICES();
 if (!S.expenses) S.expenses = SEED_EXPENSES();
 if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED_CONTENT(); S.leads = SEED_LEADS(); }
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+var liveReady = false;  // set once the live SIS connection code below has loaded
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} if (liveReady) queueStateSync(); }
 const level = () => Math.floor(S.xp/100)+1;
 // Festival decorations are designed ahead and go live by date. Admins can preview one on their own device.
 // Lunar and religious festivals move every year, so they carry dates per year (check against the official holiday list).
@@ -551,6 +553,7 @@ const SIS = {
   async posts(){ return S.posts; },
   async saveAvatar(look){ /* sample mode: already saved on this device */ },
   async saveXP(xp){ /* sample mode: already saved on this device */ },
+  async saveState(st){ /* sample mode: already saved on this device */ },
   async createPost(tag, text, anon=false){ const p={id:Date.now(), a:'me', anon:!!anon, tag, text, t:Date.now(), likes:[], cmts:[]}; S.posts.push(p); save(); return p; },
   async toggleLike(id){ const p=S.posts.find(x => String(x.id)===String(id)); const i=p.likes.indexOf('me'); i<0 ? p.likes.push('me') : p.likes.splice(i,1); save(); return p; },
   async comment(id, text){ const p=S.posts.find(x => String(x.id)===String(id)); p.cmts.push({a:'me', text}); save(); return p; },
@@ -598,10 +601,10 @@ const LIVE = !!CFG.live;
 const API_PATH = Object.assign({me:'/me', ranking:'/ranking', jobLogs:'/job-logs'}, CFG.paths);
 let liveMe = null, liveState = LIVE ? 'connecting' : 'off';
 class ApiError extends Error { constructor(status, msg){ super(msg); this.status=status; } }
-async function api(path, {method='GET', body, query}={}){
+async function api(path, {method='GET', body, query, keepalive=false}={}){
   const url = CFG.apiBase + path + (query ? '?'+new URLSearchParams(query) : '');
   let res;
-  try { res = await fetch(url, {method, credentials:'include', body: body ? JSON.stringify(body) : undefined,
+  try { res = await fetch(url, {method, credentials:'include', keepalive, body: body ? JSON.stringify(body) : undefined,
     headers: Object.assign({'Accept':'application/json'}, body ? {'Content-Type':'application/json'} : {}, CFG.headers)}); }
   catch(e){ throw new ApiError(0, `${method} ${path} 连不上`); }
   if (!res.ok) throw new ApiError(res.status, `${method} ${path} → ${res.status}`);
@@ -616,6 +619,7 @@ function applyMe(me){
   if ('job_other' in me) S.jobOther = me.job_other || '';
   if ('show_in_ranking' in me) S.showInRanking = !!me.show_in_ranking;
   if (Number.isInteger(me.xp) && me.xp > (S.xp||0)) S.xp = me.xp;
+  if (me.office_state) mergeState(me.office_state);
   if (me.avatar && typeof me.avatar==='object'){ S.look = cleanLook(me.avatar); if (typeof player!=='undefined' && player.g){ player.look=S.look; rebuildPlayer(); } }
   save();
 }
@@ -623,7 +627,36 @@ function applyMe(me){
 let xpTimer=null;
 function queueXPSync(){
   if (!LIVE) return; clearTimeout(xpTimer);
-  xpTimer=setTimeout(() => SIS.saveXP(S.xp).catch(e => { if (e instanceof ApiError && (e.status===401 || e.status===403)) liveFail(e); }), 1500);
+  xpTimer=setTimeout(() => { xpTimer=null; SIS.saveXP(S.xp).catch(e => { if (e instanceof ApiError && (e.status===401 || e.status===403)) liveFail(e); }); }, 1500);
+}
+// Per-person progress that follows the account: today's tasks and daily rewards, check-in streak, tutorial, room tips, post count.
+// Graphics quality stays per device (each phone is different); sample data (posts, inquiries, projects, invoices) is not synced.
+const stateOf = () => ({day:S.day, daily:S.daily, streak:S.streak||0, last:S.last||'', tutDone:!!S.tutDone, roomTips:S.roomTips||{}, posted:S.posted||0});
+let statePushed='', stateTimer=null;
+function queueStateSync(){
+  if (!LIVE || liveState!=='ok') return;
+  const now=JSON.stringify(stateOf()); if (now===statePushed) return;
+  clearTimeout(stateTimer);
+  stateTimer=setTimeout(() => { stateTimer=null; const st=stateOf(), js=JSON.stringify(st);
+    SIS.saveState(st).then(() => { statePushed=js; }, e => { if (e instanceof ApiError && (e.status===401 || e.status===403)) liveFail(e); }); }, 2000);
+}
+// Merge the account's copy with this device's: same day -> combine (done anywhere counts as done); otherwise today's copy wins.
+function mergeState(r){
+  if (!r || typeof r!=='object') return;
+  const today=dkey();
+  if (r.day===today && r.daily && typeof r.daily==='object'){
+    if (S.day===today){ const a=S.daily, b=r.daily;
+      for (const k of Object.keys(b)){ const x=a[k], y=b[k];
+        if (typeof y==='number') a[k]=Math.max(Number(x)||0, y);
+        else if (typeof y==='boolean') a[k]=!!x || y;
+        else if (y && typeof y==='object') a[k]=Object.assign({}, y, x||{}); } }
+    else { S.day=today; S.daily=Object.assign(freshDaily(), r.daily); }
+  }
+  const lt = v => { const m=/^(\d+)-(\d+)-(\d+)$/.exec(v||''); return m ? new Date(+m[1], m[2]-1, +m[3]).getTime() : 0; };
+  if (lt(r.last) >= lt(S.last) && Number.isInteger(r.streak)){ S.streak=r.streak; S.last=r.last; }
+  S.tutDone = !!S.tutDone || !!r.tutDone;
+  S.roomTips = Object.assign({}, r.roomTips||{}, S.roomTips||{});
+  S.posted = Math.max(S.posted||0, Number(r.posted)||0);
 }
 const asList = r => Array.isArray(r) ? r : (r && (r.items || r.rows)) || [];
 if (LIVE) Object.assign(SIS, {
@@ -641,6 +674,7 @@ if (LIVE) Object.assign(SIS, {
     return asList(await api(API_PATH.ranking, {query:{month:ym(back)}})).map(r => ({name:r.name, studio:r.studio||'', job:r.job, jobs:Number(r.jobs)||0, me:!!r.is_me}));
   },
   async saveAvatar(look){ await api(API_PATH.me, {method:'PATCH', body:{avatar:look}}); if (liveMe) liveMe.avatar=look; },
+  async saveState(st){ await api(API_PATH.me, {method:'PATCH', body:{office_state:st}}); },
   async saveXP(xp){ const me=await api(API_PATH.me, {method:'PATCH', body:{xp}}); if (me && Number.isInteger(me.xp)) S.xp=me.xp, save(), updateHUD(); },
   async logJob({area, amt, client}){
     const r = await api(API_PATH.jobLogs, {method:'POST', body:{project:area, amount:amt, client:client||null}});
@@ -652,11 +686,14 @@ async function liveSync(){
   const me = await api(API_PATH.me); applyMe(me);
   if (!(me && me.avatar) && S.look) await SIS.saveAvatar(S.look);  // first time on SIS: upload the avatar made on this device
   if ((S.xp||0) > ((me && me.xp)||0)) await SIS.saveXP(S.xp);       // this device is ahead (played before connecting): push it up
+  const merged=JSON.stringify(stateOf()); if (merged!==JSON.stringify(me && me.office_state)) await SIS.saveState(stateOf());
+  statePushed=merged;
   const months = await Promise.all([0,1,2].map(k => api(API_PATH.jobLogs, {query:{month:ym(k)}}).then(asList)));
   S.jobLogs = months.flat().map(j => ({t:Date.parse(j.created_at), id:j.id, area:j.project, amt:Number(j.amount)||0, client:j.client||''}));
   save();
 }
 function showGate(kind){
+  if (document.getElementById('gate')) return;  // several calls can fail at once; show one prompt
   const g=document.createElement('div'); g.id='gate';
   g.innerHTML = kind==='login'
     ? `<div><b>请先登录 SIS</b><p>虚拟办公室用的是你的 SIS 账号。</p><a class="btn primary" href="${CFG.loginUrl}?next=${encodeURIComponent(location.pathname)}">去登录</a></div>`
@@ -668,6 +705,16 @@ function liveFail(err){
   if (err.status===403) return showGate('beta');
   toast(`SIS 接口出错：${err.message}`);
 }
+// Leaving the page (closing the tab, switching apps): send anything still waiting right away.
+function flushSync(){
+  if (!LIVE || liveState!=='ok') return;
+  if (xpTimer){ clearTimeout(xpTimer); xpTimer=null; api(API_PATH.me, {method:'PATCH', body:{xp:S.xp}, keepalive:true}).catch(() => {}); }
+  const js=JSON.stringify(stateOf());
+  if (stateTimer || js!==statePushed){ clearTimeout(stateTimer); stateTimer=null; api(API_PATH.me, {method:'PATCH', body:{office_state:stateOf()}, keepalive:true}).then(() => { statePushed=js; }, () => {}); }
+}
+addEventListener('pagehide', flushSync);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState==='hidden') flushSync(); });
+liveReady = true;
 addEventListener('unhandledrejection', e => { if (e.reason instanceof ApiError){ e.preventDefault(); liveFail(e.reason); } });
 const DB = {leads:[], content:[], posts:[]};
 async function refresh(){ [DB.leads, DB.content, DB.posts] = await Promise.all([SIS.leads(), SIS.content(), SIS.posts()]); updateHUD(); }
@@ -1218,7 +1265,7 @@ function openMe(){
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
     <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${monthJobsNow()}</b><span>本月接单</span></div></div>
     ${LIVE ? `<div class="live-box"><h3>测试版连接</h3><p><span class="dot ${liveState}"></span>${liveState==='ok' ? `已连接 SIS · ${esc(S.name)}` : liveState==='connecting' ? '正在连接 SIS…' : '连接 SIS 出错'}</p>
-      <p class="note">真实资料：名字、职业、形象、等级、排行开关、同行排行、接单钟记录。<br>还是示例数据：同行圈、询价、项目、发票与账目、数据大屏上方的数字。</p></div>` : ''}
+      <p class="note">真实资料：名字、职业、形象、等级、每日任务、签到天数、排行开关、同行排行、接单钟记录。画质设定每台手机各自保存。<br>还是示例数据：同行圈、询价、项目、发票与账目、数据大屏上方的数字。</p></div>` : ''}
     <div><h3>职业</h3>${chips2('job',OPT.role,S.role)}
       ${S.role==='other'?`<div class="group" style="margin-top:8px"><input type="text" id="me-jobother" maxlength="20" value="${esc(meJobOther)}" placeholder="你的职业，例：灯光师" style="flex:1;min-width:0"><button type="button" class="btn sm primary" data-act="job-other">保存</button></div>`:''}
       <p class="note" style="margin-top:6px">转行了就在这里换，办公室摆设会跟着换。</p></div>
