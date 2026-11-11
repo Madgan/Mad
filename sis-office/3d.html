@@ -341,6 +341,7 @@ const OPT = {
   watch:[['none','无'],['silver','银表'],['gold','金表',3],['bangle','金手环',0,'deepavali']],
 };
 const ROLE = Object.fromEntries(OPT.role);
+const jobName = () => S.role==='other' && S.jobOther ? S.jobOther : (ROLE[S.role]||'');
 const PRESET = {f:{hair:'long',bottom:'skirt'}, m:{hair:'short',bottom:'pants'}, x:{hair:'side',bottom:'pants'}};
 const DEFAULT_LOOK = {gender:'f',skin:1,hair:'long',hairColor:0,top:'shirt',topColor:0,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:5,glasses:'none',watch:'none'};
 
@@ -358,19 +359,32 @@ const NPC_DEF = [
    look:{gender:'m',skin:3,hair:'buzz',hairColor:0,top:'shirt',topColor:4,bottom:'pants',bottomColor:5,shoes:0,hat:'cap',hatColor:0,glasses:'none',watch:'silver'}},
 ];
 const PEER_DEF = [
-  {id:'p1', name:'陈美玲', role:'producer', team:'Team Mei · Mont Kiara', lvl:7, tile:[16,7],
+  {id:'p1', name:'陈美玲', role:'producer', team:'美玲制作 · KL', lvl:7, tile:[16,7],
    look:{gender:'f',skin:0,hair:'bun',hairColor:0,top:'suit',topColor:5,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'round',watch:'gold'},
-   lines:['这个月第 3 单了，继续。','Mont Kiara 新盘的客户问得很多。','下午 3 点开组会。']},
-  {id:'p2', name:'Jason Tan', role:'video', team:'Team Mei · Mont Kiara', lvl:4, tile:[12,10],
+   lines:['下午 3 点开制作会议。']},
+  {id:'p2', name:'Jason Tan', role:'video', team:'JT Films · PJ', lvl:4, tile:[12,10],
    look:{gender:'m',skin:1,hair:'side',hairColor:1,top:'shirt',topColor:1,bottom:'pants',bottomColor:5,shoes:2,hat:'none',hatColor:0,glasses:'none',watch:'silver'},
-   lines:['刚带看完 Bangsar South。','客户说视频里的阳台很加分。','谁有 Mont Kiara 停车位资料？']},
-  {id:'p3', name:'Aisyah', role:'makeup', team:'Team Farah · Shah Alam', lvl:5, tile:[17,3],
+   lines:['美玲姐那个广告片，我负责剪。']},
+  {id:'p3', name:'Aisyah', role:'makeup', team:'Aisyah Beauty · Shah Alam', lvl:5, tile:[17,3],
    look:{gender:'f',skin:2,hair:'hijab',hairColor:8,top:'shirt',topColor:6,bottom:'pants',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'none',watch:'silver'},
-   lines:['Shah Alam 排屋这周很抢手。','我在同行圈问了 MOT 费用。','下午要拍短视频。']},
-  {id:'p4', name:'黄家伟', role:'photo', team:'Team Wei · Cheras', lvl:6, tile:[4,15],
+   lines:['开斋节前的妆期都排满了。']},
+  {id:'p4', name:'黄家伟', role:'photo', team:'家伟摄影 · Cheras', lvl:6, tile:[4,15],
    look:{gender:'m',skin:1,hair:'buzz',hairColor:0,top:'tee',topColor:0,bottom:'shorts',bottomColor:9,shoes:1,hat:'cap',hatColor:5,glasses:'sun',watch:'none'},
-   lines:['Cheras 换房客户越来越多。','视频开头直接报价，询问多了 40%。','周末两组带看。']},
+   lines:['周末两场婚礼，一场早上一场晚上。']},
+  {id:'p5', name:'林慧玲', role:'stylist', team:'WL Styling · Bangsar', lvl:3, tile:[19,10],
+   look:{gender:'f',skin:0,hair:'long',hairColor:2,top:'tee',topColor:8,bottom:'skirt',bottomColor:5,shoes:3,hat:'none',hatColor:0,glasses:'sun',watch:'silver'},
+   lines:['刚从布行回来，买了三匹布。']},
 ];
+// What each job talks about. Peers mix these with their own lines; balcony chat uses them too.
+const JOB_LINES = {
+  photo:['今天婚礼跟拍 10 小时，腿要断了。','新买的 85mm 定焦，拍人像真的好用。','客户要明天交精修，又要通宵了。','有人知道哪个影棚可以租半天吗？','下雨了，外景改到室内拍。','素材先备份两份再说。','报价单要写清楚精修几张，不然会被一直加。'],
+  video:['今晚要剪完 3 条短视频。','客户第五次改稿了……','新的稳定器到了，下午试拍。','谁有推荐的调色预设？','活动拍完了，素材 400GB。','合约要写清楚改稿次数。','字幕外包给谁比较稳？'],
+  makeup:['明早 5 点新娘妆，今晚要早点睡。','新到的粉底很持妆，热天也不脱。','化妆刷都要消毒一遍。','有摄影师在找化妆师吗？下周六我有空档。','客户临时加了两位伴娘妆。','定金一定要先收，被放鸽子很亏。','户外拍摄记得带吸油纸。'],
+  stylist:['这季的服装要提前一周去借。','衣服被弄脏了，押金怎么算才合理？','客户想要 90 年代港风造型。','蒸汽熨斗又坏了。','借衣服一定要拍照存证。','下周广告片，要配 12 套造型。'],
+  producer:['明天的通告单发了没？','场地还没回复，先找个备选。','预算又被砍了 20%。','演员迟到半小时，整天进度都乱了。','这周三个项目同时开机。','保险和拍摄许可都办好了吗？','尾款追了两个月还没进来。'],
+  other:['今天又接到新案子。','同行圈那篇拖款的帖子你看了吗？','下午去看场地。'],
+};
+PEER_DEF.forEach(p => { p.lines = [...p.lines, ...(JOB_LINES[p.role]||JOB_LINES.other)]; });
 const H1 = 3600e3;
 const SEED_POSTS = () => [
   {id:1,a:'p1',tag:'成交喜报',text:'Mont Kiara 3 房单位今天签了 SPA，RM 1.35M。感谢 Jason 连续 4 次带看。',t:Date.now()-H1*2,likes:['p2','p3','p4'],cmts:[{a:'p2',text:'客户最后是被阳台景观打动的。'},{a:'p4',text:'恭喜，这个月第几单了？'}]},
@@ -476,6 +490,10 @@ const SIS = {
   async createPost(tag, text, anon=false){ const p={id:Date.now(), a:'me', anon:!!anon, tag, text, t:Date.now(), likes:[], cmts:[]}; S.posts.push(p); save(); return p; },
   async toggleLike(id){ const p=S.posts.find(x => String(x.id)===String(id)); const i=p.likes.indexOf('me'); i<0 ? p.likes.push('me') : p.likes.splice(i,1); save(); return p; },
   async comment(id, text){ const p=S.posts.find(x => String(x.id)===String(id)); p.cmts.push({a:'me', text}); save(); return p; },
+  // Job is picked on the SIS sign-up form and changed in the SIS profile. The office only reads it.
+  // Real version: GET /me -> {name, job, job_other};  PATCH /me {job, job_other}.
+  async profile(){ return {name:S.name, job:S.role, jobOther:S.jobOther||''}; },
+  async setJob(job, other=''){ S.role=job; S.jobOther = job==='other' ? String(other).trim().slice(0,20) : ''; save(); return SIS.profile(); },
   async logDeal({area, amt, client}){
     const text=`${area} 成交，RM ${amt.toLocaleString('en-MY')}${client?`。客户：${client}`:''}。`;
     return SIS.createPost('成交喜报', text);
@@ -757,7 +775,7 @@ const unread = () => DB.posts.filter(p => p.a!=='me' && p.id>S.seen).length;
 const tasksLeft = () => TASKS.filter(t => !S.daily.claimed[t.id]).length;
 function updateHUD(){
   $('#me-name').textContent = S.name || '新同事';
-  $('#me-role').textContent = ROLE[S.role] || '';
+  $('#me-role').textContent = jobName();
   $('#me-lv').textContent = 'LV '+level();
   $('#me-xp').style.width = (S.xp%100)+'%';
   drawPortrait($('#me-pt'), player.look);
@@ -933,11 +951,17 @@ function tasksHTML(){
 }
 const openTasks = () => openSheet({title:'今日任务', sub:'Kai 每天早上派发', body:tasksHTML(), kind:'tasks'});
 
+let meJobOther='';
+const chips2 = (act,list,val) => `<div class="group" role="group">${list.map(([v,l]) => `<button type="button" class="chip sm" data-act="${act}" data-v="${v}" aria-pressed="${val===v}">${l}</button>`).join('')}</div>`;
 function openMe(){
+  meJobOther = S.jobOther||'';
   const body = `<div class="lvcard"><canvas class="pt lg" data-who="me"></canvas><div style="flex:1;min-width:0">
-      <div style="font-weight:700;font-size:16px">${esc(S.name||'新同事')}</div><div class="note">${ROLE[S.role]||''} · LV ${level()}</div>
+      <div style="font-weight:700;font-size:16px">${esc(S.name||'新同事')}</div><div class="note">${esc(jobName())} · LV ${level()}</div>
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
     <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${S.deals||0}</b><span>成交登记</span></div></div>
+    <div><h3>职业</h3>${chips2('job',OPT.role,S.role)}
+      ${S.role==='other'?`<div class="group" style="margin-top:8px"><input type="text" id="me-jobother" maxlength="20" value="${esc(meJobOther)}" placeholder="你的职业，例：灯光师" style="flex:1;min-width:0"><button type="button" class="btn sm primary" data-act="job-other">保存</button></div>`:''}
+      <p class="note" style="margin-top:6px">转行了就在这里换，办公室摆设会跟着换。</p></div>
     <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button><button type="button" class="btn" data-act="go-office">走去我的办公室</button><button type="button" class="btn" data-act="tut-again">重看新手引导</button></div>
     <div><h3>画质</h3><div class="group" role="group" aria-label="画质">${[['auto','自动'],['low','流畅'],['medium','标准'],['high','精美']].map(([v,l]) => `<button type="button" class="chip sm" data-act="quality" data-v="${v}" aria-pressed="${(S.quality||'auto')===v}">${l}</button>`).join('')}</div>
     <p class="note" style="margin-top:6px">手机发烫或卡顿时选「流畅」。「自动」会按手机表现调整，现在是「${QNAME[qLevel]}」。</p></div>
@@ -972,7 +996,7 @@ function edHTML(){
     <div class="ed-opts">
       <div><h3><label for="ed-name">名字</label></h3><input type="text" id="ed-name" maxlength="12" value="${esc(ed.name)}" placeholder="同事会看到这个名字"></div>
       <div><h3>性别</h3>${chips('gender',OPT.gender,L.gender)}<p class="note" style="margin-top:6px">所有发型和服装对所有人开放。</p></div>
-      <div><h3>职业</h3>${chips('role',OPT.role,ed.role)}<div class="note" style="margin-top:6px">你的私人办公室会按职业布置</div></div>
+      ${ed.first ? `<div><h3>职业</h3>${chips('role',OPT.role,ed.role)}${ed.role==='other'?`<input type="text" id="ed-jobother" maxlength="20" value="${esc(ed.jobOther||'')}" placeholder="你的职业，例：灯光师" style="margin-top:8px">`:''}<div class="note" style="margin-top:6px">你的私人办公室会按职业布置。之后可以在个人资料里更换。</div></div>` : ''}
       <div><h3>肤色</h3>${sws('skin',SKIN,L.skin)}</div>
       <div><h3>发型</h3>${chips('hair',OPT.hair,L.hair)}</div>
       <div><h3>${L.hair==='hijab'?'头巾颜色':'发色'}</h3>${sws('hairColor',L.hair==='hijab'?CLOTH:HAIRC,L.hairColor)}</div>
@@ -985,7 +1009,7 @@ function edHTML(){
     </div></div>`;
 }
 function openEditor(first=false){
-  ed = {look:Object.assign({}, S.look||DEFAULT_LOOK), name:S.name, role:S.role, dir:'down', first};
+  ed = {look:Object.assign({}, S.look||DEFAULT_LOOK), name:S.name, role:S.role, jobOther:S.jobOther||'', dir:'down', first};
   openSheet({title:first?'创建你的形象':'衣帽间', sub:first?'进入办公室前，先决定同事看到的你':'完成每日任务升级，解锁更多服装', body:edHTML(), kind:'editor', locked:first,
     foot:`${first?'':'<button type="button" class="btn ghost" data-close>取消</button>'}<button type="button" class="btn primary" data-act="ed-save">${first?'进入办公室':'保存造型'}</button>`});
 }
@@ -1050,6 +1074,8 @@ const ACTS = {
 /* ---------------- sheet events ---------------- */
 sheet.addEventListener('input', e => {
   if (e.target.id==='ed-name' && ed) ed.name=e.target.value;
+  if (e.target.id==='ed-jobother' && ed) ed.jobOther=e.target.value;
+  if (e.target.id==='me-jobother') meJobOther=e.target.value;
   if (e.target.id==='post-text') boardDraft=e.target.value;
 });
 sheet.addEventListener('click', async e => {
@@ -1073,11 +1099,19 @@ sheet.addEventListener('click', async e => {
     case 'rand': ed.look=randomLook(); setBody(edHTML()); break;
     case 'ed-save': {
       const first=ed.first;
-      S.look=ed.look; S.name=(ed.name||'').trim()||'新同事'; S.role=ed.role; save(); if (typeof applyJobOffice==='function') applyJobOffice();
+      S.look=ed.look; S.name=(ed.name||'').trim()||'新同事'; save();
+      if (first){ await SIS.setJob(ed.role, ed.jobOther); applyJobOffice(); }
       player.look=S.look; rebuildPlayer(); sheetLocked=false; closeSheet(); ed=null;
       toast(first?'欢迎加入 SIS 办公室':'造型已保存');
       if (first) setTimeout(() => startTutorial(() => ACTS.lisa()), 400);
       break; }
+    case 'job': {
+      if (v===S.role) break;
+      await SIS.setJob(v, v==='other' ? meJobOther : ''); applyJobOffice(); updateHUD();
+      openMe(); toast(v==='other' ? '填写你的职业后点保存' : `办公室已换成「${JOB_OFFICE[v]}」`); break; }
+    case 'job-other': {
+      if (!meJobOther.trim()){ toast('先填写你的职业'); break; }
+      await SIS.setJob('other', meJobOther); updateHUD(); openMe(); toast('职业已更新'); break; }
     case 'anon': anonPost=!anonPost; setBody(boardHTML()); break;
     case 'report': toast('已提交给管理员审核，谢谢'); break;
     case 'ptag': ptag=v; setBody(boardHTML()); break;
@@ -1452,7 +1486,7 @@ const N = Object.fromEntries(npcs.map(n => [n.id,n]));
 const PM = Object.fromEntries(peers.map(p => [p.id,p]));
 const whoLook = id => id==='me' ? (S.look||DEFAULT_LOOK) : (PM[id]||N[id]||{}).look;
 const whoName = id => id==='me' ? (S.name||'我') : (PM[id]||N[id]||{}).name || '同事';
-const whoRole = id => id==='me' ? ROLE[S.role] : PM[id] ? ROLE[PM[id].role] : 'SIS';
+const whoRole = id => id==='me' ? jobName() : PM[id] ? ROLE[PM[id].role] : 'SIS';
 function rebuildPlayer(){
   scene.remove(player.g); const i=clickables.indexOf(player.g); if (i>=0) clickables.splice(i,1);
   const {g,P} = makeChar(player.look); g.position.set(player.x,0,player.z); g.rotation.y=player.yaw; g.userData.char=player;
@@ -2068,7 +2102,7 @@ function doorTick(dt){
 
 // colleagues sometimes step out to the balcony to relax, chat or smoke
 const BALCONY_SPOTS=[[33,8],[33,9],[33,10],[33,11],[32,12],[31,10]];
-const RELAX_LINES=['外面风好舒服。','看那边的山，空气真好。','河边好像有人在钓鱼。','刚刚有条鱼跳出水面！','抽根烟再回去。','听，有鸟在叫。','楼下那只狗又在草地上跑。','这个景，拍房源视频很好用。'];
+const RELAX_LINES=['外面风好舒服。','看那边的山，空气真好。','河边好像有人在钓鱼。','刚刚有条鱼跳出水面！','抽根烟再回去。','听，有鸟在叫。','楼下那只狗又在草地上跑。','这个景，拍外景很好用。'];
 const CHATS=[['那个 Bangsar 的单搞定了吗？','差不多了，下周签。'],['你们组这个月几单？','4 单，还差一点。'],['周末要不要一起去看新盘？','好啊，叫上美玲。'],['最近客户都在问贷款利率。','我也是，准备拍一条视频讲讲。']];
 function nextWander(c){
   c.settled=false; c.relax=false; c.spot=null; if (c.cig) c.cig.visible=false;
@@ -2083,7 +2117,8 @@ function nextWander(c){
 function settleBalcony(c){
   c.settled=true; c.yaw=Math.PI/2; c.wait=10+Math.random()*10;
   if (c.cig) c.cig.visible=true;
-  bubble(c, RELAX_LINES[Math.floor(Math.random()*RELAX_LINES.length)], 3.5);
+  const pool = c.lines && Math.random()<.5 ? c.lines : RELAX_LINES; // half scenery, half shop talk from their job
+  bubble(c, pool[Math.floor(Math.random()*pool.length)], 3.5);
 }
 const smoker=PM.p4;
 smoker.cig=cyl(.012,.012,.12,'#f4f4f0',0,-.31,.07,smoker.P.armR,6); smoker.cig.rotation.x=Math.PI/2; smoker.cig.visible=false;
