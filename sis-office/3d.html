@@ -441,7 +441,8 @@ const rig = {target:new THREE.Vector3(15,0,10), r:30, th:0, ph:.92};
 let goal=null;
 function homeView(){
   const a = innerWidth/innerHeight;
-  return a < 1 ? {target:new THREE.Vector3(15,0,12), r:27, th:0, ph:.95} : {target:new THREE.Vector3(15,0,10.5), r:Math.max(26, 31/Math.min(a,1.8)*1.5), th:0, ph:.9};
+  // Corner (three-quarter) view: camera sits off the south-east corner, looking diagonally across the office.
+  return a < 1 ? {target:new THREE.Vector3(15.5,0,11), r:38, th:Math.PI/4, ph:1.0} : {target:new THREE.Vector3(16.2,0,11.2), r:Math.max(36, 40/Math.min(a,1.8)*1.5), th:Math.PI/4, ph:.98};
 }
 Object.assign(rig, homeView());
 function applyCam(){
