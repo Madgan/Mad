@@ -23,7 +23,7 @@
 - 办公室通过一个配置对象切换模式：
   - 有 `window.SIS_OFFICE_CONFIG = {live: true, ...}` 时，接 SIS 真实资料。
   - 没有时，用内置的示例资料（现在给别人看的预览就是这个模式）。
-- 测试版里**接真实资料的部分**：名字、职业、排行开关、同行接单排行（含过去两个月）、接单钟记录。
+- 测试版里**接真实资料的部分**：名字、职业、形象（捏好的人物）、排行开关、同行接单排行（含过去两个月）、接单钟记录。
 - **还是示例资料的部分（这次不用做）**：同行圈、询价、项目进度、发票与账目、数据大屏上方的数字。
 
 ### 1. 把办公室放到 `/office`
@@ -72,9 +72,10 @@ window.SIS_OFFICE_CONFIG = {
 
 | 用途 | 请求 | 成功回传 |
 |---|---|---|
-| 我的资料 | `GET {apiBase}{me}` | `{ name, job, job_other, show_in_ranking }` |
+| 我的资料 | `GET {apiBase}{me}` | `{ name, job, job_other, show_in_ranking, avatar }` |
 | 改职业 | `PATCH {apiBase}{me}`，body `{ job, job_other }` | 同上（更新后的完整资料） |
 | 改排行开关 | `PATCH {apiBase}{me}`，body `{ show_in_ranking }` | 同上 |
+| 存形象 | `PATCH {apiBase}{me}`，body `{ avatar }` | 同上 |
 | 同行排行 | `GET {apiBase}{ranking}?month=YYYY-MM` | `[{ name, studio, job, jobs, is_me }]` |
 | 我的接单记录 | `GET {apiBase}{jobLogs}?month=YYYY-MM` | `[{ id, project, amount, client, created_at }]` |
 | 敲接单钟 | `POST {apiBase}{jobLogs}`，body `{ project, amount, client }` | `201`，`{ id, project, amount, client, created_at }` |
@@ -82,6 +83,7 @@ window.SIS_OFFICE_CONFIG = {
 细节：
 
 - **PATCH 是部分更新：** body 只带要改的字段，没带的不要动。职业的验证规则沿用之前做好的那套（6 个 key，选 `other` 时 `job_other` 必填）。
+- **形象 `avatar`：** 见下面「形象存进账号」。
 - **排行：**
   - 只回传 `show_in_ranking = true` 的人，最多 20 名，按 `jobs` 从多到少排序。
   - `is_me`：这一行是不是请求的人自己。
@@ -95,6 +97,19 @@ window.SIS_OFFICE_CONFIG = {
   - `401`（没登录或登录过期）：办公室显示「请先登录 SIS」。
   - `403`：办公室显示「测试版还没开放给这个账号」。
   - 其他错误：办公室显示一行提示，里面有出错的接口路径。
+
+**形象存进账号（换手机不用重新捏）：**
+
+- 用户表加 `office_avatar`（JSON，可以空）。`GET me` 回传成 `avatar`，没存过就回 `null`。
+- `PATCH me` 收到 `avatar` 就整个覆盖。后端要检查：
+  - 大小不超过 2 KB，必须是 JSON 物件。
+  - 只保留这些 key：`gender`、`skin`、`hair`、`hairColor`、`top`、`topColor`、`bottom`、`bottomColor`、`shoes`、`hat`、`hatColor`、`glasses`、`watch`。其他 key 丢掉。
+  - 值只能是 20 字以内的字串，或 0 到 50 的整数。不合格回 400。
+- 后端不用懂每个值代表什么，办公室读进来时会再检查一次，不认得的值会换回默认。
+- 办公室的行为：
+  - 第一次连上 SIS、账号里还没有形象时，会把这台手机上捏好的形象上传。
+  - 之后每次在衣帽间保存都会更新。
+  - 换手机打开时，直接用账号里的形象，不会再叫用户捏人。
 
 办公室打开时会依序呼叫：`GET me` → `GET job-logs` 三次（本月、上月、前月）。
 
@@ -114,6 +129,7 @@ window.SIS_OFFICE_CONFIG = {
 - [ ] 没登录时打开 `/office`，会跳到登录页，登录后回到办公室。
 - [ ] 在办公室改职业，SIS 个人资料页也变了；反过来在 SIS 改，重新打开办公室，私人办公室的摆设也跟着换。
 - [ ] 排行开关在办公室和 SIS 个人资料页两边同步。
+- [ ] 在手机 A 捏好形象，换手机 B（或电脑）打开 `/office`，不会出现捏人画面，人物跟手机 A 一样；在 B 的衣帽间换衣服，回到 A 重新打开也是新的。
 - [ ] 在办公室敲接单钟，`job_logs` 多一笔，`created_at` 正确；打开排行开关时，排行的单数加 1。
 - [ ] 数据大屏的排行切换「本月 / 上月 / 前月」，各自打到 `?month=YYYY-MM`，结果正确。
 - [ ] 在浏览器开发者工具看排行接口的原始回传，没有 `amount`、`client`。

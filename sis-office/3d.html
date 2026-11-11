@@ -369,6 +369,15 @@ const OPT = {
 const ROLE = Object.fromEntries(OPT.role);
 const jobName = () => S.role==='other' && S.jobOther ? S.jobOther : (ROLE[S.role]||'');
 const PRESET = {f:{hair:'long',bottom:'skirt'}, m:{hair:'short',bottom:'pants'}, x:{hair:'side',bottom:'pants'}};
+// Accept only known options; anything unknown falls back to the default, so a bad saved avatar can't break drawing.
+function cleanLook(o){
+  const L=Object.assign({}, DEFAULT_LOOK); if (!o || typeof o!=='object') return L;
+  const opt=(k,list) => { if (list.some(x => x[0]===o[k])) L[k]=o[k]; };
+  const idx=(k,n) => { if (Number.isInteger(o[k]) && o[k]>=0 && o[k]<n) L[k]=o[k]; };
+  ['gender','hair','top','bottom','hat','glasses','watch'].forEach(k => opt(k, OPT[k]));
+  idx('skin',SKIN.length); idx('hairColor',Math.max(HAIRC.length,CLOTH.length)); idx('topColor',CLOTH.length); idx('bottomColor',CLOTH.length); idx('shoes',SHOES.length); idx('hatColor',CLOTH.length);
+  return L;
+}
 const DEFAULT_LOOK = {gender:'f',skin:1,hair:'long',hairColor:0,top:'shirt',topColor:0,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:5,glasses:'none',watch:'none'};
 
 /* ---------------- sample data (replaced by SIS later) ---------------- */
@@ -540,6 +549,7 @@ const SIS = {
     c.stage = approve ? '已交付' : '后期'; c.date = approve ? '已交给客户' : '退回修改'; save(); return c;
   },
   async posts(){ return S.posts; },
+  async saveAvatar(look){ /* sample mode: already saved on this device */ },
   async createPost(tag, text, anon=false){ const p={id:Date.now(), a:'me', anon:!!anon, tag, text, t:Date.now(), likes:[], cmts:[]}; S.posts.push(p); save(); return p; },
   async toggleLike(id){ const p=S.posts.find(x => String(x.id)===String(id)); const i=p.likes.indexOf('me'); i<0 ? p.likes.push('me') : p.likes.splice(i,1); save(); return p; },
   async comment(id, text){ const p=S.posts.find(x => String(x.id)===String(id)); p.cmts.push({a:'me', text}); save(); return p; },
@@ -604,6 +614,7 @@ function applyMe(me){
   if (me.job) S.role = me.job;
   if ('job_other' in me) S.jobOther = me.job_other || '';
   if ('show_in_ranking' in me) S.showInRanking = !!me.show_in_ranking;
+  if (me.avatar && typeof me.avatar==='object'){ S.look = cleanLook(me.avatar); if (typeof player!=='undefined' && player.g){ player.look=S.look; rebuildPlayer(); } }
   save();
 }
 const asList = r => Array.isArray(r) ? r : (r && (r.items || r.rows)) || [];
@@ -621,6 +632,7 @@ if (LIVE) Object.assign(SIS, {
   async ranking(back=0){
     return asList(await api(API_PATH.ranking, {query:{month:ym(back)}})).map(r => ({name:r.name, studio:r.studio||'', job:r.job, jobs:Number(r.jobs)||0, me:!!r.is_me}));
   },
+  async saveAvatar(look){ await api(API_PATH.me, {method:'PATCH', body:{avatar:look}}); if (liveMe) liveMe.avatar=look; },
   async logJob({area, amt, client}){
     const r = await api(API_PATH.jobLogs, {method:'POST', body:{project:area, amount:amt, client:client||null}});
     (S.jobLogs=S.jobLogs||[]).push({t:Date.parse(r && r.created_at)||Date.now(), id:r && r.id, area, amt, client:client||''}); save();
@@ -628,7 +640,8 @@ if (LIVE) Object.assign(SIS, {
 });
 // Pull the real profile and this user's job log for the last three months (job counts, recap, unbilled jobs).
 async function liveSync(){
-  applyMe(await api(API_PATH.me));
+  const me = await api(API_PATH.me); applyMe(me);
+  if (!(me && me.avatar) && S.look) await SIS.saveAvatar(S.look);  // first time on SIS: upload the avatar made on this device
   const months = await Promise.all([0,1,2].map(k => api(API_PATH.jobLogs, {query:{month:ym(k)}}).then(asList)));
   S.jobLogs = months.flat().map(j => ({t:Date.parse(j.created_at), id:j.id, area:j.project, amt:Number(j.amount)||0, client:j.client||''}));
   save();
@@ -1195,7 +1208,7 @@ function openMe(){
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
     <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${monthJobsNow()}</b><span>本月接单</span></div></div>
     ${LIVE ? `<div class="live-box"><h3>测试版连接</h3><p><span class="dot ${liveState}"></span>${liveState==='ok' ? `已连接 SIS · ${esc(S.name)}` : liveState==='connecting' ? '正在连接 SIS…' : '连接 SIS 出错'}</p>
-      <p class="note">真实资料：名字、职业、排行开关、同行排行、接单钟记录。<br>还是示例数据：同行圈、询价、项目、发票与账目、数据大屏上方的数字。</p></div>` : ''}
+      <p class="note">真实资料：名字、职业、形象、排行开关、同行排行、接单钟记录。<br>还是示例数据：同行圈、询价、项目、发票与账目、数据大屏上方的数字。</p></div>` : ''}
     <div><h3>职业</h3>${chips2('job',OPT.role,S.role)}
       ${S.role==='other'?`<div class="group" style="margin-top:8px"><input type="text" id="me-jobother" maxlength="20" value="${esc(meJobOther)}" placeholder="你的职业，例：灯光师" style="flex:1;min-width:0"><button type="button" class="btn sm primary" data-act="job-other">保存</button></div>`:''}
       <p class="note" style="margin-top:6px">转行了就在这里换，办公室摆设会跟着换。</p></div>
@@ -1345,7 +1358,8 @@ sheet.addEventListener('click', async e => {
     case 'rand': ed.look=randomLook(); setBody(edHTML()); break;
     case 'ed-save': {
       const first=ed.first;
-      S.look=ed.look; if (!(LIVE && liveMe && liveMe.name)) S.name=(ed.name||'').trim()||'新同事'; save();
+      S.look=cleanLook(ed.look); if (!(LIVE && liveMe && liveMe.name)) S.name=(ed.name||'').trim()||'新同事'; save();
+      SIS.saveAvatar(S.look).catch(e => e instanceof ApiError ? liveFail(e) : null);  // show the new look right away; sync in the background
       if (first && !(LIVE && liveMe && liveMe.job)){ await SIS.setJob(ed.role, ed.jobOther); applyJobOffice(); }
       player.look=S.look; rebuildPlayer(); sheetLocked=false; closeSheet(); ed=null;
       toast(first?'欢迎加入 SIS 办公室':'造型已保存');
