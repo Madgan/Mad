@@ -216,7 +216,15 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
 .rl small{font-weight:500;color:#7a8496;font-size:11px}
 .rl.hot{background:var(--ink);color:#fff}
 .rank.me{background:#fff4dc;border-radius:10px;padding-left:6px;padding-right:6px}
-.rank .you{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#e3a63b;color:#fff;font-size:10px;line-height:16px;vertical-align:1px}
+.recap{background:#fbf7ee;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.recap h3{margin:0 0 8px}
+.recap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.champ{background:#fff;border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;font-size:13px;min-width:0}
+.champ span{font-size:11px;color:#7a8496}
+.champ b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.champ small{color:#c88a1f;font-weight:700}
+.champ.me{box-shadow:0 0 0 2px #e3a63b}
+.rank .you,.champ .you{display:inline-block;margin-left:5px;padding:0 6px;border-radius:999px;background:#e3a63b;color:#fff;font-size:10px;line-height:16px;vertical-align:1px}
 .rl.hot small{color:rgba(255,255,255,.75)}
 .rl.here{box-shadow:0 0 0 3px var(--gold,#e8b44a),0 4px 14px rgba(18,24,38,.22);animation:rlPulse 1.6s ease-in-out infinite}
 .rl .tip{position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%);background:var(--ink);color:#fff;font-size:15px;font-weight:700;padding:7px 12px;border-radius:10px;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(18,24,38,.25);animation:tipIn .25s ease-out}
@@ -416,8 +424,11 @@ const STAGES = ['筹备','拍摄','后期','待交付','已交付'];
 const DASH = {
   week:[5,8,4,9,6,11,7],
   kpi:[['本月接单额','RM 38.6K','+12%'],['接单数','9','+3'],['新询价','46','+21%'],['询价 → 定档','31%','+4pt'],['准时交付','96%','+2pt'],['同行圈互动','128','+18%']],
-  // Peer ranking is by number of jobs only; no one's income is shown.
-  rank:[['Aisyah','Aisyah Beauty · Shah Alam',19],['黄家伟','家伟摄影 · Cheras',14],['Priya','Priya Henna · Klang',12],['陈美玲','美玲制作 · KL',11],['Siti','Siti Bridal · Kajang',9],['Jason Tan','JT Films · PJ',8],['林慧玲','WL Styling · Bangsar',7],['Ken Wong','KW Lighting · Puchong',6],['Daniel Lee','DL Sound · Ampang',5],['吴俊杰','JJ Drone · Setapak',4]],
+  // Peer ranking is by number of jobs only; no one's income is shown. [name, studio, jobs this month, job]
+  rank:[['Aisyah','Aisyah Beauty · Shah Alam',19,'makeup'],['黄家伟','家伟摄影 · Cheras',14,'photo'],['Priya','Priya Henna · Klang',12,'makeup'],['陈美玲','美玲制作 · KL',11,'producer'],['Siti','Siti Bridal · Kajang',9,'stylist'],['Jason Tan','JT Films · PJ',8,'video'],['林慧玲','WL Styling · Bangsar',7,'stylist'],['Ken Wong','KW Lighting · Puchong',6,'other'],['Daniel Lee','DL Sound · Ampang',5,'other'],['吴俊杰','JJ Drone · Setapak',4,'video']],
+  // Finished months for the monthly recap: jobs per person, 1 = last month, 2 = the month before.
+  past:{1:{'Aisyah':22,'黄家伟':17,'Priya':9,'陈美玲':13,'Siti':11,'Jason Tan':12,'林慧玲':6,'Ken Wong':8,'Daniel Lee':3,'吴俊杰':7},
+        2:{'Aisyah':16,'黄家伟':19,'Priya':11,'陈美玲':9,'Siti':7,'Jason Tan':10,'林慧玲':12,'Ken Wong':5,'Daniel Lee':6,'吴俊杰':9}},
 };
 const TIPS = [
   '报价单写清楚交付张数、天数和改稿次数。',
@@ -500,9 +511,11 @@ const SIS = {
   async profile(){ return {name:S.name, job:S.role, jobOther:S.jobOther||'', showInRanking:!!S.showInRanking}; },
   // Peer ranking: opt-in (off by default), job count only. Real version: GET /ranking, PATCH /me {show_in_ranking}.
   async setRanking(on){ S.showInRanking=!!on; save(); return SIS.profile(); },
-  async ranking(){
-    const r=DASH.rank.map(([name,studio,jobs]) => ({name, studio, jobs}));
-    if (S.showInRanking) r.push({name:S.name||'新同事', studio:jobName(), jobs:await SIS.monthJobs(), me:true});
+  // back = 0 this month, 1 last month, 2 the month before. Real version: GET /ranking?month=YYYY-MM.
+  // Opt-in is checked now, so someone who leaves the ranking also disappears from past months.
+  async ranking(back=0){
+    const r=DASH.rank.map(([name,studio,jobs,job]) => ({name, studio, job, jobs: back ? DASH.past[back][name] : jobs}));
+    if (S.showInRanking) r.push({name:S.name||'新同事', studio:jobName(), job:S.role, jobs:jobsInMonth(back), me:true});
     return r.sort((a,b) => b.jobs-a.jobs || (a.me?-1:b.me?1:0)).slice(0,20);
   },
   async setJob(job, other=''){ S.role=job; S.jobOther = job==='other' ? String(other).trim().slice(0,20) : ''; save(); return SIS.profile(); },
@@ -870,7 +883,19 @@ const uiOpen = () => !wrap.hidden || !dlg.hidden;
 const ago = t => { const m=Math.round((Date.now()-t)/60000); return m<1?'刚刚':m<60?`${m} 分钟前`:m<1440?`${Math.round(m/60)} 小时前`:`${Math.round(m/1440)} 天前`; };
 const tagCls = t => t==='接单喜报'?'deal':(t==='求助'||t==='拖款警示')?'help':'';
 
+let rankBack=0;
 async function openDash(){
+  rankBack=0;
+  openSheet({title:'数据大屏', sub:'我的本月表现', body:await dashBody(), kind:'dash'});
+  if (!S.daily.dash){ S.daily.dash=true; checkTasks(); }
+}
+// Monthly recap: the top person in each job for a finished month, from the same opt-in ranking.
+function recapHTML(rank, back){
+  const champs=OPT.role.filter(([k]) => k!=='other').map(([k,label]) => [label, rank.filter(r => r.job===k)[0]]).filter(([,r]) => r && r.jobs>0);
+  if (!champs.length) return '';
+  return `<div class="recap"><h3>${monthName(back)}回顾 · 各职业接单最多</h3><div class="recap-grid">${champs.map(([label,r]) => `<div class="champ${r.me?' me':''}"><span>${label}</span><b>${esc(r.name)}${r.me?'<b class="you">你</b>':''}</b><small>${r.jobs} 单</small></div>`).join('')}</div></div>`;
+}
+async function dashBody(){
   const D = await SIS.dashboard();
   const d=new Date(); const labels=D.week.map((_,i) => { const x=new Date(d); x.setDate(d.getDate()-(6-i)); return i===6?'今天':'周'+'日一二三四五六'[x.getDay()]; });
   const W=320,Hh=150,pad=24,bw=28,gap=(W-pad-8-bw*7)/6,max=12,plotH=Hh-44;
@@ -878,17 +903,17 @@ async function openDash(){
   const svg = `<svg viewBox="0 0 ${W} ${Hh}" class="chart" role="img" aria-label="近 7 天新询价">`+
     [0,4,8,12].map(v => `<line x1="${pad}" x2="${W-4}" y1="${yv(v)}" y2="${yv(v)}" class="grid"/><text x="${pad-6}" y="${yv(v)+3}" class="ax" text-anchor="end">${v}</text>`).join('')+
     D.week.map((v,i) => { const x=pad+4+i*(bw+gap), y=yv(v); return `<rect x="${x}" y="${y}" width="${bw}" height="${Hh-24-y}" rx="5" class="bar${i===6?' now':''}"/><text x="${x+bw/2}" y="${y-5}" class="val" text-anchor="middle">${v}</text><text x="${x+bw/2}" y="${Hh-8}" class="ax" text-anchor="middle">${labels[i]}</text>`; }).join('')+`</svg>`;
-  const rank=await SIS.ranking(), maxR=Math.max(1, ...rank.map(r => r.jobs)), meIn=rank.some(r => r.me);
-  const body = `
+  const rank=await SIS.ranking(rankBack), maxR=Math.max(1, ...rank.map(r => r.jobs)), meIn=S.showInRanking;
+  return `
     <div class="kpis">${D.kpi.map(([l,v,dl]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="delta${dl.startsWith('-')?' down':''}">${dl} 较上月</div></div>`).join('')}</div>
     <div class="panel"><h3>近 7 天新询价（个）</h3>${svg}</div>
-    <div class="panel"><h3>同行接单排行 · 本月接单数</h3>
+    <div class="panel"><h3>同行接单排行 · ${rankBack ? monthName(rankBack)+'（已结算）' : '本月接单数'}</h3>
+      <div class="group" role="group" aria-label="选择月份" style="margin-bottom:8px">${[0,1,2].map(k => `<button type="button" class="chip sm" data-act="rank-month" data-v="${k}" aria-pressed="${rankBack===k}">${k?monthName(k):'本月'}</button>`).join('')}</div>
+      ${rankBack ? recapHTML(rank, rankBack) : ''}
       ${rank.map(({name:n,studio:area,jobs:c,me},i) => `<div class="rank${i<3?' top':''}${me?' me':''}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="who">${esc(n)}${me?'<b class="you">你</b>':''}<small>${esc(area)}</small></span><span class="bar"><i style="width:${(c/maxR*100).toFixed(1)}%"></i></span><span class="amt">${c} 单</span></div>`).join('')}
     </div>
     <p class="note">${meIn ? '你在排行上，同行只看得到你的名字和接单数。' : '你目前没有上榜。'}<button type="button" class="lk" data-act="rank-settings" style="margin-left:6px">${meIn?'上榜设置':'我要上榜'}</button></p>
     <p class="note"><span class="sample">SAMPLE</span> 示例数据。接入 SIS 后自动更新。上面的金额只有你自己看得到，排行只显示接单数。</p>`;
-  openSheet({title:'数据大屏', sub:'我的本月表现', body, kind:'dash'});
-  if (!S.daily.dash){ S.daily.dash=true; checkTasks(); }
 }
 
 let bf='', ba='', ptag='日常', boardDraft='', anonPost=false;
@@ -969,7 +994,10 @@ function tasksHTML(){
 const openTasks = () => openSheet({title:'今日任务', sub:'Kai 每天早上派发', body:tasksHTML(), kind:'tasks'});
 
 let meJobOther='';
-const monthJobsNow = () => { const d=new Date(), m0=new Date(d.getFullYear(), d.getMonth(), 1).getTime(); return (S.jobLogs||[]).filter(j => j.t>=m0).length; };
+const monthStart = back => { const d=new Date(); return new Date(d.getFullYear(), d.getMonth()-back, 1).getTime(); };
+const jobsInMonth = back => { const a=monthStart(back), b=monthStart(back-1); return (S.jobLogs||[]).filter(j => j.t>=a && j.t<b).length; };
+const monthJobsNow = () => jobsInMonth(0);
+const monthName = back => `${new Date(monthStart(back)).getMonth()+1} 月`;
 const chips2 = (act,list,val) => `<div class="group" role="group">${list.map(([v,l]) => `<button type="button" class="chip sm" data-act="${act}" data-v="${v}" aria-pressed="${val===v}">${l}</button>`).join('')}</div>`;
 function openMe(){
   meJobOther = S.jobOther||'';
@@ -1133,6 +1161,7 @@ sheet.addEventListener('click', async e => {
       const on=!S.showInRanking; await SIS.setRanking(on); openMe();
       toast(on ? '已加入同行接单排行' : '已退出排行，同行看不到你的接单数'); break; }
     case 'rank-settings': openMe(); break;
+    case 'rank-month': rankBack=Number(v); setBody(await dashBody()); break;
     case 'job-other': {
       if (!meJobOther.trim()){ toast('先填写你的职业'); break; }
       await SIS.setJob('other', meJobOther); updateHUD(); openMe(); toast('职业已更新'); break; }
