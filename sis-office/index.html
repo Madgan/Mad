@@ -43,7 +43,8 @@ button{font-family:inherit}
 #hint{left:max(16px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 18px);color:var(--ink-2);font-size:12px;background:var(--glass);padding:7px 12px;border-radius:10px;box-shadow:var(--shadow)}
 #zoom{right:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;background:var(--glass);padding:4px;border-radius:14px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
 #zoom button{appearance:none;border:0;background:transparent;width:40px;height:40px;border-radius:10px;font:700 20px var(--f-num);color:var(--ink);cursor:pointer}
-#zoom #z-fit{font:700 11px var(--f-body);height:34px}
+#zoom #z-fit,#zoom #z-fest{font:700 11px var(--f-body);height:34px}
+#zoom #z-fest.on{background:#3a2a55;color:#ffb347}
 #zoom button:hover{background:var(--paper)}
 #zoom button:disabled{opacity:.3;cursor:default;background:transparent}
 @media (max-width:640px){
@@ -52,7 +53,8 @@ button{font-family:inherit}
   #act kbd{display:none}
   #hint{display:none}
   #zoom{top:calc(env(safe-area-inset-top,0px) + 14px);transform:none;flex-direction:row}
-  #zoom #z-fit{height:40px;padding:0 10px;width:auto}
+  #zoom button{width:36px}
+  #zoom #z-fit,#zoom #z-fest{height:40px;padding:0 8px;width:auto}
 }
 @media (pointer:coarse){#hint{display:none}#act kbd{display:none}}
 
@@ -233,6 +235,7 @@ textarea:focus,input:focus{border-color:var(--jade);outline:none;background:#fff
   <button type="button" id="z-in" aria-label="放大">+</button>
   <button type="button" id="z-out" aria-label="缩小">−</button>
   <button type="button" id="z-fit" aria-label="查看整个办公室">全景</button>
+  <button type="button" id="z-fest" aria-label="节日装饰" aria-pressed="false">节日</button>
 </div>
 <div id="toasts" aria-live="polite"></div>
 
@@ -267,7 +270,7 @@ const OPT = {
   hair:[['short','短发'],['side','侧分'],['long','长发'],['pony','马尾'],['bun','丸子头'],['buzz','寸头'],['hijab','头巾']],
   top:[['tee','T 恤'],['shirt','衬衫'],['hoodie','卫衣'],['suit','西装',2]],
   bottom:[['pants','长裤'],['shorts','短裤'],['skirt','裙子']],
-  hat:[['none','无'],['cap','鸭舌帽'],['beanie','毛线帽'],['helmet','工地安全帽',3]],
+  hat:[['none','无'],['cap','鸭舌帽'],['beanie','毛线帽'],['helmet','工地安全帽',3],['witch','巫师帽',0,'halloween']],
   glasses:[['none','无'],['round','眼镜'],['sun','墨镜',2]],
   watch:[['none','无'],['silver','银表'],['gold','金表',3]],
 };
@@ -357,6 +360,9 @@ if (!S || !S.posts) S = {look:null,name:'',role:'agent',xp:0,day:'',daily:freshD
 if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED_CONTENT(); S.leads = SEED_LEADS(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 const level = () => Math.floor(S.xp/100)+1;
+// Festival decorations switch on by date (Oct 20 - Nov 1); the HUD button overrides it.
+const festAuto = () => { const d=new Date(), m=d.getMonth(), day=d.getDate(); return (m===9 && day>=20) || (m===10 && day<=1); };
+const festOn = () => S.fest==='on' || (S.fest!=='off' && festAuto());
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ================================================================
@@ -647,6 +653,11 @@ function drawChar(g,L,dir,ph,walk){
       dome(cx,-44,12.9,hc); C(cx,-56.6,1.3,shade(hc,.25));
       if (dir==='down') E(0,-43.6,12.6,3.2,hd); else if (side) E(-12.5,-43.6,8,2.4,hd); else RR(-3,-46.5,6,2,1,shade(hc,.3));
     } else if (L.hat==='beanie'){ dome(cx,-44,13.1,hc); RR(cx-13.3,-47,26.6,5.6,2.8,hd); C(cx,-58,3.3,'#f4f4f0'); }
+    else if (L.hat==='witch'){
+      E(cx,-44,16.5,3.8,hd);
+      g.beginPath(); g.moveTo(cx-10,-45); g.quadraticCurveTo(cx-4,-60,cx+(side?8:6),-73); g.quadraticCurveTo(cx+3,-58,cx+10,-45); g.closePath(); F(hc);
+      RR(cx-10,-49.5,20,3.6,1.6,'#e3a63b');
+    }
   }
   g.restore();
   g.restore();
@@ -971,7 +982,7 @@ let ed=null;
 const DIR_ORDER=['down','left','up','right'], DIR_NAME={down:'正面',left:'左侧',up:'背面',right:'右侧'};
 function edHTML(){
   const lv=level(), L=ed.look;
-  const chips=(key,list,val) => `<div class="group" role="group">${list.map(([v,l,req]) => { const lock=req&&lv<req; return `<button type="button" class="chip${lock?' locked':''}" data-act="ed" data-k="${key}" data-v="${v}" aria-pressed="${val===v}" ${lock?`data-lock="${req}"`:''}>${l}${lock?`<small>LV${req}</small>`:''}</button>`; }).join('')}</div>`;
+  const chips=(key,list,val) => `<div class="group" role="group">${list.map(([v,l,req,fest]) => { const fl=!!fest&&!festOn(), lock=fl||(req&&lv<req); return `<button type="button" class="chip${lock?' locked':''}" data-act="ed" data-k="${key}" data-v="${v}" aria-pressed="${val===v}" ${lock?`data-lock="${fl?'fest':req}"`:''}>${l}${lock?`<small>${fl?'限定':'LV'+req}</small>`:fest?'<small>限定</small>':''}</button>`; }).join('')}</div>`;
   const sws=(key,pal,val) => `<div class="group" role="group">${pal.map((c,i) => `<button type="button" class="sw" style="background:${c}" data-act="ed" data-k="${key}" data-v="${i}" aria-pressed="${val===i}" aria-label="颜色 ${i+1}"></button>`).join('')}</div>`;
   return `<div class="ed">
     <div class="ed-prev"><canvas id="ed-prev"></canvas><div class="side">
@@ -999,7 +1010,7 @@ function openEditor(first=false){
 }
 function randomLook(){
   const lv=level(), pick=a => a[Math.floor(Math.random()*a.length)];
-  const ok = list => list.filter(o => !o[2] || o[2]<=lv).map(o => o[0]);
+  const ok = list => list.filter(o => (!o[2] || o[2]<=lv) && (!o[3] || festOn())).map(o => o[0]);
   const L = {gender:ed.look.gender, skin:Math.floor(Math.random()*SKIN.length), hair:pick(ok(OPT.hair)), top:pick(ok(OPT.top)), bottom:pick(ok(OPT.bottom)),
     topColor:Math.floor(Math.random()*CLOTH.length), bottomColor:Math.floor(Math.random()*CLOTH.length), shoes:Math.floor(Math.random()*SHOES.length),
     hat:Math.random()<.35?pick(ok(OPT.hat)):'none', hatColor:Math.floor(Math.random()*CLOTH.length), glasses:Math.random()<.4?pick(ok(OPT.glasses)):'none', watch:Math.random()<.5?pick(ok(OPT.watch)):'none'};
@@ -1033,6 +1044,10 @@ const ACTS = {
   kai(){ say(N.kai, `今日任务完成 ${TASKS.length-tasksLeft()}/${TASKS.length}。完成任务拿经验，升级解锁新服装。`, [{label:'查看今日任务', primary:true, fn:openTasks}]); },
   dash: openDash, board: () => openBoard(), tasks: openTasks, me: openMe, bell: openBell,
   wardrobe: () => openEditor(),
+  candy(){
+    if (S.daily.candy){ toast('今天的糖已经拿过了，明天再来'); return; }
+    S.daily.candy=true; save(); gainXP(5,'万圣节糖果'); bubble(player,'不给糖就捣蛋！'); burst(player.x,player.y-40,16);
+  },
   coffee(){
     const tip = TIPS[new Date().getDate()%TIPS.length];
     const opts = S.daily.coffee ? [] : [{label:'喝一杯 +10 XP', primary:true, fn:() => { S.daily.coffee=true; save(); gainXP(10,'咖啡时间'); bubble(player,'续命成功'); }}];
@@ -1070,7 +1085,7 @@ sheet.addEventListener('click', async e => {
   const v=a.dataset.v, id=a.dataset.id;
   switch(a.dataset.act){
     case 'ed': {
-      if (a.dataset.lock){ toast(`LV ${a.dataset.lock} 解锁 · 完成今日任务获得经验`); return; }
+      if (a.dataset.lock){ toast(a.dataset.lock==='fest' ? '万圣节限定，节日期间开放' : `LV ${a.dataset.lock} 解锁 · 完成今日任务获得经验`); return; }
       const k=a.dataset.k, num=['skin','hairColor','topColor','bottomColor','shoes','hatColor'].includes(k);
       if (k==='role') ed.role=v;
       else if (k==='gender'){
@@ -1172,6 +1187,13 @@ function updateZoomUI(){ $('#z-in').disabled = sc>=zMax-1e-3; $('#z-out').disabl
 $('#z-in').addEventListener('click', () => setZoom(sc*1.3));
 $('#z-out').addEventListener('click', () => setZoom(sc/1.3));
 $('#z-fit').addEventListener('click', () => setZoom(zFit));
+function updateFestUI(){ const b=$('#z-fest'), on=festOn(); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); }
+$('#z-fest').addEventListener('click', () => {
+  S.fest = festOn() ? 'off' : 'on'; save(); updateFestUI();
+  if (festOn()){ toast('万圣节装饰已开启 · 点南瓜拿糖','gold'); bubble(N.lisa,'不给糖就捣蛋！'); }
+  else toast('节日装饰已关闭');
+});
+updateFestUI();
 addEventListener('resize', resize);
 function clampCam(){
   const viewW=vw/sc, viewH=vh/sc;
@@ -1182,6 +1204,7 @@ function hitTest(clientX,clientY){
   const r=cv.getBoundingClientRect(); const sx=clientX-r.left, sy=clientY-r.top;
   for (const h of labelHits) if (sx>=h.x && sx<=h.x+h.w && sy>=h.y && sy<=h.y+h.h) return {kind:'label', act:h.act, zone:h.zone};
   const wx=sx/sc+camX, wy=sy/sc+camY;
+  if (festOn() && PUMPKINS.some(p => Math.hypot(wx-p.x, wy-(p.y-8))<15)) return {kind:'label', act:'candy'};
   const ch = charTargets.find(t => Math.abs(wx-t.char.x)<14 && wy>t.char.y-60 && wy<t.char.y+4);
   if (ch) return {kind:'char', tg:ch};
   const ob = Object.values(TG).find(o => { const [rx,ry,rw,rh]=o.rect; return wx>=rx*T && wx<(rx+rw)*T && wy>=ry*T-(o.tall||0) && wy<(ry+rh)*T; });
@@ -1402,6 +1425,68 @@ function drawBubble(sx,sy,text){
   ctx.fillStyle='#1c2333'; ctx.fillText(text, x+10, y+18.5, 210);
 }
 
+/* ---------------- festival: Halloween ---------------- */
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const lookOf = c => festOn() && c.npc ? (c._fl || (c._fl = Object.assign({}, c.look, {hat:'witch', hatColor:6}))) : c.look;
+const PUMPKINS = [[10,14],[19,14],[12.5,18.4],[17.5,18.4],[12,7],[17,7],[1,12],[28,12],[11,5.2],[18,5.2],[8,15],[21,15]].map(([x,y]) => ({x:x*T+16, y:y*T+26}));
+const WEBS = [[32,32,1],[320,32,-1],[352,32,1],[608,32,-1],[640,32,1],[928,32,-1],[32,448,1],[288,448,-1],[672,448,1],[928,448,-1]];
+const LIGHT_RUNS = [[1,10,0],[11,19,0],[20,29,0],[1,9,13],[21,29,13],[1,10,6],[19,29,6]];
+const BULB_COLS = ['#ff8a2a','#b86bff','#ffd25a'];
+const BULBS = LIGHT_RUNS.map(([a,b,row]) => { const out=[]; for (let x=a*T+6; x<=b*T-6; x+=12){ const s=(x-a*T)%64, sag=5*(1-((s-32)*(s-32))/1024); out.push({x, y:row*T+14+sag, c:BULB_COLS[Math.floor(x/12)%3]}); } return out; });
+const BATS = Array.from({length:6}, (_,i) => ({off:i*190, sp:38+i*9, base:(i%3)*150+90, ph:i*1.7}));
+const flick = (t,k) => REDUCE ? .9 : .72+.28*Math.sin(t/110+k)*Math.sin(t/37+k*2);
+function drawPumpkin(g,p,t){
+  const {E,RR} = kit(g,p.x,p.y);
+  E(0,2,11,3.5,'rgba(28,35,51,.2)');
+  E(0,-7,11.5,9,'#c9631a'); E(-5,-7,6,8.6,'#e8892b'); E(5,-7,6,8.6,'#e8892b'); E(0,-7,4.6,9,'#f29c3c');
+  RR(-1.5,-19.5,3,5.5,1.2,'#5b7a2e');
+  g.fillStyle=`rgba(255,214,90,${flick(t,p.x)})`;
+  const X=p.x, Y=p.y;
+  g.beginPath(); g.moveTo(X-6.5,Y-9.5); g.lineTo(X-2,Y-9.5); g.lineTo(X-4.2,Y-13.5); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(X+2,Y-9.5); g.lineTo(X+6.5,Y-9.5); g.lineTo(X+4.2,Y-13.5); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(X-7,Y-6); g.quadraticCurveTo(X,Y-.5,X+7,Y-6); g.lineTo(X+3.5,Y-4.8); g.lineTo(X+1.8,Y-6.6); g.lineTo(X,Y-4.8); g.lineTo(X-1.8,Y-6.6); g.lineTo(X-3.5,Y-4.8); g.closePath(); g.fill();
+}
+function drawWeb(g,x,y,d,t){
+  g.save(); g.translate(x,y); g.scale(d,1); g.strokeStyle='rgba(255,255,255,.6)'; g.lineWidth=.7;
+  const R=26;
+  for (let a=0;a<=4;a++){ const an=a/4*Math.PI/2; g.beginPath(); g.moveTo(0,0); g.lineTo(Math.cos(an)*R, Math.sin(an)*R); g.stroke(); }
+  for (let r=7;r<=R;r+=6.5){ g.beginPath(); for (let a=0;a<=4;a++){ const an=a/4*Math.PI/2, k=r*(a%2?.9:1); a ? g.lineTo(Math.cos(an)*k, Math.sin(an)*k) : g.moveTo(Math.cos(an)*k, Math.sin(an)*k); } g.stroke(); }
+  const sy = 14 + (REDUCE ? 0 : Math.sin(t/700+x)*4);
+  g.beginPath(); g.moveTo(17,0); g.lineTo(17,sy); g.stroke();
+  g.fillStyle='#1c1c24'; g.beginPath(); g.arc(17,sy+2.5,2.6,0,Math.PI*2); g.fill();
+  g.restore();
+}
+function drawBat(g,x,y,f){
+  g.save(); g.translate(x,y); g.fillStyle='#1d1630';
+  g.beginPath(); g.ellipse(0,0,3,4,0,0,Math.PI*2); g.fill();
+  const w=f*5;
+  [1,-1].forEach(s => { g.beginPath(); g.moveTo(2*s,-1); g.quadraticCurveTo(8*s,-6-w,15*s,-2-w); g.quadraticCurveTo(11*s,0,9*s,3); g.quadraticCurveTo(6*s,0,2*s,2); g.closePath(); g.fill(); });
+  g.restore();
+}
+function drawGhost(g,t){
+  const x = 15*T + (REDUCE?0:Math.sin(t/3100))*210, y = 10.5*T + (REDUCE?0:Math.cos(t/2300))*55 + Math.sin(t/400)*3;
+  g.save(); g.translate(x,y); g.globalAlpha=.82;
+  g.fillStyle='#f4f1ff'; g.beginPath(); g.arc(0,-14,11,Math.PI,0); g.lineTo(11,4);
+  for (let i=0;i<4;i++){ const xx=11-i*5.5; g.quadraticCurveTo(xx-1.4,8+(i%2?-2:2),xx-5.5,4); }
+  g.closePath(); g.fill(); g.globalAlpha=1;
+  g.fillStyle='#2a2230'; g.beginPath(); g.ellipse(-4,-15,1.8,2.6,0,0,Math.PI*2); g.ellipse(4,-15,1.8,2.6,0,0,Math.PI*2); g.fill();
+  g.beginPath(); g.ellipse(0,-8.5,2,2.6,0,0,Math.PI*2); g.fill();
+  g.restore();
+}
+function drawHalloween(g,t){
+  WEBS.forEach(([x,y,d]) => drawWeb(g,x,y,d,t));
+  g.strokeStyle='#2a2030'; g.lineWidth=.8;
+  BULBS.forEach(run => { g.beginPath(); run.forEach((b,i) => i ? g.lineTo(b.x,b.y) : g.moveTo(b.x,b.y)); g.stroke(); });
+  g.fillStyle='rgba(42,18,78,.32)'; g.fillRect(0,0,WW,WH);
+  g.globalCompositeOperation='lighter';
+  PUMPKINS.forEach(p => { const gr=g.createRadialGradient(p.x,p.y-8,2,p.x,p.y-8,40); gr.addColorStop(0,`rgba(255,150,50,${.42*flick(t,p.x)})`); gr.addColorStop(1,'rgba(255,150,50,0)'); g.fillStyle=gr; g.fillRect(p.x-40,p.y-48,80,80); });
+  BULBS.forEach(run => run.forEach((b,i) => { g.globalAlpha=.28+.12*((Math.floor(t/500)+i)%2); g.fillStyle=b.c; g.beginPath(); g.arc(b.x,b.y,6,0,Math.PI*2); g.fill(); }));
+  g.globalAlpha=1; g.globalCompositeOperation='source-over';
+  BULBS.forEach(run => run.forEach(b => { g.fillStyle=b.c; g.beginPath(); g.arc(b.x,b.y,2.2,0,Math.PI*2); g.fill(); }));
+  drawGhost(g,t);
+  if (!REDUCE) BATS.forEach(b => { const x=((t/1000)*b.sp+b.off)%(WW+200)-100; drawBat(g, x, b.base+Math.sin(t/800+b.ph)*30, Math.sin(t/70+b.ph)); });
+}
+
 /* ---------------- loop ---------------- */
 let last=performance.now(), chatter=8, scripted=false, elapsed=0;
 function update(dt){
@@ -1465,11 +1550,14 @@ function render(t){
   drawDecor(ctx,t);
   if (tapFx){ ctx.strokeStyle=`rgba(47,125,109,${tapFx.t*2})`; ctx.lineWidth=2; ctx.beginPath(); ctx.ellipse(tapFx.x,tapFx.y,14-tapFx.t*16,6-tapFx.t*7,0,0,Math.PI*2); ctx.stroke(); }
   const chars=[player,...npcs,...peers];
-  const ents=[...F.map(f => ({y:(f.y+f.h)*T-1, f})), ...chars.map(c => ({y:c.y, c}))].sort((a,b) => a.y-b.y);
+  const fest=festOn();
+  const ents=[...F.map(f => ({y:(f.y+f.h)*T-1, f})), ...chars.map(c => ({y:c.y, c})), ...(fest?PUMPKINS.map(p => ({y:p.y, p})):[])].sort((a,b) => a.y-b.y);
   for (const e of ents){
     if (e.f) drawFur(ctx,e.f,t);
-    else { ctx.save(); ctx.translate(e.c.x,e.c.y); drawChar(ctx, e.c.look, e.c.dir, e.c.anim, e.c.moving); ctx.restore(); }
+    else if (e.p) drawPumpkin(ctx,e.p,t);
+    else { ctx.save(); ctx.translate(e.c.x,e.c.y); drawChar(ctx, lookOf(e.c), e.c.dir, e.c.anim, e.c.moving); ctx.restore(); }
   }
+  if (fest) drawHalloween(ctx,t);
   confetti.forEach(c => { ctx.save(); ctx.translate(c.x,c.y); ctx.rotate(c.r); ctx.fillStyle=c.c; ctx.fillRect(-2.5,-1.5,5,3); ctx.restore(); });
   const near = uiOpen() ? null : nearest();
   if (near){
@@ -1486,7 +1574,7 @@ function render(t){
   const now=performance.now();
   for (const c of chars){
     if (sc<.62 && c!==player) continue;
-    const [sx,sy]=S2(c.x, c.y-60);
+    const [sx,sy]=S2(c.x, c.y-(lookOf(c).hat==='witch'?72:60));
     if (sx<-90||sx>vw+90||sy<-40||sy>vh+90) continue;
     const top=nameLabel(sx,sy-2,c);
     if (c.bubble){ if (c.bubble.until<now) c.bubble=null; else drawBubble(sx,top,c.bubble.text); }
