@@ -23,7 +23,7 @@
 - 办公室通过一个配置对象切换模式：
   - 有 `window.SIS_OFFICE_CONFIG = {live: true, ...}` 时，接 SIS 真实资料。
   - 没有时，用内置的示例资料（现在给别人看的预览就是这个模式）。
-- 测试版里**接真实资料的部分**：名字、职业、形象（捏好的人物）、排行开关、同行接单排行（含过去两个月）、接单钟记录。
+- 测试版里**接真实资料的部分**：名字、职业、形象（捏好的人物）、等级（经验值）、排行开关、同行接单排行（含过去两个月）、接单钟记录。
 - **还是示例资料的部分（这次不用做）**：同行圈、询价、项目进度、发票与账目、数据大屏上方的数字。
 
 ### 1. 把办公室放到 `/office`
@@ -72,10 +72,11 @@ window.SIS_OFFICE_CONFIG = {
 
 | 用途 | 请求 | 成功回传 |
 |---|---|---|
-| 我的资料 | `GET {apiBase}{me}` | `{ name, job, job_other, show_in_ranking, avatar }` |
+| 我的资料 | `GET {apiBase}{me}` | `{ name, job, job_other, show_in_ranking, avatar, xp }` |
 | 改职业 | `PATCH {apiBase}{me}`，body `{ job, job_other }` | 同上（更新后的完整资料） |
 | 改排行开关 | `PATCH {apiBase}{me}`，body `{ show_in_ranking }` | 同上 |
 | 存形象 | `PATCH {apiBase}{me}`，body `{ avatar }` | 同上 |
+| 存经验值 | `PATCH {apiBase}{me}`，body `{ xp }` | 同上 |
 | 同行排行 | `GET {apiBase}{ranking}?month=YYYY-MM` | `[{ name, studio, job, jobs, is_me }]` |
 | 我的接单记录 | `GET {apiBase}{jobLogs}?month=YYYY-MM` | `[{ id, project, amount, client, created_at }]` |
 | 敲接单钟 | `POST {apiBase}{jobLogs}`，body `{ project, amount, client }` | `201`，`{ id, project, amount, client, created_at }` |
@@ -111,6 +112,18 @@ window.SIS_OFFICE_CONFIG = {
   - 之后每次在衣帽间保存都会更新。
   - 换手机打开时，直接用账号里的形象，不会再叫用户捏人。
 
+**等级存进账号：**
+
+- 用户表加 `office_xp`（整数，默认 0）。`GET me` 回传成 `xp`。等级由办公室自己换算（每 100 XP 升一级），后端只存数字。
+- `PATCH me` 收到 `xp` 时，规则如下：
+  - 必须是整数。
+  - **只能增加，不能减少。** 比现在小的值直接忽略，回传现在的值，不报错。
+  - **同一天（马来西亚时间）最多增加 400。** 超过就回 400，不更新。用 `office_xp_day`（日期）和 `office_xp_day_gain`（当天已加多少）两个字段记录。
+- 这是为了防止有人改前端刷等级。等级只用来解锁衣服，风险很低，这两条规则就够了。
+- 办公室的行为：
+  - 打开时取账号和这台手机里较高的那个值；如果手机比较高（连上 SIS 之前玩过），会上传。
+  - 之后每次拿到经验值，1.5 秒后把最新总数送上来。
+
 办公室打开时会依序呼叫：`GET me` → `GET job-logs` 三次（本月、上月、前月）。
 
 ### 5. 不要做的事
@@ -129,6 +142,8 @@ window.SIS_OFFICE_CONFIG = {
 - [ ] 没登录时打开 `/office`，会跳到登录页，登录后回到办公室。
 - [ ] 在办公室改职业，SIS 个人资料页也变了；反过来在 SIS 改，重新打开办公室，私人办公室的摆设也跟着换。
 - [ ] 排行开关在办公室和 SIS 个人资料页两边同步。
+- [ ] 在手机 A 做任务拿经验值（例如去前台签到），资料库的 `office_xp` 跟着增加；换手机 B 打开，等级一样。
+- [ ] 用工具直接送一个比现在小的 `xp`，值不变；同一天送超过 +400，回 400。
 - [ ] 在手机 A 捏好形象，换手机 B（或电脑）打开 `/office`，不会出现捏人画面，人物跟手机 A 一样；在 B 的衣帽间换衣服，回到 A 重新打开也是新的。
 - [ ] 在办公室敲接单钟，`job_logs` 多一笔，`created_at` 正确；打开排行开关时，排行的单数加 1。
 - [ ] 数据大屏的排行切换「本月 / 上月 / 前月」，各自打到 `?month=YYYY-MM`，结果正确。
