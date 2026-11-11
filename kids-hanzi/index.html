@@ -66,7 +66,7 @@ svg.g{display:block;width:100%;height:100%;fill:var(--ink)}
 .gear{position:relative}
 .gear .ring{position:absolute;inset:-4px;border-radius:22px;border:4px solid var(--coral);clip-path:inset(0 100% 0 0);pointer-events:none}
 .gear.holding .ring{transition:clip-path 1.5s linear;clip-path:inset(0 0 0 0)}
-.island{margin:6px auto 0;max-width:980px;background:radial-gradient(closest-side,var(--grass) 0 82%,var(--sand) 83% 100%);border-radius:48% 52% 46% 54%/40% 44% 56% 60%;padding:clamp(28px,5vw,56px) clamp(18px,4vw,48px)}
+.island{margin:2px auto 0;max-width:980px;background:radial-gradient(closest-side,var(--grass) 0 82%,var(--sand) 83% 100%);border-radius:48% 52% 46% 54%/40% 44% 56% 60%;padding:clamp(28px,5vw,56px) clamp(18px,4vw,48px)}
 .places{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(8px,1.6vw,18px)}
 .place .ic{width:clamp(80px,11vw,112px)!important}
 @media (max-width:700px){.places{grid-template-columns:repeat(2,1fr)}.island{border-radius:40px}}
@@ -332,6 +332,28 @@ svg.g{display:block;width:100%;height:100%;fill:var(--ink)}
 .opts{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
 .opt{min-width:118px;min-height:118px;background:var(--paper);border-radius:26px;box-shadow:var(--shadow);display:grid;place-items:center;padding:10px;border:4px solid transparent}
 .opt .vemo{font-size:clamp(56px,9vw,80px)}
+.exambar{display:flex;align-items:center;gap:14px;width:100%;max-width:980px;margin:0 auto 6px;box-sizing:border-box;background:var(--coral);color:#fff;border-radius:22px;padding:6px 16px;box-shadow:0 5px 0 #c4604d,0 12px 24px rgba(229,128,107,.3);text-align:left}
+.exambar.done{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.eb-ic{font-size:34px;line-height:1}
+.eb-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.eb-t b{font:400 24px var(--f-title)}
+.eb-t small{font:800 15px var(--f-body);opacity:.9}
+.eb-go{font:400 22px var(--f-title);white-space:nowrap}
+.examhear{width:96px;height:96px;border-radius:50%;background:var(--paper);box-shadow:var(--shadow);font-size:48px}
+.exampic{font-size:clamp(90px,16vw,130px);line-height:1}
+.exampic .num{font-size:.8em}
+.examchars .opt{width:clamp(110px,17vw,140px)}
+.examchars .opt .tzg{width:100%;border-width:2px}
+.opt.picked{border-color:var(--line);background:#f3efe8}
+.opt.dim{opacity:.45}
+.dots i.grow{background:var(--grass);box-shadow:0 0 0 2px #fff}
+.examres{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.er{position:relative;width:76px;padding:8px 6px 6px;border-radius:18px;background:#fff;display:grid;place-items:center;border:3px solid var(--sun)}
+.er.grow{border-color:var(--grass)}
+.er .mk{position:absolute;top:-12px;right:-10px;font-size:24px}
+.er .tzg{width:58px;border-width:2px}
+.er .wv{width:58px;height:58px}
+.er .wv .vemo{font-size:46px}.er .wv .swatch{width:50px;height:50px;font-size:24px}.er .wv .shp,.er .wv .vsvg{width:56px;height:56px}.er .wv .numbig{font-size:40px}
 .olab{display:block;font:400 20px var(--f-title);color:var(--ink);margin-top:2px}
 .opt.right{border-color:var(--leaf);animation:fxb .6s cubic-bezier(.3,1.6,.5,1)}
 .opt.glow{box-shadow:0 0 0 6px var(--sun),0 0 26px 6px rgba(244,194,94,.7)}
@@ -814,21 +836,28 @@ const PLACES=[
   {id:'world',e:'📚',name:'百宝书',en:'Picture Book',go:()=>goWorld()},
   {id:'brain',e:'🧩',name:'智慧乐园',en:'Brain Games',go:()=>goBrain()},
 ];
+function examBanner(){
+  if(!examReady())return '';
+  const t=todayExam();
+  return `<button class="exambar ${t?'done':''}" id="exambar"><span class="eb-ic">🎓</span><span class="eb-t"><b>今日小考</b><small>${t?`今天记住了 ${t.ok} / ${t.n} · 再考一次`:'看看你真的记住了多少！'}</small></span><span class="eb-go">${t?'✓':'开始 ➜'}</span></button>`;
+}
 function goHub(first){
   closeOverlays(); GEN++;
   if(timeUp()&&!first){bedtime();return}
   const met=metChars(), thirsty=met.filter(isThirsty).length, flowers=met.filter(c=>C(c).b>=4).length;
   stage.innerHTML=`<div class="hub-top"><div class="stats"><span class="chip">🌱 认识 ${met.length} 个字</span><span class="chip">🌸 开花 ${flowers}</span></div>
     <button class="ib gear" id="gear" aria-label="家长区（按住）">⚙️<span class="ring"></span></button></div>
-    <main class="scene-main"><div class="island"><div class="places">
+    <main class="scene-main">${examBanner()}<div class="island"><div class="places">
     ${PLACES.map(p=>`<button class="place" data-id="${p.id}"><span class="ic">${p.e}</span>${p.id==='garden'&&thirsty?`<span class="badge">💧${thirsty}</span>`:''}<span class="lb">${p.name}</span>${S.settings.en?`<span class="en">${p.en}</span>`:''}</button>`).join('')}
     </div></div>
     <div class="guide"><button class="p" id="panda" aria-label="圆圆">🐼</button><div class="bubble" id="tip"></div></div></main>`;
+  if($('#exambar'))$('#exambar').onclick=()=>{SFX.pop();goExam()};
   $$('.place').forEach(b=>b.onclick=()=>{const p=PLACES.find(x=>x.id===b.dataset.id);SFX.pop();say(p.name);p.go()});
   holdButton($('#gear'),1500,goParent);
   $('#gear').onclick=()=>say('这是爸爸妈妈的地方，要按住才能打开哦。');
   let tip;
   if(met.length<3)tip='你好！我是圆圆。我们先去「字的故事」认识新朋友吧！';
+  else if(examReady()&&!todayExam())tip='今天的小考准备好了！点上面的「今日小考」，看看你记住了多少。';
   else if(thirsty>=3)tip=`花园里有${thirsty}朵花口渴了，去给它们浇浇水吧！`;
   else tip=rnd(['今天想玩什么？你来选！','去百宝书看看海洋朋友吧！','去智慧乐园动动小脑筋吧！','去百宝书认识一下自己的身体吧！','去魔法锅里变一个新的字吧！','小猫想去钓鱼啦，一起去吗？','坐上小火车，拼一个词语吧！','去「字的故事」看看字是怎么变出来的！']);
   $('#tip').textContent=tip;
@@ -1309,7 +1338,7 @@ function vis(cat,it){
   return `<span class="vemo">${it.e}</span>`;
 }
 function WS(){return S.world||(S.world={seen:{},mix:[]})}
-function markSeen(cat,zh){const w=WS();(w.seen[cat]=w.seen[cat]||{})[zh]=1;save()}
+function markSeen(cat,zh){const w=WS();(w.seen[cat]=w.seen[cat]||{})[zh]=1;w.first=w.first||{};const k=cat+':'+zh;if(!w.first[k])w.first[k]=now();save()}
 const isSeen=(cat,zh)=>!!(WS().seen[cat]&&WS().seen[cat][zh]);
 const seenCount=cat=>Object.keys(WS().seen[cat]||{}).length;
 
@@ -1726,6 +1755,148 @@ function bodyQuiz(){
   },'你认识好多身体部位！',()=>goBody());
 }
 
+
+/* ============================================================
+   今日小考 Daily check — 隔天再考，看看是不是真的记住了
+   ============================================================ */
+const DAY=20*3600e3;
+function firstSeen(key){const w=WS();return (w.first||{})[key]||0}
+function wKey(cat,zh){return cat+':'+zh}
+function wStat(key){const w=WS();w.st=w.st||{};return w.st[key]||(w.st[key]={r:0,w:0,t:0})}
+function exams(){return S.exams||(S.exams=[])}
+const todayExam=()=>exams().filter(e=>e.d===today()).slice(-1)[0];
+function retained(){return S.retained||(S.retained={})}
+
+function buildExam(n){
+  const qs=[];
+  // characters the child has met
+  const chars=metChars().filter(c=>B(c).t!=='m'||isMet(c));
+  const charScore=c=>{const x=C(c);let s=0;if(x.mt&&now()-x.mt>DAY)s+=4;if(isDue(c))s+=3;if(x.w>x.r)s+=2;return s+Math.random()*2};
+  const cs=[...chars].sort((a,b)=>charScore(b)-charScore(a));
+  // picture-book items the child has seen
+  const items=[];
+  for(const cat of WORLD_ORDER)for(const zh of Object.keys(WS().seen[cat]||{})){const it=WORLD[cat].items.find(x=>x.zh===zh);if(it)items.push({cat,it})}
+  const itemScore=({cat,it})=>{const k=wKey(cat,it.zh),st=wStat(k),f=firstSeen(k);let s=0;if(f&&now()-f>DAY)s+=4;if(st.w>st.r)s+=3;if(!st.r)s+=2;return s+Math.random()*2};
+  const ws=[...items].sort((a,b)=>itemScore(b)-itemScore(a));
+  const body=ws.filter(x=>x.cat==='body'&&!x.it.noquiz), pics=ws.filter(x=>x.cat!=='body');
+  let nc=Math.min(cs.length,Math.ceil(n/2)), nw=Math.min(ws.length,n-nc);
+  if(nc+nw<n)nc=Math.min(cs.length,n-nw);
+  cs.slice(0,nc).forEach((c,k)=>qs.push({type:k%2?'char-pic':'char-sound',c}));
+  let picked=[];
+  if(body.length)picked.push(body[0]);
+  for(const x of pics){if(picked.length>=nw)break;picked.push(x)}
+  for(const x of body.slice(1)){if(picked.length>=nw)break;picked.push(x)}
+  let enUsed=0;
+  picked.forEach(x=>{
+    if(x.cat==='body')qs.push({type:'body',cat:'body',it:x.it});
+    else if(S.settings.en&&enUsed<2&&x.cat!=='num'&&Math.random()<.4){enUsed++;qs.push({type:'world-en',cat:x.cat,it:x.it})}
+    else qs.push({type:'world',cat:x.cat,it:x.it});
+  });
+  return shuffle(qs).slice(0,n);
+}
+function examReady(){return metChars().length+Object.values(WS().seen).reduce((a,o)=>a+Object.keys(o).length,0)>=6}
+
+/* one answer counts: right → green, wrong → show the right one */
+function examOpts(box,opts,isRight,cb){
+  box.innerHTML=opts.map((o,k)=>`<button class="opt" data-k="${k}">${o.html}</button>`).join('');
+  let done=false;
+  $$('.opt',box).forEach(b=>b.onclick=()=>{
+    if(done)return; done=true; const o=opts[+b.dataset.k], ok=isRight(o);
+    b.classList.add(ok?'right':'picked');
+    if(!ok){const r=$$('.opt',box).find(x=>isRight(opts[+x.dataset.k]));if(r)r.classList.add('glow')}
+    $$('.opt',box).forEach(x=>{if(x!==b&&!x.classList.contains('glow'))x.classList.add('dim')});
+    cb(ok,o);
+  });
+}
+function goExam(){
+  GEN++; const g=GEN; closeOverlays();
+  if(!examReady()){
+    const o=overlay(`<div class="card"><div style="font-size:72px;line-height:1">🎓</div><h2>先学一学，再来小考</h2><p>去「字的故事」和「百宝书」认识一些新朋友，明天再来考考自己吧！</p><button class="cta" id="ok">好的</button></div>`);
+    say('先去学一学，明天再来考考自己吧！'); $('#ok',o).onclick=()=>{o.remove();goHub()}; return;
+  }
+  const Q=buildExam(8); const res=[];
+  stage.innerHTML=bar('今日小考','Daily check')+`<div class="dots" id="dots">${'<i></i>'.repeat(Q.length)}</div><main class="scene-main"><div class="bgame" id="bg"></div></main>`;
+  let i=0;
+  const label=q=>q.c?q.c:q.it.zh;
+  const finish=(ok,q)=>{
+    res.push(ok); const d=$$('#dots i')[i]; if(d)d.classList.add(ok?'on':'grow');
+    const key=q.c?'c:'+q.c:wKey(q.cat,q.it.zh);
+    const first=q.c?(C(q.c).mt||0):firstSeen(wKey(q.cat,q.it.zh));
+    if(q.c)record(q.c,ok); else{const st=wStat(key);ok?st.r++:st.w++;st.t=now()}
+    if(ok&&first&&now()-first>DAY)retained()[key]=1;
+    save(); i++; later(g,ok?1500:2600,next);
+  };
+  function next(){
+    if(!alive(g))return;
+    if(i>=Q.length){examResult(Q,res);return}
+    const q=Q[i], el=$('#bg'); el.innerHTML='';
+    if(q.type==='char-sound'||q.type==='char-pic'){
+      const b=B(q.c); const k=metChars().length>=10?3:2;
+      const opts=shuffle([q.c,...distractors(q.c,k,'exam')]).map(c=>({c,html:TZ(c)}));
+      el.innerHTML=q.type==='char-sound'
+        ?`<div class="bprompt">听一听，是哪个字？</div><button class="examhear" id="hear">🔊</button><div class="opts examchars" id="o"></div>`
+        :`<div class="bprompt">看图，这是哪个字？</div><div class="exampic">${EMO(b)}</div><div class="opts examchars" id="o"></div>`;
+      const ask=()=>q.type==='char-sound'?say('哪个是「'+q.c+'」？',b.w+'的'+q.c):say('看图，这是哪个字？');
+      if($('#hear',el))$('#hear',el).onclick=()=>say(q.c,b.w+'的'+q.c);
+      ask();
+      examOpts($('#o',el),opts,o=>o.c===q.c,(ok,o)=>{ok?SFX.ok():SFX.soft();
+        say(...(ok?['对！',q.c+'，'+b.w]:['这是「'+o.c+'」。','「'+q.c+'」在这里，'+b.w+'的'+q.c+'。']));finish(ok,q)});
+    }else if(q.type==='world'||q.type==='world-en'){
+      const list=WORLD[q.cat].items, k=list.length>=4?3:list.length-1;
+      const opts=shuffle([q.it,...shuffle(list.filter(x=>x.zh!==q.it.zh)).slice(0,k)]).map(x=>({...x,html:`<span class="wv">${vis(q.cat,x)}</span>`}));
+      const en=q.type==='world-en';
+      el.innerHTML=`<div class="bprompt">${en?'听英语，找一找':'哪个是「'+q.it.zh+'」？'}</div>${en?'<button class="examhear" id="hear">🔊</button>':''}<div class="opts" id="o"></div>`;
+      const ask=()=>en?say('听英语，找一找。',{en:q.it.en}):say('哪个是'+q.it.zh+'？');
+      if($('#hear',el))$('#hear',el).onclick=()=>say({en:q.it.en});
+      ask();
+      examOpts($('#o',el),opts,o=>o.zh===q.it.zh,(ok,o)=>{ok?SFX.ok():SFX.soft();labelOpts($('#o',el),opts);
+        say(...(ok?['对！',q.it.zh,{en:q.it.en}]:['这是'+o.zh+'。',q.it.zh+'在这里。',{en:q.it.en}]));finish(ok,q)});
+    }else if(q.type==='body'){
+      const mode=q.it.inside?'in':'out';
+      el.innerHTML=`<div class="bprompt">「${q.it.zh}」在哪里？</div><div class="bodymap quizmap" id="qm">${bodySVG(mode,null)}</div>`;
+      say(q.it.zh+'在哪里？点一点！');
+      let done=false;
+      $('#qm',el).addEventListener('click',e=>{
+        if(done)return; const p=e.target.closest('[data-p]'); if(!p)return; done=true;
+        const ok=p.dataset.p===q.it.p; $('#qm',el).innerHTML=bodySVG(mode,q.it.p);
+        ok?SFX.ok():SFX.soft();
+        const w=WORLD.body.items.find(y=>y.p===p.dataset.p&&!!y.inside===!!q.it.inside);
+        say(...(ok?['对！这是'+q.it.zh+'。']:[(w?'这是'+w.zh+'。':''),q.it.zh+'在这里，亮亮的地方。']));finish(ok,q);
+      });
+    }
+  }
+  next();
+}
+function examResult(Q,res){
+  const g=GEN; const n=res.filter(Boolean).length;
+  const missed=Q.filter((q,k)=>!res[k]);
+  exams().push({d:today(),t:now(),n:Q.length,ok:n,miss:missed.map(q=>q.c||q.it.zh)}); if(exams().length>40)exams().shift(); save();
+  if(n/Q.length>=.75){petals();SFX.magic()}else SFX.ok();
+  const icon=q=>q.c?TZ(q.c):`<span class="wv">${vis(q.cat,q.it)}</span>`;
+  const msg=n===Q.length?'全部记住啦！你的小脑袋真厉害。':missed.length===1?'只有一个还在长大，我们再看一遍就记住了！':`记住了 ${n} 个，还有 ${missed.length} 个在长大。我们再看一遍吧！`;
+  const o=overlay(`<div class="card"><div style="font-size:64px;line-height:1">🎓</div><h2>小考完成！</h2>
+    <div class="examres">${Q.map((q,k)=>`<div class="er ${res[k]?'ok':'grow'}"><span class="mk">${res[k]?'🌟':'🌱'}</span>${icon(q)}</div>`).join('')}</div>
+    <p>${msg}</p><div class="row">${missed.length?'<button class="cta leaf" id="rv">🌱 再看一遍</button>':''}<button class="cta alt" id="hm">回小岛</button></div></div>`);
+  say('小考完成！',msg);
+  $('#hm',o).onclick=()=>{o.remove();goHub()};
+  if($('#rv',o))$('#rv',o).onclick=()=>{o.remove();examReview(missed,0)};
+}
+function examReview(list,k){
+  GEN++; const g=GEN; closeOverlays();
+  if(k>=list.length){say('都看过啦，明天再来考考自己！');goHub();return}
+  const q=list[k];
+  let big,name,en,line;
+  if(q.c){const b=B(q.c);big=`<div style="display:flex;gap:16px;align-items:center;justify-content:center"><div class="tzg" style="width:150px">${G(q.c)}</div><div style="font-size:90px">${b.e.startsWith('#')?EMO(b):b.e}</div></div>`;name=q.c;en=b.en;line=b.s||b.w}
+  else if(q.cat==='body'){big=`<div class="bodymap" style="width:min(70vw,260px)">${bodySVG(q.it.inside?'in':'out',q.it.p)}</div>`;name=q.it.zh;en=q.it.en;line=q.it.f}
+  else{big=`<div class="sp-vis">${vis(q.cat,q.it)}</div>`;name=q.it.zh;en=q.it.en;line=q.it.f||q.it.ph}
+  const o=overlay(`<div class="spotcard" style="--cc:#e2f1d8"><div class="rays"></div><div class="sp-stage" style="height:auto;min-height:200px">${big}</div>
+    <div class="sp-name">${name}</div>${S.settings.en?`<div class="sp-en">${esc(en)}</div>`:''}${line?`<p class="sp-fact">${esc(line)}</p>`:''}
+    <div class="row"><button class="ib" id="ag">🔊</button><button class="cta" id="nx">记住了 ➜</button></div><small class="cite">${k+1} / ${list.length}</small></div>`);
+  o.classList.add('spot');
+  const speak=()=>say(name,...(q.c?[B(q.c).w]:[]),{en},...(line?[line]:[]));
+  speak(); $('#ag',o).onclick=speak; $('#nx',o).onclick=()=>examReview(list,k+1);
+}
+
 /* ---------- 家长区 Parent corner ---------- */
 let parentTab='progress';
 function goParent(tab){
@@ -1756,6 +1927,8 @@ function parentProgress(body){
     <div class="kpi"><b>${mastered}</b><span>已开花（多次隔天答对）</span></div>
     <div class="kpi"><b>${td}<small style="font-size:16px"> 分钟</small></b><span>今天玩了</span></div>
     <div class="kpi"><b>${Math.round(week/60)}<small style="font-size:16px"> 分钟</small></b><span>最近 7 天 · 连续 ${streak} 天</span></div></div>
+    <h4>今日小考记录</h4>${exams().length?`<div class="tbl"><table><thead><tr><th>日期</th><th>记住了</th><th>还在长大的</th></tr></thead><tbody>${exams().slice(-10).reverse().map(e=>`<tr><td>${e.d}</td><td>${e.ok} / ${e.n}</td><td style="white-space:normal">${e.miss.join('、')||'—'}</td></tr>`).join('')}</tbody></table></div>`:'<p>还没有做过小考。孩子学过一些东西后，小岛首页会出现「今日小考」。</p>'}
+    <p class="cite">隔天还记得：${Object.keys(retained()).length} 个（第一次学过至少一天后，在小考里答对）。这个数字比"见过多少"更能说明孩子真的记住了。</p>
     <h4>百宝书 · 看过的图</h4><p>${WORLD_ORDER.map(k=>`${WORLD[k].name} ${seenCount(k)}/${WORLD[k].items.length}`).join(' · ')}</p>
     <h4>智慧乐园 · 当前难度（★ 越多越难，会自动调整）</h4><p>${BRAIN.filter(b=>b.id!=='mix').map(b=>`${b.name} ${'★'.repeat(GD(b.id)+1)}`).join(' · ')} · 颜色魔法发现 ${(WS().mix||[]).length}/${Object.keys(MIX).length}</p>
     <h4>需要多陪练的字</h4><p>${hard.length?hard.map(c=>`<b style="font-size:22px">${c}</b>（${B(c).w}）`).join('、')+'。可以在生活里指给孩子看：路牌、包装、绘本。':'还没有明显的难字。'}</p>
@@ -1846,17 +2019,24 @@ const WHY_HTML=`
 <li><b>谁不一样 / 影子配对</b>：练分类推理和视觉辨别。答对后圆圆会说出理由（"苹果、香蕉、葡萄都是水果，胡萝卜是蔬菜"），把"感觉对了"变成"说得出为什么"。</li>
 <li><b>颜色魔法</b>：完全自由的探索，没有对错，任何两种颜色都能混出东西来。</li></ul>
 
+<h4>12. 今日小考：隔一天再考，才知道是不是真的记住了</h4>
+<ul><li>刚学完马上考，孩子几乎都能答对，但那是短期记忆，容易让大人和孩子都高估"记住了"（Bjork 称之为"流畅错觉"）。隔一段时间再考，答对的才是真正留下来的。所以小考优先出<b>一天以前</b>学过的东西，各分类里的 🎯 才是"学完马上练"。</li>
+<li>考试本身就是最好的复习（测试效应）。小考把字、图、英语、身体部位混在一起出题（交错练习，Rohrer & Taylor 2007），比一类一类练更能检验孩子是不是真的分得清。</li>
+<li>小考和普通游戏不同：<b>第一次点的才算</b>，没有提示；答错马上显示正确答案。结果用 🌟（记住了）和 🌱（还在长大）表示，不打叉，接着把 🌱 的再看一遍。</li>
+<li>家长区记录每次小考的成绩、没记住的东西，以及"隔天还记得"的数量。</li></ul>
+
 <h3>陪玩建议（每天 10–15 分钟就够）</h3>
 <ul>
 <li><b>陪着玩，比放着玩效果好得多。</b>坐在旁边，孩子答对时说出具体的事："你刚才看出了「日」和「目」不一样！"</li>
 <li><b>把字带到屏幕外。</b>今天学了「山」「水」「火」，就在路牌、绘本、零食包装上一起找。这一步是把"认识"变成"会用"的关键。</li>
 <li><b>让孩子当小老师。</b>请孩子教你「魔法锅」里的配方，讲给别人听是最好的复习。</li>
+<li><b>每天先做「今日小考」，再浇花，再玩别的。</b>小考只有 8 题，两三分钟。看到 🌱 的东西，可以在生活里指给孩子看。</li>
 <li><b>先浇花，再玩别的。</b>每天第一件事去「我的花园」给口渴的花浇水，就是完成当天的复习。</li>
 <li><b>看「需要多陪练的字」。</b>不用刻意补课，生活里多指几次就好。</li>
 <li><b>百宝书适合一起聊。</b>看到「消防员」可以问："你长大想做什么？"看到「榴莲」可以问："你喜欢吃吗？"一句对话，比多看十张图更有用。</li>
 <li><b>不追求速度。</b>一个星期稳定认识 5–10 个新字，就是很好的节奏。</li>
 </ul>
-<p class="cite">参考：Paivio (1986) Mental Representations; Roediger & Karpicke (2006) Psychological Science; Cepeda et al. (2006) Psychological Bulletin; Wilson, Shenhav, Straccia & Cohen (2019) Nature Communications; McBride-Chang et al. (2003, 2005) 语素意识与中文阅读; Hirsh-Pasek et al. (2015) Psychological Science in the Public Interest; Mueller & Dweck (1998) JPSP; Lepper, Greene & Nisbett (1973) JPSP; Tan et al. (2005) PNAS（中文阅读与书写）; Craik & Lockhart (1972) JVLVB; Rittle-Johnson, Fyfe, Hofer & Farran (2017) Child Development; Diamond & Lee (2011) Science; Gelman & Gallistel (1978) The Child's Understanding of Number; AAP (2016) Media and Young Minds; WHO (2019) 5 岁以下儿童身体活动、久坐和睡眠指南; 教育部《3–6 岁儿童学习与发展指南》(2012)。</p>
+<p class="cite">参考：Paivio (1986) Mental Representations; Roediger & Karpicke (2006) Psychological Science; Cepeda et al. (2006) Psychological Bulletin; Wilson, Shenhav, Straccia & Cohen (2019) Nature Communications; McBride-Chang et al. (2003, 2005) 语素意识与中文阅读; Hirsh-Pasek et al. (2015) Psychological Science in the Public Interest; Mueller & Dweck (1998) JPSP; Lepper, Greene & Nisbett (1973) JPSP; Tan et al. (2005) PNAS（中文阅读与书写）; Craik & Lockhart (1972) JVLVB; Rittle-Johnson, Fyfe, Hofer & Farran (2017) Child Development; Diamond & Lee (2011) Science; Gelman & Gallistel (1978) The Child's Understanding of Number; Bjork (1994) Memory and metamemory considerations in the training of human beings; Rohrer & Taylor (2007) Instructional Science; AAP (2016) Media and Young Minds; WHO (2019) 5 岁以下儿童身体活动、久坐和睡眠指南; 教育部《3–6 岁儿童学习与发展指南》(2012)。</p>
 `;
 
 /* ---------- boot ---------- */
