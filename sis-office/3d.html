@@ -326,7 +326,7 @@ const OPT = {
   hair:[['short','短发'],['side','侧分'],['long','长发'],['pony','马尾'],['bun','丸子头'],['buzz','寸头'],['hijab','头巾']],
   top:[['tee','T 恤'],['shirt','衬衫'],['hoodie','卫衣'],['suit','西装',2]],
   bottom:[['pants','长裤'],['shorts','短裤'],['skirt','裙子']],
-  hat:[['none','无'],['cap','鸭舌帽'],['beanie','毛线帽'],['helmet','工地安全帽',3],['witch','巫师帽',0,'halloween']],
+  hat:[['none','无'],['cap','鸭舌帽'],['beanie','毛线帽'],['helmet','工地安全帽',3],['witch','巫师帽',0,'halloween'],['santa','圣诞帽',0,'christmas']],
   glasses:[['none','无'],['round','眼镜'],['sun','墨镜',2]],
   watch:[['none','无'],['silver','银表'],['gold','金表',3]],
 };
@@ -416,9 +416,10 @@ if (!S || !S.posts) S = {look:null,name:'',role:'agent',xp:0,day:'',daily:freshD
 if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED_CONTENT(); S.leads = SEED_LEADS(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 const level = () => Math.floor(S.xp/100)+1;
-// Festival decorations switch on by date (Oct 20 - Nov 1); the HUD button overrides it.
-const festAuto = () => { const d=new Date(), m=d.getMonth(), day=d.getDate(); return (m===9 && day>=20) || (m===10 && day<=1); };
-const festOn = () => S.fest==='on' || (S.fest!=='off' && festAuto());
+// Festival decorations switch on by date (Halloween Oct 20 - Nov 1, Christmas all of December); the HUD button overrides it.
+const festAuto = () => { const d=new Date(), m=d.getMonth(), day=d.getDate(); if ((m===9 && day>=20) || (m===10 && day<=1)) return 'halloween'; if (m===11 || (m===0 && day<=1)) return 'christmas'; return null; };
+const festKind = () => S.fest==='off' ? null : S.fest==='on' ? 'halloween' : (S.fest==='halloween' || S.fest==='christmas') ? S.fest : festAuto();
+const festOn = () => festKind()==='halloween';
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ================================================================
@@ -916,7 +917,7 @@ let ed=null;
 const DIR_ORDER=['down','left','up','right'], DIR_NAME={down:'正面',left:'左侧',up:'背面',right:'右侧'};
 function edHTML(){
   const lv=level(), L=ed.look;
-  const chips=(key,list,val) => `<div class="group" role="group">${list.map(([v,l,req,fest]) => { const fl=!!fest&&!festOn(), lock=fl||(req&&lv<req); return `<button type="button" class="chip${lock?' locked':''}" data-act="ed" data-k="${key}" data-v="${v}" aria-pressed="${val===v}" ${lock?`data-lock="${fl?'fest':req}"`:''}>${l}${lock?`<small>${fl?'限定':'LV'+req}</small>`:fest?'<small>限定</small>':''}</button>`; }).join('')}</div>`;
+  const chips=(key,list,val) => `<div class="group" role="group">${list.map(([v,l,req,fest]) => { const fl=!!fest&&festKind()!==fest, lock=fl||(req&&lv<req); return `<button type="button" class="chip${lock?' locked':''}" data-act="ed" data-k="${key}" data-v="${v}" aria-pressed="${val===v}" ${lock?`data-lock="${fl?'fest-'+fest:req}"`:''}>${l}${lock?`<small>${fl?'限定':'LV'+req}</small>`:fest?'<small>限定</small>':''}</button>`; }).join('')}</div>`;
   const sws=(key,pal,val) => `<div class="group" role="group">${pal.map((c,i) => `<button type="button" class="sw" style="background:${c}" data-act="ed" data-k="${key}" data-v="${i}" aria-pressed="${val===i}" aria-label="颜色 ${i+1}"></button>`).join('')}</div>`;
   return `<div class="ed">
     <div class="ed-prev"><div id="ed-prev"></div><div class="side">
@@ -944,7 +945,7 @@ function openEditor(first=false){
 }
 function randomLook(){
   const lv=level(), pick=a => a[Math.floor(Math.random()*a.length)];
-  const ok = list => list.filter(o => (!o[2] || o[2]<=lv) && (!o[3] || festOn())).map(o => o[0]);
+  const ok = list => list.filter(o => (!o[2] || o[2]<=lv) && (!o[3] || festKind()===o[3])).map(o => o[0]);
   const L = {gender:ed.look.gender, skin:Math.floor(Math.random()*SKIN.length), hair:pick(ok(OPT.hair)), top:pick(ok(OPT.top)), bottom:pick(ok(OPT.bottom)),
     topColor:Math.floor(Math.random()*CLOTH.length), bottomColor:Math.floor(Math.random()*CLOTH.length), shoes:Math.floor(Math.random()*SHOES.length),
     hat:Math.random()<.35?pick(ok(OPT.hat)):'none', hatColor:Math.floor(Math.random()*CLOTH.length), glasses:Math.random()<.4?pick(ok(OPT.glasses)):'none', watch:Math.random()<.5?pick(ok(OPT.watch)):'none'};
@@ -982,6 +983,10 @@ const ACTS = {
     if (S.daily.candy){ toast('今天的糖已经拿过了，明天再来'); return; }
     S.daily.candy=true; save(); gainXP(5,'万圣节糖果'); bubble(player,'不给糖就捣蛋！'); burst(player.x,1.1,player.z,16);
   },
+  gift(){
+    if (S.daily.gift){ toast('今天的礼物已经拆过了，明天再来'); return; }
+    S.daily.gift=true; save(); gainXP(5,'圣诞礼物'); bubble(player,'圣诞快乐！'); burst(player.x,1.1,player.z,20);
+  },
   coffee(){
     const tip = TIPS[new Date().getDate()%TIPS.length];
     const opts = S.daily.coffee ? [] : [{label:'喝一杯 +10 XP', primary:true, fn:() => { S.daily.coffee=true; save(); gainXP(10,'咖啡时间'); bubble(player,'续命成功'); }}];
@@ -1006,7 +1011,7 @@ sheet.addEventListener('click', async e => {
   const v=a.dataset.v, id=a.dataset.id;
   switch(a.dataset.act){
     case 'ed': {
-      if (a.dataset.lock){ toast(a.dataset.lock==='fest' ? '万圣节限定，节日期间开放' : `LV ${a.dataset.lock} 解锁 · 完成今日任务获得经验`); return; }
+      if (a.dataset.lock){ toast(a.dataset.lock.startsWith('fest') ? (a.dataset.lock==='fest-christmas' ? '圣诞限定，12 月开放' : '万圣节限定，节日期间开放') : `LV ${a.dataset.lock} 解锁 · 完成今日任务获得经验`); return; }
       const k=a.dataset.k, num=['skin','hairColor','topColor','bottomColor','shoes','hatColor'].includes(k);
       if (k==='role') ed.role=v;
       else if (k==='gender'){
@@ -1255,6 +1260,13 @@ function addWitch(hd,c){
   cyl(.205,.205,.06,'#e3a63b',0,.04,0,w,18);
   return w;
 }
+function addSanta(hd){
+  const w=new THREE.Group(); w.position.y=.12; hd.add(w);
+  cyl(.255,.255,.07,'#f4f4f0',0,.02,0,w,22);
+  const cone=add(new THREE.Mesh(new THREE.ConeGeometry(.22,.36,18),M('#c8302e')),w,0,.22,-.03); cone.rotation.x=-.45;
+  sph(.055,'#f4f4f0',0,.38,-.12,w,10);
+  return w;
+}
 const HALF = (r,start=0,len=Math.PI*.52) => new THREE.SphereGeometry(r,22,14,0,Math.PI*2,start,len);
 function makeChar(L){
   const g=new THREE.Group(); const P={};
@@ -1310,6 +1322,7 @@ function makeChar(L){
     if (L.hat==='helmet'){ add(new THREE.Mesh(HALF(.27),M('#f2c230')),hd,0,.03,0); cyl(.32,.32,.02,'#d9a514',0,.04,0,hd,24); box(.04,.05,.5,'#ffd95a',0,.28,0,hd); }
     else if (L.hat==='cap'){ add(new THREE.Mesh(HALF(.25),M(hc)),hd,0,.04,0); cyl(.15,.15,.015,shadeHex(hc,-.2),0,.06,.2,hd,20); }
     else if (L.hat==='witch') addWitch(hd, hc);
+    else if (L.hat==='santa') addSanta(hd);
     else if (L.hat==='beanie'){ add(new THREE.Mesh(HALF(.255),M(hc)),hd,0,.04,0); cyl(.258,.258,.07,shadeHex(hc,-.2),0,.06,0,hd,22); sph(.06,'#f4f4f0',0,.31,0,hd,10); }
   }
   g.traverse(o => { if (o.isMesh){ o.castShadow=true; } });
@@ -1329,7 +1342,7 @@ function spawn(def, kind){
   g.position.set(c.x,0,c.z); g.rotation.y=c.yaw; g.userData.char=c; clickables.push(g);
   const el=document.createElement('div'); el.className='nl'+(c.npc?' npc':kind==='me'?' me':''); $('#labels').appendChild(el); c.el=el;
   const bub=document.createElement('div'); bub.className='bub'; bub.hidden=true; $('#labels').appendChild(bub); c.bubEl=bub;
-  if (c.npc){ c.witch=addWitch(P.head,'#8a5aa8'); c.witch.visible=false; }
+  if (c.npc){ c.witch=addWitch(P.head,'#8a5aa8'); c.witch.visible=false; c.santa=addSanta(P.head); c.santa.visible=false; }
   chars.push(c); return c;
 }
 const player = spawn({id:'me', name:'我', look:S.look||DEFAULT_LOOK, tile:[14.5,17], face:'up'}, 'me');
@@ -1412,18 +1425,6 @@ const gm=new THREE.MeshLambertMaterial({color:'#f4f1ff', emissive:'#6a6290', tra
 add(new THREE.Mesh(new THREE.SphereGeometry(.28,18,14,0,Math.PI*2,0,Math.PI/2),gm),ghost,0,.35,0);
 add(new THREE.Mesh(new THREE.CylinderGeometry(.28,.34,.36,18,1,true),gm),ghost,0,.17,0);
 sph(.04,'#2a2230',-.09,.45,.25,ghost,8); sph(.04,'#2a2230',.09,.45,.25,ghost,8); sph(.05,'#2a2230',0,.32,.27,ghost,8);
-function applyFest(){
-  const on=festOn(); fest.visible=on;
-  hemi.intensity=on?.5:.78; hemi.color.set(on?'#c9b8ff':'#ffffff'); sun.intensity=on?.42:.72; scene.background.set(on?'#1a1428':'#222a3a');
-  chars.forEach(c => { if (c.witch) c.witch.visible=on; });
-  const b=$('#c-fest'); b.classList.toggle('on',on); b.setAttribute('aria-pressed',String(on));
-}
-$('#c-fest').onclick = () => {
-  S.fest = festOn() ? 'off' : 'on'; save(); applyFest();
-  if (festOn()){ toast('万圣节装饰已开启 · 点南瓜拿糖','gold'); bubble(N.lisa,'不给糖就捣蛋！'); }
-  else toast('节日装饰已关闭');
-};
-applyFest();
 function animFest(t){
   const f = s => reduce ? .85 : .7+.3*Math.sin(t*9+s)*Math.sin(t*3.3+s*2);
   glows.forEach(gl => { gl.sp.material.opacity=.75*f(gl.k); });
@@ -1588,6 +1589,83 @@ function previewFrame(host, dt, t){
   if (!reduce){ const s=Math.sin(t*7); prevChar.P.legL.rotation.x=s*.5; prevChar.P.legR.rotation.x=-s*.5; prevChar.P.armL.rotation.x=-s*.4; prevChar.P.armR.rotation.x=s*.4; }
   prevR.render(prevScene, prevCam);
 }
+/* ---------------- festival: Christmas ---------------- */
+const xmas = new THREE.Group(); xmas.visible=false; scene.add(xmas);
+const XCOLS = ['#e8423a','#3fbf6a','#ffd25a'].map(c => new THREE.Color(c));
+const tree = new THREE.Group(); tree.position.set(16.6,0,9.8); xmas.add(tree);
+cyl(.12,.15,.35,'#7a4b2a',0,.17,0,tree,10);
+[[.95,.9,.6],[.75,.8,1.08],[.52,.7,1.5]].forEach(([r,h,y]) => add(new THREE.Mesh(new THREE.ConeGeometry(r,h,20), M('#2f7d4f')), tree, 0, y, 0));
+const star = add(new THREE.Mesh(new THREE.OctahedronGeometry(.15,0), B('#ffd25a')), tree, 0, 1.97, 0, false);
+const starGlow = new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex, color:'#fff2b0', blending:THREE.AdditiveBlending, depthWrite:false, transparent:true, opacity:.9}));
+starGlow.scale.set(1.3,1.3,1); starGlow.position.y=1.97; tree.add(starGlow);
+const ORN = ['#d65f4c','#f2c56b','#3b5bab','#f4f4f0'];
+for (let i=0;i<18;i++){ const lv=i%3, ang=i*2.4, y=.48+lv*.45, r=[.74,.56,.36][lv]; sph(.055,ORN[i%4],Math.cos(ang)*r,y,Math.sin(ang)*r,tree,8); }
+const treeMat = new THREE.MeshBasicMaterial();
+const treeLights = new THREE.InstancedMesh(bulbGeo, treeMat, 40);
+{ const m4=new THREE.Matrix4(); for (let i=0;i<40;i++){ const u=i/40, y=.35+u*1.45, r=(1-u)*.86+.08, a=u*Math.PI*8; m4.makeTranslation(Math.cos(a)*r, y, Math.sin(a)*r); treeLights.setMatrixAt(i,m4); treeLights.setColorAt(i, XCOLS[i%3]); } }
+tree.add(treeLights);
+[[.78,.32,'#d65f4c','#f2c56b'],[-.72,.42,'#3b5bab','#f4f4f0'],[.18,.86,'#2f7d6d','#d65f4c'],[-.3,-.8,'#f2c56b','#c8302e']].forEach(([x,z,c,rb]) => {
+  const g=new THREE.Group(); g.position.set(x,0,z); g.rotation.y=x*2; tree.add(g);
+  box(.32,.26,.32,c,0,.13,0,g); box(.34,.27,.06,rb,0,.135,0,g,false); box(.06,.27,.34,rb,0,.135,0,g,false); sph(.05,rb,0,.29,0,g,8);
+  g.userData.act='gift'; clickables.push(g);
+});
+const xBulbMats = [new THREE.MeshBasicMaterial(), new THREE.MeshBasicMaterial()];
+xBulbMats.forEach((mat,j) => {
+  const list=bulbPos.filter((_,i) => i%2===j); const im=new THREE.InstancedMesh(bulbGeo, mat, list.length); const m4=new THREE.Matrix4();
+  list.forEach((p,i) => { m4.makeTranslation(p[0],p[1],p[2]); im.setMatrixAt(i,m4); im.setColorAt(i, XCOLS[(i+j)%3]); });
+  xmas.add(im);
+});
+[[9.4,1.02],[11.6,1.02],[18.4,1.02],[27.6,1.02],[6,14.02],[22,14.02]].forEach(([x,z]) => {
+  const w=new THREE.Group(); w.position.set(x,.5,z); xmas.add(w);
+  add(new THREE.Mesh(new THREE.TorusGeometry(.17,.06,8,20), M('#2f6f45')), w, 0,0,0, false);
+  box(.1,.08,.03,'#c8302e',0,-.16,.05,w,false); sph(.025,'#d65f4c',.1,.05,.06,w,6); sph(.025,'#ffd25a',-.09,.08,.06,w,6);
+});
+const snowman = new THREE.Group(); snowman.position.set(10.7,0,15.6); snowman.rotation.y=Math.PI/4; xmas.add(snowman);
+sph(.26,'#f7f9fc',0,.24,0,snowman,14); sph(.18,'#f7f9fc',0,.6,0,snowman,14);
+sph(.025,'#2a2230',-.06,.64,.16,snowman,6); sph(.025,'#2a2230',.06,.64,.16,snowman,6);
+{ const nose=add(new THREE.Mesh(new THREE.ConeGeometry(.03,.14,8), M('#f08a2a')), snowman, 0,.6,.22); nose.rotation.x=Math.PI/2; }
+cyl(.13,.13,.03,'#2b2b30',0,.77,0,snowman,14); cyl(.09,.09,.16,'#2b2b30',0,.86,0,snowman,14);
+{ const scarf=add(new THREE.Mesh(new THREE.TorusGeometry(.14,.035,6,16), M('#c8302e')), snowman, 0,.45,0); scarf.rotation.x=Math.PI/2; }
+const SNOW_N=420, snowPos=new Float32Array(SNOW_N*3);
+for (let i=0;i<SNOW_N;i++){ snowPos[i*3]=Math.random()*MW; snowPos[i*3+1]=Math.random()*4; snowPos[i*3+2]=Math.random()*MH; }
+const snowGeo=new THREE.BufferGeometry(); snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos,3));
+const flakeTex=canvasTex(32,32,(g) => { const gr=g.createRadialGradient(16,16,0,16,16,16); gr.addColorStop(0,'rgba(255,255,255,1)'); gr.addColorStop(1,'rgba(255,255,255,0)'); g.fillStyle=gr; g.fillRect(0,0,32,32); });
+const snow=new THREE.Points(snowGeo, new THREE.PointsMaterial({size:.13, map:flakeTex, transparent:true, depthWrite:false, opacity:.9}));
+xmas.add(snow);
+function animXmas(t,dt){
+  star.rotation.y=t*.8; starGlow.material.opacity = reduce ? .85 : .7+.25*Math.sin(t*3);
+  const blink = reduce ? 0 : Math.floor(t*2)%2;
+  treeMat.color.setScalar(blink ? 1 : .6); xBulbMats[0].color.setScalar(blink ? 1 : .5); xBulbMats[1].color.setScalar(blink ? .5 : 1);
+  if (snow.visible && !reduce){
+    for (let i=0;i<SNOW_N;i++){
+      let y=snowPos[i*3+1]-dt*(.32+(i%5)*.05); snowPos[i*3]+=Math.sin(t*.8+i)*dt*.12;
+      if (y<0){ y=4; snowPos[i*3]=Math.random()*MW; snowPos[i*3+2]=Math.random()*MH; }
+      snowPos[i*3+1]=y;
+    }
+    snowGeo.attributes.position.needsUpdate=true;
+  }
+}
+const FEST_NAME = {halloween:'万圣', christmas:'圣诞'};
+function applyFest(){
+  const k=festKind();
+  fest.visible = k==='halloween'; xmas.visible = k==='christmas';
+  hemi.intensity = k==='halloween' ? .5 : k==='christmas' ? .62 : .78;
+  hemi.color.set(k==='halloween' ? '#c9b8ff' : k==='christmas' ? '#ffe6c9' : '#ffffff');
+  sun.intensity = k==='halloween' ? .42 : k==='christmas' ? .55 : .72;
+  scene.background.set(k==='halloween' ? '#1a1428' : k==='christmas' ? '#142036' : '#222a3a');
+  chars.forEach(c => { if (c.witch) c.witch.visible = k==='halloween'; if (c.santa) c.santa.visible = k==='christmas'; });
+  const b=$('#c-fest'); b.classList.toggle('on', !!k); b.setAttribute('aria-pressed', String(!!k)); b.textContent = k ? FEST_NAME[k] : '节日';
+}
+// The button cycles: off -> Halloween -> Christmas -> off.
+$('#c-fest').onclick = () => {
+  const order=[null,'halloween','christmas'], next=order[(order.indexOf(festKind())+1)%order.length];
+  S.fest = next || 'off'; save(); applyFest();
+  if (next==='halloween'){ toast('万圣节装饰已开启 · 点南瓜拿糖','gold'); bubble(N.lisa,'不给糖就捣蛋！'); }
+  else if (next==='christmas'){ toast('圣诞装饰已开启 · 点树下礼物领经验','gold'); bubble(N.lisa,'圣诞快乐！'); }
+  else toast('节日装饰已关闭');
+};
+applyFest();
+
 /* ---------------- quality ---------------- */
 function applyQuality(l){
   qLevel=l;
@@ -1599,6 +1677,7 @@ function applyQuality(l){
   scene.traverse(o => { if (o.material) (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { m.needsUpdate=true; }); });
   glows.forEach(gl => { gl.sp.visible = l!=='low'; });
   bats.forEach(b => { b.g.visible = l!=='low'; });
+  snow.visible = l!=='low'; starGlow.visible = l!=='low';
   renderer.setSize(innerWidth, innerHeight, false);
 }
 let perfAcc=0, perfN=0, frameN=0;
@@ -1694,6 +1773,7 @@ function loop(){
     if (c.life<=0 || c.m.position.y<0){ scene.remove(c.m); confetti.splice(i,1); }
   }
   if (fest.visible) animFest(t);
+  if (xmas.visible) animXmas(t, dt);
   if (follow && player.path.length) rig.target.lerp(v3.set(player.x,0,player.z), Math.min(1,dt*3));
   if (goal){
     const k=Math.min(1,dt*4); rig.target.lerp(goal.target,k); rig.r+=(goal.r-rig.r)*k; rig.th+=(goal.th-rig.th)*k; rig.ph+=(goal.ph-rig.ph)*k;
@@ -1716,7 +1796,7 @@ function loop(){
   const showNames = rig.r < 30;
   for (const c of chars){
     if (doBadges){ const h=labelHTML(c); if (h!==c._lh){ c.el.innerHTML=h; c._lh=h; } }
-    const hatTop = (c.witch && c.witch.visible) || (c.kind==='me' && player.look.hat==='witch') ? 1.62 : 1.32;
+    const hatTop = (c.witch && c.witch.visible) || (c.santa && c.santa.visible) || (c.kind==='me' && (player.look.hat==='witch' || player.look.hat==='santa')) ? 1.6 : 1.32;
     v3.set(c.x, hatTop, c.z).project(camera);
     const onScreen = v3.z<1 && Math.abs(v3.x)<1.1 && Math.abs(v3.y)<1.1;
     const sx=(v3.x+1)/2*W, sy=(1-v3.y)/2*H;
