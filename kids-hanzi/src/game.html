@@ -1,0 +1,1184 @@
+<title>圆圆识字岛</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Nunito:wght@600;800&display=swap">
+<style>
+/* Layout: one calm island scene at a time; a top bar with "home" and "hear again"; big touch targets for a 5-year-old.
+   Single deliberate look (soft daylight island), so no dark variant: every colour is set explicitly. */
+:root{
+  --sea:#a8d8df; --sea-2:#d3eef0; --sand:#f6e6c4; --grass:#bfe0a8; --leaf:#4f8f5f;
+  --ink:#3d3a50; --ink-2:#77728b; --paper:#fffaf0; --line:#ecdfca;
+  --coral:#e5806b; --coral-2:#fbe3da; --sun:#f4c25e; --sun-2:#fdf1d2; --plum:#6f5a8e; --plum-2:#ece6f5;
+  --tzg:#e9a7a0;
+  --f-title:"ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --f-body:"Nunito","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  --r:22px; --shadow:0 6px 0 rgba(61,58,80,.10),0 10px 24px rgba(61,58,80,.10);
+  color-scheme:light;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--sea);color:var(--ink);font-family:var(--f-body);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;touch-action:manipulation}
+:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+#stage{position:fixed;inset:0;display:flex;flex-direction:column;
+  background:radial-gradient(120% 70% at 50% 110%,var(--sea-2) 0 40%,transparent 41%),
+  repeating-radial-gradient(circle at 20% 10%,rgba(255,255,255,.18) 0 2px,transparent 3px 46px),var(--sea)}
+.scene-main{flex:1;min-height:0;overflow:auto;padding:8px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));-webkit-overflow-scrolling:touch}
+
+/* Glyphs drawn from stroke data (standard 楷体 forms) */
+svg.g{display:block;width:100%;height:100%;fill:var(--ink)}
+.gtext{font:400 1em "Kaiti SC","STKaiti","KaiTi",serif}
+.tzg{position:relative;aspect-ratio:1;max-width:100%;background:#fff;border:3px solid var(--tzg);border-radius:10px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%23e9a7a0' stroke-width='.8' stroke-dasharray='3 3' fill='none'%3E%3Cpath d='M50 0V100M0 50H100M0 0L100 100M100 0L0 100'/%3E%3C/g%3E%3C/svg%3E");background-size:100% 100%}
+.tzg svg.g{padding:8%;box-sizing:border-box}
+
+/* Top bar */
+.bar{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 8px max(14px,env(safe-area-inset-left,0px))}
+.ib{width:58px;height:58px;flex:none;border-radius:18px;background:var(--paper);box-shadow:var(--shadow);font-size:28px;display:grid;place-items:center}
+.ib:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(61,58,80,.12)}
+.bt{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;line-height:1.1}
+.bt b{font:400 clamp(24px,4vw,34px) var(--f-title);color:var(--ink);white-space:nowrap}
+.bt small{font:800 13px var(--f-body);color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--paper);border-radius:999px;padding:8px 14px;font:800 16px var(--f-body);box-shadow:var(--shadow);white-space:nowrap}
+
+/* Buttons */
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:64px;padding:0 28px;border-radius:999px;background:var(--coral);color:#fff;font:400 26px var(--f-title);box-shadow:0 6px 0 #c4604d,0 12px 24px rgba(229,128,107,.3)}
+.cta:active{transform:translateY(4px);box-shadow:0 2px 0 #c4604d}
+.cta.alt{background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.cta.leaf{background:var(--leaf);box-shadow:0 6px 0 #3a6e48,0 12px 24px rgba(79,143,95,.3)}
+.row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center}
+
+/* Start + overlays */
+.ov{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:rgba(61,58,80,.35);padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));overflow:auto}
+.card{background:var(--paper);border-radius:32px;box-shadow:0 20px 50px rgba(61,58,80,.25);padding:28px;max-width:640px;width:100%;box-sizing:border-box;text-align:center;display:flex;flex-direction:column;gap:18px;align-items:center}
+.card h2{margin:0;font:400 clamp(28px,5vw,40px) var(--f-title);text-wrap:balance}
+.card p{margin:0;font-size:18px;color:var(--ink-2);line-height:1.6}
+#start{background:linear-gradient(var(--sea-2),var(--sea))}
+.panda-big{font-size:clamp(110px,22vw,180px);line-height:1;animation:bob 4s ease-in-out infinite}
+.title-big{font:400 clamp(44px,9vw,76px) var(--f-title);margin:0;color:var(--ink)}
+.sub{font:800 16px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-2deg)}}
+
+/* Hub */
+.hub-top{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 4px max(14px,env(safe-area-inset-left,0px))}
+.hub-top .stats{display:flex;gap:8px;flex-wrap:wrap}
+.gear{position:relative}
+.gear .ring{position:absolute;inset:-4px;border-radius:22px;border:4px solid var(--coral);clip-path:inset(0 100% 0 0);pointer-events:none}
+.gear.holding .ring{transition:clip-path 1.5s linear;clip-path:inset(0 0 0 0)}
+.island{margin:6px auto 0;max-width:980px;background:radial-gradient(closest-side,var(--grass) 0 82%,var(--sand) 83% 100%);border-radius:48% 52% 46% 54%/40% 44% 56% 60%;padding:clamp(28px,5vw,56px) clamp(18px,4vw,48px)}
+.places{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,2vw,22px)}
+@media (max-width:700px){.places{grid-template-columns:repeat(2,1fr)}.island{border-radius:40px}}
+.place{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px}
+.place .ic{width:clamp(86px,13vw,120px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:clamp(46px,7vw,64px);background:var(--paper);box-shadow:var(--shadow);transition:transform .2s}
+.place:active .ic{transform:scale(.94)}
+.place .lb{font:400 clamp(20px,2.6vw,26px) var(--f-title);background:var(--paper);padding:4px 14px;border-radius:12px;box-shadow:0 3px 0 rgba(61,58,80,.08);white-space:nowrap}
+.place .en{font:800 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--leaf)}
+.place .badge{position:absolute;margin-left:70px;margin-top:-6px;background:var(--coral);color:#fff;font:800 15px var(--f-body);min-width:28px;height:28px;border-radius:14px;display:grid;place-items:center;padding:0 6px}
+.place{position:relative}
+.guide{display:flex;align-items:flex-end;gap:10px;max-width:980px;margin:14px auto 0}
+.guide .p{font-size:64px;line-height:1;flex:none;animation:bob 5s ease-in-out infinite}
+.bubble{background:var(--paper);border-radius:22px 22px 22px 6px;padding:14px 18px;font-size:19px;line-height:1.5;box-shadow:var(--shadow);text-align:left;flex:1;min-width:0}
+
+/* Pills */
+.pills{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex:none;background:var(--paper);border-radius:999px;padding:10px 16px;font:800 17px var(--f-body);box-shadow:0 3px 0 rgba(61,58,80,.08);white-space:nowrap}
+.pill.on{background:var(--ink);color:var(--paper)}
+
+/* Story */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;max-width:1000px;margin:0 auto}
+.scard{position:relative;background:var(--paper);border-radius:var(--r);box-shadow:var(--shadow);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.scard .emo{font-size:42px;line-height:1.1}
+.scard .tzg{width:72%}
+.scard small{font:800 13px var(--f-body);color:var(--ink-2);letter-spacing:.04em}
+.scard.new::after{content:"新";position:absolute;top:8px;right:8px;background:var(--coral);color:#fff;font:400 15px var(--f-title);width:28px;height:28px;border-radius:50%;display:grid;place-items:center}
+.scard.locked{background:var(--plum-2);color:var(--plum);justify-content:center;min-height:180px;font-size:40px}
+.scard.locked small{color:var(--plum)}
+.num{display:inline-grid;place-items:center;min-width:1.3em;height:1.3em;padding:0 .15em;border-radius:.35em;background:var(--sun-2);color:var(--ink);font:800 1em var(--f-body);line-height:1}
+.sdet{display:flex;flex-direction:column;align-items:center;gap:18px;max-width:640px;margin:0 auto;text-align:center}
+.stagebox{position:relative;width:min(62vw,46vh,380px);aspect-ratio:1}
+.stagebox .pic{position:absolute;inset:0;display:grid;place-items:center;font-size:min(34vw,25vh,200px);transition:transform .6s ease,opacity .6s ease}
+.stagebox .pic .num{font-size:.8em}
+.stagebox .pic.gone{transform:scale(.25) translate(-150%,-150%);opacity:0}
+.stagebox .tzg{position:absolute;inset:0;width:100%}
+.stagebox .tzg>div,.stagebox .tzg svg{width:100%;height:100%}
+.info{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.say{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border-radius:16px;padding:10px 16px;font:800 20px var(--f-body);box-shadow:var(--shadow)}
+.say .zh{font:400 24px var(--f-title)}
+.py{font:800 18px var(--f-body);color:var(--coral)}
+.storyline{font-size:20px;line-height:1.7;background:var(--sun-2);border-radius:18px;padding:12px 18px;max-width:560px}
+
+/* Fishing */
+.pond{position:relative;flex:1;min-height:300px;margin:0 max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));border-radius:40px;background:radial-gradient(80% 60% at 50% 40%,#bfe6f0,#7fc3d3);box-shadow:inset 0 6px 0 rgba(255,255,255,.4);overflow:hidden}
+.lily{position:absolute;font-size:40px;opacity:.85}
+.fish{position:absolute;width:clamp(88px,17vw,160px);aspect-ratio:1.6;transform:translate(-50%,-50%);animation:drift var(--dur,7s) ease-in-out infinite alternate}
+.fish .body{position:absolute;inset:0 22% 0 0;border-radius:50%;background:var(--fc,#f6b48f);box-shadow:inset -8px -6px 0 rgba(0,0,0,.06)}
+.fish .tail{position:absolute;right:0;top:18%;width:30%;height:64%;background:var(--fc,#f6b48f);clip-path:polygon(0 50%,100% 0,85% 50%,100% 100%);filter:brightness(.95)}
+.fish .eye{position:absolute;left:12%;top:30%;width:9%;aspect-ratio:1;border-radius:50%;background:var(--ink)}
+.fish .gl{position:absolute;left:22%;top:6%;width:54%;aspect-ratio:1;background:rgba(255,255,255,.9);border-radius:50%}
+.fish .gl svg.g{padding:10%;box-sizing:border-box}
+.fish.glow .body{box-shadow:0 0 0 6px var(--sun),0 0 30px 8px rgba(244,194,94,.8)}
+.fish.wiggle{animation:wiggle .5s ease 2}
+.fish.caught{transition:left .8s ease,top .8s ease,transform .8s ease,opacity .8s;transform:translate(-50%,-50%) scale(.2);opacity:0}
+@keyframes drift{from{margin-left:-18px;margin-top:-6px}to{margin-left:18px;margin-top:8px}}
+@keyframes wiggle{25%{rotate:-8deg}75%{rotate:8deg}}
+.pond-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px))}
+.cat{font-size:54px;line-height:1}
+.bucket{display:flex;align-items:center;gap:6px;background:var(--paper);border-radius:999px;padding:6px 14px 6px 8px;box-shadow:var(--shadow);font:800 20px var(--f-body)}
+.bucket .b{font-size:34px}
+.prompt{flex:1;text-align:center;font:400 clamp(22px,3.5vw,30px) var(--f-title);color:var(--ink)}
+
+/* Memory */
+.mgrid{display:grid;gap:12px;max-width:820px;margin:8px auto 0}
+.mcard{aspect-ratio:3/4;perspective:800px}
+.mcard .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.mcard.open .in,.mcard.done .in{transform:rotateY(180deg)}
+.mcard .f,.mcard .b{position:absolute;inset:0;border-radius:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center;box-shadow:var(--shadow)}
+.mcard .b{background:var(--plum);background-image:radial-gradient(circle,rgba(255,255,255,.18) 2px,transparent 3px);background-size:18px 18px;font-size:40px}
+.mcard .f{background:var(--paper);transform:rotateY(180deg);padding:10%;box-sizing:border-box}
+.mcard .f .emo{font-size:clamp(44px,8vw,72px)}
+.mcard .f .num{font-size:clamp(44px,7vw,64px)}
+.mcard .f .word{font:800 clamp(22px,3.6vw,32px) var(--f-body);color:var(--plum);text-align:center;word-break:break-word}
+.mcard .f .tzg{width:100%}
+.mcard.done .f{box-shadow:0 0 0 5px var(--sun),var(--shadow)}
+
+/* Magic pot */
+.magic{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:900px;margin:0 auto}
+.slots{display:flex;align-items:center;gap:12px;font:400 40px var(--f-title);color:var(--plum)}
+.slot{width:clamp(90px,15vw,120px);aspect-ratio:1;border-radius:20px;border:4px dashed var(--plum);background:rgba(255,255,255,.5);display:grid;place-items:center}
+.slot.full{border-style:solid;background:#fff}
+.slot .tzg{width:100%;border:0;background-color:transparent}
+.pot{position:relative;width:clamp(200px,34vw,280px);aspect-ratio:1.3}
+.pot .bowl{position:absolute;inset:22% 4% 0;background:var(--plum);border-radius:30% 30% 48% 48%/20% 20% 80% 80%;box-shadow:inset -14px -10px 0 rgba(0,0,0,.15)}
+.pot .brew{position:absolute;left:8%;right:8%;top:16%;height:22%;border-radius:50%;background:#b8e3c9;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08)}
+.pot .bub{position:absolute;bottom:72%;width:16px;height:16px;border-radius:50%;background:#d5f2df;opacity:0;animation:rise 2.6s ease-in infinite}
+.pot.stir .brew{animation:swirl .8s ease-in-out 2}
+.pot.stir .bub{animation-duration:.9s}
+@keyframes rise{0%{transform:translateY(0) scale(.6);opacity:0}20%{opacity:.9}100%{transform:translateY(-70px) scale(1.1);opacity:0}}
+@keyframes swirl{50%{transform:scaleX(.85) translateY(-6px);background:#f8e0a6}}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:10px;width:100%}
+.tile{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:6px;aspect-ratio:1}
+.tile .tzg{border-width:2px;width:100%}
+.tile.used{opacity:.35}
+.reveal{display:flex;flex-direction:column;align-items:center;gap:12px}
+.reveal .tzg{width:min(46vw,220px)}
+.recipe{display:flex;align-items:center;gap:8px;justify-content:center;font:400 28px var(--f-title);color:var(--plum);padding:8px;background:#fff;border-radius:16px}
+.recipe .tzg{width:58px;border-width:2px}
+.recipe .q{min-width:58px;height:58px;padding:0 4px;box-sizing:border-box;border-radius:10px;background:var(--plum-2);display:grid;place-items:center;font-size:26px}
+.recipes{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;width:100%;max-height:56vh;overflow:auto}
+
+/* Writing */
+.wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:12px;max-width:900px;margin:0 auto}
+.wpick{background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:8px}
+.wpick .tzg{width:100%;border-width:2px}
+.wbox{display:flex;flex-direction:column;align-items:center;gap:16px}
+.wbox .tzg{background-color:#fff}
+.wbox canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+
+/* Train */
+.trainview{display:flex;flex-direction:column;align-items:center;gap:16px;max-width:900px;margin:0 auto}
+.hint{display:flex;align-items:center;gap:14px;background:var(--paper);border-radius:28px;padding:12px 22px;box-shadow:var(--shadow)}
+.hint .emo{font-size:clamp(60px,10vw,90px);line-height:1}
+.track{position:relative;width:100%;height:clamp(130px,20vw,170px);overflow:hidden}
+.track::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:10px;background:repeating-linear-gradient(90deg,#8a6d52 0 14px,transparent 14px 30px),linear-gradient(#b89676,#b89676) 0 3px/100% 4px no-repeat}
+.train{position:absolute;bottom:18px;left:50%;display:flex;align-items:flex-end;gap:6px;transform:translateX(-50%);transition:transform 1.4s ease-in}
+.train.in{animation:arrive 1.2s ease-out}
+.train.go{transform:translateX(120vw)}
+@keyframes arrive{from{transform:translateX(-120vw)}}
+.engine{font-size:clamp(80px,13vw,110px);line-height:.9;transform:scaleX(-1);order:3}
+.car{width:clamp(96px,15vw,124px);aspect-ratio:1;background:var(--coral-2);border:4px solid var(--coral);border-radius:16px 16px 10px 10px;display:grid;place-items:center;position:relative}
+.car:nth-child(2){background:var(--sun-2);border-color:var(--sun)}
+.car .tzg{width:84%;border-width:2px}
+.car .gap{width:84%;aspect-ratio:1;border:3px dashed var(--coral);border-radius:10px;display:grid;place-items:center;font:400 40px var(--f-title);color:var(--coral);background:#fff}
+.car::after{content:"";position:absolute;bottom:-14px;left:12%;right:12%;height:18px;background:radial-gradient(circle at 18% 50%,var(--ink) 0 8px,transparent 9px),radial-gradient(circle at 82% 50%,var(--ink) 0 8px,transparent 9px)}
+.choices{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.choice{width:clamp(96px,15vw,124px);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:8px}
+.choice .tzg{width:100%;border-width:2px}
+.choice.glow{box-shadow:0 0 0 6px var(--sun),0 0 26px 6px rgba(244,194,94,.7)}
+.choice.wiggle,.sortcard.wiggle{animation:wiggle .45s ease 2}
+
+/* Sorting */
+.sortview{display:flex;flex-direction:column;align-items:center;gap:18px;height:100%;max-width:900px;margin:0 auto}
+.sortcard{position:relative;z-index:5;width:clamp(130px,22vw,180px);background:#fff;border-radius:24px;box-shadow:0 10px 30px rgba(61,58,80,.2);padding:12px;touch-action:none;cursor:grab}
+.sortcard .tzg{width:100%}
+.sortcard .peek{position:absolute;right:-18px;top:-18px;font-size:48px;background:var(--paper);border-radius:50%;width:70px;height:70px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.baskets{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;margin-top:auto}
+.basket{min-height:190px;border-radius:30px 30px 44px 44px;background:repeating-linear-gradient(45deg,#e7c08a 0 12px,#dcb07a 12px 24px);border:5px solid #c8955a;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;padding:14px 10px;box-sizing:border-box}
+.basket .lab{background:var(--paper);border-radius:14px;padding:6px 12px;font:400 clamp(19px,3vw,24px) var(--f-title);display:flex;flex-direction:column;align-items:center;gap:0;white-space:nowrap;line-height:1.25}
+.basket .lab small{font:800 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.basket .in{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.basket .in .tzg{width:42px;border-width:2px}
+.basket.over{outline:5px solid var(--sun)}
+
+/* Garden */
+.legend{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;font-size:26px;margin-bottom:10px}
+.legend i{font-style:normal;color:var(--ink-2);font-size:16px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:14px;max-width:1000px;margin:0 auto}
+.potc{display:flex;flex-direction:column;align-items:center;gap:0}
+.potc .plant{font-size:54px;line-height:1;height:62px;display:grid;place-items:end center;transform-origin:50% 100%}
+.potc .pp{width:86%;background:#d98b62;border-radius:6px 6px 22px 22px;padding:8px 8px 10px;box-shadow:inset 0 6px 0 #c7774f;display:grid;place-items:center}
+.potc .pp .tzg{width:70%;border-width:2px}
+.potc .pp .qq{width:70%;aspect-ratio:1;border-radius:10px;background:#fff;display:grid;place-items:center;font:400 34px var(--f-title);color:var(--coral)}
+.potc.thirsty .plant{transform:rotate(14deg);filter:saturate(.5)}
+.potc .drop{position:absolute;margin-left:72px;font-size:24px;animation:bob 2.4s ease-in-out infinite}
+.potc{position:relative}
+.potc.grow .plant{animation:grow .8s ease}
+@keyframes grow{0%{transform:scale(.6)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.qopts{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+/* Summary petals */
+.petal{position:fixed;bottom:-40px;font-size:28px;pointer-events:none;z-index:40;animation:float 4.5s ease-out forwards}
+@keyframes float{to{transform:translateY(-75vh) rotate(160deg);opacity:0}}
+.got{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.got button{width:70px}
+.got .tzg{border-width:2px}
+
+/* Parent corner */
+.parent{max-width:880px;margin:0 auto;background:var(--paper);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+.parent h3{font:400 26px var(--f-title);margin:18px 0 8px}
+.parent h4{font:800 18px var(--f-body);margin:16px 0 6px}
+.parent p,.parent li{font-size:16px;line-height:1.7;color:var(--ink);-webkit-user-select:text;user-select:text}
+.parent ul{padding-left:1.2em;margin:6px 0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:#fff;border-radius:18px;padding:14px;border:2px solid var(--line)}
+.kpi b{display:block;font:800 32px var(--f-body);font-variant-numeric:tabular-nums}
+.kpi span{font-size:14px;color:var(--ink-2)}
+.tbl{overflow-x:auto;border:2px solid var(--line);border-radius:16px;background:#fff}
+.tbl table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.tbl th{color:var(--ink-2);font-weight:800;font-size:13px;letter-spacing:.04em}
+.tbl td .tzg{width:38px;border-width:2px}
+.set{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.set label{font-size:17px;font-weight:800}
+.set select{font:800 16px var(--f-body);padding:8px 10px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink)}
+.switch{width:64px;height:36px;border-radius:18px;background:var(--line);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.switch[aria-checked="true"]{background:var(--leaf)}
+.switch[aria-checked="true"]::after{left:32px}
+.themebox{display:flex;flex-wrap:wrap;gap:8px}
+.themebox .pill[aria-pressed="false"]{opacity:.45}
+.cite{font-size:13px!important;color:var(--ink-2)!important}
+.smallbtn{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 14px;font:800 15px var(--f-body)}
+.danger{color:#b34a37;border-color:#efc2b8}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+
+<div id="stage"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.2/dist/hanzi-writer.min.js"></script>
+<!--STROKES-->
+<script>
+'use strict';
+/* ============================================================
+   圆圆识字岛 — 5岁儿童识字游戏（中文为主，英语为辅）
+   Content data lives between DATA-START / DATA-END.
+   Adding a character: add a row to BANK, then run tools/build.mjs.
+   ============================================================ */
+
+/*DATA-START*/
+const THEMES={
+  n:{name:'大自然',en:'Nature',e:'🌿'}, a:{name:'动物',en:'Animals',e:'🐾'}, b:{name:'身体',en:'Body',e:'🧍'},
+  num:{name:'数字',en:'Numbers',e:'🔢'}, f:{name:'我和家人',en:'Family',e:'🏠'}, t:{name:'生活用品',en:'Things',e:'🧸'},
+  v:{name:'动作',en:'Actions',e:'🏃'}, o:{name:'大小方向',en:'Opposites',e:'🧭'}, m:{name:'魔法字',en:'Magic',e:'✨'}
+};
+const THEME_ORDER=['n','a','b','num','f','t','v','o','m'];
+// [字, 拼音, English, 图, 词语, 主题, 字的故事(象形/会意说明)]
+const BANK_ROWS=[
+['日','rì','sun','☀️','日出','n','太阳圆圆的，古时候的人画一个圆圈，中间点一点，慢慢就变成了「日」。'],
+['月','yuè','moon','🌙','月亮','n','弯弯的月亮挂在天上，画下来，就变成了「月」。'],
+['山','shān','mountain','⛰️','大山','n','三座山连在一起，中间的山最高，这就是「山」。'],
+['水','shuǐ','water','💧','喝水','n','中间是弯弯的小河，两边是溅起来的水花，这就是「水」。'],
+['火','huǒ','fire','🔥','火山','n','火苗往上跳呀跳，两边还有小火星，这就是「火」。'],
+['木','mù','tree','🌳','木头','n','上面是树枝，中间是树干，下面是树根，一棵树就是「木」。'],
+['田','tián','field','🌾','田地','n','一块一块的田地，中间有小路，这就是「田」。'],
+['雨','yǔ','rain','🌧️','下雨','n','上面是天和云，一点一点落下来的是雨滴，这就是「雨」。'],
+['石','shí','stone','🪨','石头','n','山崖下面，有一块方方的石头，这就是「石」。'],
+['云','yún','cloud','☁️','白云','n','天上飘着的云朵，卷呀卷，这就是「云」。'],
+['天','tiān','sky','🌤️','天空','n','一个人张开手站着，头顶上的那一横，就是天空，这就是「天」。'],
+['风','fēng','wind','🌬️','大风','n',''],
+['星','xīng','star','⭐','星星','n','天上一闪一闪亮晶晶，这就是「星」。'],
+['花','huā','flower','🌸','花朵','n','上面的草字头像两棵小草，花也是植物，这就是「花」。'],
+['草','cǎo','grass','🌱','小草','n','上面的草字头，就像两棵小草，这就是「草」。'],
+['鸟','niǎo','bird','🐦','小鸟','a','鸟的头、身子、尾巴和小爪子，这就是「鸟」。'],
+['鱼','yú','fish','🐟','小鱼','a','上面是鱼头，中间是鱼身，下面是鱼尾巴，这就是「鱼」。'],
+['马','mǎ','horse','🐴','木马','a','马的长脸和飘飘的鬃毛，这就是「马」。'],
+['牛','niú','cow','🐮','水牛','a','牛头上有两只弯弯的角，这就是「牛」。'],
+['羊','yáng','sheep','🐑','山羊','a','羊头上有两只弯弯的角，这就是「羊」。'],
+['虫','chóng','bug','🐛','小虫','a','一条扭来扭去的小虫子，这就是「虫」。'],
+['猫','māo','cat','🐱','小猫','a',''],
+['狗','gǒu','dog','🐶','小狗','a',''],
+['兔','tù','rabbit','🐰','兔子','a','长长的耳朵，短短的尾巴，这就是「兔」。'],
+['象','xiàng','elephant','🐘','大象','a','长长的鼻子，大大的身子，这就是「象」。'],
+['人','rén','person','🧍','大人','b','一个人侧着身子走路，看见两条腿了吗？这就是「人」。'],
+['口','kǒu','mouth','👄','开口','b','张开的嘴巴，方方正正的，这就是「口」。'],
+['目','mù','eye','👁️','目光','b','一只眼睛，把它竖起来写，就变成了「目」。'],
+['耳','ěr','ear','👂','耳朵','b','耳朵的样子，这就是「耳」。'],
+['手','shǒu','hand','✋','小手','b','张开五个手指头，这就是「手」。'],
+['足','zú','foot','🦶','足球','b','上面的口是膝盖，下面是小脚丫，这就是「足」。'],
+['牙','yá','tooth','🦷','刷牙','b','上下的牙齿咬在一起，这就是「牙」。'],
+['心','xīn','heart','❤️','开心','b','一颗扑通扑通跳的心，这就是「心」。'],
+['头','tóu','head','🧑','头发','b',''],
+['力','lì','strong','💪','力气','b','像一只用力的手臂，这就是「力」。'],
+['一','yī','one','#1','一个','num','一根小棒，是「一」。'],
+['二','èr','two','#2','二月','num','两根小棒，是「二」。'],
+['三','sān','three','#3','三个','num','三根小棒，是「三」。'],
+['四','sì','four','#4','四个','num',''],
+['五','wǔ','five','#5','五个','num',''],
+['六','liù','six','#6','六个','num',''],
+['七','qī','seven','#7','七个','num',''],
+['八','bā','eight','#8','八个','num','两笔分开，像一座小滑梯，这就是「八」。'],
+['九','jiǔ','nine','#9','九个','num',''],
+['十','shí','ten','#10','十个','num','一横一竖交叉在一起，这就是「十」。'],
+['爸','bà','dad','👨','爸爸','f','上面的「父」是爸爸，下面的「巴」告诉我们读 bà，这就是「爸」。'],
+['妈','mā','mum','👩','妈妈','f','左边的「女」说妈妈是女的，右边的「马」告诉我们读 mā，这就是「妈」。'],
+['我','wǒ','me','🙋','我们','f',''],
+['你','nǐ','you','👉','你们','f',''],
+['家','jiā','home','🏠','我家','f','屋顶下面住着一家人，这就是「家」。'],
+['哥','gē','big brother','👦','哥哥','f',''],
+['女','nǚ','girl','👧','女孩','f','一个女孩子交叉着手坐着，这就是「女」。'],
+['子','zǐ','child','🧒','孩子','f','一个小宝宝，张开小手，这就是「子」。'],
+['宝','bǎo','baby','👶','宝宝','f',''],
+['车','chē','car','🚗','汽车','t','古时候的车，中间是车厢，上下是两个轮子，这就是「车」。'],
+['门','mén','door','🚪','大门','t','两扇门打开了，这就是「门」。'],
+['书','shū','book','📖','看书','t',''],
+['衣','yī','clothes','👕','衣服','t','一件衣服，上面是领子，下面是衣襟，这就是「衣」。'],
+['米','mǐ','rice','🍙','米饭','t','一粒一粒的米散开来，这就是「米」。'],
+['伞','sǎn','umbrella','☂️','雨伞','t','撑开的伞，下面是伞柄，这就是「伞」。'],
+['瓜','guā','melon','🍉','西瓜','t','藤上挂着一个大瓜，这就是「瓜」。'],
+['果','guǒ','fruit','🍎','水果','t','树（木）上结了一个圆圆的果子（田），这就是「果」。'],
+['灯','dēng','lamp','💡','电灯','t','左边是「火」，有火就会亮，这就是「灯」。'],
+['球','qiú','ball','⚽','皮球','t',''],
+['吃','chī','eat','😋','吃饭','v',''],
+['喝','hē','drink','🥤','喝水','v',''],
+['走','zǒu','walk','🚶','走路','v','上面像甩开的手臂，下面是迈开的脚，这就是「走」。'],
+['跑','pǎo','run','🏃','跑步','v',''],
+['看','kàn','look','👀','看书','v','把手放在眼睛上面，往远处看，这就是「看」。'],
+['听','tīng','listen','🎧','听歌','v',''],
+['说','shuō','talk','🗣️','说话','v',''],
+['坐','zuò','sit','🪑','坐下','v','两个人坐在地上，这就是「坐」。'],
+['飞','fēi','fly','🕊️','飞机','v','鸟儿张开翅膀飞呀飞，这就是「飞」。'],
+['笑','xiào','laugh','😄','大笑','v',''],
+['哭','kū','cry','😢','大哭','v',''],
+['大','dà','big','🐳','大象','o','一个人张开手，张开脚，变得大大的，这就是「大」。'],
+['小','xiǎo','small','🐜','小鸟','o','三个小小的点点，小小的，这就是「小」。'],
+['上','shàng','up','⬆️','上山','o','一横是地面，东西在上面，这就是「上」。'],
+['下','xià','down','⬇️','下山','o','一横是地面，东西在下面，这就是「下」。'],
+['左','zuǒ','left','⬅️','左手','o',''],
+['右','yòu','right','➡️','右手','o',''],
+['中','zhōng','middle','🎯','中间','o','一根旗杆插在正中间，这就是「中」。'],
+['多','duō','many','🍬🍬🍬','很多','o',''],
+['少','shǎo','few','🍬','很少','o',''],
+['开','kāi','open','🔓','开门','o',''],
+['关','guān','close','🔒','关门','o',''],
+['明','míng','bright','🌞','明天','m',''],
+['林','lín','woods','🌲🌲','树林','m',''],
+['森','sēn','forest','🌲🌲🌲','森林','m',''],
+['休','xiū','rest','😌','休息','m','一个人靠着大树休息，这就是「休」。'],
+['尖','jiān','pointy','🔺','笔尖','m',''],
+['鸣','míng','bird song','🎶','鸟鸣','m',''],
+['炎','yán','hot','🥵','炎热','m',''],
+['从','cóng','follow','👣','跟从','m',''],
+['众','zhòng','crowd','👥','大众','m',''],
+['男','nán','boy','🚹','男孩','m',''],
+['好','hǎo','good','👍','你好','m','妈妈（女）抱着孩子（子），真好！这就是「好」。'],
+['问','wèn','ask','❓','问题','m',''],
+['鲜','xiān','fresh','🥬','新鲜','m',''],
+];
+// 魔法锅配方：[材料A, 材料B, 变出来的字, 圆圆的解释]
+const RECIPES=[
+['日','月','明','太阳和月亮一起照，好亮好亮，变成了「明」！'],
+['木','木','林','两棵树站在一起，变成了小树林，「林」！'],
+['林','木','森','三棵树在一起，变成了大森林，「森」！'],
+['人','木','休','一个人靠着大树，坐下来休息，「休」！'],
+['小','大','尖','上面小，下面大，尖尖的，「尖」！'],
+['口','鸟','鸣','小鸟张开嘴巴唱歌，「鸣」！'],
+['火','火','炎','两把火，好热好热，「炎」！'],
+['人','人','从','一个人跟着另一个人走，「从」！'],
+['从','人','众','三个人在一起，人好多，「众」！'],
+['田','力','男','在田里用力干活，「男」！'],
+['女','子','好','妈妈抱着孩子，真好，「好」！'],
+['女','马','妈','「女」说她是女的，「马」告诉我们读 mā，变成了「妈」！'],
+['门','口','问','站在门口，张开嘴巴问问题，「问」！'],
+['鱼','羊','鲜','鱼和羊放在一起，味道好鲜，「鲜」！'],
+['手','目','看','把手放在眼睛上面往远处看，「看」！'],
+];
+// 词语小火车：[第一个字, 第二个字, 图]
+const WORDS=[
+['火','车','🚂'],['火','山','🌋'],['大','山','🏔️'],['小','鸟','🐦'],['下','雨','🌧️'],['雨','伞','☂️'],['山','羊','🐐'],['水','牛','🐃'],
+['木','马','🎠'],['小','猫','🐱'],['小','狗','🐶'],['大','象','🐘'],['看','书','📖'],['喝','水','🥤'],['开','门','🚪'],['上','山','🧗'],
+['开','心','😊'],['大','人','🧑'],['我','家','🏠'],['你','好','👋'],['水','果','🍇'],['小','草','🌱'],['大','风','🌬️'],['马','车','🐴'],
+['球','门','🥅'],['足','球','⚽'],['小','手','✋'],['大','哭','😭'],['大','笑','😆'],['坐','车','🚌'],['小','虫','🐛'],['兔','子','🐰'],
+['宝','宝','👶'],['哥','哥','👦'],['爸','爸','👨'],['妈','妈','👩'],['星','星','⭐'],['花','草','💐'],['天','上','☁️'],['森','林','🌲'],
+['明','天','📅'],['雨','衣','🧥'],['飞','鸟','🕊️'],['人','口','👨‍👩‍👧'],['手','心','🤲'],['火','灯','🏮'],
+];
+// 长得像的字（难度高时用作干扰项）
+const SIMILAR=['日目田口','人大天火八','木米禾','手牛','鸟马鱼','上下','七九十','小少水','石右','左右','开关','走足','门问','女好妈','哭笑','我你','月用'];
+/*DATA-END*/
+
+const BANK=BANK_ROWS.map(r=>({c:r[0],p:r[1],en:r[2],e:r[3],w:r[4],t:r[5],s:r[6]}));
+const BMAP=Object.fromEntries(BANK.map(b=>[b.c,b]));
+const B=c=>BMAP[c];
+let STROKES={};
+try{STROKES=JSON.parse(document.getElementById('strokes').textContent)}catch(e){STROKES={}}
+
+/* ---------- tiny helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const now=()=>Date.now();
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const stage=document.getElementById('stage');
+let GEN=0; const alive=g=>g===GEN;
+const later=(g,ms,fn)=>setTimeout(()=>{if(alive(g))fn()},ms);
+
+const gcache={};
+function G(c){
+  if(gcache[c])return gcache[c];
+  const d=STROKES[c];
+  const out=d?`<svg class="g" viewBox="0 0 1024 1024" role="img" aria-label="${c}"><g transform="translate(0,900) scale(1,-1)">${d.strokes.map(p=>`<path d="${p}"/>`).join('')}</g></svg>`
+             :`<span class="gtext" style="font-size:3em;display:grid;place-items:center;height:100%">${c}</span>`;
+  return gcache[c]=out;
+}
+const TZ=(c,cls='')=>`<div class="tzg ${cls}">${G(c)}</div>`;
+const EMO=b=>b.e.startsWith('#')?`<span class="num">${b.e.slice(1)}</span>`:`<span class="emo">${b.e}</span>`;
+
+/* ---------- saved progress (this device only) ---------- */
+const KEY='yuanyuan-hanzi-v1';
+const DEFAULT_SETTINGS={minutes:15,en:true,pinyin:false,sfx:true,slow:true,themes:{n:1,a:1,b:1,num:1,f:1,t:1,v:1,o:1}};
+let S;
+function load(){
+  let s=null; try{s=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+  if(!s||s.v!==1)s={v:1,chars:{},games:{},recipes:[],recent:[],days:{},sessions:0};
+  s.settings=Object.assign({},DEFAULT_SETTINGS,s.settings||{});
+  s.settings.themes=Object.assign({},DEFAULT_SETTINGS.themes,(s.settings&&s.settings.themes)||{});
+  return s;
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+S=load();
+
+/* ---------- spaced repetition (Leitner boxes 0-5) ---------- */
+// After reaching box i, the next review is due IV[i] later.
+const IV=[0,10*60e3,20*3600e3,2*86400e3,4*86400e3,9*86400e3];
+const STAGE=['🌰','🌱','🌿','🌷','🌸','🌻'];
+function C(c){return S.chars[c]||(S.chars[c]={b:0,d:0,r:0,w:0,m:0,t:0})}
+function meet(c){const x=C(c);if(!x.m){x.m=1;x.b=0;x.d=now();x.mt=now();save();return true}return false}
+const isMet=c=>!!(S.chars[c]&&S.chars[c].m);
+const isDue=c=>isMet(c)&&C(c).d<=now();
+const isFresh=c=>{const x=S.chars[c];return !x||(x.r+x.w===0)};
+const isThirsty=c=>isDue(c)&&!isFresh(c);
+function themeOn(t){return t==='m'||S.settings.themes[t]}
+function metChars(){return BANK.filter(b=>isMet(b.c)&&themeOn(b.t)).map(b=>b.c)}
+function record(c,ok){
+  const x=C(c);meet(c);x.t=now();
+  if(ok){x.r++; if(x.d<=now()){x.b=Math.min(5,x.b+1);x.d=now()+IV[x.b]}}
+  else{x.w++; x.b=Math.min(x.b,1); x.d=now()+IV[1]}
+  S.recent.push(ok?1:0); if(S.recent.length>20)S.recent.shift();
+  save();
+}
+function expose(c){meet(c);C(c).t=now();save()}
+const recentAcc=()=>S.recent.length<5?1:S.recent.reduce((a,b)=>a+b,0)/S.recent.length;
+function nextNew(filter=()=>true){
+  for(const t of THEME_ORDER){if(t==='m'||!themeOn(t))continue;
+    const b=BANK.find(b=>b.t===t&&!isMet(b.c)&&filter(b.c)); if(b)return b.c}
+  return null;
+}
+function ensureMet(k,filter=()=>true){
+  let guard=0;
+  while(metChars().filter(filter).length<k&&guard++<120){const c=nextNew(filter);if(!c)break;meet(c)}
+}
+function pickTargets(n,filter=()=>true){
+  ensureMet(Math.max(6,n),filter);
+  const met=metChars().filter(filter);
+  const due=shuffle(met.filter(isDue)).sort((a,b)=>C(a).b-C(b).b);
+  const dueN=Math.min(due.length,Math.ceil(n*0.6));
+  const out=due.slice(0,dueN);
+  const rest=shuffle(met.filter(c=>!out.includes(c)));
+  const fresh=recentAcc()>=0.75?nextNew(filter):null;
+  for(const c of rest){if(out.length>=n-(fresh?1:0))break;out.push(c)}
+  if(fresh&&!out.includes(fresh))out.splice(Math.floor(Math.random()*(out.length+1)),0,fresh);
+  let guard=0; while(out.length<n&&met.length&&guard++<50)out.push(rnd(met));
+  return shuffle(out.slice(0,n));
+}
+/* adaptive difficulty per game: aim for roughly 80-85% first-try success */
+function GS(g){return S.games[g]||(S.games[g]={d:0,h:[]})}
+const GD=g=>GS(g).d;
+function adapt(g,ok){
+  const s=GS(g); s.h.push(ok?1:0); if(s.h.length>8)s.h.shift();
+  if(s.h.length>=6){const a=s.h.reduce((x,y)=>x+y,0)/s.h.length;
+    if(a>=0.9&&s.d<3){s.d++;s.h=[]} else if(a<0.6&&s.d>0){s.d--;s.h=[]}}
+  save();
+}
+function distractors(t,k,g){
+  const met=metChars().filter(c=>c!==t);
+  let sim=[];
+  if(GD(g)>=2){const grp=SIMILAR.find(s=>s.includes(t)); if(grp)sim=shuffle([...grp].filter(c=>c!==t&&met.includes(c)))}
+  const res=[];
+  for(const c of [...sim,...shuffle(met),...shuffle(BANK.map(b=>b.c))]){
+    if(res.length>=k)break;
+    if(c===t||res.includes(c)||!B(c))continue;
+    if(B(c).e===B(t).e||res.some(r=>B(r).e===B(c).e))continue;
+    res.push(c);
+  }
+  return res;
+}
+
+/* ---------- voice ---------- */
+let voices=[];
+function loadVoices(){try{voices=speechSynthesis.getVoices()||[]}catch(e){voices=[]}}
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function voiceFor(lang){
+  const norm=v=>(v.lang||'').replace('_','-').toLowerCase();
+  const want=lang.toLowerCase();
+  const list=voices.filter(v=>norm(v)===want);
+  const pref=lang==='zh-CN'?/(Tingting|Ting-Ting|Xiaoxiao|Yunxi|Google 普通话|Li-mu|Yu-shu)/i:/(Samantha|Google US|Aria|Jenny|Karen|Daniel)/i;
+  return list.find(v=>pref.test(v.name))||list.find(v=>v.localService)||list[0]||
+    voices.find(v=>norm(v).startsWith(want.slice(0,2)))||null;
+}
+let sayId=0,lastSay=[];
+function say(...parts){
+  lastSay=parts; const id=++sayId;
+  if(!('speechSynthesis' in window))return Promise.resolve();
+  try{speechSynthesis.cancel()}catch(e){}
+  return new Promise(res=>{
+    let i=0; const done=()=>{if(id===sayId)res()};
+    const next=()=>{
+      if(id!==sayId)return res();
+      if(i>=parts.length)return done();
+      const p=parts[i++]; let lang='zh-CN',text=p;
+      if(p&&typeof p==='object'){if(!S.settings.en)return next();lang='en-US';text=p.en}
+      if(!text)return next();
+      const u=new SpeechSynthesisUtterance(text); u.lang=lang;
+      const v=voiceFor(lang); if(v)u.voice=v;
+      u.rate=lang==='zh-CN'?(S.settings.slow?0.78:0.95):(S.settings.slow?0.82:0.95);
+      u.pitch=1.05; let fired=false;
+      const go=()=>{if(!fired){fired=true;setTimeout(next,120)}};
+      u.onend=go;u.onerror=go;
+      setTimeout(go,Math.max(2500,text.length*420));
+      try{speechSynthesis.speak(u)}catch(e){go()}
+    };
+    setTimeout(next,80);
+  });
+}
+const replay=()=>say(...lastSay);
+
+/* ---------- gentle sounds (quiet, no buzzers) ---------- */
+let AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(freqs,dur=.18,gap=.11,vol=.05,type='sine'){
+  if(!S.settings.sfx)return; const a=ac(); if(!a)return;
+  freqs.forEach((f,i)=>{const t=a.currentTime+i*gap,o=a.createOscillator(),g=a.createGain();
+    o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.02);
+    g.gain.exponentialRampToValueAtTime(.0001,t+dur+.3);o.connect(g).connect(a.destination);o.start(t);o.stop(t+dur+.35)});
+}
+const SFX={ok:()=>tone([523.25,659.25,783.99]),soft:()=>tone([392],.15,0,.035,'triangle'),
+  magic:()=>tone([523.25,659.25,783.99,1046.5,1318.5],.2,.09,.04),toot:()=>tone([392,523.25],.25,.22,.045,'triangle'),
+  pop:()=>tone([880],.06,0,.025),flip:()=>tone([660],.05,0,.02),gurgle:()=>tone([220,196],.18,.16,.035,'triangle')};
+
+/* ---------- time & healthy stopping ---------- */
+let sessionSec=0,lastTouch=now(),bonusSec=0;
+document.addEventListener('pointerdown',()=>{lastTouch=now()},{capture:true});
+setInterval(()=>{
+  if(!started&&sleepDay&&today()!==sleepDay){sessionSec=0;bonusSec=0;closeOverlays();showStart(false);return}
+  if(document.hidden||now()-lastTouch>60e3||!started)return;
+  sessionSec+=5; const d=today(); S.days[d]=(S.days[d]||0)+5;
+  if(sessionSec%30===0)save();
+},5000);
+const timeUp=()=>S.settings.minutes>0&&sessionSec>=S.settings.minutes*60+bonusSec;
+
+/* ---------- shared UI ---------- */
+function bar(title,en,extra=''){
+  return `<header class="bar"><button class="ib" data-act="home" aria-label="回小岛">🏝️</button>
+  <div class="bt"><b>${title}</b>${S.settings.en&&en?`<small>${en}</small>`:''}</div>${extra}
+  <button class="ib" data-act="replay" aria-label="再听一次">🔊</button></header>`;
+}
+stage.addEventListener('click',e=>{
+  const a=e.target.closest('[data-act]'); if(!a)return;
+  if(a.dataset.act==='home'){SFX.pop();goHub()}
+  if(a.dataset.act==='replay')replay();
+});
+function overlay(html){const o=document.createElement('div');o.className='ov';o.innerHTML=html;document.body.appendChild(o);return o}
+function closeOverlays(){$$('.ov').forEach(o=>o.remove())}
+function petals(){
+  for(let i=0;i<12;i++){const p=document.createElement('span');p.className='petal';p.textContent=rnd(['🌸','🍃','✨','🌼']);
+    p.style.left=(5+Math.random()*90)+'vw';p.style.animationDelay=(Math.random()*.8)+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),5600)}
+}
+const PRAISE=['你一个一个仔细看，好专心！','遇到难的字也没有放弃，真了不起！','你听得很认真！','你越来越会认字啦！','慢慢想，就找到了，做得好！'];
+function summary(title,chars,again){
+  const g=GEN; petals(); SFX.magic();
+  const uniq=[...new Set(chars)];
+  const praise=rnd(PRAISE);
+  const o=overlay(`<div class="card"><div style="font-size:72px;line-height:1">🐼</div><h2>${title}</h2>
+    <div class="got">${uniq.map(c=>`<button data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('')}</div>
+    <p>${praise}</p><div class="row" id="sumbtns"></div></div>`);
+  $$('.got button',o).forEach(b=>b.onclick=()=>{const x=B(b.dataset.c);say(x.c,x.w,{en:x.en})});
+  const btns=$('#sumbtns',o);
+  if(timeUp()){say(title,praise);setTimeout(()=>{o.remove();bedtime()},4200);return}
+  btns.innerHTML=`<button class="cta" id="again">再玩一次</button><button class="cta alt" id="home">回小岛</button>`;
+  $('#again',o).onclick=()=>{o.remove();again()}; $('#home',o).onclick=()=>{o.remove();goHub()};
+  say(title,praise);
+}
+function holdButton(el,ms,fn){
+  let t=null;
+  const start=e=>{e.preventDefault();el.classList.add('holding');t=setTimeout(()=>{el.classList.remove('holding');fn()},ms)};
+  const stop=()=>{el.classList.remove('holding');clearTimeout(t)};
+  el.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>el.addEventListener(ev,stop));
+  el.addEventListener('contextmenu',e=>e.preventDefault());
+}
+function bedtime(){
+  closeOverlays(); GEN++;
+  const learned=Object.values(S.chars).filter(x=>x.t&&x.t>now()-sessionSec*1000-60e3).length;
+  const o=overlay(`<div class="card"><div class="panda-big" style="animation-duration:6s">😴</div><h2>圆圆有点困了……</h2>
+    <p>今天我们一起玩了${Math.round(sessionSec/60)}分钟，见到了${learned}个字朋友。<br>明天再来花园浇水吧！</p>
+    <div class="row"><button class="cta leaf" id="bye">晚安，圆圆 👋</button></div>
+    <button class="smallbtn gear" id="more" style="position:relative">家长：按住 2 秒，再玩 10 分钟<span class="ring"></span></button></div>`);
+  say('圆圆有点困了。今天我们一起认识了好多字。明天再来花园浇水吧！晚安！');
+  $('#bye',o).onclick=()=>{o.remove();showStart(true)};
+  holdButton($('#more',o),2000,()=>{bonusSec+=600;o.remove();goHub()});
+}
+
+/* ---------- start screen ---------- */
+let started=false,sleepDay=null;
+function showStart(sleeping){
+  GEN++; started=false; sleepDay=sleeping?today():null;
+  stage.innerHTML='';
+  const o=overlay(`<div class="card" style="background:transparent;box-shadow:none">
+    <div class="panda-big">${sleeping?'😴':'🐼'}</div><h1 class="title-big">圆圆识字岛</h1>
+    <div class="sub">Yuan Yuan's Word Island</div>
+    ${sleeping?'<p>圆圆睡着了。明天见！</p>':'<button class="cta" id="go" style="font-size:32px;min-height:80px;padding:0 44px">▶ 开始</button>'}</div>`);
+  o.id='start';
+  const go=$('#go',o);
+  if(go)go.onclick=()=>{
+    ac(); started=true; S.sessions++; save(); o.remove(); goHub(true);
+  };
+  if(sleeping)holdButton(o.querySelector('.panda-big'),2000,()=>{o.remove();sessionSec=0;bonusSec=0;showStart(false)});
+}
+
+/* ---------- hub: the island ---------- */
+const PLACES=[
+  {id:'story',e:'🌳',name:'字的故事',en:'Story Tree',go:()=>goStory()},
+  {id:'fish',e:'🎣',name:'小猫钓鱼',en:'Fishing',go:()=>goFish()},
+  {id:'memory',e:'🃏',name:'翻翻乐',en:'Memory',go:()=>goMemory()},
+  {id:'magic',e:'🧪',name:'魔法锅',en:'Magic Pot',go:()=>goMagic()},
+  {id:'write',e:'✍️',name:'写字亭',en:'Writing',go:()=>goWrite()},
+  {id:'train',e:'🚂',name:'词语火车',en:'Word Train',go:()=>goTrain()},
+  {id:'sort',e:'🧺',name:'分一分',en:'Sorting',go:()=>goSort()},
+  {id:'garden',e:'🌻',name:'我的花园',en:'My Garden',go:()=>goGarden()},
+];
+function goHub(first){
+  closeOverlays(); GEN++;
+  if(timeUp()&&!first){bedtime();return}
+  const met=metChars(), thirsty=met.filter(isThirsty).length, flowers=met.filter(c=>C(c).b>=4).length;
+  stage.innerHTML=`<div class="hub-top"><div class="stats"><span class="chip">🌱 认识 ${met.length} 个字</span><span class="chip">🌸 开花 ${flowers}</span></div>
+    <button class="ib gear" id="gear" aria-label="家长区（按住）">⚙️<span class="ring"></span></button></div>
+    <main class="scene-main"><div class="island"><div class="places">
+    ${PLACES.map(p=>`<button class="place" data-id="${p.id}"><span class="ic">${p.e}</span>${p.id==='garden'&&thirsty?`<span class="badge">💧${thirsty}</span>`:''}<span class="lb">${p.name}</span>${S.settings.en?`<span class="en">${p.en}</span>`:''}</button>`).join('')}
+    </div></div>
+    <div class="guide"><button class="p" id="panda" aria-label="圆圆">🐼</button><div class="bubble" id="tip"></div></div></main>`;
+  $$('.place').forEach(b=>b.onclick=()=>{const p=PLACES.find(x=>x.id===b.dataset.id);SFX.pop();say(p.name);p.go()});
+  holdButton($('#gear'),1500,goParent);
+  $('#gear').onclick=()=>say('这是爸爸妈妈的地方，要按住才能打开哦。');
+  let tip;
+  if(met.length<3)tip='你好！我是圆圆。我们先去「字的故事」认识新朋友吧！';
+  else if(thirsty>=3)tip=`花园里有${thirsty}朵花口渴了，去给它们浇浇水吧！`;
+  else tip=rnd(['今天想玩什么？你来选！','去魔法锅里变一个新的字吧！','小猫想去钓鱼啦，一起去吗？','坐上小火车，拼一个词语吧！','去「字的故事」看看字是怎么变出来的！']);
+  $('#tip').textContent=tip;
+  $('#panda').onclick=()=>say(tip);
+  if(first)say('你好！我是圆圆。',tip); else say(tip);
+}
+
+/* ---------- 1. 字的故事 Story Tree ---------- */
+let storyTab='n';
+function goStory(tab){
+  GEN++; closeOverlays();
+  if(tab)storyTab=tab; if(!themeOn(storyTab))storyTab=THEME_ORDER.find(themeOn);
+  const tabs=THEME_ORDER.filter(themeOn).map(t=>`<button class="pill ${t===storyTab?'on':''}" data-tab="${t}">${THEMES[t].e} ${THEMES[t].name}</button>`).join('');
+  const list=BANK.filter(b=>b.t===storyTab);
+  stage.innerHTML=bar('字的故事','Story Tree')+`<main class="scene-main"><div class="pills">${tabs}</div><div class="sgrid">
+   ${list.map(b=>{
+     if(b.t==='m'&&!isMet(b.c))return `<button class="scard locked" data-locked="1">🔒<small>去魔法锅变出来</small></button>`;
+     return `<button class="scard ${S.chars[b.c]&&S.chars[b.c].st?'':'new'}" data-c="${b.c}">${EMO(b)}${TZ(b.c)}${S.settings.en?`<small>${esc(b.en)}</small>`:''}</button>`}).join('')}
+  </div></main>`;
+  $$('.pill').forEach(p=>p.onclick=()=>{SFX.pop();say(THEMES[p.dataset.tab].name);goStory(p.dataset.tab)});
+  $$('.scard[data-c]').forEach(c=>c.onclick=()=>{SFX.pop();storyDetail(c.dataset.c)});
+  $$('.scard[data-locked]').forEach(c=>c.onclick=()=>say('这个字藏在魔法锅里，去变出来吧！'));
+  say('点一张图，看看它会变成什么字！');
+}
+let writer=null;
+function makeWriter(el,c,opts){
+  if(!window.HanziWriter||!STROKES[c])return null;
+  el.innerHTML='';
+  const size=Math.round(el.getBoundingClientRect().width)||300;
+  return HanziWriter.create(el,c,Object.assign({width:size,height:size,padding:Math.round(size*.07),
+    strokeColor:'#3d3a50',outlineColor:'#eadccb',drawingColor:'#e5806b',highlightColor:'#f4c25e',radicalColor:null,
+    strokeAnimationSpeed:.9,delayBetweenStrokes:260,charDataLoader:(ch,done)=>done(STROKES[ch])},opts||{}));
+}
+function storyDetail(c){
+  GEN++; const g=GEN; closeOverlays();
+  const b=B(c); const wasNew=!C(c).st; meet(c); C(c).st=1; save();
+  const list=BANK.filter(x=>x.t===b.t&&(x.t!=='m'||isMet(x.c)));
+  const idx=list.findIndex(x=>x.c===c), nx=list[(idx+1)%list.length];
+  stage.innerHTML=bar('字的故事','Story Tree')+`<main class="scene-main"><div class="sdet">
+    <div class="stagebox"><div class="pic" id="pic">${EMO(b)}</div><div class="tzg" id="wbox" hidden></div></div>
+    <button class="cta" id="bian">✨ 变！</button>
+    <div id="after" hidden style="display:flex;flex-direction:column;gap:14px;align-items:center">
+      ${b.s?`<div class="storyline">${esc(b.s)}</div>`:''}
+      <div class="info">
+        <button class="say" id="s-c"><span class="zh">${c}</span>${S.settings.pinyin?`<span class="py">${b.p}</span>`:''} 🔊</button>
+        <button class="say" id="s-w"><span class="zh">${b.w}</span> 🔊</button>
+        ${S.settings.en?`<button class="say" id="s-en">${esc(b.en)} 🔊</button>`:''}
+      </div>
+      <div class="row"><button class="cta alt" id="towrite">✍️ 写一写</button><button class="cta" id="next">下一个 ${nx.e.startsWith('#')?'':nx.e} ➜</button></div>
+    </div></div></main>`;
+  const intro=wasNew?'新朋友来啦！':'';
+  say(intro+'看，这是什么？点「变」，看看它变成什么字！');
+  $('#bian').onclick=()=>{
+    SFX.magic(); $('#bian').hidden=true; $('#pic').classList.add('gone');
+    const wb=$('#wbox'); wb.hidden=false;
+    later(g,500,()=>{
+      writer=makeWriter(wb,c,{showCharacter:false,showOutline:true});
+      if(writer)writer.animateCharacter({onComplete:()=>{if(alive(g)){writer.showCharacter()}}});
+      else wb.innerHTML=G(c);
+      const after=$('#after'); after.hidden=false;
+      say(...(b.s?[b.s]:[]),c,b.w,{en:b.en});
+      expose(c);
+    });
+  };
+  $('#s-c').onclick=()=>say(c); $('#s-w').onclick=()=>say(b.w);
+  if($('#s-en'))$('#s-en').onclick=()=>say({en:b.en});
+  $('#towrite').onclick=()=>writeChar(c,()=>storyDetail(c));
+  $('#next').onclick=()=>{SFX.pop();storyDetail(nx.c)};
+  $('[data-act="home"]').onclick=e=>{e.stopPropagation();goStory()};
+  $('[data-act="home"]').textContent='⬅️';
+}
+
+/* ---------- 2. 小猫钓鱼 Listen & find ---------- */
+const FISHC=['#f6b48f','#f4c25e','#b9a3e3','#9fd3a8','#f39fb3','#8fc7e8'];
+function goFish(){
+  GEN++; const g=GEN; closeOverlays();
+  const T=pickTargets(6); let i=0; const got=[];
+  stage.innerHTML=bar('小猫钓鱼','Listen and find')+`<div class="pond-top"><span class="cat">🐱</span><div class="prompt" id="prompt"></div><span class="bucket"><span class="b">🪣</span><span id="cnt">0</span>/6</span></div>
+    <div class="pond" id="pond"><span class="lily" style="left:6%;top:8%">🪷</span><span class="lily" style="right:8%;bottom:10%">🍃</span><span class="lily" style="left:44%;bottom:4%">🪷</span></div>`;
+  const pond=$('#pond');
+  function round(){
+    if(!alive(g))return;
+    if(i>=T.length){summary('钓到 6 条鱼啦！',got,goFish);return}
+    const t=T[i], tb=B(t), fresh=isFresh(t);
+    const opts=shuffle([t,...distractors(t,Math.min(4,1+GD('fish')),'fish')]);
+    $$('.fish',pond).forEach(f=>f.remove());
+    const slots=shuffle([[22,30],[50,26],[78,32],[30,70],[64,72],[50,50]]).slice(0,opts.length);
+    let misses=0, done=false;
+    opts.forEach((c,k)=>{
+      const f=document.createElement('button');f.className='fish';f.setAttribute('aria-label',c);
+      f.style.left=slots[k][0]+'%';f.style.top=slots[k][1]+'%';
+      f.style.setProperty('--fc',FISHC[(k+i)%FISHC.length]);f.style.setProperty('--dur',(6+Math.random()*4)+'s');f.style.animationDelay=(-Math.random()*5)+'s';
+      f.innerHTML=`<span class="body"></span><span class="tail"></span><span class="eye"></span><span class="gl">${G(c)}</span>`;
+      if(fresh&&c===t)f.classList.add('glow');
+      f.onclick=()=>{
+        if(done)return;
+        if(c===t){
+          done=true; SFX.ok(); record(t,misses===0); if(!fresh)adapt('fish',misses===0);
+          f.classList.add('caught'); f.style.left='92%'; f.style.top='-10%';
+          got.push(t); i++; $('#cnt').textContent=i;
+          say(t,tb.w); later(g,1700,round);
+        }else{
+          SFX.soft(); misses++; if(misses===1&&!fresh)record(t,false);
+          f.classList.remove('wiggle');void f.offsetWidth;f.classList.add('wiggle');
+          say('这是「'+c+'」。','再找找「'+t+'」。');
+          if(misses>=2)$$('.fish',pond).find(x=>x.getAttribute('aria-label')===t)?.classList.add('glow');
+        }
+      };
+      pond.appendChild(f);
+    });
+    $('#prompt').innerHTML=fresh?'新朋友！':'找一找';
+    if(fresh)say('新朋友来啦！这是「'+t+'」，'+tb.w+'。',{en:tb.en},'把它钓起来吧！');
+    else say('哪条鱼是「'+t+'」？');
+  }
+  round();
+}
+
+/* ---------- 3. 翻翻乐 Memory ---------- */
+function goMemory(mode){
+  GEN++; const g=GEN; closeOverlays();
+  const gs=GS('memory'); if(mode)gs.mode=mode; if(!gs.mode||(!S.settings.en&&gs.mode==='en'))gs.mode='pic'; save();
+  const pairs=Math.min(6,3+gs.d);
+  let T=[...new Set(pickTargets(pairs+3))].filter((c,k,a)=>a.findIndex(x=>B(x).e===B(c).e)===k).slice(0,pairs);
+  const cards=shuffle(T.flatMap(c=>[{c,k:'g'},{c,k:gs.mode==='en'?'e':'p'}]));
+  const cols=cards.length<=6?3:cards.length===10?5:4;
+  const modes=S.settings.en?`<button class="ib" id="mode" aria-label="换玩法" style="font-size:20px;font-weight:800">${gs.mode==='en'?'🖼️':'ABC'}</button>`:'';
+  stage.innerHTML=bar('翻翻乐','Find the pairs',modes)+`<main class="scene-main"><div class="mgrid" style="grid-template-columns:repeat(${cols},1fr);max-width:${cols*170}px">
+   ${cards.map((x,k)=>`<button class="mcard" data-k="${k}"><div class="in"><div class="b">🐼</div><div class="f">${x.k==='g'?TZ(x.c):x.k==='p'?EMO(B(x.c)):`<span class="word">${esc(B(x.c).en)}</span>`}</div></div></button>`).join('')}
+  </div></main>`;
+  if($('#mode'))$('#mode').onclick=()=>goMemory(gs.mode==='en'?'pic':'en');
+  let open=[],lock=false,matched=0,flips=0;
+  $$('.mcard').forEach(el=>el.onclick=()=>{
+    if(lock||el.classList.contains('open')||el.classList.contains('done'))return;
+    const x=cards[+el.dataset.k]; el.classList.add('open'); SFX.flip(); flips++;
+    const b=B(x.c);
+    if(x.k==='g')say(x.c); else if(x.k==='e')say({en:b.en}); else if(S.settings.en)say({en:b.en});
+    open.push(el);
+    if(open.length===2){
+      const [a,c]=open.map(o=>cards[+o.dataset.k]);
+      if(a.c===c.c&&a.k!==c.k){
+        lock=true;
+        later(g,700,()=>{open.forEach(o=>{o.classList.remove('open');o.classList.add('done')});open=[];lock=false;matched++;
+          SFX.ok();expose(a.c);say(a.c,b.w,{en:b.en});
+          if(matched===T.length){const s=GS('memory');if(flips<=T.length*3&&s.d<3)s.d++;else if(flips>T.length*5&&s.d>0)s.d--;save();
+            later(g,1800,()=>summary('全部找到啦！',T,()=>goMemory()))}});
+      }else{lock=true;later(g,1200,()=>{open.forEach(o=>o.classList.remove('open'));open=[];lock=false})}
+    }
+  });
+  say(gs.mode==='en'?'翻开卡片，把汉字和英文配成一对！':'翻开卡片，把图和字配成一对！');
+}
+
+/* ---------- 4. 魔法锅 Magic pot (compose characters) ---------- */
+function goMagic(){
+  GEN++; const g=GEN; closeOverlays();
+  const gs=GS('magic'); gs.fails=gs.fails||0;
+  const ingr=[...new Set(RECIPES.flatMap(r=>[r[0],r[1]]))].filter(c=>B(c)&&(B(c).t!=='m'||isMet(c)));
+  const found=RECIPES.filter(r=>S.recipes.includes(r[2])).length;
+  stage.innerHTML=bar('魔法锅','Magic pot',`<button class="ib" id="book" aria-label="魔法书">📖</button>`)+`<main class="scene-main"><div class="magic">
+    <span class="chip">✨ 变出了 ${found} / ${RECIPES.length} 个字</span>
+    <div class="slots"><div class="slot" id="s0"></div>+<div class="slot" id="s1"></div></div>
+    <div class="pot" id="pot"><div class="bowl"></div><div class="brew"></div>${[18,38,58,76].map((l,k)=>`<span class="bub" style="left:${l}%;animation-delay:${k*.6}s"></span>`).join('')}</div>
+    <div class="tray">${ingr.map(c=>`<button class="tile" data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('')}</div>
+  </div></main>`;
+  let pick=[];
+  const slots=[$('#s0'),$('#s1')];
+  function draw(){slots.forEach((s,k)=>{s.innerHTML=pick[k]?TZ(pick[k]):'';s.classList.toggle('full',!!pick[k])})}
+  $$('.tile').forEach(t=>t.onclick=()=>{
+    if(pick.length>=2)return; const c=t.dataset.c; pick.push(c); SFX.pop(); say(c); draw();
+    if(pick.length===2)later(g,700,brew);
+  });
+  slots.forEach((s,k)=>s.onclick=()=>{if(pick[k]){pick.splice(k,1);draw()}});
+  function brew(){
+    const [a,b]=pick; const pot=$('#pot'); pot.classList.add('stir'); SFX.gurgle();
+    const r=RECIPES.find(r=>(r[0]===a&&r[1]===b)||(r[0]===b&&r[1]===a));
+    later(g,1500,()=>{
+      pot.classList.remove('stir');
+      if(r){
+        gs.fails=0; const isNewFind=!S.recipes.includes(r[2]); if(isNewFind)S.recipes.push(r[2]); meet(r[2]); record(r[2],true); save(); SFX.magic(); petals();
+        const rb=B(r[2]);
+        const o=overlay(`<div class="card"><div class="recipe">${TZ(a)}+${TZ(b)}=</div><div class="reveal">${TZ(r[2])}<div style="font-size:56px">${rb.e}</div></div>
+          <p>${esc(r[3])}</p><div class="info"><button class="say" id="rs"><span class="zh">${rb.w}</span> 🔊</button>${S.settings.en?`<button class="say" id="re">${esc(rb.en)} 🔊</button>`:''}</div>
+          <button class="cta" id="ok">再变一个 ✨</button></div>`);
+        say(isNewFind?'变出来啦！':'又变出来啦！',r[3],rb.w,{en:rb.en});
+        $('#rs',o).onclick=()=>say(rb.w); if($('#re',o))$('#re',o).onclick=()=>say({en:rb.en});
+        $('#ok',o).onclick=()=>{o.remove();goMagic()};
+      }else{
+        gs.fails++; save(); pick=[]; draw();
+        if(gs.fails>=3){
+          const todo=RECIPES.filter(x=>!S.recipes.includes(x[2])&&ingr.includes(x[0])&&ingr.includes(x[1]));
+          const h=rnd(todo.length?todo:RECIPES); gs.fails=0;
+          say('咕噜咕噜，没变出来。圆圆告诉你一个秘密：试试把「'+h[0]+'」放进锅里！');
+          $$('.tile').forEach(t=>t.style.boxShadow=t.dataset.c===h[0]?'0 0 0 5px var(--sun)':'');
+        }else say(rnd(['咕噜咕噜……没变出来，换一个试试！','嗯，这两个不是好朋友，再试试别的！']));
+      }
+    });
+  }
+  $('#book').onclick=()=>{
+    const o=overlay(`<div class="card"><h2>魔法书</h2><p>看看图，猜猜要放哪两个字？</p><div class="recipes">
+      ${RECIPES.map(r=>S.recipes.includes(r[2])?`<button class="recipe" data-r="${r[2]}">${TZ(r[0])}+${TZ(r[1])}=${TZ(r[2])}</button>`
+        :`<div class="recipe"><span class="q">?</span>+<span class="q">?</span>=<span class="q" style="font-size:30px">${B(r[2]).e}</span></div>`).join('')}
+      </div><button class="cta" id="cl">好的</button></div>`);
+    $$('[data-r]',o).forEach(x=>x.onclick=()=>{const r=RECIPES.find(y=>y[2]===x.dataset.r);say(r[3])});
+    $('#cl',o).onclick=()=>o.remove();
+    say('这是魔法书。看看图，猜一猜要放哪两个字。');
+  };
+  say(found?'选两个字放进锅里，看看能变出什么！':'欢迎来到魔法锅！选两个字放进锅里，说不定会变出一个新的字哦！');
+}
+
+/* ---------- 5. 写字亭 Tracing (optional, playful) ---------- */
+function goWrite(){
+  GEN++; closeOverlays();
+  ensureMet(6);
+  const met=metChars().sort((a,b)=>C(b).t-C(a).t);
+  stage.innerHTML=bar('写字亭','Trace a character')+`<main class="scene-main"><p style="text-align:center;font-size:18px;margin:0 0 12px">选一个字，用手指描一描</p>
+    <div class="wgrid">${met.map(c=>`<button class="wpick" data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('')}</div></main>`;
+  $$('.wpick').forEach(b=>b.onclick=()=>{SFX.pop();writeChar(b.dataset.c,goWrite)});
+  say('选一个字，用手指描一描吧！');
+}
+function writeChar(c,back){
+  GEN++; const g=GEN; closeOverlays();
+  const b=B(c); const met=metChars();
+  const nx=met[(met.indexOf(c)+1)%met.length]||c;
+  stage.innerHTML=bar('描一描 「'+c+'」',b.en)+`<main class="scene-main"><div class="wbox">
+    <div class="tzg" id="wb" style="width:min(86vw,calc(100vh - 290px),440px)"></div>
+    <div class="row"><button class="cta alt" id="demo">👀 看笔顺</button><button class="cta alt" id="redo">🔄 再写</button><button class="cta" id="nx">下一个 ➜</button></div>
+  </div></main>`;
+  $('[data-act="home"]').textContent='⬅️';
+  $('[data-act="home"]').onclick=e=>{e.stopPropagation();back()};
+  const wb=$('#wb');
+  const celebrate=()=>{SFX.ok();expose(c);C(c).wr=(C(c).wr||0)+1;save();petals();say(c,'写得真认真！')};
+  let fallback=false;
+  later(g,60,()=>{
+    writer=makeWriter(wb,c,{showCharacter:false,showOutline:true,drawingWidth:Math.max(24,Math.round(wb.clientWidth/13)),showHintAfterMisses:2,leniency:1.8,highlightOnComplete:true});
+    if(writer){quiz(); say('跟着灰色的字，用手指描一描「'+c+'」。')}
+    else{fallback=true;freeTrace(wb,c,celebrate);say('用手指在字上面描一描吧！')}
+  });
+  function quiz(){writer.quiz({onComplete:()=>{if(alive(g))celebrate()}})}
+  $('#demo').onclick=()=>{if(fallback)return;writer.cancelQuiz();writer.hideCharacter();say(c);
+    writer.animateCharacter({onComplete:()=>{if(!alive(g))return;later(g,500,()=>{writer.hideCharacter();quiz()})}})};
+  $('#redo').onclick=()=>{if(fallback){freeTrace(wb,c,celebrate);return}writer.cancelQuiz();writer.hideCharacter();quiz()};
+  $('#nx').onclick=()=>writeChar(nx,back);
+}
+function freeTrace(box,c,onDone){
+  box.innerHTML=G(c)+'<canvas></canvas><button class="smallbtn" style="position:absolute;right:8px;bottom:8px" id="fin">写好了 ✔</button>';
+  $('svg.g',box).style.fill='#eadccb';
+  const cv=$('canvas',box),r=box.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  cv.width=r.width*dpr;cv.height=r.height*dpr;const x=cv.getContext('2d');x.scale(dpr,dpr);
+  x.lineWidth=Math.max(14,r.width/18);x.lineCap='round';x.lineJoin='round';x.strokeStyle='#e5806b';
+  let drawing=false;
+  cv.onpointerdown=e=>{drawing=true;cv.setPointerCapture(e.pointerId);x.beginPath();x.moveTo(e.offsetX,e.offsetY)};
+  cv.onpointermove=e=>{if(drawing){x.lineTo(e.offsetX,e.offsetY);x.stroke()}};
+  cv.onpointerup=()=>{drawing=false};
+  $('#fin',box).onclick=onDone;
+}
+
+/* ---------- 6. 词语火车 Word train ---------- */
+function goTrain(){
+  GEN++; const g=GEN; closeOverlays();
+  ensureMet(8);
+  const usable=WORDS.filter(w=>B(w[0])&&B(w[1])&&(isMet(w[0])||isMet(w[1])));
+  const due=usable.filter(w=>isDue(w[0])||isDue(w[1]));
+  let rounds=shuffle([...new Set([...shuffle(due).slice(0,3),...shuffle(usable)])]).slice(0,6);
+  while(rounds.length<6&&usable.length)rounds.push(rnd(usable));
+  let i=0; const got=[];
+  stage.innerHTML=bar('词语火车','Word train')+`<main class="scene-main"><div class="trainview">
+    <button class="hint" id="hint"><span class="emo" id="hemo"></span><span style="font-size:30px">🔊</span></button>
+    <div class="track"><div class="train" id="train"></div></div>
+    <div class="choices" id="choices"></div></div></main>`;
+  function round(){
+    if(!alive(g))return;
+    if(i>=rounds.length){summary('6 列小火车都出发啦！',got,goTrain);return}
+    const w=rounds[i], word=w[0]+w[1];
+    const cand=[0,1].filter(k=>isMet(w[k])); const miss=cand.length?(cand.find(k=>isDue(w[k]))??rnd(cand)):1;
+    const t=w[miss], fresh=isFresh(t);
+    const opts=shuffle([t,...distractors(t,Math.min(3,1+GD('train')),'train').filter(c=>c!==w[1-miss])]);
+    $('#hemo').textContent=w[2];
+    const tr=$('#train'); tr.className='train in';
+    tr.innerHTML=[0,1].map(k=>`<div class="car">${k===miss?'<div class="gap" id="gap">?</div>':TZ(w[k])}</div>`).join('')+'<div class="engine">🚂</div>';
+    let misses=0,done=false;
+    $('#choices').innerHTML=opts.map(c=>`<button class="choice ${fresh&&c===t?'glow':''}" data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('');
+    $$('.choice').forEach(el=>el.onclick=()=>{
+      if(done)return; const c=el.dataset.c;
+      if(c===t){done=true;record(t,misses===0);if(!fresh)adapt('train',misses===0);got.push(t);
+        $('#gap').outerHTML=TZ(t);el.style.visibility='hidden';SFX.toot();say(word);
+        later(g,1500,()=>{tr.classList.remove('in');tr.classList.add('go');i++;later(g,1500,round)});
+      }else{misses++;SFX.soft();if(misses===1&&!fresh)record(t,false);el.classList.remove('wiggle');void el.offsetWidth;el.classList.add('wiggle');
+        say('这是「'+c+'」。','「'+word+'」的「'+t+'」在哪里？');
+        if(misses>=2)$$('.choice').find(x=>x.dataset.c===t)?.classList.add('glow')}
+    });
+    const ask=()=>say(fresh?'新朋友「'+t+'」！':'',word+'，'+word+'。','哪个字能坐上火车？');
+    $('#hint').onclick=()=>say(word); ask();
+  }
+  round();
+}
+
+/* ---------- 7. 分一分 Sorting by meaning ---------- */
+function goSort(){
+  GEN++; const g=GEN; closeOverlays();
+  const pool=['n','a','b','num','f','t','v'].filter(themeOn);
+  if(pool.length<2){say('请爸爸妈妈在家长区多打开几个主题。');goHub();return}
+  let pair=shuffle(pool.filter(t=>BANK.filter(b=>b.t===t&&isMet(b.c)).length>=3));
+  if(pair.length<2){pair=shuffle(pool).slice(0,2);pair.forEach(t=>ensureMet(3,c=>B(c).t===t))}
+  pair=pair.slice(0,2);
+  const cards=shuffle(pair.flatMap(t=>shuffle(BANK.filter(b=>b.t===t&&isMet(b.c)).map(b=>b.c)).slice(0,4)));
+  let i=0; const got=[];
+  stage.innerHTML=bar('分一分','Sort by meaning')+`<main class="scene-main" style="display:flex;flex-direction:column"><div class="sortview">
+    <div id="cardwrap" style="min-height:220px;display:grid;place-items:center"></div>
+    <div class="baskets">${pair.map(t=>`<button class="basket" data-t="${t}"><span class="lab">${THEMES[t].e} ${THEMES[t].name}${S.settings.en?`<small>${THEMES[t].en}</small>`:''}</span><span class="in"></span></button>`).join('')}</div>
+  </div></main>`;
+  const baskets=$$('.basket');
+  function round(){
+    if(!alive(g))return;
+    if(i>=cards.length){summary('都分好啦！',got,goSort);return}
+    const c=cards[i], b=B(c); let misses=0, done=false;
+    $('#cardwrap').innerHTML=`<div class="sortcard" id="sc">${TZ(c)}</div>`;
+    const sc=$('#sc');
+    const drop=t=>{
+      if(done)return;
+      if(t===b.t){done=true;SFX.ok();record(c,misses===0);adapt('sort',misses===0);got.push(c);
+        const bk=baskets.find(x=>x.dataset.t===t); $('.in',bk).insertAdjacentHTML('beforeend',TZ(c));
+        sc.remove(); say(c+'，'+THEMES[t].name+'。'); i++; later(g,1300,round);
+      }else{misses++;SFX.soft();if(misses===1)record(c,false);sc.style.transform='';sc.classList.remove('wiggle');void sc.offsetWidth;sc.classList.add('wiggle');
+        if(!$('.peek',sc))sc.insertAdjacentHTML('beforeend',`<span class="peek">${b.e.startsWith('#')?b.e.slice(1):b.e}</span>`);
+        say('再想一想，「'+c+'」，'+b.w+'。',{en:b.en})}
+    };
+    baskets.forEach(bk=>bk.onclick=()=>drop(bk.dataset.t));
+    // drag with a finger
+    let sx=0,sy=0,drag=false,moved=false;
+    sc.onpointerdown=e=>{drag=true;moved=false;sx=e.clientX;sy=e.clientY;sc.setPointerCapture(e.pointerId);sc.style.transition='none'};
+    sc.onpointermove=e=>{if(!drag)return;const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>8)moved=true;
+      sc.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/20}deg)`;
+      baskets.forEach(bk=>{const r=bk.getBoundingClientRect();bk.classList.toggle('over',e.clientX>r.left&&e.clientX<r.right&&e.clientY>r.top&&e.clientY<r.bottom)})};
+    sc.onpointerup=e=>{if(!drag)return;drag=false;sc.style.transition='transform .3s';
+      const over=baskets.find(bk=>bk.classList.contains('over'));baskets.forEach(bk=>bk.classList.remove('over'));
+      if(over)drop(over.dataset.t); else{sc.style.transform=''; if(!moved)say(c)}};
+    say(i===0?'「'+c+'」应该放进哪个篮子？':'「'+c+'」呢？');
+  }
+  say('把字宝宝送回家：'+THEMES[pair[0]].name+'，还是'+THEMES[pair[1]].name+'？').then(()=>{if(alive(g))round()});
+}
+
+/* ---------- 8. 我的花园 Garden (collection + spaced review) ---------- */
+function goGarden(){
+  GEN++; closeOverlays();
+  const met=metChars();
+  const thirsty=met.filter(isThirsty);
+  const order=[...thirsty,...met.filter(c=>!isThirsty(c)).sort((a,b)=>C(b).b-C(a).b)];
+  stage.innerHTML=bar('我的花园','My garden',thirsty.length?`<button class="ib" id="waterall" aria-label="浇水">🚿</button>`:'')+`<main class="scene-main">
+    <div class="legend">${STAGE.map((s,k)=>s+(k<5?'<i>➜</i>':'')).join('')}</div>
+    ${met.length?`<div class="ggrid">${order.map(c=>{const x=C(c),th=isThirsty(c);return `<button class="potc ${th?'thirsty':''}" data-c="${c}" aria-label="${th?'口渴的花':c}">
+      <span class="plant">${STAGE[x.b]}</span>${th?'<i class="drop">💧</i>':''}<span class="pp">${th?'<span class="qq">?</span>':TZ(c)}</span></button>`}).join('')}</div>`
+    :`<div class="card" style="margin:20px auto"><h2>花园还空空的</h2><p>去「字的故事」认识第一个字，就能种下第一颗种子！</p><button class="cta" id="tostory">🌳 去字的故事</button></div>`}
+  </main>`;
+  if($('#tostory'))$('#tostory').onclick=()=>goStory();
+  $$('.potc').forEach(p=>p.onclick=()=>{const c=p.dataset.c;if(isThirsty(c))waterQuiz([c]);else{SFX.pop();p.classList.remove('grow');void p.offsetWidth;p.classList.add('grow');const b=B(c);say(c,b.w,{en:b.en})}});
+  if($('#waterall'))$('#waterall').onclick=()=>waterQuiz(thirsty.slice(0,6));
+  say(met.length?(thirsty.length?`有${thirsty.length}朵花口渴了，点一点带问号的花盆，给它浇水吧！`:'花园里的花都喝饱了水。点一点花，听听它的名字！'):'花园还空空的，去认识第一个字吧！');
+}
+function waterQuiz(list){
+  const g=GEN; let k=0;
+  function one(){
+    if(!alive(g))return;
+    if(k>=list.length){closeOverlays();goGarden();return}
+    const t=list[k], b=B(t); let misses=0, done=false;
+    const opts=shuffle([t,...distractors(t,2,'garden')]);
+    closeOverlays();
+    const o=overlay(`<div class="card"><div style="font-size:84px;line-height:1">${b.e.startsWith('#')?EMO(b):b.e}</div><h2>哪个是「${b.w}」的「${t}」？</h2>
+      <div class="qopts">${opts.map(c=>`<button class="choice" data-c="${c}" aria-label="${c}">${TZ(c)}</button>`).join('')}</div>
+      <button class="cta alt" id="later">下次再浇</button></div>`);
+    say('哪个是「'+t+'」？'+b.w+'的'+t+'。');
+    $('#later',o).onclick=()=>{closeOverlays();goGarden()};
+    $$('.choice',o).forEach(el=>el.onclick=()=>{
+      if(done)return; const c=el.dataset.c;
+      if(c===t){done=true;record(t,misses===0);SFX.ok();say('浇水啦！',t,b.w);el.style.boxShadow='0 0 0 6px var(--leaf)';k++;later(g,1500,one)}
+      else{misses++;SFX.soft();if(misses===1)record(t,false);el.classList.remove('wiggle');void el.offsetWidth;el.classList.add('wiggle');say('这是「'+c+'」。再找找「'+t+'」。');
+        if(misses>=2)$$('.choice',o).find(x=>x.dataset.c===t)?.classList.add('glow')}
+    });
+  }
+  one();
+}
+
+/* ---------- 家长区 Parent corner ---------- */
+let parentTab='progress';
+function goParent(tab){
+  GEN++; closeOverlays(); if(tab)parentTab=tab;
+  try{speechSynthesis.cancel()}catch(e){}
+  const tabs=[['progress','📊 学习进度'],['settings','⚙️ 设置'],['why','📚 设计原理与陪玩建议']];
+  stage.innerHTML=bar('家长区','Parent corner')+`<main class="scene-main"><div class="pills" style="justify-content:center">${tabs.map(t=>`<button class="pill ${t[0]===parentTab?'on':''}" data-p="${t[0]}">${t[1]}</button>`).join('')}</div>
+    <div class="parent" id="pbody"></div></main>`;
+  $$('[data-p]').forEach(b=>b.onclick=()=>goParent(b.dataset.p));
+  const body=$('#pbody');
+  if(parentTab==='progress')parentProgress(body);
+  if(parentTab==='settings')parentSettings(body);
+  if(parentTab==='why')body.innerHTML=WHY_HTML;
+}
+function fmtAgo(t){if(!t)return '—';const m=Math.round((now()-t)/60000);if(m<60)return m+' 分钟前';const h=Math.round(m/60);if(h<24)return h+' 小时前';return Math.round(h/24)+' 天前'}
+function fmtDue(c){const x=C(c);if(x.d<=now())return '现在';const h=(x.d-now())/3600e3;return h<1?Math.ceil(h*60)+' 分钟后':h<24?Math.ceil(h)+' 小时后':Math.ceil(h/24)+' 天后'}
+function parentProgress(body){
+  const met=BANK.filter(b=>isMet(b.c)).map(b=>b.c);
+  const mastered=met.filter(c=>C(c).b>=4).length;
+  const days=Object.keys(S.days).sort();
+  const td=Math.round((S.days[today()]||0)/60);
+  const week=days.filter(d=>(new Date(today())-new Date(d))/86400e3<7).reduce((a,d)=>a+S.days[d],0);
+  let streak=0;{const dt=new Date();for(;;){const k=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');if(S.days[k]){streak++;dt.setDate(dt.getDate()-1)}else break}}
+  const rows=met.map(c=>({c,x:C(c)})).sort((a,b)=>(b.x.w/(b.x.r+b.x.w||1))-(a.x.w/(a.x.r+a.x.w||1))||a.x.b-b.x.b);
+  const hard=rows.filter(r=>r.x.w>0).slice(0,6).map(r=>r.c);
+  body.innerHTML=`<div class="kpis">
+    <div class="kpi"><b>${met.length}</b><span>见过的字（共 ${BANK.length}）</span></div>
+    <div class="kpi"><b>${mastered}</b><span>已开花（多次隔天答对）</span></div>
+    <div class="kpi"><b>${td}<small style="font-size:16px"> 分钟</small></b><span>今天玩了</span></div>
+    <div class="kpi"><b>${Math.round(week/60)}<small style="font-size:16px"> 分钟</small></b><span>最近 7 天 · 连续 ${streak} 天</span></div></div>
+    <h4>需要多陪练的字</h4><p>${hard.length?hard.map(c=>`<b style="font-size:22px">${c}</b>（${B(c).w}）`).join('、')+'。可以在生活里指给孩子看：路牌、包装、绘本。':'还没有明显的难字。'}</p>
+    <h4>每个字的状态</h4><p class="cite">花的阶段：🌰 刚认识 → 🌱 → 🌿 → 🌷 → 🌸 → 🌻。只有隔一段时间再答对，花才会长大，这样记得更牢。</p>
+    <div class="tbl"><table><thead><tr><th>字</th><th>拼音</th><th>词语</th><th>English</th><th>阶段</th><th>答对/答错</th><th>描写</th><th>下次复习</th><th>最近</th></tr></thead><tbody>
+    ${rows.map(({c,x})=>`<tr><td>${TZ(c)}</td><td>${B(c).p}</td><td>${B(c).w}</td><td>${esc(B(c).en)}</td><td>${STAGE[x.b]}</td><td>${x.r} / ${x.w}</td><td>${x.wr||0}</td><td>${fmtDue(c)}</td><td>${fmtAgo(x.t)}</td></tr>`).join('')||'<tr><td colspan="9">还没有记录</td></tr>'}
+    </tbody></table></div>
+    <p class="cite">进度只保存在这台设备的浏览器里。换设备或清除浏览器数据会从头开始。</p>`;
+}
+function parentSettings(body){
+  const st=S.settings;
+  const sw=(id,on,label,help)=>`<div class="set"><div><label for="${id}">${label}</label>${help?`<div class="cite">${help}</div>`:''}</div><button class="switch" id="${id}" role="switch" aria-checked="${on}"></button></div>`;
+  const vz=voiceFor('zh-CN'),ve=voiceFor('en-US');
+  body.innerHTML=`<div class="set"><div><label for="minutes">每次玩多久</label><div class="cite">时间到了，会在一轮结束后让圆圆"困了"，自然收尾。</div></div>
+    <select id="minutes">${[10,15,20,30,0].map(m=>`<option value="${m}" ${st.minutes===m?'selected':''}>${m?m+' 分钟':'不限制'}</option>`).join('')}</select></div>
+    ${sw('s-en',st.en,'加入英语','每个字配一个英文单词；关闭后只用中文。')}
+    ${sw('s-py',st.pinyin,'显示拼音','5 岁先认字形，默认关闭，避免孩子只看拼音不看字。')}
+    ${sw('s-slow',st.slow,'慢速朗读','')}
+    ${sw('s-sfx',st.sfx,'提示音效','很轻的音效，没有刺耳的"错误"声。')}
+    <div class="set" style="display:block"><label>要学的主题</label><div class="cite" style="margin-bottom:8px">点一下打开或关闭。</div><div class="themebox">
+    ${THEME_ORDER.filter(t=>t!=='m').map(t=>`<button class="pill" data-th="${t}" aria-pressed="${!!st.themes[t]}">${THEMES[t].e} ${THEMES[t].name}</button>`).join('')}</div></div>
+    <div class="set"><div><label>语音</label><div class="cite">中文：${vz?esc(vz.name):'这台设备没有找到中文语音，请在系统设置里下载"中文（普通话）"语音'}<br>English：${ve?esc(ve.name):'未找到'}</div></div><button class="smallbtn" id="vt">试听</button></div>
+    <div class="set"><div><label>重新开始</label><div class="cite">清除这台设备上的全部学习记录。</div></div><button class="smallbtn danger" id="reset">清除记录</button></div>`;
+  const bind=(id,key)=>{$('#'+id).onclick=e=>{st[key]=!st[key];e.currentTarget.setAttribute('aria-checked',st[key]);save()}};
+  bind('s-en','en');bind('s-py','pinyin');bind('s-slow','slow');bind('s-sfx','sfx');
+  $('#minutes').onchange=e=>{st.minutes=+e.target.value;save()};
+  $$('[data-th]').forEach(b=>b.onclick=()=>{const t=b.dataset.th;const on=Object.values(st.themes).filter(Boolean).length;
+    if(st.themes[t]&&on<=2)return; st.themes[t]=st.themes[t]?0:1;b.setAttribute('aria-pressed',!!st.themes[t]);save()});
+  $('#vt').onclick=()=>say('你好，我是圆圆。山，大山。',{en:'mountain'});
+  $('#reset').onclick=e=>{const b=e.currentTarget;
+    if(b.dataset.armed){const keep=S.settings;S={v:1,chars:{},games:{},recipes:[],recent:[],days:{},sessions:0,settings:keep};save();b.textContent='已清除';b.disabled=true;delete b.dataset.armed}
+    else{b.dataset.armed='1';b.textContent='再点一次确认清除'}};
+}
+const WHY_HTML=`
+<h3>这套游戏为什么这样设计</h3>
+<p>目标：让 5 岁、以中文为主的孩子在玩里<b>认识</b>常用汉字（认读为主，书写为辅），顺带接触对应的英语单词。每个设计都对应一条儿童学习研究里比较站得住的结论。</p>
+
+<h4>1. 认字先于写字，先从"看得出样子"的字开始</h4>
+<ul><li>教育部《3–6 岁儿童学习与发展指南》强调不提前进行小学化的识字、书写训练，书写对 5 岁孩子只做兴趣性的尝试。所以本游戏以<b>认读</b>为主，「写字亭」是可选的手指描红，宽松判定，不计对错。</li>
+<li>字库从<b>象形字</b>（日、月、山、水、火、木）起步，「字的故事」先给图、再"变"成字，并讲字的来历（字理识字）。孩子是在理解，而不是死记一个形状。</li>
+<li>Tan 等（2005，PNAS）发现书写经验与中文阅读能力关系密切，所以保留了手指描红，但只当游戏，不要求写得好。</li>
+<li>字库约 100 个字，多数是小学一年级识字表里的常用字：自然、动物、身体、数字、家人、生活、动作、方位。</li></ul>
+
+<h4>2. 图 + 声音 + 字，三样一起出现（双重编码）</h4>
+<ul><li>Paivio 的双重编码理论：同一个概念同时有图像和语言两条记忆线索，记得更牢。每个字都绑定一个图、一个读音、一个常用词，必要时加一个英语单词。</li>
+<li>孩子还不识字，所以所有指令都由语音读出来；屏幕上的文字主要给家长看。</li></ul>
+
+<h4>3. "回想"比"再看一遍"更有效，而且要隔开时间（检索练习 + 间隔重复）</h4>
+<ul><li>Roediger & Karpicke（2006）的测试效应：主动想起答案比反复看更能巩固记忆。Cepeda 等（2006）的元分析：同样的练习量，分散到几天比集中一次记得更久。</li>
+<li>游戏内置 Leitner 间隔复习：每个字有 6 个阶段（🌰→🌻）。答对后，下次复习依次隔 10 分钟、约 1 天、2 天、4 天、9 天；答错就回到前面。同一天反复答对不会让花一下子开满。「我的花园」把这个过程变成看得见的成长，口渴的花就是"该复习的字"。</li></ul>
+
+<h4>4. 难度保持在"大部分能答对"（约 85%）</h4>
+<ul><li>Wilson 等（2019，《Nature Communications》）的"85% 规则"：错误率约 15% 时学习效率最高。太难会挫败，太容易会无聊。</li>
+<li>每个游戏会自己调难度：连续答得好，就增加选项、加入长得像的字（日/目/田、人/大/天）；答得吃力就减少选项。新字第一次出现时会发光提示（无错学习），先让孩子成功一次。</li></ul>
+
+<h4>5. 字是由部件组成的（语素意识）</h4>
+<ul><li>McBride-Chang 等对香港幼儿园孩子的研究发现，语素意识（知道"火车"的"火"就是"火"）能预测之后的中文阅读能力。</li>
+<li>「魔法锅」把两个部件合成新字（木+木=林，日+月=明，女+马=妈 —— 形旁表意、声旁表音）；「词语火车」让孩子用学过的字组词；「分一分」按意思分类，帮助孩子从"认形状"走向"懂意思"。</li></ul>
+
+<h4>6. 让孩子主动、专注、有意义，而且最好有大人陪（四大支柱）</h4>
+<ul><li>Hirsh-Pasek 等（2015）总结"真正有教育价值的 App"有四个支柱：主动参与、专注不分心、有意义的联系、社交互动。</li>
+<li>所以：没有倒计时、没有扣分、没有生命值、没有闪烁特效和刺耳音效；孩子自己选去哪玩（自主感）；动画慢、颜色柔和，避免"花哨细节"分散注意力。</li></ul>
+
+<h4>7. 夸努力，不夸聪明；不靠奖励刺激</h4>
+<ul><li>Mueller & Dweck（1998）：被夸"聪明"的孩子更怕失败，被夸"努力、方法"的孩子更愿意挑战。游戏里的鼓励都是"你看得很仔细""没有放弃"。</li>
+<li>Lepper 等（1973）对幼儿的研究：对本来喜欢的活动给预期奖励，反而会降低内在兴趣（过度理由效应）。所以这里没有金币、抽奖、排行榜，奖励只有"花长大了"和"变出了新字"这种和学习本身相连的东西。</li>
+<li>答错时不说"错了"，而是告诉孩子"这是「水」"，把错误变成又认识一个字的机会。</li></ul>
+
+<h4>8. 英语怎么放</h4>
+<ul><li>中文是孩子的主要语言，所以解释、指令全用中文；英语只在"一个字 = 一个英文单词"的层面出现（山 = mountain），作为同一个概念的第二个名字，不增加理解负担。可以在设置里关掉。</li>
+<li>「翻翻乐」右上角可以切换到"汉字 ↔ 英文"配对，适合已经比较熟的字。</li></ul>
+
+<h4>9. 屏幕时间要有自然的终点</h4>
+<ul><li>美国儿科学会（AAP）建议 2–5 岁每天高质量屏幕时间约 1 小时以内，并且大人陪同；WHO（2019）对 3–4 岁的建议同样是不超过 1 小时。</li>
+<li>默认每次 15 分钟。时间到了不会中途打断，而是在一轮结束后让圆圆"困了"，孩子有一个温和、可预期的结束。家长可以按住按钮延长。</li></ul>
+
+<h3>陪玩建议（每天 10–15 分钟就够）</h3>
+<ul>
+<li><b>陪着玩，比放着玩效果好得多。</b>坐在旁边，孩子答对时说出具体的事："你刚才看出了「日」和「目」不一样！"</li>
+<li><b>把字带到屏幕外。</b>今天学了「山」「水」「火」，就在路牌、绘本、零食包装上一起找。这一步是把"认识"变成"会用"的关键。</li>
+<li><b>让孩子当小老师。</b>请孩子教你「魔法锅」里的配方，讲给别人听是最好的复习。</li>
+<li><b>先浇花，再玩别的。</b>每天第一件事去「我的花园」给口渴的花浇水，就是完成当天的复习。</li>
+<li><b>看「需要多陪练的字」。</b>不用刻意补课，生活里多指几次就好。</li>
+<li><b>不追求速度。</b>一个星期稳定认识 5–10 个新字，就是很好的节奏。</li>
+</ul>
+<p class="cite">参考：Paivio (1986) Mental Representations; Roediger & Karpicke (2006) Psychological Science; Cepeda et al. (2006) Psychological Bulletin; Wilson, Shenhav, Straccia & Cohen (2019) Nature Communications; McBride-Chang et al. (2003, 2005) 语素意识与中文阅读; Hirsh-Pasek et al. (2015) Psychological Science in the Public Interest; Mueller & Dweck (1998) JPSP; Lepper, Greene & Nisbett (1973) JPSP; Tan et al. (2005) PNAS（中文阅读与书写）; AAP (2016) Media and Young Minds; WHO (2019) 5 岁以下儿童身体活动、久坐和睡眠指南; 教育部《3–6 岁儿童学习与发展指南》(2012)。</p>
+`;
+
+/* ---------- boot ---------- */
+showStart(false);
+</script>
