@@ -351,9 +351,9 @@ const NPC_DEF = [
    look:{gender:'f',skin:0,hair:'pony',hairColor:1,top:'shirt',topColor:0,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'none',watch:'silver'}},
   {id:'shu', name:'阿数', title:'数据分析师', tile:[8,4], face:'left', act:'shu',
    look:{gender:'m',skin:1,hair:'short',hairColor:0,top:'hoodie',topColor:1,bottom:'pants',bottomColor:5,shoes:1,hat:'none',hatColor:0,glasses:'round',watch:'none'}},
-  {id:'leo', name:'Leo', title:'线索管家', tile:[9,10], face:'down', act:'leo',
+  {id:'leo', name:'Leo', title:'询价管家', tile:[9,10], face:'down', act:'leo',
    look:{gender:'m',skin:2,hair:'side',hairColor:0,top:'suit',topColor:9,bottom:'pants',bottomColor:9,shoes:2,hat:'none',hatColor:0,glasses:'none',watch:'gold'}},
-  {id:'mia', name:'Mia', title:'内容编导', tile:[24,10], face:'down', act:'mia',
+  {id:'mia', name:'Mia', title:'项目统筹', tile:[24,10], face:'down', act:'mia',
    look:{gender:'f',skin:0,hair:'bun',hairColor:5,top:'tee',topColor:3,bottom:'pants',bottomColor:1,shoes:1,hat:'none',hatColor:0,glasses:'round',watch:'none'}},
   {id:'kai', name:'Kai', title:'任务官', tile:[26,2], face:'down', act:'kai',
    look:{gender:'m',skin:3,hair:'buzz',hairColor:0,top:'shirt',topColor:4,bottom:'pants',bottomColor:5,shoes:0,hat:'cap',hatColor:0,glasses:'none',watch:'silver'}},
@@ -387,48 +387,49 @@ const JOB_LINES = {
 PEER_DEF.forEach(p => { p.lines = [...p.lines, ...(JOB_LINES[p.role]||JOB_LINES.other)]; });
 const H1 = 3600e3;
 const SEED_POSTS = () => [
-  {id:1,a:'p1',tag:'成交喜报',text:'Mont Kiara 3 房单位今天签了 SPA，RM 1.35M。感谢 Jason 连续 4 次带看。',t:Date.now()-H1*2,likes:['p2','p3','p4'],cmts:[{a:'p2',text:'客户最后是被阳台景观打动的。'},{a:'p4',text:'恭喜，这个月第几单了？'}]},
-  {id:2,a:'p3',tag:'求助',text:'有客户问 Shah Alam 有地房的 MOT 费用怎么算，谁有最新的对照表？',t:Date.now()-H1*5,likes:['p1'],cmts:[{a:'p1',text:'我晚点发你，是 2026 年的版本。'}]},
-  {id:3,a:'p4',tag:'经验',text:'短视频开头 3 秒直接报价格和地段，本周询问量比上周多了 40%。',t:Date.now()-H1*20,likes:['p1','p2'],cmts:[]},
-  {id:4,a:'p2',tag:'房源',text:'Bangsar South 2 房还有 2 个单位，本周末可以看房，需要带客的找我。',t:Date.now()-H1*26,likes:[],cmts:[]},
-  {id:5,a:'p4',anon:true,tag:'求助',text:'客户签了 SPA 之后一直拖着不付佣金尾款，已经 3 个月了。大家一般怎么追？要不要直接找律师发信？',t:Date.now()-H1*8,likes:['p1','p3'],cmts:[{a:'p1',text:'先发正式催款信，写清楚期限。'},{a:'p3',text:'我上次是律师信才收到的。'}]},
+  {id:1,a:'p1',tag:'接单喜报',text:'拿下 Aurora 咖啡店的品牌短片，3 支 30 秒，RM 18K。摄像找了 Jason，化妆找 Aisyah。',t:Date.now()-H1*2,likes:['p2','p3','p4'],cmts:[{a:'p2',text:'谢谢美玲姐，脚本我今晚看。'},{a:'p4',text:'恭喜！要拍静态照的话我可以帮忙。'}]},
+  {id:2,a:'p3',tag:'求助',text:'下周六户外婚礼，天气预报说会下雨。大家户外妆一般怎么防花妆？',t:Date.now()-H1*5,likes:['p1'],cmts:[{a:'p5',text:'定妆喷雾多喷两层，再备一把透明伞。'}]},
+  {id:3,a:'p4',tag:'经验',text:'报价单写清楚精修几张、几天交付、改稿几次。写清楚之后，被要求免费加东西的情况少了一大半。',t:Date.now()-H1*20,likes:['p1','p2'],cmts:[]},
+  {id:4,a:'p2',tag:'场地推荐',text:'Shah Alam 有一间影棚半天 RM 350，有白色无影墙和更衣室，停车方便。要联系方式的私信我。',t:Date.now()-H1*26,likes:['p4'],cmts:[]},
+  {id:5,a:'p4',anon:true,tag:'拖款警示',text:'某婚庆公司拖了我两场婚礼的尾款，已经 3 个月。合约写明 14 天内付清。大家一般怎么追？要不要直接发律师信？',t:Date.now()-H1*8,likes:['p1','p3'],cmts:[{a:'p1',text:'先发正式催款信，写清楚最后期限。'},{a:'p3',text:'我上次也是发了律师信才收到钱。'}]},
+  {id:6,a:'p5',tag:'经验',text:'借服装给拍摄，一定要先收押金，出门前每件拍照存证。上个月就是靠照片拿回了押金。',t:Date.now()-H1*30,likes:['p3'],cmts:[]},
 ];
 const SEED_LEADS = () => [
-  {id:'L1',name:'Mr. Lim',need:'Mont Kiara 3 房公寓 · 预算 RM 1.2M',stage:'已带看',due:'今天',src:'小红书视频'},
-  {id:'L2',name:'Nurul H.',need:'Shah Alam 双层排屋 · 首次购房',stage:'已联系',due:'今天',src:'FB 广告'},
-  {id:'L3',name:'Kevin Ong',need:'Bangsar South 2 房 · 投资出租',stage:'谈判中',due:'今天',src:'转介绍'},
-  {id:'L4',name:'Chloe W.',need:'KLCC 服务式公寓 · 自住',stage:'新线索',due:'今天',src:'TikTok'},
-  {id:'L5',name:'Mdm. Tan',need:'Cheras 换房 · 卖旧买新',stage:'新线索',due:'明天',src:'抖音'},
-  {id:'L6',name:'Arjun S.',need:'Puchong 3 房 · 预算 RM 650K',stage:'已联系',due:'周五',src:'官网表单'},
+  {id:'L1',name:'Mr. & Mrs. Lim',need:'婚礼跟拍 · 3 月 14 日 · 预算 RM 4,500',stage:'已报价',due:'今天',src:'小红书'},
+  {id:'L2',name:'Nurul H.',need:'开斋节家庭照 · 8 人 · 户外',stage:'新询价',due:'今天',src:'Instagram'},
+  {id:'L3',name:'Kopi Lab',need:'品牌短片 3 × 30 秒 · 含脚本',stage:'谈价中',due:'今天',src:'转介绍'},
+  {id:'L4',name:'Chloe W.',need:'毕业照 · 化妆 + 摄影',stage:'新询价',due:'今天',src:'TikTok'},
+  {id:'L5',name:'TechCon 2026',need:'活动跟拍 · 2 天 · 摄影 + 摄像',stage:'已报价',due:'明天',src:'官网表单'},
+  {id:'L6',name:'Arjun S.',need:'订婚宴 · 预算 RM 2,800',stage:'新询价',due:'周五',src:'同行介绍'},
 ];
 const SEED_CONTENT = () => [
-  {id:'C1',title:'Team Mei｜Mont Kiara 新盘开箱 60s',stage:'待审核',owner:'剪辑：外包 A 组',date:'今天 18:00 前过审'},
-  {id:'C2',title:'Team Wei｜Cheras 换房避坑 3 点',stage:'待审核',owner:'剪辑：外包 B 组',date:'明天发布'},
-  {id:'C3',title:'Team Farah｜首购族贷款 Q&A',stage:'剪辑',owner:'外包 A 组',date:'周四交片'},
-  {id:'C4',title:'Team Mei｜成交故事：Mr. Lim',stage:'拍摄',owner:'摄影：外包',date:'周六 10:00'},
-  {id:'C5',title:'Team Wei｜周末看房 Vlog',stage:'策划',owner:'内容编导',date:'待定'},
-  {id:'C6',title:'Team Farah｜Shah Alam 排屋对比',stage:'已排期',owner:'—',date:'周三 20:00 发布'},
+  {id:'C1',title:'陈氏婚礼｜精修 80 张',stage:'待交付',owner:'修图：外包 A',date:'今天 18:00 前交给客户'},
+  {id:'C2',title:'Aurora 咖啡店｜品牌短片 30 秒',stage:'待交付',owner:'剪辑：Jason',date:'明天交付'},
+  {id:'C3',title:'Raya 家庭照｜8 组',stage:'后期',owner:'修图：外包 B',date:'周四交付'},
+  {id:'C4',title:'TechCon 2026｜活动跟拍',stage:'拍摄',owner:'摄影 2 位 + 摄像 1 位',date:'周六 08:00'},
+  {id:'C5',title:'Lim & Wong 订婚宴',stage:'筹备',owner:'化妆：Aisyah',date:'待定'},
+  {id:'C6',title:'Nadia 毕业照',stage:'已交付',owner:'—',date:'已交给客户'},
 ];
-const STAGES = ['策划','拍摄','剪辑','待审核','已排期'];
+const STAGES = ['筹备','拍摄','后期','待交付','已交付'];
 const DASH = {
-  week:[31,42,28,45,39,52,34],
-  kpi:[['本月成交额','RM 4.82M','+12%'],['成交单数','14','+3'],['新线索','268','+21%'],['带看','96','+8%'],['线索 → 带看','35.8%','+2.1pt'],['内容发布','42 条','-4']],
-  rank:[['陈美玲','Mont Kiara',1.32,9],['黄家伟','Cheras',0.98,7],['Farah','Shah Alam',0.71,6],['林志豪','Puchong',0.55,5],['Ken Wong','Bangsar',0.42,4],['李嘉欣','Kepong',0.31,5],['吴俊杰','Setapak',0.22,3],['Priya','Subang',0.15,4],['Daniel Lee','Ampang',0.10,2],['Siti','Klang',0.06,3]],
+  week:[5,8,4,9,6,11,7],
+  kpi:[['本月接单额','RM 38.6K','+12%'],['接单数','9','+3'],['新询价','46','+21%'],['询价 → 定档','31%','+4pt'],['准时交付','96%','+2pt'],['同行圈互动','128','+18%']],
+  rank:[['陈美玲','美玲制作 · KL',62,11],['黄家伟','家伟摄影 · Cheras',48,14],['Jason Tan','JT Films · PJ',41,8],['Aisyah','Aisyah Beauty · Shah Alam',36,19],['林慧玲','WL Styling · Bangsar',28,7],['Ken Wong','KW Lighting · Puchong',22,6],['Priya','Priya Henna · Klang',18,12],['Daniel Lee','DL Sound · Ampang',15,5],['Siti','Siti Bridal · Kajang',12,9],['吴俊杰','JJ Drone · Setapak',9,4]],
 };
 const TIPS = [
-  '视频开头 3 秒先给地段和价格，再讲故事。',
-  '客户 48 小时没回复，换一个渠道再跟一次。',
-  '带看前把交通时间实测一次，客户最常问这个。',
-  '每条视频只讲一个房源卖点，不要塞三个。',
-  '成交后 7 天内拍客户故事，素材最真实。',
-  '跟进记录写下客户原话，下次开场用得上。',
-  '同一房源换 3 个开头拍，看哪个询问最多。',
+  '报价单写清楚交付张数、天数和改稿次数。',
+  '先收 30–50% 定金，再锁档期。',
+  '询价 24 小时内回复，最容易定下来。',
+  '合约写明尾款期限，逾期怎么算也要写上。',
+  '素材当天备份两份，一份放在别的地方。',
+  '借器材、借服装，出门前都拍照存证。',
+  '交付后一周内问客户要评价，最容易拿到。',
 ];
 const TASKS = [
-  {id:'follow', name:'跟进 3 位客户', goal:3, get:()=>S.daily.follow, xp:40, where:'找 Leo · 开放办公区左侧'},
-  {id:'review', name:'审核 1 条视频', goal:1, get:()=>S.daily.review, xp:40, where:'找 Mia · 开放办公区右侧'},
+  {id:'follow', name:'回复 3 个询价', goal:3, get:()=>S.daily.follow, xp:40, where:'找 Leo · 开放办公区左侧'},
+  {id:'review', name:'确认 1 个交付', goal:1, get:()=>S.daily.review, xp:40, where:'找 Mia · 开放办公区右侧'},
   {id:'social', name:'在同行圈发帖或评论 1 次', goal:1, get:()=>S.daily.social, xp:30, where:'同行圈'},
-  {id:'dash', name:'查看团队数据大屏', goal:1, get:()=>S.daily.dash?1:0, xp:30, where:'数据室'},
+  {id:'dash', name:'查看我的数据大屏', goal:1, get:()=>S.daily.dash?1:0, xp:30, where:'数据室'},
 ];
 
 /* ---------------- local state ---------------- */
@@ -440,6 +441,7 @@ try { S = JSON.parse(localStorage.getItem(KEY)); } catch(e) { S = null; }
 if (!S || !S.posts) S = {look:null,name:'',role:'photo',xp:0,day:'',daily:freshDaily(),posts:SEED_POSTS(),leads:SEED_LEADS(),content:SEED_CONTENT(),seen:0,streak:0,last:'',deals:0,posted:0};
 // Older saves used real-estate roles; map them onto the production jobs.
 if (!ROLE[S.role]) S.role = ({leader:'producer', agent:'photo', content:'video', admin:'other'})[S.role] || 'other';
+if (S.cv !== 2) { S.cv = 2; S.posts = SEED_POSTS(); S.leads = SEED_LEADS(); S.content = SEED_CONTENT(); S.seen = 0; }
 if (S.day !== dkey()) { S.day = dkey(); S.daily = freshDaily(); S.content = SEED_CONTENT(); S.leads = SEED_LEADS(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
 const level = () => Math.floor(S.xp/100)+1;
@@ -484,7 +486,7 @@ const SIS = {
   async content(){ return S.content; },
   async reviewContent(id, approve){
     const c=S.content.find(x => x.id===id);
-    c.stage = approve ? '已排期' : '剪辑'; c.date = approve ? '已进入发布排期' : '已退回修改'; save(); return c;
+    c.stage = approve ? '已交付' : '后期'; c.date = approve ? '已交给客户' : '退回修改'; save(); return c;
   },
   async posts(){ return S.posts; },
   async createPost(tag, text, anon=false){ const p={id:Date.now(), a:'me', anon:!!anon, tag, text, t:Date.now(), likes:[], cmts:[]}; S.posts.push(p); save(); return p; },
@@ -495,8 +497,8 @@ const SIS = {
   async profile(){ return {name:S.name, job:S.role, jobOther:S.jobOther||''}; },
   async setJob(job, other=''){ S.role=job; S.jobOther = job==='other' ? String(other).trim().slice(0,20) : ''; save(); return SIS.profile(); },
   async logDeal({area, amt, client}){
-    const text=`${area} 成交，RM ${amt.toLocaleString('en-MY')}${client?`。客户：${client}`:''}。`;
-    return SIS.createPost('成交喜报', text);
+    const text=`接到新项目：${area}，RM ${amt.toLocaleString('en-MY')}${client?`。客户：${client}`:''}。`;
+    return SIS.createPost('接单喜报', text);
   },
 };
 const DB = {leads:[], content:[], posts:[]};
@@ -542,9 +544,9 @@ const ZONES = [
   {id:'boss',   r:[1,7,3,6],   act:'me',       name:'我的办公室', sub:'私人空间', lab:[2.5,10.7], col:'#3b5bab'},
 ];
 const SPOTS = [
-  {name:'成交钟', sub:'登记成交', act:'bell', lab:[14.5,10.5], col:'#d99a2b'},
+  {name:'接单钟', sub:'登记接单', act:'bell', lab:[14.5,10.5], col:'#d99a2b'},
 ];
-const ROOMS = {data:['数据室','团队数据 · 实时大屏'], lounge:['同行圈','留言板 · 交流区'], meet:['会议室','今日任务 · 白板'], pantry:['茶水间','咖啡机 · 每日小贴士'], ward:['衣帽间','换造型'], recep:['前台','签到 · 新手引导'], office:['开放办公区','客户跟进 · 内容审核 · 成交钟']};
+const ROOMS = {data:['数据室','团队数据 · 实时大屏'], lounge:['同行圈','留言板 · 交流区'], meet:['会议室','今日任务 · 白板'], pantry:['茶水间','咖啡机 · 每日小贴士'], ward:['衣帽间','换造型'], recep:['前台','签到 · 新手引导'], office:['开放办公区','询价跟进 · 交付确认 · 接单钟']};
 function roomAt(tx,ty){
   if (tx<=9 && ty<=5) return 'data';
   if (tx>=11 && tx<=18 && ty<=6) return 'lounge';
@@ -770,7 +772,7 @@ function showArea(r){
   clearTimeout(areaTimer); areaTimer=setTimeout(() => el.hidden=true, 2200);
 }
 const dueLeads = () => DB.leads.filter(l => l.due==='今天' && l.done!==S.day);
-const pendingReview = () => DB.content.filter(c => c.stage==='待审核');
+const pendingReview = () => DB.content.filter(c => c.stage==='待交付');
 const unread = () => DB.posts.filter(p => p.a!=='me' && p.id>S.seen).length;
 const tasksLeft = () => TASKS.filter(t => !S.daily.claimed[t.id]).length;
 function updateHUD(){
@@ -852,36 +854,36 @@ const uiOpen = () => !wrap.hidden || !dlg.hidden;
 
 /* ---------------- panels ---------------- */
 const ago = t => { const m=Math.round((Date.now()-t)/60000); return m<1?'刚刚':m<60?`${m} 分钟前`:m<1440?`${Math.round(m/60)} 小时前`:`${Math.round(m/1440)} 天前`; };
-const tagCls = t => t==='成交喜报'?'deal':t==='求助'?'help':'';
+const tagCls = t => t==='接单喜报'?'deal':(t==='求助'||t==='拖款警示')?'help':'';
 
 async function openDash(){
   const D = await SIS.dashboard();
   const d=new Date(); const labels=D.week.map((_,i) => { const x=new Date(d); x.setDate(d.getDate()-(6-i)); return i===6?'今天':'周'+'日一二三四五六'[x.getDay()]; });
-  const W=320,Hh=150,pad=24,bw=28,gap=(W-pad-8-bw*7)/6,max=60,plotH=Hh-44;
+  const W=320,Hh=150,pad=24,bw=28,gap=(W-pad-8-bw*7)/6,max=12,plotH=Hh-44;
   const yv = v => Hh-24-(v/max)*plotH;
-  const svg = `<svg viewBox="0 0 ${W} ${Hh}" class="chart" role="img" aria-label="近 7 天新线索">`+
-    [0,20,40,60].map(v => `<line x1="${pad}" x2="${W-4}" y1="${yv(v)}" y2="${yv(v)}" class="grid"/><text x="${pad-6}" y="${yv(v)+3}" class="ax" text-anchor="end">${v}</text>`).join('')+
+  const svg = `<svg viewBox="0 0 ${W} ${Hh}" class="chart" role="img" aria-label="近 7 天新询价">`+
+    [0,4,8,12].map(v => `<line x1="${pad}" x2="${W-4}" y1="${yv(v)}" y2="${yv(v)}" class="grid"/><text x="${pad-6}" y="${yv(v)+3}" class="ax" text-anchor="end">${v}</text>`).join('')+
     D.week.map((v,i) => { const x=pad+4+i*(bw+gap), y=yv(v); return `<rect x="${x}" y="${y}" width="${bw}" height="${Hh-24-y}" rx="5" class="bar${i===6?' now':''}"/><text x="${x+bw/2}" y="${y-5}" class="val" text-anchor="middle">${v}</text><text x="${x+bw/2}" y="${Hh-8}" class="ax" text-anchor="middle">${labels[i]}</text>`; }).join('')+`</svg>`;
   const maxR = D.rank[0][2];
   const body = `
     <div class="kpis">${D.kpi.map(([l,v,dl]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="delta${dl.startsWith('-')?' down':''}">${dl} 较上月</div></div>`).join('')}</div>
-    <div class="panel"><h3>近 7 天新线索（条）</h3>${svg}</div>
-    <div class="panel"><h3>团队主管排行 · 本月成交额</h3>
-      ${D.rank.map(([n,area,v,c],i) => `<div class="rank${i<3?' top':''}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="who">${n}<small>${area} · ${c} 条内容</small></span><span class="bar"><i style="width:${(v/maxR*100).toFixed(1)}%"></i></span><span class="amt">RM ${v.toFixed(2)}M</span></div>`).join('')}
+    <div class="panel"><h3>近 7 天新询价（个）</h3>${svg}</div>
+    <div class="panel"><h3>同行接单排行 · 本月（自愿公开）</h3>
+      ${D.rank.map(([n,area,v,c],i) => `<div class="rank${i<3?' top':''}"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="who">${n}<small>${area} · ${c} 单</small></span><span class="bar"><i style="width:${(v/maxR*100).toFixed(1)}%"></i></span><span class="amt">RM ${v}K</span></div>`).join('')}
     </div>
     <p class="note"><span class="sample">SAMPLE</span> 示例数据。接入 SIS 后自动更新。</p>`;
-  openSheet({title:'数据大屏', sub:'团队本月表现', body, kind:'dash'});
+  openSheet({title:'数据大屏', sub:'我的本月表现', body, kind:'dash'});
   if (!S.daily.dash){ S.daily.dash=true; checkTasks(); }
 }
 
 let bf='', ba='', ptag='日常', boardDraft='', anonPost=false;
 function boardHTML(){
-  const tags=['成交喜报','求助','房源','经验','日常'];
+  const tags=['接单喜报','求助','拖款警示','场地推荐','经验','日常'];
   const list=DB.posts.filter(p => (!bf||p.tag===bf) && (!ba||(p.a===ba && !p.anon))).sort((a,b) => b.t-a.t);
   return `
   <div class="composer">
     <div class="group" role="group" aria-label="选择标签">${tags.map(t => `<button type="button" class="chip sm" data-act="ptag" data-v="${t}" aria-pressed="${ptag===t}">#${t}</button>`).join('')}</div>
-    <textarea id="post-text" rows="3" maxlength="200" placeholder="今天的带看、成交、问题，都可以发在这里">${esc(boardDraft)}</textarea>
+    <textarea id="post-text" rows="3" maxlength="200" placeholder="接单、拖款、场地、器材，遇到什么都可以发在这里">${esc(boardDraft)}</textarea>
     <div class="row-end"><button type="button" class="chip sm" data-act="anon" aria-pressed="${anonPost}">匿名发布</button><span class="note" style="flex:1;min-width:140px">${anonPost ? '同事看不到你是谁。匿名帖不要写客户或公司的真实名字，管理员处理举报时可以看到发帖人。' : '发帖或评论计入今日任务'}</span><button type="button" class="btn primary" data-act="post">${anonPost ? '匿名发布' : '发布'}</button></div>
   </div>
   <div class="group">${['',...tags].map(t => `<button type="button" class="chip sm" data-act="filter" data-v="${t}" aria-pressed="${bf===t}">${t||'全部'}</button>`).join('')}${ba?`<button type="button" class="chip sm" data-act="clear-author" aria-pressed="true">只看 ${esc(whoName(ba))} ✕</button>`:''}</div>
@@ -897,44 +899,44 @@ function boardHTML(){
 async function openBoard(author=''){
   ba=author; DB.posts = await SIS.posts();
   S.seen=Math.max(S.seen, ...DB.posts.map(p => p.id)); save();
-  openSheet({title:'同行圈', sub:'团队内部留言板 · 只有同事能看到', body:boardHTML(), kind:'board'});
+  openSheet({title:'同行圈', sub:'同行留言板 · 只有 SIS 会员能看到', body:boardHTML(), kind:'board'});
 }
 function peerReact(post){
   const p = peers[Math.floor(Math.random()*peers.length)];
   setTimeout(() => {
-    post.likes.push(p.id); post.cmts.push({a:p.id, text:['收到，谢谢分享。','这个有用！','周末一起带看？','恭喜恭喜。'][Math.floor(Math.random()*4)]});
+    post.likes.push(p.id); post.cmts.push({a:p.id, text:['收到，谢谢分享。','这个有用！','下次有案子叫我。','恭喜恭喜。'][Math.floor(Math.random()*4)]});
     save(); bubble(p, post.anon ? '赞了一条匿名帖' : '赞了你的帖子'); toast(`${p.name} 赞了你的${post.anon ? '匿名' : ''}帖子`);
     if (sheetKind==='board') setBody(boardHTML());
   }, 3500);
 }
 
-const stageCls = s => s==='谈判中'?'hot':s==='已带看'?'warm':s==='新线索'?'ok':'';
+const stageCls = s => s==='谈价中'?'hot':s==='已报价'?'warm':s==='新询价'?'ok':'';
 function leadsHTML(){
-  return `<p class="lede">今天需跟进 <b>${dueLeads().length}</b> 位 · 今日已跟进 <b>${S.daily.follow}</b> 位</p>
+  return `<p class="lede">今天要回复 <b>${dueLeads().length}</b> 个询价 · 今日已回复 <b>${S.daily.follow}</b> 个</p>
   <div class="list">${DB.leads.map(l => { const done=l.done===S.day; return `
     <div class="rc${done?' done':''}"><div class="rc-main">
       <div class="rc-top"><b>${l.name}</b><span class="stage ${stageCls(l.stage)}">${l.stage}</span></div>
       <div class="rc-sub">${l.need}</div>
       <div class="rc-meta">来源：${l.src} · 跟进：${l.due}</div></div>
-      <button type="button" class="btn sm${done?'':' primary'}" data-act="follow" data-id="${l.id}" ${done?'disabled':''}>${done?'已跟进':'记录跟进'}</button>
+      <button type="button" class="btn sm${done?'':' primary'}" data-act="follow" data-id="${l.id}" ${done?'disabled':''}>${done?'已回复':'记录回复'}</button>
     </div>`; }).join('')}</div>
-  <p class="note"><span class="sample">SAMPLE</span> 示例客户。接入后从 SIS 客户库读取。</p>`;
+  <p class="note"><span class="sample">SAMPLE</span> 示例询价。接入后从 SIS 读取。</p>`;
 }
-async function openLeads(){ DB.leads = await SIS.leads(); openSheet({title:'客户跟进', sub:'Leo 整理 · 按跟进日期排序', body:leadsHTML(), kind:'leads'}); }
+async function openLeads(){ DB.leads = await SIS.leads(); openSheet({title:'询价跟进', sub:'Leo 整理 · 按回复期限排序', body:leadsHTML(), kind:'leads'}); }
 
 function contentHTML(){
-  const order = s => ({'待审核':0,'剪辑':1,'拍摄':2,'策划':3,'已排期':4})[s];
+  const order = s => ({'待交付':0,'后期':1,'拍摄':2,'筹备':3,'已交付':4})[s];
   const items=[...DB.content].sort((a,b) => order(a.stage)-order(b.stage));
-  return `<div class="steps">${STAGES.map(s => { const n=DB.content.filter(c => c.stage===s).length; return `<div class="step${s==='待审核'&&n?' hot':''}"><b>${n}</b><span>${s}</span></div>`; }).join('')}</div>
-  <div class="list">${items.map(c => { const rev=c.stage==='待审核'; return `
+  return `<div class="steps">${STAGES.map(s => { const n=DB.content.filter(c => c.stage===s).length; return `<div class="step${s==='待交付'&&n?' hot':''}"><b>${n}</b><span>${s}</span></div>`; }).join('')}</div>
+  <div class="list">${items.map(c => { const rev=c.stage==='待交付'; return `
     <div class="rc">${rev?'<span class="thumb" aria-hidden="true"></span>':''}<div class="rc-main">
-      <div class="rc-top"><b>${c.title}</b><span class="stage ${rev?'hot':c.stage==='已排期'?'ok':''}">${c.stage}</span></div>
+      <div class="rc-top"><b>${c.title}</b><span class="stage ${rev?'hot':c.stage==='已交付'?'ok':''}">${c.stage}</span></div>
       <div class="rc-meta">${c.owner} · ${c.date}</div></div>
-      ${rev?`<div class="rc-btns"><button type="button" class="btn sm primary" data-act="approve" data-id="${c.id}">通过</button><button type="button" class="btn sm" data-act="revise" data-id="${c.id}">退回修改</button></div>`:''}
+      ${rev?`<div class="rc-btns"><button type="button" class="btn sm primary" data-act="approve" data-id="${c.id}">确认交付</button><button type="button" class="btn sm" data-act="revise" data-id="${c.id}">退回修改</button></div>`:''}
     </div>`; }).join('')}</div>
-  <p class="note"><span class="sample">SAMPLE</span> 示例排期。通过后进入发布排期，退回后回到剪辑。</p>`;
+  <p class="note"><span class="sample">SAMPLE</span> 示例项目。确认后交给客户，退回后回到后期。</p>`;
 }
-async function openContent(){ DB.content = await SIS.content(); openSheet({title:'内容排期', sub:'策划 → 拍摄 → 剪辑 → 审核 → 发布', body:contentHTML(), kind:'content'}); }
+async function openContent(){ DB.content = await SIS.content(); openSheet({title:'项目进度', sub:'筹备 → 拍摄 → 后期 → 交付', body:contentHTML(), kind:'content'}); }
 
 function tasksHTML(){
   const lv=level(), xp=S.xp%100, nu=unlocksAt(lv+1);
@@ -958,7 +960,7 @@ function openMe(){
   const body = `<div class="lvcard"><canvas class="pt lg" data-who="me"></canvas><div style="flex:1;min-width:0">
       <div style="font-weight:700;font-size:16px">${esc(S.name||'新同事')}</div><div class="note">${esc(jobName())} · LV ${level()}</div>
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
-    <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${S.deals||0}</b><span>成交登记</span></div></div>
+    <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${S.deals||0}</b><span>接单登记</span></div></div>
     <div><h3>职业</h3>${chips2('job',OPT.role,S.role)}
       ${S.role==='other'?`<div class="group" style="margin-top:8px"><input type="text" id="me-jobother" maxlength="20" value="${esc(meJobOther)}" placeholder="你的职业，例：灯光师" style="flex:1;min-width:0"><button type="button" class="btn sm primary" data-act="job-other">保存</button></div>`:''}
       <p class="note" style="margin-top:6px">转行了就在这里换，办公室摆设会跟着换。</p></div>
@@ -973,14 +975,14 @@ function openMe(){
 }
 
 function openBell(){
-  const body = `<p class="lede">登记一笔成交，全办公室会收到喜报，同行圈自动发帖。</p>
+  const body = `<p class="lede">接到一单就登记一下，全办公室会收到喜报，同行圈自动发帖。</p>
   <form class="form" data-form="deal">
-    <label>房源 / 地段<input type="text" id="deal-area" name="area" maxlength="40" placeholder="例：Mont Kiara 3 房公寓" required></label>
-    <label>成交金额（RM）<input type="number" id="deal-amt" name="amt" min="1" step="any" placeholder="例：1350000" required></label>
+    <label>项目<input type="text" id="deal-area" name="area" maxlength="40" placeholder="例：陈氏婚礼跟拍" required></label>
+    <label>项目金额（RM）<input type="number" id="deal-amt" name="amt" min="1" step="any" placeholder="例：4500" required></label>
     <label>客户称呼（可选）<input type="text" id="deal-client" name="client" maxlength="20" placeholder="例：Mr. Lim"></label>
     <button class="btn gold" type="submit">敲钟</button>
   </form>`;
-  openSheet({title:'成交钟', sub:'每一单都值得被看见', body, kind:'bell'});
+  openSheet({title:'接单钟', sub:'每一单都值得被看见', body, kind:'bell'});
 }
 
 let ed=null;
@@ -1030,7 +1032,7 @@ function checkin(){
   gainXP(20,'签到'); bubble(N.lisa,`连续 ${S.streak} 天`);
 }
 function tour(){
-  say(N.lisa,'办公室每个房间都可以直接点开。也可以让我带你走过去：',[
+  say(N.lisa,'点房间的名字标签就能打开功能。也可以让我带你走过去：',[
     {label:'数据室', fn:() => walkTo(TG.screen)},
     {label:'同行圈', fn:() => walkTo(TG.board)},
     {label:'会议室', fn:() => walkTo(TG.wb)},
@@ -1043,9 +1045,9 @@ const ACTS = {
     opts.push({label:'办公室导览', fn:tour}, {label:'换造型', fn:() => openEditor()});
     say(N.lisa, S.daily.checkin ? `${S.name||'你'}，今天已经签到了，连续 ${S.streak} 天。` : `早安，${S.name||'新同事'}。先签到，再开始今天的工作。点地面就能走过去，点房间的名字标签打开对应的 SIS 功能。`, opts);
   },
-  shu(){ say(N.shu,'本月团队成交额 RM 4.82M，比上月高 12%。线索到带看的转化是 35.8%，Team Mei 排第一。',[{label:'打开数据大屏', primary:true, fn:openDash}]); },
-  leo(){ const d=dueLeads(); say(N.leo, d.length ? `今天有 ${d.length} 位客户要跟进，最急的是 ${d[0].name}：${d[0].need}。` : '今天的客户都跟进完了。明天还有 1 位。', [{label:'查看客户', primary:true, fn:openLeads}]); },
-  mia(){ const n=pendingReview().length; say(N.mia, n ? `有 ${n} 条视频剪好了，等你审核。今天 18:00 前过审才能按时发布。` : '目前没有待审核的视频，下一条还在剪辑。', [{label:'打开内容排期', primary:true, fn:openContent}]); },
+  shu(){ say(N.shu,'你本月接了 9 单，共 RM 38.6K，比上月高 12%。询价到定档是 31%，比上月好。',[{label:'打开数据大屏', primary:true, fn:openDash}]); },
+  leo(){ const d=dueLeads(); say(N.leo, d.length ? `今天有 ${d.length} 个询价要回复，最急的是 ${d[0].name}：${d[0].need}。` : '今天的询价都回复完了。明天还有 1 个。', [{label:'查看询价', primary:true, fn:openLeads}]); },
+  mia(){ const n=pendingReview().length; say(N.mia, n ? `有 ${n} 个项目后期做好了，等你确认交付。最急的今天 18:00 前要交给客户。` : '目前没有要交付的项目，下一个还在后期。', [{label:'打开项目进度', primary:true, fn:openContent}]); },
   kai(){ say(N.kai, `今日任务完成 ${TASKS.length-tasksLeft()}/${TASKS.length}。完成任务拿经验，升级解锁新服装。`, [{label:'查看今日任务', primary:true, fn:openTasks}]); },
   dash: openDash, board: () => openBoard(), tasks: openTasks, me: openMe, bell: openBell,
   wardrobe: () => openEditor(),
@@ -1065,7 +1067,7 @@ const ACTS = {
   peer(tg){
     const p=tg.char;
     say({name:p.name, title:`${ROLE[p.role]} · ${p.team} · LV ${p.lvl}`, look:p.look}, p.lines[Math.floor(Math.random()*p.lines.length)], [
-      {label:'打招呼', primary:true, fn:() => { bubble(player,`嗨，${p.name}！`,2.5); setTimeout(() => bubble(p,['嗨！今天加油。','你好呀。','一起冲业绩！'][Math.floor(Math.random()*3)],3), 800); }},
+      {label:'打招呼', primary:true, fn:() => { bubble(player,`嗨，${p.name}！`,2.5); setTimeout(() => bubble(p,['嗨！今天加油。','你好呀。','今天也顺顺利利！'][Math.floor(Math.random()*3)],3), 800); }},
       {label:'看 TA 的帖子', fn:() => openBoard(p.id)},
     ]);
   },
@@ -1129,7 +1131,7 @@ sheet.addEventListener('click', async e => {
     case 'approve': case 'revise': {
       const ok = a.dataset.act==='approve';
       await SIS.reviewContent(id, ok); S.daily.review++; save(); await refresh();
-      setBody(contentHTML()); toast(ok?'已通过，进入发布排期':'已退回剪辑'); checkTasks(); break; }
+      setBody(contentHTML()); toast(ok?'已确认，交给客户':'已退回后期'); checkTasks(); break; }
     case 'to-wardrobe': openEditor(); break;
     case 'to-tasks': openTasks(); break;
   }
@@ -1143,12 +1145,12 @@ sheet.addEventListener('submit', async e => {
   }
   if (f.dataset.form==='deal'){
     const area=$('#deal-area').value.trim(), amt=Number($('#deal-amt').value), client=$('#deal-client').value.trim();
-    if (!area || !(amt>0)){ toast('填写房源和成交金额'); return; }
+    if (!area || !(amt>0)){ toast('填写项目和金额'); return; }
     const post = await SIS.logDeal({area, amt, client});
     S.deals=(S.deals||0)+1; S.posted=(S.posted||0)+1; S.daily.social++; S.seen=post.id; save(); await refresh();
     closeSheet(); ring=2.2; burst(14.5, 1.3, 9.5, 70);
-    bubble(player,'成交啦！'); [...npcs,...peers].forEach((c,i) => setTimeout(() => bubble(c,['恭喜！','太强了','请喝咖啡！','再来一单'][i%4],3), 300+i*120));
-    toast('成交喜报已发到同行圈','gold'); gainXP(50,'成交登记'); checkTasks();
+    bubble(player,'接单啦！'); [...npcs,...peers].forEach((c,i) => setTimeout(() => bubble(c,['恭喜！','太强了','请喝咖啡！','再来一单'][i%4],3), 300+i*120));
+    toast('接单喜报已发到同行圈','gold'); gainXP(50,'接单登记'); checkTasks();
   }
 });
 
@@ -1259,8 +1261,8 @@ wallRuns.forEach(([x,y,w,d,dh]) => add(new THREE.Mesh(roundedBox(w,WALL_H-dh,d),
 const DASHW = [31,42,28,45,39,52,34];
 const screenTex = canvasTex(1024,128,(g,w,h) => {
   g.fillStyle='#14223a'; g.fillRect(0,0,w,h);
-  g.fillStyle='#7f93b5'; g.font='700 18px Manrope, sans-serif'; g.fillText('TEAM · THIS MONTH', 28, 34);
-  g.fillStyle='#f2c56b'; g.font='800 52px Manrope, sans-serif'; g.fillText('RM 4.82M', 28, 92);
+  g.fillStyle='#7f93b5'; g.font='700 18px Manrope, sans-serif'; g.fillText('JOBS · THIS MONTH', 28, 34);
+  g.fillStyle='#f2c56b'; g.font='800 52px Manrope, sans-serif'; g.fillText('RM 38.6K', 28, 92);
   g.fillStyle='#5fd0b5'; g.font='700 18px Manrope, sans-serif'; g.fillText('▲ 12% vs last month', 290, 92);
   DASHW.forEach((v,i) => { const bh=v/52*90; g.fillStyle=i===6?'#f2c56b':'#3fb39b'; g.fillRect(560+i*62, 112-bh, 40, bh); });
 });
@@ -1606,7 +1608,7 @@ function makeRoomLabel(z){
 }
 ZONES.forEach(makeRoomLabel); SPOTS.forEach(makeRoomLabel);
 // First time the player walks into each room: a tip above its label points at what to tap. Shown once per room, remembered.
-const TIP_VERB={dash:'看团队数据', board:'打开留言板', tasks:'看今日任务', coffee:'看每日贴士', lisa:'签到 · 导览', wardrobe:'换造型', me:'进我的办公室', bell:'登记成交'};
+const TIP_VERB={dash:'看团队数据', board:'打开留言板', tasks:'看今日任务', coffee:'看每日贴士', lisa:'签到 · 导览', wardrobe:'换造型', me:'进我的办公室', bell:'登记接单'};
 function roomEnter(l){
   if (uiOpen()) return;
   S.roomTips = S.roomTips || {}; if (S.roomTips[l.z.act]) return;
@@ -2103,7 +2105,7 @@ function doorTick(dt){
 // colleagues sometimes step out to the balcony to relax, chat or smoke
 const BALCONY_SPOTS=[[33,8],[33,9],[33,10],[33,11],[32,12],[31,10]];
 const RELAX_LINES=['外面风好舒服。','看那边的山，空气真好。','河边好像有人在钓鱼。','刚刚有条鱼跳出水面！','抽根烟再回去。','听，有鸟在叫。','楼下那只狗又在草地上跑。','这个景，拍外景很好用。'];
-const CHATS=[['那个 Bangsar 的单搞定了吗？','差不多了，下周签。'],['你们组这个月几单？','4 单，还差一点。'],['周末要不要一起去看新盘？','好啊，叫上美玲。'],['最近客户都在问贷款利率。','我也是，准备拍一条视频讲讲。']];
+const CHATS=[['Aurora 那个短片定档了吗？','定了，下周三开机。'],['你今年报价涨了没？','涨了 15%，客户也接受。'],['周末那场婚礼缺不缺摄像？','缺，你有空就来。'],['那家婚庆公司又拖款了。','我在同行圈看到了，以后不接他们的单。']];
 function nextWander(c){
   c.settled=false; c.relax=false; c.spot=null; if (c.cig) c.cig.visible=false;
   const free=BALCONY_SPOTS.filter(s => !peers.some(o => o!==c && o.spot===s));
@@ -2518,7 +2520,7 @@ const TUT = [
   {id:'tap', title:'点名字标签，打开功能', body:'点地面或房间，角色会走过去。要打开功能，点房间的名字标签（走进房间时标签会亮起金边）。试试点一下发光的「数据室」标签。', target:() => (labels.find(l => l.z.act==='dash')||{}).el},
   {id:'pan', title:'拖动画面，看看其他地方', body: coarse ? '单指按住画面，往任意方向拖。' : '按住鼠标左键，往任意方向拖。', gesture:'pan'},
   {id:'zoom', title: coarse ? '双指捏合放大缩小' : '滚轮放大缩小', body: coarse ? '双指转动可以换角度。也可以用右边的 + − 按钮。' : '右键拖动可以换角度。也可以用右边的 + − 按钮。', gesture: coarse ? 'pinch' : 'wheel'},
-  {id:'badge', title:'红点 = 有事等你', body:'名牌和按钮上的红点，代表待跟进的客户、待审核的视频和没做完的任务。', target:() => $('[data-hud="tasks"]'), final:true},
+  {id:'badge', title:'红点 = 有事等你', body:'名牌和按钮上的红点，代表待回复的询价、待交付的项目和没做完的任务。', target:() => $('[data-hud="tasks"]'), final:true},
 ];
 let tut=null;
 function startTutorial(done){ closeDialog(); goal=homeView(); tut={i:0, done}; showStep(); }
@@ -2582,8 +2584,8 @@ function loop(){
   if (chatter<=0){ const p=peers[Math.floor(Math.random()*peers.length)]; if (!p.bubble) bubble(p,p.lines[Math.floor(Math.random()*p.lines.length)],3.5); chatter=9+Math.random()*8; }
   if (!scripted && elapsed>40 && S.look){
     scripted=true;
-    S.posts.push({id:Date.now(), a:'p3', tag:'房源', text:'Setia Alam 一间双层排屋业主降价 RM 30K，这周可以看房，有客户的找我。', t:Date.now(), likes:[], cmts:[]}); save();
-    bubble(PM.p3,'在同行圈发了新帖',4); refresh();
+    S.posts.push({id:Date.now(), a:'p5', tag:'求助', text:'这周六 Bangsar 广告片临时缺一位化妆师，一天 RM 600，有空的找我。', t:Date.now(), likes:[], cmts:[]}); save();
+    bubble(PM.p5,'在同行圈发了新帖',4); refresh();
   }
   if (ring>0) ring-=dt;
   if (bellF.hang) bellF.hang.rotation.z = ring>0 ? Math.sin(t*16)*.5*Math.min(1,ring) : (reduce?0:Math.sin(t*1.4)*.06);
