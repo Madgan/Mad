@@ -344,7 +344,7 @@ const NPC_DEF = [
    look:{gender:'f',skin:0,hair:'pony',hairColor:1,top:'shirt',topColor:0,bottom:'skirt',bottomColor:5,shoes:0,hat:'none',hatColor:0,glasses:'none',watch:'silver'}},
   {id:'shu', name:'阿数', title:'数据分析师', tile:[8,4], face:'left', act:'shu',
    look:{gender:'m',skin:1,hair:'short',hairColor:0,top:'hoodie',topColor:1,bottom:'pants',bottomColor:5,shoes:1,hat:'none',hatColor:0,glasses:'round',watch:'none'}},
-  {id:'leo', name:'Leo', title:'线索管家', tile:[5,10], face:'down', act:'leo',
+  {id:'leo', name:'Leo', title:'线索管家', tile:[9,10], face:'down', act:'leo',
    look:{gender:'m',skin:2,hair:'side',hairColor:0,top:'suit',topColor:9,bottom:'pants',bottomColor:9,shoes:2,hat:'none',hatColor:0,glasses:'none',watch:'gold'}},
   {id:'mia', name:'Mia', title:'内容编导', tile:[24,10], face:'down', act:'mia',
    look:{gender:'f',skin:0,hair:'bun',hairColor:5,top:'tee',topColor:3,bottom:'pants',bottomColor:1,shoes:1,hat:'none',hatColor:0,glasses:'round',watch:'none'}},
@@ -486,6 +486,7 @@ fillR(10,0,10,6,'#'); fillR(0,6,10,6,'#'); G[6][5]='d';
 fillR(19,0,19,6,'#'); fillR(19,6,MW-1,6,'#'); G[6][24]='d';
 fillR(0,13,9,13,'#'); fillR(9,13,9,MH-1,'#'); G[13][5]='d';
 fillR(20,13,MW-1,13,'#'); fillR(20,13,20,MH-1,'#'); G[13][24]='d';
+fillR(4,7,4,12,'#'); G[10][4]='d';  // private office in the west corner of the open office
 // Balcony: five columns east of the building, reached through a double glass door in the east wall.
 const GW = MW + 5;
 G.forEach((row,y) => { for (let x=MW; x<GW; x++) row.push(y>=7 && y<=12 && x<GW-1 ? 'b' : 'v'); });
@@ -497,7 +498,8 @@ const fur = (x,y,w,h,k,o={}) => F.push(Object.assign({x,y,w,h,k,solid:true}, o))
 fur(3,3,5,1,'console'); fur(9,1,1,1,'server'); fur(9,2,1,1,'server'); fur(1,5,1,1,'plant');
 fur(13,5,4,1,'sofa'); fur(14,3,2,1,'ctable'); fur(11,1,1,1,'plant'); fur(18,1,1,1,'plant');
 fur(21,3,7,2,'mtable'); [[22,2],[24,2],[22,5],[24,5],[26,5]].forEach(([x,y]) => fur(x,y,1,1,'chair',{solid:false})); fur(28,1,1,1,'plant');
-[[2,8],[2,11],[6,8],[6,11],[21,8],[21,11],[25,8],[25,11]].forEach(([x,y],i) => fur(x,y,3,2,'desks',{mine:i===2}));
+[[6,8],[6,11],[21,8],[21,11],[25,8],[25,11]].forEach(([x,y]) => fur(x,y,3,2,'desks'));
+fur(2,8,1,2,'bossdesk'); fur(2,7,2,1,'bookshelf'); fur(1,12,2,1,'sofa');
 fur(14,9,1,1,'bell'); fur(20,7,1,1,'cooler'); fur(1,7,1,1,'plant'); fur(28,7,1,1,'plant');
 fur(1,14,4,1,'counter'); fur(7,14,1,1,'fridge'); fur(3,16,2,2,'rtable'); fur(8,18,1,1,'plant');
 fur(12,15,6,1,'fdesk'); fur(10,18,1,1,'plant'); fur(19,18,1,1,'plant');
@@ -511,10 +513,10 @@ const ZONES = [
   {id:'pantry', r:[1,14,8,5],  act:'coffee',   name:'茶水间', sub:'每日贴士',   lab:[5.6,14.6],  col:'#d65f4c'},
   {id:'recep',  r:[10,14,10,5],act:'lisa',     name:'前台',   sub:'签到 · 导览', lab:[15,18.5],   col:'#2f7d6d'},
   {id:'ward',   r:[21,14,8,5], act:'wardrobe', name:'衣帽间', sub:'换造型',     lab:[23.6,14.6], col:'#c46f95'},
+  {id:'boss',   r:[1,7,3,6],   act:'me',       name:'我的办公室', sub:'私人空间', lab:[2.5,10.7], col:'#3b5bab'},
 ];
 const SPOTS = [
   {name:'成交钟', sub:'登记成交', act:'bell', lab:[14.5,10.5], col:'#d99a2b'},
-  {name:'我的工位', sub:'', act:'me', lab:[7.5,10.45], col:'#3b5bab'},
 ];
 const ROOMS = {data:['数据室','团队数据 · 实时大屏'], lounge:['同行圈','留言板 · 交流区'], meet:['会议室','今日任务 · 白板'], pantry:['茶水间','咖啡机 · 每日小贴士'], ward:['衣帽间','换造型'], recep:['前台','签到 · 新手引导'], office:['开放办公区','客户跟进 · 内容审核 · 成交钟']};
 function roomAt(tx,ty){
@@ -928,14 +930,14 @@ function openMe(){
       <div style="font-weight:700;font-size:16px">${esc(S.name||'新同事')}</div><div class="note">${ROLE[S.role]||''} · LV ${level()}</div>
       <div class="xp"><i style="width:${S.xp%100}%"></i></div></div></div>
     <div class="stats"><div><b>${S.streak||0}</b><span>连续签到（天）</span></div><div><b>${S.posted||0}</b><span>同行圈发帖</span></div><div><b>${S.deals||0}</b><span>成交登记</span></div></div>
-    <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button><button type="button" class="btn" data-act="tut-again">重看新手引导</button></div>
+    <div class="group"><button type="button" class="btn primary" data-act="to-wardrobe">换造型</button><button type="button" class="btn" data-act="to-tasks">今日任务</button><button type="button" class="btn" data-act="go-office">走去我的办公室</button><button type="button" class="btn" data-act="tut-again">重看新手引导</button></div>
     <div><h3>画质</h3><div class="group" role="group" aria-label="画质">${[['auto','自动'],['low','流畅'],['medium','标准'],['high','精美']].map(([v,l]) => `<button type="button" class="chip sm" data-act="quality" data-v="${v}" aria-pressed="${(S.quality||'auto')===v}">${l}</button>`).join('')}</div>
     <p class="note" style="margin-top:6px">手机发烫或卡顿时选「流畅」。「自动」会按手机表现调整，现在是「${QNAME[qLevel]}」。</p></div>
     <div><h3>节日排期（后台）</h3><div class="list">${[...FESTIVALS].sort((a,b) => festKey(a)-festKey(b)).map(f => { const live=festAuto()===f.id, pv=festPreview===f.id; return `<div class="rc"><div class="rc-main"><div class="rc-top"><b>${f.name}</b><span class="stage ${live?'ok':''}">${live?'进行中':'已排期'}</span></div><div class="rc-meta">${festWhen(f)}自动上线${f.tentative ? '（日期暂定）' : ''}</div></div><button type="button" class="btn sm${pv?'':' primary'}" data-act="${pv?'fest-stop':'fest-preview'}" data-v="${f.id}">${pv?'结束预览':'预览'}</button></div>`; }).join('')}</div>
     <p class="note" style="margin-top:6px">预览只在你这台设备上显示，其他人要等到日期才会看到。正式版里只有管理员能看到这一栏。</p></div>
     <div><h3>时间预览</h3><div class="group" role="group" aria-label="时间预览">${[['auto','跟随时间'],['8','早上'],['13','中午'],['18','傍晚'],['22','夜晚']].map(([v,l]) => `<button type="button" class="chip sm" data-act="time-preview" data-v="${v}" aria-pressed="${String(timePreview==null ? 'auto' : timePreview)===v}">${l}</button>`).join('')}</div>
     <p class="note" style="margin-top:6px">办公室的光线跟着手机时间变化。这里切换只是预览，只有你看得到。</p></div>`;
-  openSheet({title:'我的工位', sub:'个人资料与进度', body, kind:'me'});
+  openSheet({title:'我的办公室', sub:'个人资料与进度', body, kind:'me'});
 }
 
 function openBell(){
@@ -1123,7 +1125,7 @@ const QNAME = {low:'流畅', medium:'标准', high:'精美'};
 function autoLevel(){ const hc=navigator.hardwareConcurrency||8, mem=navigator.deviceMemory||8; if (hc<=4 || mem<=3) return 'low'; return coarse ? 'medium' : 'high'; }
 let qLevel = (S.quality && S.quality!=='auto') ? S.quality : autoLevel();
 try { renderer = new THREE.WebGLRenderer({antialias:qLevel!=='low'}); } catch(e){ $('#err').hidden=false; return; }
-const ZF = {data:['#2c3754','grid'], lounge:['#d4e6e1','dot'], meet:['#e6eaf0','tile'], pantry:['#f6f1e9','check'], recep:['#f1f3f6','tile'], ward:['#f2e4df','tile']};
+const ZF = {boss:['#dcc7a8','tile'], data:['#2c3754','grid'], lounge:['#d4e6e1','dot'], meet:['#e6eaf0','tile'], pantry:['#f6f1e9','check'], recep:['#f1f3f6','tile'], ward:['#f2e4df','tile']};
 ZONES.forEach(z => { z.floor=ZF[z.id][0]; z.pat=ZF[z.id][1]; });
 /* ---------------- three.js setup ---------------- */
 renderer.setPixelRatio(Math.min(devicePixelRatio||1, 2));
@@ -1246,6 +1248,22 @@ function buildFur(f){
       }
       if (f.mine){ box(.5,.08,.03,'#d99a2b',W/2-.6,.5,D/2-.09,g); g.userData.act='me'; clickables.push(g); }
       break;
+    case 'bossdesk': {
+      box(.86,.08,1.84,'#6f4a32',0,.5,0,g); box(.78,.44,1.7,'#5a3b28',0,.24,0,g);
+      box(.04,.3,.52,'#2a303d',.12,.72,.32,g); box(.006,.25,.46,B('#6bb9d4'),.096,.72,.32,g,false);
+      box(.28,.012,.2,'#f4f4f0',-.08,.55,-.35,g,false); cyl(.04,.035,.09,'#ffffff',.2,.59,-.6,g,10);
+      box(.04,.07,.32,'#d99a2b',.42,.58,-.2,g,false);
+      chair(g,-1,0,-Math.PI/2); box(.36,.5,.07,'#3b4354',-1.18,.62,0,g).rotation.y=Math.PI/2;
+      chair(g,1,-.45,Math.PI/2); chair(g,1,.45,Math.PI/2);
+      g.userData.act='me'; clickables.push(g);
+      break; }
+    case 'bookshelf': {
+      box(W-.1,1.1,.06,'#7a5434',0,.55,-.45,g); [-1,1].forEach(sd => box(.06,1.1,.4,'#7a5434',sd*(W/2-.08),.55,-.28,g)); box(W-.1,.05,.4,'#7a5434',0,1.08,-.28,g);
+      [.25,.55,.85].forEach(y => box(W-.2,.03,.36,'#946c49',0,y,-.26,g,false));
+      const BOOK=['#3b5bab','#d65f4c','#2f7d6d','#e3a63b','#8a5aa8','#f2f2ee'];
+      [.3,.6].forEach((y,row) => { for (let i=0;i<9;i++) box(.07,.2+((i*7+row)%3)*.03,.24,BOOK[(i+row*2)%6],-W/2+.25+i*.17,y+.12,-.24,g,false); });
+      cyl(.05,.07,.04,'#c88a1f',.4,.89,-.25,g,10); cyl(.02,.02,.1,'#e8b44a',.4,.96,-.25,g,6); sph(.06,'#f2c56b',.4,1.06,-.25,g,10);
+      break; }
     case 'console':
       box(W-.2,.5,.6,'#1f2738',0,.25,0,g); box(W-.2,.04,.62,'#2d3954',0,.52,0,g);
       [-1.5,0,1.5].forEach(x => { box(.6,.34,.04,'#141b28',x,.75,-.1,g); box(.54,.28,.01,B('#1d4a5a'),x,.75,-.078,g,false); });
@@ -1455,13 +1473,13 @@ function bfs(sx,sy,gx,gy){
   }
   return null;
 }
-const walkable=[]; for (let y=0;y<MH;y++) for (let x=0;x<GW;x++) if (!solid[y][x] && G[y][x]!=='d' && G[y][x]!=='D') walkable.push([x,y]);
+const walkable=[]; for (let y=0;y<MH;y++) for (let x=0;x<GW;x++) if (!solid[y][x] && G[y][x]!=='d' && G[y][x]!=='D' && !(x<=3 && y>=7 && y<=12)) walkable.push([x,y]);
 
 /* ---------------- festival: Halloween ---------------- */
 const fest = new THREE.Group(); fest.visible=false; scene.add(fest);
 const glowTex = canvasTex(64,64,(g) => { const gr=g.createRadialGradient(32,32,0,32,32,32); gr.addColorStop(0,'rgba(255,170,70,1)'); gr.addColorStop(1,'rgba(255,170,70,0)'); g.fillStyle=gr; g.fillRect(0,0,64,64); });
 const glows=[];
-[[10,14],[19,14],[12.5,18.4],[17.5,18.4],[12,7],[17,7],[1,12],[28,12],[11,5.2],[18,5.2],[8,15],[21,15]].forEach(([x,y],i) => {
+[[10,14],[19,14],[12.5,18.4],[17.5,18.4],[12,7],[17,7],[3,12],[28,12],[11,5.2],[18,5.2],[8,15],[21,15]].forEach(([x,y],i) => {
   const pg=new THREE.Group(); pg.position.set(x+.5,0,y+.6); pg.rotation.y=-Math.PI/4; fest.add(pg);
   const body=sph(.2,'#e07a24',0,.16,0,pg,18); body.scale.set(1.1,.8,1);
   [-1,1].forEach(k => { const lobe=sph(.15,'#ec8c32',k*.1,.16,.02,pg,14); lobe.scale.set(.8,.95,1); });
@@ -1844,6 +1862,9 @@ function doorLeaf(hx,hz,axis,sign,cx,cz,range){
 }
 [[5,6],[24,6],[5,13],[24,13]].forEach(([x,y]) => doorLeaf(x+.04,y+.5,'x',1,x+.5,y+.5,1.25));
 doorLeaf(29.5,9.04,'z',1,29.5,10,1.6); doorLeaf(29.5,10.96,'z',-1,29.5,10,1.6);
+doorLeaf(4.5,10.04,'z',1,4.5,10.5,1.2);
+{ const tag=new THREE.Mesh(new THREE.PlaneGeometry(.62,.16), new THREE.MeshBasicMaterial({map:canvasTex(256,64,(g,W,H) => { g.fillStyle='#2b3448'; g.fillRect(0,0,W,H); g.fillStyle='#f2c56b'; g.font='700 30px "Noto Sans SC", sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('我的办公室',W/2,H/2+1); })}));
+  tag.position.set(5.012,.6,9.4); tag.rotation.y=Math.PI/2; scene.add(tag); }
 // Doors swing away from whoever walks up, stay open while someone is close, then close.
 function doorTick(dt){
   for (const d of DOORS){
@@ -1897,6 +1918,7 @@ function balconyTick(dt,t){
   puffs.forEach(p => { if (p.life<=0) return; p.life-=dt; p.s.position.y+=dt*.35; p.s.position.x+=dt*.08; const k=1-p.life/2.4; p.s.scale.setScalar(.12+k*.45); p.s.material.opacity=.55*(1-k); if (p.life<=0) p.s.visible=false; });
 }
 ACTS.balcony = () => walkTo({act:'balconyArrive', tile:[32,10]});
+ACTS.officeArrive = () => { player.yaw=-Math.PI/2; bubble(player,'回到自己的办公室'); };
 ACTS.balconyArrive = () => { player.yaw=Math.PI/2; bubble(player,'出来透透气'); };
 makeRoomLabel({name:'阳台', sub:'休息区', act:'balcony', lab:[32,9.2], col:'#3fa58a'});
 
@@ -2261,6 +2283,7 @@ sheet.addEventListener('click', e => {
   const a=e.target.closest('[data-act]'); if (!a) return;
   if (a.dataset.act==='quality'){ S.quality=a.dataset.v; save(); applyQuality(S.quality==='auto' ? autoLevel() : S.quality); openMe(); toast(`画质：${S.quality==='auto' ? '自动（'+QNAME[qLevel]+'）' : QNAME[qLevel]}`); }
   if (a.dataset.act==='tut-again'){ closeSheet(); startTutorial(); }
+  if (a.dataset.act==='go-office'){ closeSheet(); walkTo({act:'officeArrive', tile:[2,10]}); }
   if (a.dataset.act==='fest-preview') startPreview(a.dataset.v);
   if (a.dataset.act==='fest-stop'){ stopPreview(); openMe(); }
   if (a.dataset.act==='time-preview'){ timePreview = a.dataset.v==='auto' ? null : Number(a.dataset.v); applyLighting(); openMe(); }
