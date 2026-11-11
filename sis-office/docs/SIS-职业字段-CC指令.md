@@ -1,4 +1,4 @@
-# SIS 职业字段：Claude Code 执行指令
+# SIS 职业字段 + 同行排行开关：Claude Code 执行指令
 
 > 用法：在 SIS 主程序的仓库里开 Claude Code，把下面「指令」整段贴进去。
 
@@ -6,11 +6,15 @@
 
 ## 指令
 
-在 SIS（sistudio.app）里加一个「职业」字段。用户注册时必须选择，之后可以在个人资料里改。这个字段有三个用途：
+在 SIS（sistudio.app）里做两件事：
+
+**A. 「职业」字段。** 用户注册时必须选择，之后可以在个人资料里改。用途有三个：
 
 1. 统计各职业有多少用户在用 SIS。
 2. 3D 虚拟办公室按职业布置用户的私人办公室。
 3. 记录转行，看用户的职业怎么变化。
+
+**B. 「同行接单排行」开关。** 排行只显示接单数，不显示金额。用户自己决定要不要上榜，默认不上榜（第 7 点）。
 
 **开始前先做这一步，不要猜：** 先看懂这个仓库用什么框架、数据库、登录方式，以及注册页和个人资料页在哪里。用 5 行以内告诉我你的理解和打算怎么改，等我确认后再动手。
 
@@ -85,6 +89,40 @@ select from_job, to_job, count(*) from user_job_history
 where from_job is not null group by 1, 2 order by 3 desc;
 ```
 
+### 7. 同行接单排行（默认不上榜）
+
+排行在虚拟办公室的数据大屏里显示：每月按接单数排名，每一行显示名字、工作室名、单数，**任何地方都不显示金额**。
+
+**数据：**
+
+- 用户表加 `show_in_ranking`：布尔值，默认 `false`。老用户也是 `false`，不要替他们打开。
+- 接单记录：先找 SIS 里有没有记录接单的地方。如果没有，新增 `job_logs` 表，包含 `id`、`user_id`、`project`（文字）、`amount`（金额）、`client`（可空）、`created_at`。
+  - 虚拟办公室的「接单钟」会写入这张表。
+  - `amount` 和 `client` 只有本人看得到，任何回传给别人的接口都不能带这两个字段。
+
+**个人资料页：**
+
+- 加一个开关：「在同行接单排行显示我」，默认关闭。
+- 开关下面的小字：「只显示你的名字和本月接单数，不会显示金额。可以随时关闭。」
+- 关闭后，排行马上看不到这个人。
+
+**接口：**
+
+- 排行接口（例如 `GET /ranking?month=2026-11`）只回传 `show_in_ranking = true` 的用户，每一行只有 `name`、`studio`、`jobs`（单数），最多 20 名，按单数从多到少排序。
+- `GET /me` 加回传 `show_in_ranking`，`PATCH /me` 接受修改它。
+- 本人的金额统计（本月接单额等）另外用一个只回传自己数据的接口，不要放进排行接口。
+
+```sql
+-- 本月排行：只算有打开开关的人
+select u.name, u.studio, count(*) as jobs
+from job_logs j join users u on u.id = j.user_id
+where u.show_in_ranking = true
+  and j.created_at >= date_trunc('month', now())
+group by u.id, u.name, u.studio
+order by jobs desc
+limit 20;
+```
+
 ### 验收
 
 - [ ] 新用户不选职业无法完成注册；选「其他」不填文字也无法完成注册。
@@ -92,6 +130,9 @@ where from_job is not null group by 1, 2 order by 3 desc;
 - [ ] 个人资料改职业后，`GET /me` 立即回传新值，转行记录多一笔。
 - [ ] 送不合法的 key 给后端，会被拒绝。
 - [ ] 管理员能看到第 6 点的四项统计，一般用户看不到。
+- [ ] 新用户和老用户的 `show_in_ranking` 都是 `false`，排行一开始是空的。
+- [ ] 打开开关后，这个人出现在排行，关掉后立刻消失。
+- [ ] 排行接口的回传里找不到 `amount`、`client` 或任何金额字段（直接看接口原始回传确认）。
 - [ ] 没有改动其他字段，也没有改到其他页面。
 
 完成后告诉我：改了哪些文件、数据库迁移怎么跑、怎么在本地测试。
