@@ -1137,7 +1137,7 @@ const hemi = new THREE.HemisphereLight(0xffffff, 0x8d93a2, .78); scene.add(hemi)
 const sun = new THREE.DirectionalLight(0xfff1dc, .72);
 sun.position.set(8, 26, 22); sun.target.position.set(17, 0, 10); scene.add(sun, sun.target);
 sun.castShadow = true; sun.shadow.mapSize.set(coarse?1024:2048, coarse?1024:2048);
-Object.assign(sun.shadow.camera, {left:-24, right:24, top:17, bottom:-17, near:1, far:90}); sun.shadow.bias = -.0006;
+Object.assign(sun.shadow.camera, {left:-24, right:24, top:17, bottom:-17, near:1, far:90}); sun.shadow.bias = -.0004; sun.shadow.normalBias = .03;
 
 const MC = {};
 const M = (c, extra) => { const k=c+(extra?JSON.stringify(extra):''); return MC[k] || (MC[k] = new THREE.MeshLambertMaterial(Object.assign({color:c}, extra||{}))); };
@@ -1173,10 +1173,16 @@ function canvasTex(w,h,draw,rep){
 const clickables = [];
 
 /* ---------------- floor ---------------- */
-const wood = canvasTex(256,256,(g,w,h) => {
-  g.fillStyle='#ead4ae'; g.fillRect(0,0,w,h); g.fillStyle='#dcc195';
-  for (let r=0;r<8;r++){ g.fillRect(0,r*32+31,w,2); for (let k=0;k<2;k++) g.fillRect(((r*71+k*128)%256),r*32,2,32); }
+// Even oak floor: planks differ only slightly in tone, with soft joints, so it reads as one surface from afar.
+const wood = canvasTex(512,512,(g,w,h) => {
+  let sd=5; const rnd=() => (sd=(sd*16807)%2147483647)/2147483647;
+  for (let r=0;r<8;r++){
+    let x=-(r*97%256);
+    while (x<w){ const len=180+rnd()*160, l=50+rnd()*5; g.fillStyle=`hsl(36,42%,${l}%)`; g.fillRect(x,r*64,len,64); g.fillStyle='rgba(120,85,45,.18)'; g.fillRect(x,r*64,1.5,64); x+=len; }
+    g.fillStyle='rgba(120,85,45,.14)'; g.fillRect(0,r*64+63,w,1.5);
+  }
 }, [MW/2, MH/2]);
+wood.anisotropy = renderer.capabilities.getMaxAnisotropy();
 const ground = add(new THREE.Mesh(new THREE.PlaneGeometry(MW,MH), new THREE.MeshLambertMaterial({map:wood})), scene, MW/2, 0, MH/2, false);
 ground.rotation.x = -Math.PI/2; ground.userData.ground = true; clickables.push(ground);
 function patTex(base, pat){
@@ -1683,7 +1689,7 @@ skyDome.position.set(17,0,10); scene.add(skyDome);
 // countryside: meadow, a river east of the balcony, woods, mountains and birds
 const GROUND_Y = -1.2;
 const meadow = new THREE.Mesh(new THREE.PlaneGeometry(420,420), M('#8fb873')); meadow.rotation.x=-Math.PI/2; meadow.position.set(17,GROUND_Y-.02,10); scene.add(meadow);
-box(30.4,1.2,20.4,'#d9d4c8',15,GROUND_Y/2,10,null,false);
+box(30.4,1.18,20.4,'#d9d4c8',15,GROUND_Y/2-.01,10,null,false);  // top sits just below the floor so the two never fight
 [[30.2,7.2],[33.8,7.2],[30.2,12.8],[33.8,12.8]].forEach(([x,z]) => cyl(.08,.08,1.1,'#b9b2a4',x,GROUND_Y/2-.1,z,null,8));
 // a winding river east of the office: flowing water, ripples, and the odd fish jumping out
 const RIVER = new THREE.CatmullRomCurve3([[44,-70],[40,-34],[46,-10],[42.5,8],[47,28],[43,58]].map(([x,z]) => new THREE.Vector3(x,0,z)));
@@ -1830,7 +1836,7 @@ function petTick(dt,t){
 // balcony deck, railing and furniture (tiles x 30-33, rows 7-12)
 const deck = add(new THREE.Mesh(new THREE.PlaneGeometry(4,6), new THREE.MeshLambertMaterial({map:canvasTex(128,128,(g,w,h) => { g.fillStyle='#b98d62'; g.fillRect(0,0,w,h); g.fillStyle='#a57a52'; for (let k=0;k<8;k++) g.fillRect(k*16+15,0,2,h); }, [4,6])})), scene, 32, .004, 10, false);
 deck.rotation.x=-Math.PI/2; deck.userData.ground=true; clickables.push(deck);
-box(4.2,.2,6.2,'#cfd6de',32,-.1,10,null,false);
+box(4.2,.2,6.2,'#cfd6de',32,-.12,10,null,false);
 const railGlass = new THREE.MeshLambertMaterial({color:'#cfeaf5', transparent:true, opacity:.28, depthWrite:false});
 function railRun(x0,z0,x1,z1){
   const len=Math.hypot(x1-x0,z1-z0), cx=(x0+x1)/2, cz=(z0+z1)/2, alongX=Math.abs(x1-x0)>Math.abs(z1-z0);
@@ -2213,9 +2219,9 @@ const DAY_KEYS = [
   [0,   .16,'#9fb4ff', .30,'#6f7fb8', '#1d2747','#0f1626'],
   [5.5, .2, '#ffb48a', .38,'#8f8fb8', '#5a5f8a','#2a2c44'],
   [7,   .5, '#ffd9b0', .66,'#ffe9d6', '#ffe0c8','#2f3448'],
-  [10,  .66,'#fff6e6', .68,'#ffffff', '#ffffff','#222a3a'],
-  [13,  .82,'#fffdf6', .7, '#ffffff', '#eef7ff','#222a3a'],
-  [16,  .68,'#fff0d8', .66,'#fff4e6', '#ffffff','#222a3a'],
+  [10,  .58,'#fff6e6', .6, '#ffffff', '#ffffff','#222a3a'],
+  [13,  .68,'#fffdf6', .62,'#ffffff', '#eef7ff','#222a3a'],
+  [16,  .6, '#fff0d8', .6, '#fff4e6', '#ffffff','#222a3a'],
   [18,  .58,'#ff9a5a', .55,'#ffc49a', '#ff9f78','#3a2a2e'],
   [19.5,.24,'#c07aa0', .4, '#8a7fb8', '#4a4878','#1a1a2c'],
   [21,  .16,'#9fb4ff', .30,'#6f7fb8', '#1d2747','#0f1626'],
