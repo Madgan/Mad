@@ -1,7 +1,7 @@
 # Pipeline Status
 
 Created: 2026-11-16T03:09:11Z
-Last updated: 2026-11-16T03:45:31Z
+Last updated: 2026-11-16T04:11:49Z
 
 ## Steps
 
@@ -18,7 +18,7 @@ Last updated: 2026-11-16T03:45:31Z
 | 9 | Domain research VS | done | 2026-11-16T03:24:01Z | sampling_parts/domain.md, to be appended verbatim to sampling.md §Domain research VS (26 drafted, 6 dropped at fitness filter, 20-pool 4/8/8, locked picks: idx 10 Card labels and camera tape, idx 13 LHDN MyInvois validated e-invoice QR, SEED=1794799252914; 2 anchors per the step protocol, written stand-ins at references/domain_card_labels_camera_tape.md and references/domain_myinvois_validated_einvoice_qr.md; idx 13 is formal borrowing only, facts.md forbids stating LHDN e-invoice support) |
 | 10 | Typography VS | done | 2026-11-16T03:31:45Z | sampling_parts/typography.md, to be appended verbatim to sampling.md §Typography VS (15 generated, 4 dropped at brief-fitness filter and replaced same-band, 15-pool 3/6/6 with brand-voice words "plain-spoken, exact, after-hours" and object anchor "tin of pineapple, best before 1 May"; SEED_K=1794799831142 K=3; SEED=1794799835954 PICKS=[4, 8, 10]; locked: Bricolage Grotesque primary, Instrument Sans product and invoice text, Kanit accent, Noto Sans SC Chinese companion; no banned-canon repool; all on Google Fonts and npm fontsource, verified) |
 | 11 | Anti-defaults research | done | 2026-11-16T03:14:45Z | claude_anti_defaults.md (13 patterns from 6 web searches) |
-| 12 | Designer persona + per-axis output | in_progress | — | (Designer half in progress: sampling.md §Synthesis, framing.md, inspiration.md, claude_designer.md, borrowings_v1.md; claude_icp.md and claude_critic.md written in parallel by another agent) |
+| 12 | Designer persona + per-axis output | done | 2026-11-16T04:11:49Z | claude_designer.md, claude_icp.md, claude_critic.md, borrowings_v1.md (10-axis manifest), framing.md, inspiration.md, sampling.md §Synthesis |
 | 13 | Critic loop | pending | — | — |
 | 14 | ICP loop | pending | — | — |
 
@@ -29,3 +29,5 @@ Run mode: auto (owner chose the full pipeline and prefers not to be asked at eac
 2026-11-16T03:35:15Z: Step 6 (Seeds VS) failed. The subagent was stopped by the model's safeguards before it wrote anything (error detail: reasoning_extraction, request id req_011Ch5tsQt6moRp1BR5tjSAU). Not retried and not done by the orchestrator. Waiting for the owner's decision: retry on another model, or continue without seeds.
 
 2026-11-16T03:38:16Z: Step 6 (Seeds VS) re-run from scratch at the owner's request; the failed attempt left no partial output.
+
+2026-11-16T04:11:49Z: Orchestrator corrected one pattern in claude_critic.md hard limit 3 (`e-?\s?invoic` matched the ordinary words "the invoice"; now `\be[- ]?invoic`).
