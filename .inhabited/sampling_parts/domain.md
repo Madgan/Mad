@@ -57,3 +57,70 @@ Dropped at the filter (6 of 26), with the reason:
 | 19 | Indian CBFC censor certificate card | long-tail | archival, India | The certificate held on screen before every Indian film: a ruled form with the title, category letter, running length and signatures. Paperwork used as the first frame of a moving picture. | pass |
 
 Band check: canonical 4 (idx 0 to 3), mid 8 (idx 4 to 11), long-tail 8 (idx 12 to 19). Six of the eight long-tail entries are non-Western in origin (idx 13, 14, 16, 17, 18, 19); the other two (idx 12, 15) are ambient audience-habit references, not prestige sources. No long-tail entry is a Western boutique studio.
+
+### Bash ms-sample
+
+```bash
+python3 -c "import random,time,sys; n,k=int(sys.argv[1]),int(sys.argv[2]); s=int(time.time()*1000); print(f'SEED={s}'); print(f'PICKS={sorted(random.Random(s).sample(range(n),k))}')" 20 2
+```
+
+**stdout:**
+```
+SEED=1794799252914
+PICKS=[10, 13]
+```
+
+**resolved picks:** index 10 → mid → *Card labels and camera tape*; index 13 → long-tail → *LHDN MyInvois validated e-invoice QR*
+**user action:** continue (auto mode)
+**final accepted:** Card labels and camera tape (mid, material); LHDN MyInvois validated e-invoice QR (long-tail, material, Malaysia)
+
+One draw, no re-roll. The pool above was written to disk before the command was run.
+
+### Justification
+
+**Index 10, Card labels and camera tape.** This is the paperwork the visitor performs with his hands on every job: a number in marker on a strip of tape, a card turned face down once it has been shot, a band of green tape wrapped round a card only after the footage has been checked. What it carries for this brief is a complete way of showing state by position and by one physical move at a time, which is exactly the owner's lever (presentation, staging, interaction) and is readable in a still, so it satisfies the reduced-motion and no-colour-alone requirements by construction. It also carries a chromatic palette (flat tape colours on a dark object), which the other domain pick does not. The audience context is strong: a solo wedding and event shooter recognises a turned card and a tape label without being told what they are, and reads them as made by someone who does his job.
+
+**Index 13, LHDN MyInvois validated e-invoice QR.** This is the local, current form of "an invoice that counts": the invoice goes out, and comes back with a block added by someone else (an identifier, a date and time to the second, a mark that can be checked). What it carries for this brief is a sequence, not a look: a document completed in two beats by two hands, the human part first and the system's answer printed onto it afterwards, with a clear before and after. That is a usable way to stage the product's one-line promise (pick a client, pick a rate, done), where "done" is something that arrives on the invoice. The register it brings is plain Malaysian tax paperwork, which is the opposite of glossy and keeps the page honest about what the product is.
+
+A binding limit comes with this pick. `context/facts.md` lists "LHDN e-invoice support" as unknown and not to be stated. The build may therefore borrow only the formal pattern (the two-beat return stamp and the three-part record block) and must not show a QR code on the sample invoice, use the words LHDN, MyInvois, e-Invoice or "validated", or imply tax compliance. The bank entry opens with this limit. The pick was not re-rolled because of it: the sample stands, and the positive-borrowings gate is met by the named formal elements.
+
+The pairing is productive in the way the protocol describes: one mid-band material reference from the shooting side of the job and one long-tail Malaysian reference from the admin side, which are the two halves of the visitor's working life that the page has to join.
+
+### Grounding (WebSearch, 2026-11-16)
+
+Pages were read through search summaries. Fetching pages and downloading images is blocked by the network policy here, so no source was opened or viewed and no image was saved.
+
+Index 10:
+- https://www.premiumbeat.com/blog/4-simple-tricks-to-keep-track-of-memory-cards-on-set/ (face up before, face down after; X on the back of the case; gaff tape over the contacts; lock switch)
+- https://theblackandblue.com/2010/07/14/digital-media-management-best-practices/ (each card is a numbered roll, A1 or A43; a tag with that number on the camera)
+- https://www.theblackandblue.com/?p=6748 (green tape wrapped round a card only after its backup is verified; no wrap, no format)
+- https://theblackandblue.com/2011/03/07/the-two-types-of-camera-tape-you-need/ (paper tape in 1/2 inch and 1 inch; cloth tape and colour per stock on magazines)
+- https://www.dvinfo.net/forum/wedding-event-videography-techniques/509955-best-kind-tape-stickers-use-memory-cards.html (wedding and event shooters labelling cards by number or colour, marker straight on the card)
+- https://www.abelcine.com/buy/expendables/tape/paper-tape-1-choose-color (colours in which 1 inch paper tape is sold)
+
+Index 13:
+- https://www.ey.com/content/dam/ey-unified-site/ey-com/en-my/technical/tax-alerts/documents/ey-tax-alert-no-2-2024-special-edition-the-inland-revenue-board.pdf (visual representation PDF from the portal; QR must be embedded if shared; QR checks existence and status; validation fields)
+- https://assets.kpmg.com/content/dam/kpmg/my/pdf/e-invoicing-tax-whiz-guidelines-update.pdf (date and time of validation and unique identifier number as data fields)
+- https://cleartax.com/my/e-invoicing-faqs-malaysia (any layout allowed for the visual copy provided the QR is embedded)
+- https://connect.ecosio.com/docs/compliance-for-malaysia (on validation: unique identifier, date and time of validation, link information returned)
+- https://fastlane-global.com/my/blog/malaysia-e-invoicing-qr-code-requirements (identifier and QR generated on acceptance)
+- https://www.avalara.com/blog/en/north-america/2023/07/malaysia-e-invoicing-faqs.html (the QR contains only a link to the validated invoice)
+
+What search could not establish, stated so nobody assumes it: no source specifies the size or position of the QR on the page (the layout is free), no sample of the official visual representation was seen, and no source confirmed a fixed meaning for red tape on cards (the pool note for idx 10 mentioned a red-tape habit; the bank entry uses only the conventions that were confirmed: orientation, the X, tape over the contacts, the lock switch, the roll number, the green wrap).
+
+### Inspiration bank entries (domain research, 2 anchors)
+
+Written stand-ins for images, per the recorded environment deviation. Each file states at its top that it replaces an image that could not be downloaded.
+
+| anchor | file | named elements it lends |
+|---|---|---|
+| Card labels and camera tape | `references/domain_card_labels_camera_tape.md` | (1) Flip to mark done: a card-shaped tile turns over when a step is complete, done is the other face of the same object. (2) The tape label: a short flat-coloured strip with ragged short ends, a few degrees off level, one short code in heavy capitals. (3) The row of slots as a progress readout. (4) Green wrap means checked: a band laid across an object only after a person has reviewed it. (5) Tape palette: green, red, yellow, blue, white on dark, with marker black (hex values in the file are estimates, not measured). |
+| LHDN MyInvois validated e-invoice QR | `references/domain_myinvois_validated_einvoice_qr.md` | (1) The return stamp as a two-beat sequence: the invoice is assembled, then a compact block is printed onto its foot by the system. (2) The record block: a square mark, one long identifier line, one date and time line with seconds, in small tabular capitals. (3) Two hands, two type voices: what the person chose in the reading face, what the system produced in tabular figures. (4) Before and after on one page. Formal borrowings only; no QR code and no e-invoice wording (see the limit above). |
+
+Palette note for the bank: the first anchor is chromatic, the second is black on white. The palette gate cannot be closed from the second anchor.
+
+### Notes for the audit
+
+- Count of domain references. `domain-research-vs-protocol.md` and `inspiration-bank-protocol.md` both specify exactly 2 domain anchors from a uniform 2-of-20 draw. The skeleton in `sampling-protocol.md` and the completion line in `pipeline-status-protocol.md` say "3 to 5 selected refs". The step's own protocol was followed: 2 anchors. The brief-fitness reasoning the status line asks for is logged above, per candidate.
+- Single clean image rule. Not satisfiable in this environment (no image downloads). Each anchor is a written description of the one image it would be, with source URLs. The file names follow the orchestrator's instruction (`domain_<slug>.md`) and not the `NN_<source>_<what>.png` convention.
+- Iteration extension budget. Unused. Up to +2 domain references per iteration and +6 in total remain available, each through a fresh 20-pool and a new ms-sample, and only against a specific piece of critic or ICP feedback.

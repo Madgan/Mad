@@ -1,7 +1,7 @@
 # Pipeline Status
 
 Created: 2026-11-16T03:09:11Z
-Last updated: 2026-11-16T03:22:57Z
+Last updated: 2026-11-16T03:24:10Z
 
 ## Steps
 
@@ -15,7 +15,7 @@ Last updated: 2026-11-16T03:22:57Z
 | 6 | Seeds VS | in_progress | — | (enumerating 40-pool, writing to sampling_parts/seeds.md) |
 | 7 | Constraint VS | done | 2026-11-16T03:19:36Z | sampling_parts/constraint.md, to be appended verbatim to sampling.md §Constraint (20 generated, 8-pool, locked pick: pool idx 1 "No cross-fades", SEED=1794799080271) |
 | 8 | Competitors VS | done | 2026-11-16T03:22:23Z | sampling_parts/competitors.md, to be appended verbatim to sampling.md §Competitor VS (20-pool, 4 replaced in fitness round 1, locked picks: idx 6 Bukku, idx 19 Invoice-Generator.com, SEED=1794799137895; per-competitor converge/diverge tables included, to be copied into borrowings_v1.md at Step 12) |
-| 9 | Domain research VS | in_progress | — | (enumerating 20-pool, writing to sampling_parts/domain.md) |
+| 9 | Domain research VS | done | 2026-11-16T03:24:01Z | sampling_parts/domain.md, to be appended verbatim to sampling.md §Domain research VS (26 drafted, 6 dropped at fitness filter, 20-pool 4/8/8, locked picks: idx 10 Card labels and camera tape, idx 13 LHDN MyInvois validated e-invoice QR, SEED=1794799252914; 2 anchors per the step protocol, written stand-ins at references/domain_card_labels_camera_tape.md and references/domain_myinvois_validated_einvoice_qr.md; idx 13 is formal borrowing only, facts.md forbids stating LHDN e-invoice support) |
 | 10 | Typography VS | in_progress | — | (enumerating 15-pool, writing to sampling_parts/typography.md) |
 | 11 | Anti-defaults research | done | 2026-11-16T03:14:45Z | claude_anti_defaults.md (13 patterns from 6 web searches) |
 | 12 | Designer persona + per-axis output | pending | — | — |
