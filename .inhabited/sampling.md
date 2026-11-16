@@ -143,3 +143,125 @@ The gate was run once. No resample, no override, no substitution.
 - **Condition carried from the gate:** voice notes appear only as a visual; nothing depends on sound.
 
 Justification: This lens earns its keep because it is the one register that is already on Jun Hao's screen at the moment that matters. The link reaches him inside WhatsApp, and WhatsApp is also where his client details, rate negotiations and "can you send the invoice again" requests actually live, so the page can open in the medium he has just left and stage the "before" with material he recognises without a word of explanation: forwarded bubbles, double ticks, a screenshot of a screenshot of last month's Word invoice. For a brief whose lever is presentation, the vernacular supplies a complete staging grammar, not a skin: messages arrive in time, so the story is paced like a cut sequence; a thread is a vertical, thumb-native narrative that fits 390 px with no adaptation; a typing indicator, a tick turning from one to two, a file landing in the thread are small precise motions whose timing he can judge the way he judges an edit; and the turn of the story, where the scattered thread resolves into one clean invoice and its PDF sent back as an attachment, gives the page the real product view the live page never shows. It is also sound-free by construction, since the vernacular itself renders voice notes as a visible waveform, which suits the owner's rule that captions and visual cues carry everything. The risk is plain and travels downstream: a chat mock-up is a familiar page device, so on its own this framing does not surpass a dark, cinematic, animated page. It must be treated as the narrative and motion logic (found, messy, time-based material that gets resolved), with cinematic finish, colour and type held at or above the live page per the owner's binding Notes, and with the Designer, Seeds and Constraint steps responsible for lifting the staging well beyond a row of bubbles.
+
+---
+
+## Designer VS
+
+### Conditioning (what every candidate was generated against)
+
+- **Locked framing (verbatim):** WhatsApp forwarded-message vernacular: grey bubbles, double ticks, voice notes, screenshots of screenshots.
+- **Recorded role of the framing:** narrative and motion logic. Found, messy, time-based material that resolves into one clean invoice and its PDF. Finish, colour and type stay at or above the dark, cinematic live page.
+- **Owner's binding lever (inhabited.md, Notes):** presentation, meaning motion, narrative, staging and interaction, judged on a 390 px phone by a working videographer who reads motion craft instantly. Nothing may depend on sound.
+- **How framing-fit was judged for a practitioner:** by how their way of working would stage and move this material in time, not by how their work looks. Within each discipline's roster, practitioners who think in sequence, cut, reveal or performance were preferred. Slot A is the strongest fit for the framing in that discipline. Slot B is the non-canon counter-weight drawn from the reach-into roster in designer-disciplines.md (under-represented, non-Western or contemporary-working).
+- **Pool shape:** 10 disciplines x 2 slots = 20 candidates, indexed 0 to 19. Graphic design honours the Swiss/Dutch ban-list in both slots. Every candidate is a real person with a citable work.
+
+### Candidate pool (20: 10 disciplines x 2 slots, post-gate)
+
+| idx | discipline | slot | practitioner | era and place | signature work | verbalized fit note |
+|---|---|---|---|---|---|---|
+| 0 | graphic | fit | Kyle Cooper | b. 1962, United States, working | Main title sequence for *Se7en* (1995) | Film-title art direction made from found, handmade, damaged material (notebooks, scratched film, mismatched type) cut to a precise rhythm. That is the framing's own move: mess with timing. He would cut the thread like a title sequence and land on one clean card. Risk: his grit must stay in the "before" and not coat the invoice. |
+| 1 | graphic | noncanon | Tadanori Yokoo | b. 1936, Japan, working | Poster *Made in Japan, Tadanori Yokoo, Having Reached a Climax at the Age of 29, I Was Dead* (1965) | Collage of found popular print (ads, postcards, stamps, rising sun) held together by flat, exact composition, and he also animated his collages in the 1960s. He treats vernacular scraps as the subject, not as texture. Tension: his density pushes against a 30 second read, which forces a strict order of reveal. |
+| 2 | type | fit | Matthew Carter | b. 1937, United Kingdom and United States, working | Verdana (1996) | Designed type for the screen at message size, from the pixel up. A chat bubble is small text read in a hurry, which is his home ground, and he thinks about rhythm of text across a line. Tension: his voice is about letters at rest, so motion and staging would have to come from how text arrives, line by line. |
+| 3 | type | noncanon | Ryoko Nishizuka | Japan, working (Adobe, Tokyo) | Source Han Sans (2014), the open pan-CJK family also released as Noto Sans CJK | The family she led is the default Chinese text on Android, so it is literally the letterform of Jun Hao's WhatsApp messages. Her discipline is making Chinese and Latin sit together evenly, which this bilingual page needs. Tension: same as Carter, the motion must come from text arriving in time. |
+| 4 | industrial | fit | Naoto Fukasawa | b. 1956, Japan, working | INFOBAR mobile phone for au by KDDI (2003) | Designs from unthinking habit ("without thought"), and designed a phone. He would start from what the thumb already does in a chat thread and remove everything else, so the resolve into one invoice is his natural ending. Tension: his reduction could flatten the messy "before" that the framing needs. |
+| 5 | industrial | noncanon | Oki Sato (Nendo) | b. 1977, Japan, working | *50 Manga Chairs* (2016) | (Replacement, see fitness rounds.) Fifty chairs that carry manga's motion lines, speech bubbles and effect marks as physical form, shown as a sequence. He turns the grammar of a popular reading medium, including the speech bubble, into staged objects with a small surprise in each. That is the framing translated one step sideways. |
+| 6 | architecture | fit | Lina Bo Bardi | 1914 to 1992, Italy and Brazil | SESC Pompéia, São Paulo (1977 to 1986) | Kept a found factory and popular, everyday material and staged public life inside it, and her exhibition design let visitors walk a sequence of objects. She dignifies vernacular without cleaning it up. She would stage the thread as a place to walk through, ending in one clear room. Tension: architecture moves the visitor, not the object, so scroll becomes the walk. |
+| 7 | architecture | noncanon | Wang Shu | b. 1963, China, working | Ningbo History Museum (2008) | Walls built from salvaged tiles and bricks of demolished villages: thousands of found fragments resolved into one calm mass. He describes buildings as routes to be walked like a handscroll. Fits "found mess becomes one record" exactly. Tension: slow and heavy by temperament against a 30 second visit. |
+| 8 | fine art | fit | Christian Marclay | b. 1955, United States and Switzerland, working | *The Clock* (2010) | Thousands of found film fragments cut into one continuous 24 hour piece synchronised to real time, and earlier *Telephones* (1995), a single phone call built from many films. He is an editor of found material, which is the visitor's own job. Risk: his work often leans on sound; here every cut must read silently. |
+| 9 | fine art | noncanon | Camille Henrot | b. 1978, France, working | *Grosse Fatigue* (2013) | A video staged entirely as desktop windows opening on top of each other at speed: screens inside screens, found images, piled and then ordered. That is "screenshots of screenshots" as a composed, timed sequence with high finish. Risk: its pace comes from a spoken track; the page must carry rhythm visually. |
+| 10 | photography | fit | Daido Moriyama | b. 1938, Japan, working | *Shashin yo Sayonara* (Farewell Photography, 1972) | Rough, blurred, rephotographed pictures of posters, screens and scraps, sequenced in books. Generational loss (a copy of a copy) is his subject, which is what a forwarded screenshot is. Tension: his grain belongs only in the "before"; the invoice must come out sharp. |
+| 11 | photography | noncanon | Dayanita Singh | b. 1961, India, working | *File Room* (2013) | Photographs of Indian paper archives, bundles and ledgers, and a practice built on editing and re-sequencing prints in movable structures. She knows both the paper mess and the act of ordering it, and she thinks as a book maker: what comes after what. Tension: quiet, still images against a brief that wants wow. |
+| 12 | fashion | fit | Hussein Chalayan | b. 1970, Cyprus and United Kingdom, working | *Afterwords*, autumn/winter 2000 | A living room staged on a runway that the models turn into clothes and carry off, a table becoming a skirt. He stages transformation in real time as narrative, with engineering under it. Scattered household things resolve into one wearable object: the product story as performance. |
+| 13 | fashion | noncanon | Issey Miyake | 1938 to 2022, Japan | A-POC, A Piece of Cloth (1998, with Dai Fujiwara) | (Replacement, see fitness rounds.) One continuous knitted tube from which the wearer cuts finished garments along marked lines, presented as a process, often animated. One long strip turning into a finished thing with a few cuts maps onto a thread turning into an invoice with a few taps. |
+| 14 | film | fit | Wong Kar-wai | b. 1958, Hong Kong, working | *Chungking Express* (1994) | A film about people waiting on pagers, answering services and dated tins: messages, timestamps and missed replies as the drama, shot with step-printed motion against sharp stillness. The visitor knows this film as a peer reference. He would stage the thread as longing and the invoice as the reply that finally lands. |
+| 15 | film | noncanon | Yasmin Ahmad | 1958 to 2009, Malaysia | *Sepet* (2004) | Malaysian director and advertising creative whose films mix Malay, Cantonese, Mandarin and English in ordinary speech, and whose festive television commercials tell a complete story in about a minute. Short-form persuasion through everyday talk, in the visitor's own country and languages. Tension: her warmth is carried by voices; here it must be carried by timing and text. |
+| 16 | digital | fit | Ken Wong | Australia, working | *Florence* (2018, Mountains) | A phone-first interactive story told in vertical panels where conversation is played by fitting speech-bubble pieces together, and the pieces get simpler as the two people get closer. Chat bubbles as an interaction with meaning, built for a thumb, readable without sound. The closest existing practice to this framing on this device. |
+| 17 | digital | noncanon | Olia Lialina | b. 1971, Russia and Germany, working | *My Boyfriend Came Back from the War* (1996) | A story told by browser frames that split again and again as the reader clicks, by an artist who also documents the vernacular web. Narrative carried by the interface's own behaviour, and frames inside frames. Tension: her deliberately low-fi surface against the finish this page needs. |
+| 18 | craft | fit | Tintoy Chuo | Malaysia, working | *Peperangan Bintang* (Fusion Wayang Kulit, founded 2012, premiered 2013) | (Replacement, see fitness rounds.) A Malaysian character designer who restaged a mass-culture story as Kelantanese shadow play with master puppeteer Pak Dain. Found popular material, performed in time on one lit screen in a dark room, by a regional craft the visitor recognises. A screen, a lamp and a sequence are a staging system. |
+| 19 | craft | noncanon | Swarna Chitrakar | West Bengal, India, working | Coronavirus pata scroll and song (2020) | A Bengal patua who paints vertical scrolls of current events and unrolls them frame by frame while narrating. A vertical scroll revealed in time with a pointing finger is the phone's own gesture. Risk: the tradition narrates in song; here the caption must do that work. |
+
+### Designer fitness rounds
+
+Test applied to every candidate, per designer-vs-protocol.md: "If this practitioner were the Designer persona for this brief + framing, would the result be coherently conditioned on the framing, or would the practitioner's voice fight the framing so hard the build becomes generic?" A voice that productively tensions against the framing passes. A discipline so far from the brief that the framing collapses fails. Because the owner's Notes are binding, "the framing collapses" includes a voice that gives no way to stage or move the material in time.
+
+```
+Round 1:
+  0.  [graphic / fit]          Kyle Cooper → PASS (found material cut to rhythm; grit held to the "before")
+  1.  [graphic / noncanon]     Tadanori Yokoo → PASS (vernacular collage with exact composition; density forces an order of reveal)
+  2.  [type / fit]             Matthew Carter → PASS (message-size screen text; motion comes from text arriving)
+  3.  [type / noncanon]        Ryoko Nishizuka → PASS (the Chinese letterform of the thread itself; same condition as 2)
+  4.  [industrial / fit]       Naoto Fukasawa → PASS (thumb habit and a phone; reduction tensions with the mess, productively)
+  5.  [industrial / noncanon]  Hella Jongerius → FAIL (her voice is colour and imperfect surface research; the owner named colour as not the lever, and she offers no sequence or reveal, so the build would fall back to a generic chat mock in nicer colours)
+  6.  [architecture / fit]     Lina Bo Bardi → PASS (stages vernacular as a place walked in order)
+  7.  [architecture / noncanon] Wang Shu → PASS (found fragments into one mass; route thinking)
+  8.  [fine art / fit]         Christian Marclay → PASS (editor of found fragments; condition: silent cuts)
+  9.  [fine art / noncanon]    Camille Henrot → PASS (screens within screens as timed sequence; condition: visual rhythm only)
+  10. [photography / fit]      Daido Moriyama → PASS (copy-of-a-copy as subject; grain only in the "before")
+  11. [photography / noncanon] Dayanita Singh → PASS (paper archive plus sequencing practice)
+  12. [fashion / fit]          Hussein Chalayan → PASS (staged transformation in real time)
+  13. [fashion / noncanon]     Rei Kawakubo → FAIL (her voice refuses legibility and resolution on principle; the framing's whole arc is mess resolving into one plain, readable invoice in 30 seconds, so her voice would fight the ending and the product view)
+  14. [film / fit]             Wong Kar-wai → PASS (messages and timestamps as drama; smear against stillness)
+  15. [film / noncanon]        Yasmin Ahmad → PASS (one-minute stories in mixed everyday speech; condition: carried by timing and text)
+  16. [digital / fit]          Ken Wong → PASS (speech bubbles as phone interaction)
+  17. [digital / noncanon]     Olia Lialina → PASS (interface behaviour as narrative; low-fi surface is a productive tension)
+  18. [craft / fit]            Sōetsu Yanagi → FAIL (Mingei honours the anonymous everyday object, which suits "vernacular", but it is contemplation of a thing at rest; no time, cut or reveal, so the framing would collapse into a quiet still life)
+  19. [craft / noncanon]       Swarna Chitrakar → PASS (vertical scroll revealed in time; condition: captions replace song)
+
+Round 2 (replacements, same discipline and same slot):
+  Replacement 5a:  [industrial / noncanon] Oki Sato (Nendo) → PASS (50 Manga Chairs: speech bubbles and motion lines as staged, sequenced objects)
+  Replacement 13a: [fashion / noncanon]    Issey Miyake → PASS (A-POC: one continuous strip cut into a finished garment, shown as process)
+  Replacement 18a: [craft / fit]           Tintoy Chuo → PASS (Fusion Wayang Kulit: found popular story performed in time on one lit screen)
+```
+
+Rounds used: 2 of a maximum 3. Three slots replaced once each; none needed a second replacement. All 20 PASS. The pool table above shows the replacements in place at idx 5, 13 and 18; the failed originals are preserved only in this log.
+
+**Conditions that travel with a candidate if sampled:** idx 0 and 10, roughness belongs to the "before" only and the invoice is sharp. idx 8, 9, 15 and 19, rhythm and narration are visual, since nothing may depend on sound. idx 2 and 3, motion comes from text arriving in time. idx 17, low-fi surface is not carried into the finish.
+
+### Self-check (ban-list and reach-beyond)
+
+- **Graphic ban-list:** neither graphic candidate (Kyle Cooper, Tadanori Yokoo) is on the Swiss/Dutch list. No Pentagram or agency-celebrity designer anywhere in the pool. No placeholder: every row names a person and a citable work.
+- **Slot counts:** 10 disciplines, each with exactly one fit and one noncanon. Total 20.
+- **Women:** 7 of 20 (Nishizuka, Bo Bardi, Henrot, Singh, Ahmad, Lialina, Chitrakar).
+- **Born or working outside Europe and North America:** 14 of 20 (Yokoo, Nishizuka, Fukasawa, Sato, Bo Bardi, Wang Shu, Moriyama, Singh, Chalayan, Miyake, Wong Kar-wai, Ahmad, Chuo, Chitrakar). Two are Malaysian (Ahmad, Chuo).
+- **Contemporary-working:** 17 of 20. The three who are not (Bo Bardi, Miyake, Ahmad) are a Brazilian woman architect, a Japanese designer and a Malaysian woman director.
+- **Mid-century Western men:** none. Western men in total: 3 of 20 (Cooper, Carter, Marclay), all in fit slots where they are the direct match for the framing.
+- **Time and sequence bias, within the rosters:** 13 of 20 work in an explicitly time-based or sequenced form (idx 0, 5, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19). The pool was not collapsed to film: every discipline keeps both slots.
+
+### Bash ms-sample
+
+```bash
+python3 -c "import random,time,sys; n,k=int(sys.argv[1]),int(sys.argv[2]); s=int(time.time()*1000); print(f'SEED={s}'); print(f'PICKS={sorted(random.Random(s).sample(range(n),k))}')" 20 1
+```
+
+**ms-sample command:** `python3 -c "import random,time,sys; n,k=int(sys.argv[1]),int(sys.argv[2]); s=int(time.time()*1000); print(f'SEED={s}'); print(f'PICKS={sorted(random.Random(s).sample(range(n),k))}')" 20 1`
+**stdout:**
+```
+SEED=1794799205550
+PICKS=[14]
+```
+
+**resolved pick:** index 14 → film / fit → *Wong Kar-wai*
+**user action:** continue (auto mode)
+**final accepted:** Wong Kar-wai (film + cinematic, Hong Kong)
+
+The gate was run once, after the pool and fitness rounds above were already written to this file. No resample, no override, no adjustment, no substitution.
+
+## Designer locked
+
+- **Practitioner:** Wong Kar-wai (王家衛), b. 1958 in Shanghai, raised and working in Hong Kong. Film director and screenwriter.
+- **Discipline and slot:** film + cinematic / fit.
+- **Pool index:** 14 of 0 to 19 (pool size after gate: 20).
+- **Seed:** 1794799205550
+- **Signature work (the one representative work for the 7-anchor inspiration bank):** *Chungking Express* (重慶森林, 1994), written and directed by Wong Kar-wai, photographed by Christopher Doyle and Andrew Lau Wai-keung.
+  - Why this work and not a later one: it is his film about messages. Its people live by pagers, an answering service with a spoken password ("love you for ten thousand years"), a letter left at a snack-bar counter, tins of pineapple bought for their 1 May expiry date, and a boarding pass drawn by hand on a napkin. Its voice-over gives time and distance in exact figures. The drama is waiting for a reply.
+  - What the bank entry should describe (reference images cannot be downloaded in this environment, so the entry is a written description): the snack-bar shot in which one person stands still at the counter drinking coffee, sharp and slow, while the crowd passes in front as streaked, step-printed blur. Two speeds in one frame: the subject at rest and legible, the world as smear. Also the opening chase through Chungking Mansions, shot handheld and step-printed so that movement drags and colour bleeds between frames.
+  - Source URLs for the bank entry: https://www.imdb.com/title/tt0109424/ and https://reverseshot.org/archive/entry/1152/chungking_express
+- **Verification:** practitioner, film, year, the two credited cinematographers, the pineapple expiry date, the pager password and the step-printing technique were confirmed by web search on 2026-11-16.
+- **Conditions carried into Step 12:**
+  1. Smear, drag and colour bleed live in transitions and in the "before" only. Text and product UI at rest are sharp. (Same condition the framing gate recorded for the Doyle step-printing lens, which is this practitioner's own technique.)
+  2. Nothing depends on sound. His films lean on voice-over and repeated songs; on this page that role goes to on-screen text and timing.
+  3. The owner's Notes still override the persona: a trial button in the first screen, a real invoice and product view, no repetition, 30 seconds on a 390 px phone, full still state under reduced motion.
+  4. No photographs or generated images of people. His look is translated into code-drawn light, type, UI and motion, not into film stills.
+
+Justification: The draw landed on the practitioner whose own subject is the framing's subject. Wong Kar-wai's films of the 1990s are built from messages that arrive late, get missed, or wait to be answered, with times and dates stated to the minute, and *Chungking Express* is the clearest case: a pager, a password, an expiry date, a letter nobody opens. A WhatsApp thread of client details, voice notes and screenshots of old invoices is the same material thirty years on, so his voice does not have to be bent to carry the framing. More important for this brief, he supplies what the framing lacked and what the owner asked for: a way to stage and move it. His method gives the page two speeds in one frame (the world streaking past while one thing holds still and sharp), hard cuts between short self-contained episodes in place of scroll-fades, repetition of one small object until it means something (here the invoice number, the tick, the date), and a dark, saturated, neon-at-night finish that sits at or above the live page without colour becoming the effort. The mess of the thread can smear and pile up the way his crowds do, and the invoice can be the one still, legible thing in the frame, which is exactly the turn the framing's justification called for. He is also the right kind of authority for Jun Hao: a Hong Kong director every videographer in the Klang Valley has studied and tried to imitate, working in Cantonese and Mandarin, so borrowed craft from him reads as "made by someone who does my job" and any clumsy imitation will be caught at once, which keeps the build honest. The risks are stated in the conditions above: his mood is slow longing and this page has 30 seconds and a button to press, and his rhythm normally rides on music. The build therefore takes his cutting, his two-speed staging and his exactness about time, and leaves the languor and the soundtrack behind.
