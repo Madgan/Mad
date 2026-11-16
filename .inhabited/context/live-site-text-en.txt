@@ -1,0 +1,229 @@
+SIS
+How it works
+Features
+Pricing
+Sign In
+EN
+THE ACCOUNTING APP FOR EVERY PRODUCTION TEAM
+Invoice · Archive · Report
+
+SIS clears the admin out of your way
+
+Stop digging through chats for client details, editing Word templates and sorting PDFs by hand.
+SIS brings clients, invoices, projects and reports into one clear workflow.
+
+See how it works
+See the workspace
+
+7-day free trial · Basic RM 199/year · Pro RM 399/year
+
+01
+Drop in files
+PDFs and photos · up to 50 per batch
+02
+Review the details
+AI reads first · you approve
+03
+Start invoicing
+Client details and rates are ready
+AI-ASSISTED SETUP
+Lots of old files?
+No manual retyping.
+
+Upload past invoices, receipts, PDFs or photos.
+SIS reads the client details, and saves them only after you review and approve them.
+
+File upload
+Batch upload
+Review details
+AI-assisted reading
+Client list ready
+Saved after approval
+Paused
+SIS · AI Client Import
+AI-assisted reading · you approve
+Drop your old files here
+
+PDF · JPG · PNG · up to 50 per batch
+
+PDF
+aperture-films-014.pdf
+2.4 MB · Ready
+JPG
+client-receipt-aug.jpg
+1.8 MB · Reading
+PDF
+studio-invoice-013.pdf
+780 KB · Waiting
+LESS ADMIN · MORE CLARITY
+Less searching,
+less retyping.
+
+SIS connects old files, client records and invoicing so each detail can continue into the next step.
+
+01 · Old files
+Details scattered everywhere
+
+Upload past invoices and receipts together. SIS reads and organises them, then hands them back for your review.
+
+02 · Repeated entry
+Type the same detail only once
+
+Save clients, rates, bank details and payment terms, then reuse them on the next invoice.
+
+ONE SYSTEM · FOUR WORKFLOWS
+Invoices, clients and reports. All connected.
+
+Switch to the task in front of you without searching Word files, old chats and separate folders.
+
+Invoicing
+Client records
+Reports
+AI connection
+01 · INVOICE WORKFLOW
+No more opening Word, copying and filing three times.
+
+Client details, rates, bank information and payment terms are already in SIS. Choose a client and service, then generate the invoice and PDF.
+
+Choose from your usual rates
+Invoice and PDF use the same record
+Past files stay with the client
+Old files
+26
+Client records
+18
+Awaiting review
+04
+02 · CLIENT WORKSPACE
+Client details without searching old chats.
+
+Company details, contacts and past invoices sit on one client page, ready to review.
+
+Separate company and individual clients
+See invoice history together
+You still approve anything AI reads
+Search clients, contacts or past invoices…
+Client records
+48
+Past invoices
+73
+Duplicates
+0
+03 · REPORTS & HANDOFF
+Saved records become clear reports.
+
+Review sales, expenses and net profit by month, see client invoice summaries, then export a CSV for your accountant.
+
+Review the business by month
+Client invoice summaries and ranking
+Export CSV for your accountant
+2026 · Studio overview
+CSV READY
+Recorded totalRM 86,420
+Sample data · not a real account
+04 · BRING YOUR OWN AI
+Connect SIS to the Claude tools you already use.
+
+Pro connects your own AI (Claude, Claude Code, OpenAI Codex, Cursor, Gemini CLI or any MCP-compatible assistant) to your SIS studio through the API or standard MCP.
+
+Authorised studio members manage each connection
+Revoke each token whenever you need
+Keep working with familiar Claude tools
+Claude
+Claude Code
+API / MCP
+EVERYTHING IN ONE PLACE
+Everything daily invoicing needs, in one place.
+
+From client details and rates to invoices, PDFs, project records and reports, the same record continues through every step.
+
+AI
+AI builds your client list
+
+Drop old invoices in. AI reads them, you approve, and the client is filed
+
+Rate card
+
+Your usual services and prices. Pick one when invoicing and the amount calculates itself
+
+Invoice + PDF
+
+Set your logo, bank details and terms once, every invoice uses them
+
+Project records
+
+Keep the brief, client and related files with the project.
+
+Reports and CSV
+
+Review by month and client, then export for your accountant.
+
+PDF and photo reading
+
+Upload old invoices and receipts, then review what AI reads.
+
+PRO
+Google Drive backup
+
+Pro lets you manually back up an invoice to your own Drive.
+
+Review before saving
+
+AI never edits records directly. You make the final decision.
+
+PRO · BRING YOUR OWN AI
+Your records,
+working with your AI.
+
+SIS provides permission-protected API and MCP access. Authorised studio members create or revoke each connection, so your AI only works within the permitted studio scope.
+
+CL
+Claude / claude.ai
+Query invoices, clients and studio records in chat
+>_
+Coding agents
+Claude Code, OpenAI Codex, Cursor, Gemini CLI, build your own internal workflows through MCP
+MCP
+Open API / MCP
+A standard MCP endpoint, any MCP-compatible AI connects, with tokens you control and revoke
+CHOOSE HOW YOU WANT TO WORK
+Basic for the everyday · Pro for an AI-connected studio
+
+Both plans include a 7-day free trial. Start with the core workflow, then choose Pro when you want deeper AI and connection tools.
+
+S.I.S. BASIC
+7-day free trial
+RM 199 /year
+
+The complete everyday toolkit for clients, invoicing, projects and reports.
+
+Print-ready PDF invoices
+Upload old files and let AI read client details (usage allowance applies)
+Sales, expenses, net profit and business overview
+Clients, rates, briefs, jobs and records
+Reports and CSV export
+Start the 7-day trial
+S.I.S. PRO
+7-day free trial · Pro
+RM 399 /year
+
+Everything in Basic, plus studio AI, Claude connections and advanced tools.
+
+Everything in Basic
+In-app studio AI for invoices and client records
+Connect your own AI (Claude, Codex, Cursor…) through API / MCP
+Manual Google Drive backup from an invoice page
+Priority WhatsApp support and early access to new tools
+Start the 7-day trial
+SIS.
+Leave more time for creating.
+Less admin. More work worth remembering.
+Start the trial
+A clearer workspace for Malaysian freelance videographers and small studios. Clients, invoices, projects and reports in one connected flow.
+Contact
+Trust & security
+Terms of Service
+Privacy Policy
+Cookie Policy
+© 2026 S.I.S. · Built proud in Malaysia
+Madvengers Production (003357155-P) · Malaysia
