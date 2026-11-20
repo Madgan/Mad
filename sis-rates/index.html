@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Malaysia Photo Rates</title>
+<meta name="description" content="Add your rate anonymously and see what Malaysian photographers and videographers really charge.">
+<meta property="og:title" content="What are Malaysian photographers really charging?">
+<meta property="og:description" content="Add your rate anonymously. See where you stand in 60 seconds.">
+<meta property="og:image" content="og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2;
+  --surface: #fcfcfb;
+  --surface-2: #efeee9;
+  --line: #dddcd5;
+  --text: #0b0b0b;
+  --text-2: #52514e;
+  --text-3: #7a7973;
+  --accent: #2a78d6;      /* band: validated slot 1 */
+  --you: #eb6834;         /* your marker: validated slot 2 */
+  --btn: #0b0b0b;
+  --btn-text: #fcfcfb;
+  --wa: #128c4a;
+  --demo-bg: #fff4d6;
+  --demo-text: #6b4a00;
+  --radius: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121211;
+    --surface: #1a1a19;
+    --surface-2: #242423;
+    --line: #34342f;
+    --text: #f0efec;
+    --text-2: #c3c2b7;
+    --text-3: #93928a;
+    --accent: #3987e5;
+    --you: #d95926;
+    --btn: #f0efec;
+    --btn-text: #121211;
+    --wa: #1fa65c;
+    --demo-bg: #3a2e10;
+    --demo-text: #f3d48a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121211;
+  --surface: #1a1a19;
+  --surface-2: #242423;
+  --line: #34342f;
+  --text: #f0efec;
+  --text-2: #c3c2b7;
+  --text-3: #93928a;
+  --accent: #3987e5;
+  --you: #d95926;
+  --btn: #f0efec;
+  --btn-text: #121211;
+  --wa: #1fa65c;
+  --demo-bg: #3a2e10;
+  --demo-text: #f3d48a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Plus Jakarta Sans", "PingFang SC", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 48px; }
+.demo {
+  background: var(--demo-bg); color: var(--demo-text);
+  font-size: 13px; font-weight: 600; text-align: center;
+  padding: 8px 16px;
+}
+header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0 8px; }
+.brand { font-weight: 800; letter-spacing: -0.01em; font-size: 15px; }
+.brand span { color: var(--text-3); font-weight: 600; }
+.lang { display: flex; gap: 4px; background: var(--surface-2); border-radius: 999px; padding: 3px; }
+.lang button {
+  border: 0; background: transparent; color: var(--text-2);
+  font: inherit; font-size: 13px; font-weight: 700;
+  padding: 6px 10px; border-radius: 999px; cursor: pointer; min-width: 40px;
+}
+.lang button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+h1 { font-size: clamp(30px, 8.5vw, 42px); line-height: 1.12; letter-spacing: -0.025em; margin: 24px 0 12px; font-weight: 800; }
+.sub { color: var(--text-2); font-size: 17px; margin: 0 0 24px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.teaser .meta { color: var(--text-3); font-size: 13px; font-weight: 600; }
+.teaser .big { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin: 6px 0 4px; filter: blur(7px); user-select: none; }
+.teaser .lock { display: flex; align-items: center; gap: 8px; color: var(--text-2); font-size: 14px; font-weight: 600; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; border: 0; border-radius: 12px; cursor: pointer;
+  background: var(--btn); color: var(--btn-text);
+  font: inherit; font-weight: 700; font-size: 17px;
+  padding: 16px 20px; min-height: 54px; text-decoration: none;
+}
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.btn.wa { background: var(--wa); color: #fff; }
+.mt { margin-top: 16px; }
+.small { font-size: 13px; color: var(--text-3); }
+.q { margin: 28px 0 0; }
+.q label.t, .q .t { display: block; font-weight: 700; font-size: 16px; margin-bottom: 10px; }
+.q .t .n { color: var(--text-3); font-weight: 600; margin-right: 6px; }
+.q .hint { color: var(--text-3); font-size: 13px; margin: -6px 0 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  font: inherit; font-size: 15px; font-weight: 600;
+  padding: 10px 14px; border-radius: 999px; cursor: pointer; min-height: 44px;
+}
+.chip[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+select, input[type="number"], input[type="email"] {
+  width: 100%; font: inherit; font-size: 17px; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px; min-height: 52px; appearance: none;
+}
+select { background-image: linear-gradient(45deg, transparent 50%, var(--text-3) 50%), linear-gradient(135deg, var(--text-3) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+.money { position: relative; }
+.money span { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: var(--text-3); }
+.money input { padding-left: 50px; }
+.err { color: var(--you); font-size: 14px; font-weight: 600; margin-top: 8px; min-height: 1em; }
+.privacy { display: flex; gap: 10px; align-items: flex-start; margin-top: 24px; color: var(--text-2); font-size: 14px; }
+.privacy svg { flex: none; margin-top: 2px; }
+/* result */
+.eyebrow { color: var(--text-3); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.hero-num { font-size: clamp(56px, 18vw, 84px); font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin: 8px 0 6px; }
+.hero-line { font-size: 18px; font-weight: 600; margin: 0 0 4px; }
+.ctx { color: var(--text-2); font-size: 14px; margin: 0; }
+.range { position: relative; height: 92px; margin: 24px 4px 8px; }
+.range .track { position: absolute; left: 0; right: 0; top: 46px; height: 2px; background: var(--line); border-radius: 2px; }
+.range .band { position: absolute; top: 40px; height: 14px; background: var(--accent); border-radius: 4px; }
+.range .med { position: absolute; top: 34px; width: 2px; height: 26px; background: var(--text); border-radius: 1px; transform: translateX(-1px); }
+.range .you { position: absolute; top: 40px; width: 14px; height: 14px; border-radius: 50%; background: var(--you); box-shadow: 0 0 0 2px var(--surface); transform: translateX(-7px); }
+.range .lab { position: absolute; font-size: 12px; font-weight: 700; white-space: nowrap; transform: translateX(-50%); }
+.range .lab.top { top: 6px; }
+.range .lab.bot { top: 66px; color: var(--text-2); font-weight: 600; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--text-2); margin: 4px 0 0; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.legend i.dot { border-radius: 50%; }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
+.stat.wide { grid-column: 1 / -1; }
+.stat { background: var(--surface-2); border-radius: 12px; padding: 12px; }
+.stat .k { font-size: 12px; color: var(--text-3); font-weight: 600; }
+.stat .v { font-size: 16px; font-weight: 800; letter-spacing: -0.01em; margin-top: 2px; overflow-wrap: anywhere; }
+.note { background: var(--surface-2); color: var(--text-2); border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: 16px; }
+.cta h2 { font-size: 21px; letter-spacing: -0.015em; margin: 0 0 6px; }
+.cta p { color: var(--text-2); margin: 0 0 16px; }
+.row { display: flex; gap: 8px; }
+.row > * { flex: 1; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--text-2); margin-top: 12px; }
+.check input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; accent-color: var(--text); }
+.ok { color: var(--text); font-weight: 700; margin-top: 12px; }
+footer { margin-top: 40px; color: var(--text-3); font-size: 13px; text-align: center; }
+footer a { color: var(--text-2); }
+.hidden { display: none !important; }
+@media (min-width: 480px) { .stat .v { font-size: 18px; } }
+</style>
+</head>
+<body>
+<div id="demoBar" class="demo hidden"></div>
+<div class="wrap">
+  <header>
+    <div class="brand">MY Photo Rates <span>by SIS</span></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ms">BM</button>
+      <button type="button" data-lang="zh">中文</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="vHero">
+    <h1 data-i="heroTitle"></h1>
+    <p class="sub" data-i="heroSub"></p>
+    <div class="card teaser" aria-hidden="true">
+      <div class="meta" data-i="teaserMeta"></div>
+      <div class="big">RM 2,400 – 4,100</div>
+      <div class="lock">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span data-i="teaserLock"></span>
+      </div>
+    </div>
+    <button class="btn mt" id="start" type="button" data-i="start"></button>
+    <p class="small" style="text-align:center;margin-top:10px" data-i="heroNote"></p>
+  </section>
+
+  <!-- FORM -->
+  <section id="vForm" class="hidden">
+    <h1 style="font-size:28px;margin-top:16px" data-i="formTitle"></h1>
+
+    <div class="q">
+      <span class="t"><span class="n">1</span><span data-i="qCat"></span></span>
+      <div class="chips" id="cats"></div>
+    </div>
+
+    <div class="q">
+      <label class="t" for="state"><span class="n">2</span><span data-i="qState"></span></label>
+      <select id="state"></select>
+    </div>
+
+    <div class="q">
+      <span class="t"><span class="n">3</span><span data-i="qYears"></span></span>
+      <div class="chips" id="years"></div>
+    </div>
+
+    <div class="q">
+      <span class="t"><span class="n">4</span><span data-i="qTeam"></span></span>
+      <div class="chips" id="team"></div>
+    </div>
+
+    <div class="q">
+      <label class="t" for="price"><span class="n">5</span><span data-i="qPrice"></span></label>
+      <p class="hint" id="unitHint"></p>
+      <div class="money"><span>RM</span><input id="price" type="number" inputmode="numeric" min="50" max="200000" step="50" placeholder="0"></div>
+    </div>
+
+    <div class="q">
+      <label class="t" for="low"><span class="n">6</span><span data-i="qLow"></span></label>
+      <p class="hint" data-i="qLowHint"></p>
+      <div class="money"><span>RM</span><input id="low" type="number" inputmode="numeric" min="0" max="200000" step="50" placeholder="0"></div>
+    </div>
+
+    <div class="err" id="formErr" role="alert"></div>
+    <button class="btn mt" id="submit" type="button" data-i="submit"></button>
+    <div class="privacy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg>
+      <span data-i="privacy"></span>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="vResult" class="hidden">
+    <div class="card mt" style="margin-top:16px">
+      <div id="resHas">
+        <div class="eyebrow" data-i="resEyebrow"></div>
+        <div class="hero-num" id="resPct"></div>
+        <p class="hero-line" id="resLine"></p>
+        <p class="ctx" id="resCtx"></p>
+        <div class="range" id="range" role="img"></div>
+        <div class="legend">
+          <span><i style="background:var(--accent)"></i><span data-i="lgBand"></span></span>
+          <span><i style="background:var(--text);width:2px;border-radius:1px"></i><span data-i="lgMed"></span></span>
+          <span><i class="dot" style="background:var(--you)"></i><span data-i="lgYou"></span></span>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="k" data-i="stMed"></div><div class="v" id="stMed"></div></div>
+          <div class="stat"><div class="k" data-i="stN"></div><div class="v" id="stN"></div></div>
+          <div class="stat wide"><div class="k" data-i="stMid"></div><div class="v" id="stMid"></div></div>
+        </div>
+        <div class="note hidden" id="resScope"></div>
+      </div>
+      <div id="resNone" class="hidden">
+        <div class="eyebrow" data-i="resEyebrow"></div>
+        <p class="hero-line" style="margin-top:8px" data-i="noneTitle"></p>
+        <p class="ctx" data-i="noneBody"></p>
+      </div>
+    </div>
+
+    <div class="card mt">
+      <p class="hero-line" style="font-size:17px" data-i="shareTitle"></p>
+      <p class="ctx" style="margin-bottom:14px" data-i="shareBody"></p>
+      <div class="row">
+        <a class="btn wa" id="shareWa" target="_blank" rel="noopener" data-i="shareWa"></a>
+        <button class="btn ghost" id="copy" type="button" data-i="copy"></button>
+      </div>
+    </div>
+
+    <div class="card mt cta">
+      <h2 data-i="ctaTitle"></h2>
+      <p data-i="ctaBody"></p>
+      <a class="btn" id="ctaBtn" target="_blank" rel="noopener" data-i="ctaBtn"></a>
+    </div>
+
+    <div class="card mt">
+      <p class="hero-line" style="font-size:17px" data-i="repTitle"></p>
+      <p class="ctx" style="margin-bottom:12px" data-i="repBody"></p>
+      <input id="email" type="email" autocomplete="email" placeholder="you@studio.my">
+      <label class="check"><input type="checkbox" id="consent"><span data-i="consent"></span></label>
+      <div class="err" id="repErr" role="alert"></div>
+      <button class="btn ghost mt" id="repBtn" type="button" data-i="repBtn"></button>
+      <div class="ok hidden" id="repOk" data-i="repOk"></div>
+    </div>
+
+    <button class="btn ghost mt" id="again" type="button" data-i="again"></button>
+  </section>
+
+  <footer>
+    <div data-i="footer"></div>
+    <div style="margin-top:6px"><a href="https://sistudio.app/?utm_source=rates&utm_medium=tool&utm_campaign=rate_index" target="_blank" rel="noopener">sistudio.app</a></div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  /* ---------- config ----------
+     Live mode: define window.RATES_CONFIG = { live: true, supabaseUrl, anonKey, publicUrl }
+     before this script. Without it the page runs on fictional demo data. */
+  var CFG = window.RATES_CONFIG || {};
+  var LIVE = !!(CFG.live && CFG.supabaseUrl && CFG.anonKey);
+  var MIN_N = 5;
+  var SIS_URL = 'https://sistudio.app/?utm_source=rates&utm_medium=tool&utm_campaign=rate_index';
+
+  var CATS = [
+    { k: 'wedding_photo', unit: 'fullday' },
+    { k: 'wedding_video', unit: 'fullday' },
+    { k: 'prewedding',    unit: 'session' },
+    { k: 'event',         unit: 'halfday' },
+    { k: 'corporate',     unit: 'halfday' },
+    { k: 'commercial',    unit: 'shootday' },
+    { k: 'portrait',      unit: 'session' }
+  ];
+  var STATES = ['kl','selangor','putrajaya','penang','johor','perak','negeri_sembilan','melaka','kedah','perlis','kelantan','terengganu','pahang','sabah','sarawak','labuan'];
+  var STATE_NAMES = { kl:'Kuala Lumpur', selangor:'Selangor', putrajaya:'Putrajaya', penang:'Penang', johor:'Johor', perak:'Perak', negeri_sembilan:'Negeri Sembilan', melaka:'Melaka', kedah:'Kedah', perlis:'Perlis', kelantan:'Kelantan', terengganu:'Terengganu', pahang:'Pahang', sabah:'Sabah', sarawak:'Sarawak', labuan:'Labuan' };
+  var STATE_ZH = { kl:'吉隆坡', selangor:'雪兰莪', putrajaya:'布城', penang:'槟城', johor:'柔佛', perak:'霹雳', negeri_sembilan:'森美兰', melaka:'马六甲', kedah:'吉打', perlis:'玻璃市', kelantan:'吉兰丹', terengganu:'登嘉楼', pahang:'彭亨', sabah:'沙巴', sarawak:'砂拉越', labuan:'纳闽' };
+  var YEARS = ['y0_2','y3_5','y6_10','y10p'];
+  var TEAMS = ['solo','assist','team'];
+
+  var T = {
+    en: {
+      demo: 'DEMO DATA. Every number on this page is made up for preview.',
+      heroTitle: 'What are Malaysian photographers really charging?',
+      heroSub: 'Add your rate anonymously. See where you stand in 60 seconds.',
+      teaserMeta: 'Wedding photography · Full day · Selangor',
+      teaserLock: 'Unlocks when you add your rate',
+      start: 'Add my rate',
+      heroNote: 'No name, no email, no sign-up.',
+      formTitle: 'Your rate, anonymously',
+      qCat: 'What do you shoot most?',
+      qState: 'Where are you based?',
+      qYears: 'Years shooting professionally',
+      qTeam: 'How do you usually work?',
+      qPrice: 'Your usual price',
+      qLow: 'Lowest price you accepted for the same job, last 6 months',
+      qLowHint: 'Optional. Leave blank if you never went below your usual price.',
+      submit: 'See where I stand',
+      privacy: 'Anonymous. We only ever show ranges, never single answers. Groups with fewer than 5 answers stay hidden.',
+      pickState: 'Choose a state',
+      errCat: 'Pick what you shoot most.', errState: 'Choose your state.', errYears: 'Pick your years of experience.', errTeam: 'Pick how you usually work.', errPrice: 'Enter a price between RM 50 and RM 200,000.',
+      sending: 'Checking…',
+      resEyebrow: 'Your result',
+      resLine: 'You charge more than {p} of peers.',
+      resCtx: '{cat} · {unit} · {state}',
+      lgBand: 'Middle 50%', lgMed: 'Median', lgYou: 'You',
+      stMed: 'Median', stMid: 'Middle 50%', stN: 'Answers',
+      scopeNational: 'Not enough answers in {state} yet, so you are compared with all of Malaysia.',
+      noneTitle: 'Not enough answers in this group yet.',
+      noneBody: 'Your rate is saved. Share the page with other photographers to unlock the numbers sooner.',
+      shareTitle: 'Know a photographer who undercharges?',
+      shareBody: 'The more people add their rate, the more accurate this gets for everyone.',
+      shareWa: 'WhatsApp', copy: 'Copy link', copied: 'Copied',
+      shareMsgHas: '{cat} in {state}: most charge {lo} to {hi}. Where do you stand? Add yours anonymously:',
+      shareMsgNone: 'What are Malaysian photographers really charging? Add your rate anonymously and see where you stand:',
+      ctaTitle: 'Put this rate to work',
+      ctaBody: 'SIS saves your rates, so every invoice takes seconds. Made in Malaysia for photo and video studios. 7-day free trial.',
+      ctaBtn: 'Try SIS',
+      repTitle: 'Get the Malaysia Photo Rates Report',
+      repBody: 'The full breakdown by state, category and experience, once enough answers are in.',
+      consent: 'Email me the report. I can unsubscribe anytime.',
+      repBtn: 'Send me the report', repOk: 'Done. We will email you when the report is out.',
+      errEmail: 'Enter a valid email.', errConsent: 'Tick the box so we can email you.',
+      again: 'Check another category',
+      netErr: 'Network error. Please try again.',
+      footer: 'Anonymous rate survey for Malaysian photographers and videographers.',
+      cat: { wedding_photo:'Wedding photography', wedding_video:'Wedding videography', prewedding:'Pre-wedding', event:'Events', corporate:'Corporate', commercial:'Commercial & product', portrait:'Portrait & family' },
+      unit: { fullday:'Full day (8 to 10 hours)', halfday:'Half day (4 hours)', session:'One session', shootday:'One shoot day' },
+      years: { y0_2:'0 to 2', y3_5:'3 to 5', y6_10:'6 to 10', y10p:'10+' },
+      team: { solo:'Solo', assist:'With an assistant', team:'Studio team' },
+      priceFor: 'Price for: {unit}'
+    },
+    ms: {
+      demo: 'DATA CONTOH. Semua angka di halaman ini rekaan untuk pratonton.',
+      heroTitle: 'Berapa sebenarnya caj jurugambar di Malaysia?',
+      heroSub: 'Masukkan kadar anda tanpa nama. Lihat kedudukan anda dalam 60 saat.',
+      teaserMeta: 'Fotografi perkahwinan · Sehari penuh · Selangor',
+      teaserLock: 'Dibuka selepas anda masukkan kadar anda',
+      start: 'Masukkan kadar saya',
+      heroNote: 'Tiada nama, tiada emel, tiada daftar.',
+      formTitle: 'Kadar anda, tanpa nama',
+      qCat: 'Apa yang paling kerap anda rakam?',
+      qState: 'Anda di negeri mana?',
+      qYears: 'Pengalaman profesional (tahun)',
+      qTeam: 'Biasanya anda bekerja macam mana?',
+      qPrice: 'Harga biasa anda',
+      qLow: 'Harga paling rendah anda terima untuk kerja sama, 6 bulan lepas',
+      qLowHint: 'Pilihan. Biarkan kosong jika anda tak pernah turun harga.',
+      submit: 'Lihat kedudukan saya',
+      privacy: 'Tanpa nama. Kami hanya tunjuk julat, bukan jawapan individu. Kumpulan kurang 5 jawapan tidak dipaparkan.',
+      pickState: 'Pilih negeri',
+      errCat: 'Pilih apa yang paling kerap anda rakam.', errState: 'Pilih negeri anda.', errYears: 'Pilih pengalaman anda.', errTeam: 'Pilih cara anda bekerja.', errPrice: 'Masukkan harga antara RM 50 dan RM 200,000.',
+      sending: 'Menyemak…',
+      resEyebrow: 'Keputusan anda',
+      resLine: 'Caj anda lebih tinggi daripada {p} rakan industri.',
+      resCtx: '{cat} · {unit} · {state}',
+      lgBand: '50% tengah', lgMed: 'Median', lgYou: 'Anda',
+      stMed: 'Median', stMid: '50% tengah', stN: 'Jawapan',
+      scopeNational: 'Belum cukup jawapan di {state}, jadi anda dibandingkan dengan seluruh Malaysia.',
+      noneTitle: 'Belum cukup jawapan dalam kumpulan ini.',
+      noneBody: 'Kadar anda sudah disimpan. Kongsi halaman ini dengan jurugambar lain supaya angka dibuka lebih cepat.',
+      shareTitle: 'Kenal jurugambar yang caj terlalu rendah?',
+      shareBody: 'Lebih ramai yang masukkan kadar, lebih tepat untuk semua.',
+      shareWa: 'WhatsApp', copy: 'Salin pautan', copied: 'Disalin',
+      shareMsgHas: '{cat} di {state}: kebanyakan caj {lo} hingga {hi}. Anda di mana? Masukkan kadar anda tanpa nama:',
+      shareMsgNone: 'Berapa sebenarnya caj jurugambar di Malaysia? Masukkan kadar anda tanpa nama dan lihat kedudukan anda:',
+      ctaTitle: 'Gunakan kadar ini terus',
+      ctaBody: 'SIS simpan kadar anda, jadi setiap invois siap dalam beberapa saat. Buatan Malaysia untuk studio foto dan video. Percubaan percuma 7 hari.',
+      ctaBtn: 'Cuba SIS',
+      repTitle: 'Dapatkan Laporan Kadar Jurugambar Malaysia',
+      repBody: 'Pecahan penuh mengikut negeri, kategori dan pengalaman, selepas cukup jawapan.',
+      consent: 'Emelkan laporan kepada saya. Boleh berhenti langgan bila-bila masa.',
+      repBtn: 'Hantar laporan kepada saya', repOk: 'Siap. Kami akan emel anda bila laporan keluar.',
+      errEmail: 'Masukkan emel yang sah.', errConsent: 'Tandakan kotak supaya kami boleh emel anda.',
+      again: 'Semak kategori lain',
+      netErr: 'Ralat rangkaian. Sila cuba lagi.',
+      footer: 'Tinjauan kadar tanpa nama untuk jurugambar dan videografer Malaysia.',
+      cat: { wedding_photo:'Fotografi perkahwinan', wedding_video:'Videografi perkahwinan', prewedding:'Pra-perkahwinan', event:'Acara', corporate:'Korporat', commercial:'Komersial & produk', portrait:'Potret & keluarga' },
+      unit: { fullday:'Sehari penuh (8 hingga 10 jam)', halfday:'Separuh hari (4 jam)', session:'Satu sesi', shootday:'Satu hari penggambaran' },
+      years: { y0_2:'0 hingga 2', y3_5:'3 hingga 5', y6_10:'6 hingga 10', y10p:'10+' },
+      team: { solo:'Seorang', assist:'Dengan pembantu', team:'Pasukan studio' },
+      priceFor: 'Harga untuk: {unit}'
+    },
+    zh: {
+      demo: '示例资料。本页所有数字都是虚构的，仅供预览。',
+      heroTitle: '马来西亚摄影师，到底收多少？',
+      heroSub: '匿名填你的价钱，60 秒看你排在哪里。',
+      teaserMeta: '婚礼摄影 · 全天 · 雪兰莪',
+      teaserLock: '填了你的价钱就能看',
+      start: '填我的价钱',
+      heroNote: '不用名字，不用 email，不用注册。',
+      formTitle: '匿名填你的价钱',
+      qCat: '你最常拍什么？',
+      qState: '你在哪个州？',
+      qYears: '专业拍摄几年',
+      qTeam: '你通常怎么接单？',
+      qPrice: '你平时的价钱',
+      qLow: '过去 6 个月，同样的工作你接过的最低价',
+      qLowHint: '选填。从没降过价就留空。',
+      submit: '看我排在哪里',
+      privacy: '完全匿名。只显示价格区间，不显示任何人的答案。少于 5 份回答的组别不显示。',
+      pickState: '选择州属',
+      errCat: '选你最常拍的类别。', errState: '选你的州属。', errYears: '选你的经验年数。', errTeam: '选你通常的接单方式。', errPrice: '价钱请填 RM 50 到 RM 200,000 之间。',
+      sending: '计算中…',
+      resEyebrow: '你的结果',
+      resLine: '你的价钱高过 {p} 的同行。',
+      resCtx: '{cat} · {unit} · {state}',
+      lgBand: '中间 50%', lgMed: '中位数', lgYou: '你',
+      stMed: '中位数', stMid: '中间 50%', stN: '回答数',
+      scopeNational: '{state} 的回答还不够，先跟全马来西亚比较。',
+      noneTitle: '这个组别的回答还不够。',
+      noneBody: '你的价钱已经记下。把这页传给其他摄影师，数字会更快解锁。',
+      shareTitle: '身边有收太便宜的摄影师吗？',
+      shareBody: '填的人越多，对每个人越准。',
+      shareWa: 'WhatsApp', copy: '复制链接', copied: '已复制',
+      shareMsgHas: '{state}{cat}：多数人收 {lo} 到 {hi}。你在哪里？匿名填你的价钱：',
+      shareMsgNone: '马来西亚摄影师到底收多少？匿名填你的价钱，看你排在哪里：',
+      ctaTitle: '把这个价钱用起来',
+      ctaBody: 'SIS 记住你的价目，每张发票几秒开好。马来西亚制造，给摄影和摄像工作室用。免费试用 7 天。',
+      ctaBtn: '试用 SIS',
+      repTitle: '索取《马来西亚摄影行情报告》',
+      repBody: '回答够多后，按州属、类别、资历完整拆解。',
+      consent: '把报告寄到我的 email，随时可以退订。',
+      repBtn: '寄报告给我', repOk: '好了，报告出来时会寄给你。',
+      errEmail: '请填有效的 email。', errConsent: '请勾选，我们才能寄给你。',
+      again: '查另一个类别',
+      netErr: '网络出错，请再试一次。',
+      footer: '给马来西亚摄影师和摄像师的匿名行情调查。',
+      cat: { wedding_photo:'婚礼摄影', wedding_video:'婚礼摄像', prewedding:'婚纱照', event:'活动', corporate:'企业活动', commercial:'商业产品', portrait:'人像家庭' },
+      unit: { fullday:'全天（8 到 10 小时）', halfday:'半天（4 小时）', session:'一节拍摄', shootday:'一个拍摄日' },
+      years: { y0_2:'0 到 2', y3_5:'3 到 5', y6_10:'6 到 10', y10p:'10 年以上' },
+      team: { solo:'一个人', assist:'带助手', team:'工作室团队' },
+      priceFor: '价钱单位：{unit}'
+    }
+  };
+
+  /* ---------- state ---------- */
+  var lang = pickLang();
+  var ans = { cat: null, state: '', years: null, team: null };
+  var lastResult = null;
+
+  function pickLang() {
+    try { var s = localStorage.getItem('rates_lang'); if (s && T[s]) return s; } catch (e) {}
+    var nav = (navigator.language || 'en').toLowerCase();
+    if (nav.indexOf('zh') === 0) return 'zh';
+    if (nav.indexOf('ms') === 0 || nav.indexOf('id') === 0) return 'ms';
+    return 'en';
+  }
+  function t(key) { return T[lang][key]; }
+  function fmt(s, o) { return s.replace(/\{(\w+)\}/g, function (_, k) { return o[k] != null ? o[k] : ''; }); }
+  function rm(n) { return 'RM ' + Math.round(n).toLocaleString('en-MY'); }
+  function stateName(k) { return lang === 'zh' ? STATE_ZH[k] : STATE_NAMES[k]; }
+  function natName() { return lang === 'zh' ? '全马来西亚' : 'Malaysia'; }
+  function unitOf(cat) { for (var i = 0; i < CATS.length; i++) if (CATS[i].k === cat) return CATS[i].unit; return 'session'; }
+  function $(id) { return document.getElementById(id); }
+  function show(id) { ['vHero','vForm','vResult'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); }); window.scrollTo(0, 0); }
+
+  /* ---------- render text ---------- */
+  function renderText() {
+    document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : lang;
+    document.querySelectorAll('[data-i]').forEach(function (el) { var v = t(el.getAttribute('data-i')); if (typeof v === 'string') el.textContent = v; });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang)); });
+    var bar = $('demoBar'); bar.textContent = t('demo'); bar.classList.toggle('hidden', LIVE);
+    renderChips('cats', CATS.map(function (c) { return c.k; }), t('cat'), 'cat');
+    renderChips('years', YEARS, t('years'), 'years');
+    renderChips('team', TEAMS, t('team'), 'team');
+    var sel = $('state'), cur = ans.state;
+    sel.innerHTML = '';
+    var o0 = document.createElement('option'); o0.value = ''; o0.textContent = t('pickState'); sel.appendChild(o0);
+    STATES.forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = stateName(k); sel.appendChild(o); });
+    sel.value = cur;
+    updateUnit();
+    if (lastResult) renderResult(lastResult);
+  }
+  function renderChips(id, keys, labels, field) {
+    var box = $(id); box.innerHTML = '';
+    keys.forEach(function (k) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = labels[k];
+      b.setAttribute('aria-pressed', String(ans[field] === k));
+      b.addEventListener('click', function () { ans[field] = k; renderChips(id, keys, labels, field); if (field === 'cat') updateUnit(); });
+      box.appendChild(b);
+    });
+  }
+  function updateUnit() {
+    $('unitHint').textContent = ans.cat ? fmt(t('priceFor'), { unit: t('unit')[unitOf(ans.cat)] }) : '';
+  }
+
+  /* ---------- demo data (fictional) ---------- */
+  var DEMO = null;
+  function demoRows() {
+    if (DEMO) return DEMO;
+    var seed = 20261120;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+    function gauss() { var u = 1 - rnd(), v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+    var base = { wedding_photo: 3000, wedding_video: 3400, prewedding: 1500, event: 900, corporate: 1300, commercial: 2500, portrait: 450 };
+    var mult = { kl: 1.2, selangor: 1.12, putrajaya: 1.1, penang: 1.05, johor: 1.0, perak: 0.88, negeri_sembilan: 0.92, melaka: 0.9, kedah: 0.82, perlis: 0.78, kelantan: 0.75, terengganu: 0.78, pahang: 0.82, sabah: 0.86, sarawak: 0.9, labuan: 0.85 };
+    var heavy = ['kl','selangor','selangor','penang','johor','perak','kl','selangor'];
+    var rows = [];
+    CATS.forEach(function (c) {
+      for (var i = 0; i < 70; i++) {
+        var st = rnd() < 0.7 ? heavy[Math.floor(rnd() * heavy.length)] : STATES[Math.floor(rnd() * STATES.length)];
+        var p = base[c.k] * mult[st] * Math.exp(0.35 * gauss());
+        rows.push({ cat: c.k, state: st, price: Math.max(80, Math.round(p / 50) * 50) });
+      }
+    });
+    DEMO = rows; return rows;
+  }
+  function quantile(sorted, q) {
+    var pos = (sorted.length - 1) * q, lo = Math.floor(pos), hi = Math.ceil(pos);
+    return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
+  }
+  function statsFor(rows, price) {
+    var s = rows.map(function (r) { return r.price; }).sort(function (a, b) { return a - b; });
+    var below = 0, eq = 0;
+    s.forEach(function (v) { if (v < price) below++; else if (v === price) eq++; });
+    return { n: s.length, p10: quantile(s, .1), p25: quantile(s, .25), p50: quantile(s, .5), p75: quantile(s, .75), p90: quantile(s, .9), pct: Math.round(100 * (below + eq / 2) / s.length) };
+  }
+  function demoCompare(sub) {
+    var all = demoRows();
+    var local = all.filter(function (r) { return r.cat === sub.cat && r.state === sub.state; });
+    if (local.length >= MIN_N) { var a = statsFor(local, sub.price); a.scope = 'state'; return a; }
+    var nat = all.filter(function (r) { return r.cat === sub.cat; });
+    if (nat.length >= MIN_N) { var b = statsFor(nat, sub.price); b.scope = 'national'; return b; }
+    return null;
+  }
+
+  /* ---------- live mode (Supabase, insert-only + server-side aggregates) ---------- */
+  function sb(path, body) {
+    return fetch(CFG.supabaseUrl.replace(/\/$/, '') + '/rest/v1/' + path, {
+      method: 'POST',
+      headers: { 'apikey': CFG.anonKey, 'Authorization': 'Bearer ' + CFG.anonKey, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify(body)
+    }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.status === 204 ? null : r.json(); });
+  }
+  function liveCompare(sub) {
+    return sb('rate_submissions', { category: sub.cat, state: sub.state, years: sub.years, team: sub.team, price: sub.price, lowest_accepted: sub.low, lang: lang })
+      .then(function () { return sb('rpc/rate_stats', { p_category: sub.cat, p_state: sub.state, p_price: sub.price }); })
+      .then(function (r) { return r && r.n >= MIN_N ? r : null; });
+  }
+
+  /* ---------- submit ---------- */
+  function submit() {
+    var err = $('formErr'); err.textContent = '';
+    ans.state = $('state').value;
+    var price = Number($('price').value), low = $('low').value === '' ? null : Number($('low').value);
+    if (!ans.cat) return (err.textContent = t('errCat'));
+    if (!ans.state) return (err.textContent = t('errState'));
+    if (!ans.years) return (err.textContent = t('errYears'));
+    if (!ans.team) return (err.textContent = t('errTeam'));
+    if (!(price >= 50 && price <= 200000)) return (err.textContent = t('errPrice'));
+    if (low != null && !(low >= 0 && low <= 200000)) low = null;
+    var sub = { cat: ans.cat, state: ans.state, years: ans.years, team: ans.team, price: price, low: low };
+    var btn = $('submit'); btn.disabled = true; btn.textContent = t('sending');
+    var p = LIVE ? liveCompare(sub) : Promise.resolve(demoCompare(sub));
+    p.then(function (st) { lastResult = { sub: sub, st: st }; renderResult(lastResult); show('vResult'); })
+     .catch(function () { err.textContent = t('netErr'); })
+     .then(function () { btn.disabled = false; btn.textContent = t('submit'); });
+  }
+
+  /* ---------- result ---------- */
+  function renderResult(res) {
+    var sub = res.sub, st = res.st;
+    var catName = t('cat')[sub.cat], unitName = t('unit')[unitOf(sub.cat)], stName = stateName(sub.state);
+    var url = CFG.publicUrl || (location.origin + location.pathname);
+    $('resHas').classList.toggle('hidden', !st);
+    $('resNone').classList.toggle('hidden', !!st);
+    var msg;
+    if (st) {
+      $('resPct').textContent = st.pct + '%';
+      $('resLine').textContent = fmt(t('resLine'), { p: st.pct + '%' });
+      $('resCtx').textContent = fmt(t('resCtx'), { cat: catName, unit: unitName, state: st.scope === 'national' ? natName() : stName });
+      $('stMed').textContent = rm(st.p50);
+      $('stMid').textContent = rm(st.p25) + ' – ' + rm(st.p75);
+      $('stN').textContent = String(st.n);
+      var sc = $('resScope');
+      sc.classList.toggle('hidden', st.scope !== 'national');
+      sc.textContent = fmt(t('scopeNational'), { state: stName });
+      drawRange(st, sub.price);
+      msg = fmt(t('shareMsgHas'), { cat: catName, state: st.scope === 'national' ? natName() : stName, lo: rm(st.p25), hi: rm(st.p75) });
+    } else {
+      msg = t('shareMsgNone');
+    }
+    $('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent(msg + ' ' + url);
+    $('ctaBtn').href = SIS_URL;
+  }
+  function drawRange(st, price) {
+    var box = $('range'); box.innerHTML = '';
+    var lo = Math.min(st.p10, price), hi = Math.max(st.p90, price);
+    var pad = (hi - lo) * 0.08 || 1; lo -= pad; hi += pad;
+    function x(v) { return Math.max(0, Math.min(100, (v - lo) / (hi - lo) * 100)); }
+    function clampLab(p) { return Math.max(9, Math.min(91, p)); }
+    function el(cls, style, text, title) { var d = document.createElement('div'); d.className = cls; d.setAttribute('style', style); if (text) d.textContent = text; if (title) d.title = title; box.appendChild(d); return d; }
+    el('track', '');
+    el('band', 'left:' + x(st.p25) + '%;width:' + (x(st.p75) - x(st.p25)) + '%', '', t('lgBand') + ': ' + rm(st.p25) + ' – ' + rm(st.p75));
+    el('med', 'left:' + x(st.p50) + '%', '', t('lgMed') + ': ' + rm(st.p50));
+    el('you', 'left:' + x(price) + '%', '', t('lgYou') + ': ' + rm(price));
+    el('lab top', 'left:' + clampLab(x(price)) + '%;color:var(--you)', t('lgYou') + ' ' + rm(price));
+    el('lab bot', 'left:' + clampLab(x(st.p50)) + '%', t('lgMed') + ' ' + rm(st.p50));
+    box.setAttribute('aria-label', t('lgYou') + ' ' + rm(price) + '. ' + t('lgMed') + ' ' + rm(st.p50) + '. ' + t('lgBand') + ' ' + rm(st.p25) + ' – ' + rm(st.p75) + '.');
+  }
+
+  /* ---------- report signup ---------- */
+  function signup() {
+    var e = $('email').value.trim(), err = $('repErr'); err.textContent = '';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return (err.textContent = t('errEmail'));
+    if (!$('consent').checked) return (err.textContent = t('errConsent'));
+    var done = function () { $('repOk').classList.remove('hidden'); $('repBtn').classList.add('hidden'); };
+    if (!LIVE) return done();
+    sb('rate_report_signups', { email: e, lang: lang, consent: true }).then(done).catch(function () { err.textContent = t('netErr'); });
+  }
+
+  /* ---------- wire up ---------- */
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { lang = b.getAttribute('data-lang'); try { localStorage.setItem('rates_lang', lang); } catch (e) {} renderText(); });
+  });
+  $('start').addEventListener('click', function () { show('vForm'); });
+  $('submit').addEventListener('click', submit);
+  $('again').addEventListener('click', function () { ans.cat = null; $('price').value = ''; $('low').value = ''; lastResult = null; renderText(); show('vForm'); });
+  $('copy').addEventListener('click', function () {
+    var url = CFG.publicUrl || (location.origin + location.pathname);
+    var b = $('copy');
+    var ok = function () { b.textContent = t('copied'); setTimeout(function () { b.textContent = t('copy'); }, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(ok, ok); else ok();
+  });
+  $('repBtn').addEventListener('click', signup);
+  renderText();
+})();
+</script>
+</body>
+</html>
