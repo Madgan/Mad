@@ -1,0 +1,1021 @@
+build: 143726 bytes, 1696 lines, modified 2026-11-20 12:02:21; capture run started 2026-11-20 12:03:01
+
+== misc (rest, clients, draft, language, ground cuts, taps, focus, zoom)
+rest 390 zh {"cta":"575-631 x16-374","terms":"608-620 x99-291","sheet":"181-473 x94-374","toggle":"4-48 x158-230","topcta":"4-48 x290-374","crossing":"INV-014 · 开好了READY"}
+rest 390 en {"cta":"575-631 x16-374","terms":"608-620 x83-307","sheet":"181-473 x94-374","toggle":"4-48 x152-224","topcta":"4-48 x290-374","crossing":"INV-014 · 开好了READY"}
+rest 1280 zh {"cta":"421-481 x80-470","terms":"455-469 x171-379","sheet":"87-467 x817-1181","toggle":"4-48 x984-1056","topcta":"4-48 x1116-1200","crossing":"INV-014 · 开好了READY"}
+rest 1280 en {"cta":"421-481 x80-470","terms":"455-469 x155-395","sheet":"87-467 x817-1181","toggle":"4-48 x978-1050","topcta":"4-48 x1116-1200","crossing":"INV-014 · 开好了READY"}
+client tanjung {"sheet":"Tanjung Bakery","chat":"M Mei Ling · Tanjung Bakery 示例聊天","leaf":"Tanjung Bakery / Attn: Mei Ling Tan · Klang, Selangor","card":"TANJUNG Tanjung Bakery 公司客户","stub":"INV-014 RM 2,700.00 20 NOV 已归档","pdf":"read"}
+client aria {"sheet":"Aria Lim","chat":"A Aria Lim 示例聊天","leaf":"Aria Lim / Petaling Jaya, Selangor","card":"ARIA Aria Lim 个人客户","stub":"INV-014 RM 2,700.00 20 NOV 已归档","pdf":"read"}
+draft zh {"caption":"12:03:23 还没选价目。","leafDraft":true,"pdf":"empty","stubVisible":"hidden","tag014":false,"nov":"RM 9,700","rank":"1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单"}
+draft en {"caption":"12:03:28 No rate picked yet.","leafDraft":true,"pdf":"empty","stubVisible":"hidden","tag014":false,"nov":"RM 9,700","rank":"1 Lumen Events Sdn Bhd 5 invoices 2 Aria Lim 4 invoices 3 Tanjung Bakery 4 invoices"}
+language switch 390 at 700 : scrollY zh 700 > en 700 > zh 700
+language switch 390 at 2200 : scrollY zh 2200 > en 2221 > zh 2200
+language switch 390 at 4100 : scrollY zh 4100 > en 4236 > zh 4100
+language switch 1280 at 700 : scrollY zh 700 > en 700 > zh 700
+language switch 1280 at 2200 : scrollY zh 2200 > en 2200 > zh 2200
+language switch 1280 at 4200 : scrollY zh 4200 > en 4212 > zh 4200
+ground cuts 390 reports: 6 px before the cut, ground rgb(11, 18, 22) | reports: 6 px after, ground rgb(11, 35, 70) | import: 6 px before the cut, ground rgb(11, 35, 70) | import: 6 px after, ground rgb(42, 22, 6) | back up: rgb(11, 35, 70) topbar rgb(11, 35, 70)
+ground cuts 1280 reports: 6 px before the cut, ground rgb(11, 18, 22) | reports: 6 px after, ground rgb(11, 35, 70) | import: 6 px before the cut, ground rgb(11, 35, 70) | import: 6 px after, ground rgb(42, 22, 6) | back up: rgb(11, 35, 70) topbar rgb(11, 35, 70)
+ticks after taps ["#report-msg read \"已读 12:03\"","#import-msg read \"已读 12:03\"","#pro-msg read \"已读 12:03\""]
+errors []
+
+== opening, stepped on the page clock
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_a.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_b.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_c.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_d.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_e.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_f.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_g.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_first600.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390zh_first600b.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390en_a.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_390en_b.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_zoom2x.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_1280zh_a.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_1280zh_b.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_1280zh_c.png errors []
+/home/user/Mad/.inhabited/v1_critic/screens/rebuild3_s1_1280en_a.png errors []
+
+== opening on the wall clock (video, 25 frames a second), with the in-page log
+frames sampled 296 first frame at 506 ms after navigation start
+0 ms after first frame: hidden|boot|still|0.00|hidden|inset(0px 100% 0px 0px)
+24 ms after first frame: hidden||still|0.00|hidden|inset(0px 100% 0px 0px)
+265 ms after first frame: hidden||run|0.00|hidden|inset(0px 100% 0px 0px)
+520 ms after first frame: visible||run|0.00|visible|inset(0px 100% 0px 0px)
+1137 ms after first frame: visible||run|0.00|hidden|inset(0px 100% 0px 0px)
+2003 ms after first frame: visible||run|1,800.00|hidden|inset(0px 100% 0px 0px)
+2053 ms after first frame: visible||run|2,700.00|hidden|inset(0px 100% 0px 0px)
+2070 ms after first frame: visible||still|2,700.00|hidden|inset(0px 100% 0px 0px)
+2453 ms after first frame: visible||still|2,700.00|hidden|inset(0px 96.5294% 0px 0px)
+2470 ms after first frame: visible||still|2,700.00|hidden|inset(0px 86.7059% 0px 0px)
+2487 ms after first frame: visible||still|2,700.00|hidden|inset(0px 76.9412% 0px 0px)
+2503 ms after first frame: visible||still|2,700.00|hidden|inset(0px 67.1176% 0px 0px)
+2520 ms after first frame: visible||still|2,700.00|hidden|inset(0px 57.2941% 0px 0px)
+2537 ms after first frame: visible||still|2,700.00|hidden|inset(0px 47.5294% 0px 0px)
+2553 ms after first frame: visible||still|2,700.00|hidden|inset(0px 37.7059% 0px 0px)
+2570 ms after first frame: visible||still|2,700.00|hidden|inset(0px 27.9412% 0px 0px)
+2587 ms after first frame: visible||still|2,700.00|hidden|inset(0px 18.1176% 0px 0px)
+2603 ms after first frame: visible||still|2,700.00|hidden|inset(0px 8.35294% 0px 0px)
+2620 ms after first frame: visible||still|2,700.00|hidden|none
+video /tmp/claude-0/-home-user-Mad/d20709b7-82e7-5279-b1d0-ee4b8a86d2c4/scratchpad/rb3vid_zh390/v.webm
+frames in zh390: 125
+frames sampled 298 first frame at 338 ms after navigation start
+0 ms after first frame: hidden|boot|still|0.00|hidden|inset(0px 100% 0px 0px)
+14 ms after first frame: hidden||still|0.00|hidden|inset(0px 100% 0px 0px)
+225 ms after first frame: hidden||run|0.00|hidden|inset(0px 100% 0px 0px)
+528 ms after first frame: visible||run|0.00|visible|inset(0px 100% 0px 0px)
+1145 ms after first frame: visible||run|0.00|hidden|inset(0px 100% 0px 0px)
+1995 ms after first frame: visible||run|1,800.00|hidden|inset(0px 100% 0px 0px)
+2045 ms after first frame: visible||run|2,700.00|hidden|inset(0px 100% 0px 0px)
+2062 ms after first frame: visible||still|2,700.00|hidden|inset(0px 100% 0px 0px)
+2462 ms after first frame: visible||still|2,700.00|hidden|inset(0px 91.5882% 0px 0px)
+2478 ms after first frame: visible||still|2,700.00|hidden|inset(0px 81.8235% 0px 0px)
+2495 ms after first frame: visible||still|2,700.00|hidden|inset(0px 72% 0px 0px)
+2512 ms after first frame: visible||still|2,700.00|hidden|inset(0px 62.2353% 0px 0px)
+2528 ms after first frame: visible||still|2,700.00|hidden|inset(0px 52.4118% 0px 0px)
+2545 ms after first frame: visible||still|2,700.00|hidden|inset(0px 42.6471% 0px 0px)
+2562 ms after first frame: visible||still|2,700.00|hidden|inset(0px 32.8235% 0px 0px)
+2579 ms after first frame: visible||still|2,700.00|hidden|inset(0px 23% 0px 0px)
+2595 ms after first frame: visible||still|2,700.00|hidden|inset(0px 13.2353% 0px 0px)
+2612 ms after first frame: visible||still|2,700.00|hidden|inset(0px 3.41176% 0px 0px)
+2628 ms after first frame: visible||still|2,700.00|hidden|none
+video /tmp/claude-0/-home-user-Mad/d20709b7-82e7-5279-b1d0-ee4b8a86d2c4/scratchpad/rb3vid_en390/v.webm
+frames in en390: 124
+frames sampled 296 first frame at 551 ms after navigation start
+0 ms after first frame: hidden|boot|still|0.00|hidden|inset(0px 100% 0px 0px)
+26 ms after first frame: hidden||still|0.00|hidden|inset(0px 100% 0px 0px)
+332 ms after first frame: hidden||run|0.00|hidden|inset(0px 100% 0px 0px)
+521 ms after first frame: visible||run|0.00|visible|inset(0px 100% 0px 0px)
+1137 ms after first frame: visible||run|0.00|hidden|inset(0px 100% 0px 0px)
+2004 ms after first frame: visible||run|1,800.00|hidden|inset(0px 100% 0px 0px)
+2054 ms after first frame: visible||run|2,700.00|hidden|inset(0px 100% 0px 0px)
+2072 ms after first frame: visible||still|2,700.00|hidden|inset(0px 100% 0px 0px)
+2454 ms after first frame: visible||still|2,700.00|hidden|inset(0px 96.1765% 0px 0px)
+2470 ms after first frame: visible||still|2,700.00|hidden|inset(0px 86.3529% 0px 0px)
+2487 ms after first frame: visible||still|2,700.00|hidden|inset(0px 76.5294% 0px 0px)
+2504 ms after first frame: visible||still|2,700.00|hidden|inset(0px 66.7647% 0px 0px)
+2521 ms after first frame: visible||still|2,700.00|hidden|inset(0px 56.9412% 0px 0px)
+2537 ms after first frame: visible||still|2,700.00|hidden|inset(0px 47.1176% 0px 0px)
+2554 ms after first frame: visible||still|2,700.00|hidden|inset(0px 37.3529% 0px 0px)
+2571 ms after first frame: visible||still|2,700.00|hidden|inset(0px 27.5882% 0px 0px)
+2588 ms after first frame: visible||still|2,700.00|hidden|inset(0px 17.7647% 0px 0px)
+2604 ms after first frame: visible||still|2,700.00|hidden|inset(0px 7.94118% 0px 0px)
+2620 ms after first frame: visible||still|2,700.00|hidden|none
+video /tmp/claude-0/-home-user-Mad/d20709b7-82e7-5279-b1d0-ee4b8a86d2c4/scratchpad/rb3vid_zh1280/v.webm
+frames in zh1280: 129
+first non-blank video frame 0 of 125
+rebuild3_rt390zh_f00-03.png
+rebuild3_rt390zh_f04-07.png
+rebuild3_rt390zh_f08-11.png
+rebuild3_rt390zh_f12-15.png
+rebuild3_rt390zh_f16-19.png
+rebuild3_rt390zh_f20-23.png
+rebuild3_rt390zh_f24-27.png
+rebuild3_rt390zh_f28-31.png
+rebuild3_rt390zh_f32-35.png
+rebuild3_rt390zh_f36-39.png
+rebuild3_rt390zh_f40-43.png
+rebuild3_rt390zh_f44-47.png
+rebuild3_rt390zh_f48-51.png
+rebuild3_rt390zh_f52-55.png
+rebuild3_rt390zh_f56-59.png
+rebuild3_rt390zh_f60-63.png
+rebuild3_rt390zh_f64-67.png
+rebuild3_rt390zh_f68-71.png
+rebuild3_rt390zh_f72-75.png
+rebuild3_rt390zh_f76-79.png
+first non-blank video frame 0 of 124
+rebuild3_rt390en_f00-03.png
+rebuild3_rt390en_f04-07.png
+rebuild3_rt390en_f08-11.png
+rebuild3_rt390en_f12-15.png
+rebuild3_rt390en_f16-19.png
+rebuild3_rt390en_f20-23.png
+rebuild3_rt390en_f24-27.png
+rebuild3_rt390en_f28-31.png
+
+== first paint, the hold and the cut, 8 cold runs (the critic's c3_open2.js)
+390zh paint [["first-paint",684],["first-contentful-paint",684]] SIS_T0 653 | first sampled frames 653R 658R 678R 694R 711R 727R 744R 761R 
+    band starts 860 = T0+207 = FCP+176 | sheet in 1206 = T0+552 = FCP+522 | run ends T0+2041 | sheet-in minus band-start 345
+390zh paint [["first-paint",428],["first-contentful-paint",428]] SIS_T0 403 | first sampled frames 402R 407R 419R 424R 440R 457R 474R 490R 
+    band starts 655 = T0+252 = FCP+227 | sheet in 924 = T0+522 = FCP+496 | run ends T0+2054 | sheet-in minus band-start 269
+390zh paint [["first-paint",348],["first-contentful-paint",348]] SIS_T0 318 | first sampled frames 144b 437R 466R 511R 515R 528R 573R 612R 
+    band starts 528 = T0+210 = FCP+180 | sheet in 845 = T0+527 = FCP+497 | run ends T0+2044 | sheet-in minus band-start 317
+390zh paint [["first-paint",412],["first-contentful-paint",412]] SIS_T0 390 | first sampled frames 389R 396R 417R 434R 450R 467R 484R 567R 
+    band starts 647 = T0+257 = FCP+235 | sheet in 917 = T0+527 = FCP+505 | run ends T0+2044 | sheet-in minus band-start 270
+390en paint [["first-paint",336],["first-contentful-paint",336]] SIS_T0 313 | first sampled frames 313R 318R 330R 347R 363R 380R 397R 413R 
+    band starts 550 = T0+237 = FCP+214 | sheet in 847 = T0+534 = FCP+511 | run ends T0+2051 | sheet-in minus band-start 297
+390en paint [["first-paint",344],["first-contentful-paint",344]] SIS_T0 324 | first sampled frames 324R 329R 340R 354R 371R 388R 404R 421R 
+    band starts 563 = T0+239 = FCP+219 | sheet in 854 = T0+530 = FCP+510 | run ends T0+2047 | sheet-in minus band-start 291
+1280zh paint [["first-paint",576],["first-contentful-paint",576]] SIS_T0 533 | first sampled frames 533R 538R 565R 566R 583R 599R 616R 632R 
+    band starts 857 = T0+324 = FCP+281 | sheet in 1066 = T0+533 = FCP+490 | run ends T0+2049 | sheet-in minus band-start 209
+1280en paint [["first-paint",388],["first-contentful-paint",388]] SIS_T0 344 | first sampled frames 344R 349R 373R 386R 403R 419R 436R 452R 
+    band starts 573 = T0+229 = FCP+185 | sheet in 869 = T0+526 = FCP+481 | run ends T0+2042 | sheet-in minus band-start 296
+
+== lossless frames on the wall clock, with what is drawn in the band
+asked 330 {"ms":343,"running":true,"bubblesDrawn":0,"smearsDrawn":9,"textRunsDrawn":0,"hang":["抬头写 Lumen Events Sdn Bhd"]} capture finished at 670
+asked 420 {"ms":427,"running":true,"bubblesDrawn":0,"smearsDrawn":8,"textRunsDrawn":0,"hang":["抬头写 Lumen Events Sdn Bhd"]} capture finished at 560
+asked 520 {"ms":524,"running":true,"bubblesDrawn":0,"smearsDrawn":8,"textRunsDrawn":0,"hang":["抬头写 Lumen Events Sdn Bhd"]} capture finished at 597
+asked 900 {"ms":904,"running":true,"bubblesDrawn":0,"smearsDrawn":7,"textRunsDrawn":0,"hang":["抬头写 Lumen Events Sdn Bhd"]} capture finished at 978
+
+== flash (the critic's c3_flash.py on 146 lossless frames)
+== 390 x 844 zh
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 26.0% (window from frame 31)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.3% (window from frame 51)
+stage 390 x 394, frames 146; pixels with any transition 76.7%; most transitions at one pixel over the run 12; in one second 8
+== 390 x 844 en
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 30.8% (window from frame 36)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.1% (window from frame 44)
+stage 390 x 394, frames 146; pixels with any transition 77.0%; most transitions at one pixel over the run 12; in one second 9
+== 1280 x 800 zh
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 30.7% (window from frame 30)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.7% (window from frame 51)
+stage 662 x 512, frames 146; pixels with any transition 64.7%; most transitions at one pixel over the run 12; in one second 10
+
+== smear geometry, gutter, desktop positions
+390 x 844 | gutter at rest: nearest incoming bubble 16 px from the stage edge, nearest outgoing 16 px; hanging message(s) at t=500: [[16,163.4,"抬头写 Lumen Events Sdn Bhd"]]
+   smear em 10.00 px; smears 29; bars per smear 3.0 to 5.0, of which ahead of the edge 2.0 to 3.0 (by 2.0 to 4.0 em); bar widths px 2.6, 3.4, 4.4, 6.0, 8.5; bar lengths px 76.0 to 185.0; alpha b:0.6 g:0.42 s:0.42
+   tines per head 6.0 to 12.0; tine width 1.0 to 11.8 % = 1.9 to 21.9 px; start on the leading edge: 160 of 285, the rest 0.3 to 2.5 em behind it; scraps per head 0.0 to 4.0, depth 0.5 to 1.1 em, width 3.2 to 22.4 px
+320 x 700 | gutter at rest: nearest incoming bubble 16 px from the stage edge, nearest outgoing 16 px; hanging message(s) at t=500: [[16,131.5,"抬头写 Lumen Events Sdn Bhd"]]
+   smear em 8.21 px; smears 29; bars per smear 3.0 to 5.0, of which ahead of the edge 2.0 to 3.0 (by 2.0 to 4.0 em); bar widths px 2.1, 2.8, 3.6, 4.9, 7.0; bar lengths px 64.8 to 151.0; alpha b:0.6 g:0.42 s:0.42
+   tines per head 5.0 to 12.0; tine width 1.2 to 11.8 % = 1.9 to 18.1 px; start on the leading edge: 153 of 274, the rest 0.3 to 2.5 em behind it; scraps per head 0.0 to 4.0, depth 0.5 to 1.1 em, width 3.1 to 18.4 px
+1280 x 800 | gutter at rest: nearest incoming bubble 20.8 px from the stage edge, nearest outgoing 20.8 px; hanging message(s) at t=500: [[20.8,367.8,"抬头写 Lumen Events Sdn Bhd"]]
+   smear em 13.00 px; smears 29; bars per smear 3.0 to 5.0, of which ahead of the edge 2.0 to 3.0 (by 2.0 to 4.0 em); bar widths px 3.4, 4.4, 5.7, 7.8, 11.0; bar lengths px 98.8 to 240.5; alpha b:0.6 g:0.42 s:0.42
+   tines per head 7.0 to 12.0; tine width 0.8 to 11.8 % = 1.9 to 28.5 px; start on the leading edge: 166 of 298, the rest 0.3 to 2.5 em behind it; scraps per head 0.0 to 4.0, depth 0.5 to 1.1 em, width 3.2 to 29.1 px
+   1280 positions: {"claim":"80-494 y209-393","cta":"80-470 y421-481","stage":"538-1200 y77-589","sheet":"817-1181 y87-467","console":"80-1200 y607-759","note":"80-1200 y769-787","lane":"720-1200 y968-1858","storyNotes":"80-648 y958-1876","firstNt":"80-648 y1052-1293","chip":"934-986 y805-829","footer":"80-1200 y4915-5085","trust":"720-1200 y4937-5085","docH":5141,"ntFont":"18px"}
+
+== every timed move, as the page asks for it
+
+band (steps): 2 calls, durations 1839 to 1839 ms
+   mover<thread-band [transform] 1839 ms after 1 steps(22, jump-start)   {load}
+
+cut (visibility hold): 29 calls, durations 190 to 2150 ms
+
+catch trail: 30 calls, durations 120 to 140 ms
+   catch-tr<catch-layer [transform+visibility] 120 ms after 1360 linear   {load}
+   catch-tr<catch-layer [transform+visibility] 140 ms after 1100 linear   {load}
+   catch-tr<catch-layer [transform+visibility] 140 ms after 760 linear   {load}
+
+catch: 10 calls, durations 137 to 157 ms
+   catch.out.amt<catch-layer [transform+visibility] 137 ms after 1360 (settle from 0.8759124087591241) linear   {load}
+   catch.out.amt<catch-layer [transform+visibility] 157 ms after 1100 (settle from 0.89171974522293) linear   {load}
+   catch.out<catch-layer [transform+visibility] 137 ms after 1360 (settle from 0.8759124087591241) linear   {load}
+   catch.out<catch-layer [transform+visibility] 157 ms after 1100 (settle from 0.89171974522293) linear   {load}
+   catch<catch-layer [transform+visibility] 157 ms after 760 (settle from 0.89171974522293) linear   {load}
+
+wipe: 32 calls, durations 100 to 217 ms
+   field.is-unread<DL [clipPath] 100 ms linear   {scroll up, month tap}
+   field<DL [clipPath] 100 ms linear   {scroll down, scroll down again, approve}
+   machine-line<invoice-sheet [clipPath] 120 ms after 200 linear   {remove to draft}
+   machine-line<invoice-sheet [clipPath] 170 ms after 2230 linear   {load}
+   record-block<record-zone [clipPath] 120 ms after 200 linear   {remove to draft}
+   record-block<record-zone [clipPath] 120 ms after 210 linear   {remove rate, remove to draft}
+   record-block<record-zone [clipPath] 120 ms after 280 linear   {add rate}
+   record-block<record-zone [clipPath] 120 ms after 300 linear   {pick client}
+   record-block<record-zone [clipPath] 120 ms after 320 linear   {complete a draft}
+   record-block<record-zone [clipPath] 170 ms after 2230 linear   {load}
+   tn<meta [clipPath] 120 ms after 1560 linear   {load}
+   token-strip<stage [clipPath+transform] 180 ms (settle from 0.9) linear   {create token}
+   token-strip<stage [clipPath] 180 ms after 120 linear   {revoke token}
+   wrap-checked<review-card [clipPath+transform] 217 ms (settle from 0.92) linear   {approve}
+   wrap-checked<review-card [clipPath] 160 ms linear   {undo approve}
+
+stroke: 13 calls, durations 80 to 110 ms
+   path<strike [strokeDashoffset] 90 ms linear   {pick client, remove rate, remove to draft, revoke token}
+   stroke.s1<crossing [strokeDashoffset] 110 ms after 1900 linear   {load}
+   stroke.s1<crossing [strokeDashoffset] 80 ms after 180 linear   {complete a draft}
+   stroke.s1<crossing [strokeDashoffset] 90 ms after 190 linear   {remove to draft}
+   stroke.s2<crossing [strokeDashoffset] 110 ms after 2030 linear   {load}
+   stroke.s2<crossing [strokeDashoffset] 80 ms after 270 linear   {complete a draft}
+   stroke.s2<crossing [strokeDashoffset] 90 ms after 100 linear   {remove to draft}
+
+knob, row or thumb move: 6 calls, durations 80 to 100 ms
+   I<lock [transform] 80 ms linear   {pick client}
+   bracket<month-bars [transform] 80 ms linear   {month tap}
+   lt-thumb<lt-track [transform] 80 ms linear   {language}
+   row<rows [transform] 100 ms after 100 linear   {remove to draft}
+
+re-cut flight: 5 calls, durations 177 to 177 ms
+   fly.amt<fly-layer [transform+visibility] 177 ms (settle from 0.903954802259887) linear   {add rate, complete a draft}
+   fly<fly-layer [transform+visibility] 177 ms (settle from 0.903954802259887) linear   {add rate, complete a draft}
+   fly<fly-layer [transform+visibility] 177 ms after 120 (settle from 0.903954802259887) linear   {pick client}
+
+drop or lift: 30 calls, durations 137 to 177 ms
+   invoice-sheet.leaf<stage [transform] 140 ms linear   {scroll up}
+   invoice-sheet.leaf<stage [transform] 177 ms (settle from 0.9) linear   {scroll down, scroll down again}
+   old-file.is-heap.is-front<slot-row [transform] 140 ms linear   {scroll up, month tap}
+   old-file<slot-row [transform] 157 ms (settle from 0.89) linear   {scroll down, scroll down again, approve}
+   tag014.tape-label<bars [transform] 137 ms (settle from 0.88) linear   {scroll down, scroll down again}
+
+properties animated by script: transform, visibility, clipPath, strokeDashoffset
+CSS transitions (computed):
+   tile-in<stub transform 0.2s delay 0s linear
+   tile-in<old-file transform 0.16s delay 0.15s linear
+errors []
+
+== today: tear, drop, stub (by position)
+rebuild3_story390zh stage top (document) 1138 em 10.00 | tear from S 339 to 249 (72 px sideways) | drop at S 225 (136 px down) | filed at S 195
+  before S=375 | translate(0em, 11.3em) | empty | stub | 
+  tear starts S=339 | translate(0em, 11.3em) | empty | stub | 
+  half torn S=294 | translate(3.581em, 11.3em) | empty | stub | 
+  torn, slot still empty S=251 | translate(7.021em, 11.3em) | empty | stub | 
+  landed, stub filed, receipt read S=185 | translate(7.2em, 24.9em) | read | filed | 已读 12:07
+  back above the drop S=251 | translate(7.021em, 11.3em) | empty | stub | 
+  errors []
+rebuild3_story390en stage top (document) 1138 em 10.00 | tear from S 339 to 249 (72 px sideways) | drop at S 225 (136 px down) | filed at S 195
+  before S=375 | translate(0em, 11.3em) | empty | stub | 
+  tear starts S=339 | translate(0em, 11.3em) | empty | stub | 
+  half torn S=294 | translate(3.581em, 11.3em) | empty | stub | 
+  torn, slot still empty S=251 | translate(7.021em, 11.3em) | empty | stub | 
+  landed, stub filed, receipt read S=185 | translate(7.2em, 24.9em) | read | filed | Read 12:07
+  back above the drop S=251 | translate(7.021em, 11.3em) | empty | stub | 
+  errors []
+rebuild3_story1280zh stage top (document) 968 em 13.41 | tear from S 94 to 4 (97 px sideways) | drop at S -20 (182 px down) | filed at S -50
+  before S=130 | translate(0em, 11.3em) | empty | stub | 
+  tear starts S=94 | translate(0em, 11.3em) | empty | stub | 
+  half torn S=49 | translate(3.569em, 11.3em) | empty | stub | 
+  torn, slot still empty S=6 | translate(7.009em, 11.3em) | empty | stub | 
+  landed, stub filed, receipt read S=-60 | translate(7.2em, 24.9em) | read | filed | 已读 12:07
+  back above the drop S=6 | translate(7.009em, 11.3em) | empty | stub | 
+  errors []
+
+== the receipt clock: pictures
+390zh 390x844 zh 400 px/s | shots 37 | kept: in flight, before landing  ; sent 11..42 ms after landing ; delivered 262..312 ms after landing ; read 543..576 ms after landing
+  scrolled back above the drop: state empty | errors []
+390en 390x844 en 400 px/s | shots 37 | kept: in flight, before landing  ; sent 26..56 ms after landing ; delivered 264..315 ms after landing ; read 546..598 ms after landing
+  scrolled back above the drop: state empty | errors []
+1280zh 1280x800 zh 500 px/s | shots 29 | kept: in flight, before landing  ; sent 20..91 ms after landing ; delivered 295..376 ms after landing ; read 547..609 ms after landing
+  scrolled back above the drop: state empty | errors []
+  order of frames: in flight, before landing | sent (20 to 91 ms after landing) | delivered (295 to 376 ms after landing) | read (547 to 609 ms after landing) | scrolled back above the drop: empty
+1280en 1280x800 en 500 px/s | shots 27 | kept: in flight, before landing  ; sent 74..147 ms after landing ; delivered 321..406 ms after landing ; read 542..620 ms after landing
+  scrolled back above the drop: state empty | errors []
+  order of frames: in flight, before landing | sent (74 to 147 ms after landing) | delivered (321 to 406 ms after landing) | read (542 to 620 ms after landing) | scrolled back above the drop: empty
+
+== the receipt clock: per-frame log at three wheel speeds
+t390_300 390x844 zh speed 300 px/s
+  state empty      at -2113 ms after landing | scrollY 367 | file bar top 1387 wholly on screen false | held 2113 ms
+  state sent       at 0 ms after landing | scrollY 991 | file bar top 763 wholly on screen true | held 266 ms
+  state delivered  at 266 ms after landing | scrollY 1079 | file bar top 675 wholly on screen true | held 268 ms
+  state read       at 534 ms after landing | scrollY 1159 | file bar top 595 wholly on screen true | (to end)
+  leaf translateY first 113 last 249 | drop: first moved frame to the landing frame 168 ms, 10 frames; landing frame ty 249, frame before 250.2
+  after scrolling back up to 591 : state empty | stub face front true
+  down again: state read | errors []
+t390_600 390x844 zh speed 600 px/s
+  state empty      at -1327 ms after landing | scrollY 367 | file bar top 1387 wholly on screen false | held 1328 ms
+  state sent       at 0 ms after landing | scrollY 1007 | file bar top 747 wholly on screen true | held 266 ms
+  state delivered  at 266 ms after landing | scrollY 1147 | file bar top 607 wholly on screen true | held 267 ms
+  state read       at 534 ms after landing | scrollY 1267 | file bar top 487 wholly on screen true | (to end)
+  leaf translateY first 113 last 249 | drop: first moved frame to the landing frame 168 ms, 10 frames; landing frame ty 249, frame before 250.2
+  after scrolling back up to 587 : state empty | stub face front true
+  down again: state read | errors []
+t390_1500 390x844 zh speed 1500 px/s
+  state empty      at -696 ms after landing | scrollY 367 | file bar top 1387 wholly on screen false | held 696 ms
+  state sent       at 0 ms after landing | scrollY 1142 | file bar top 612 wholly on screen true | held 266 ms
+  state delivered  at 266 ms after landing | scrollY 1467 | file bar top 287 wholly on screen true | held 268 ms
+  state read       at 534 ms after landing | scrollY 1667 | file bar top 87 wholly on screen true | (to end)
+  leaf translateY first 113 last 249 | drop: first moved frame to the landing frame 167 ms, 10 frames; landing frame ty 249, frame before 250.2
+  after scrolling back up to 677 : state empty | stub face front true
+  down again: state read | errors []
+t1280_800 1280x800 zh speed 800 px/s
+  state empty      at -1376 ms after landing | scrollY 217 | file bar top 1590 wholly on screen false | held 1376 ms
+  state sent       at 0 ms after landing | scrollY 1127 | file bar top 680 wholly on screen true | held 266 ms
+  state delivered  at 266 ms after landing | scrollY 1127 | file bar top 680 wholly on screen true | held 268 ms
+  state read       at 534 ms after landing | scrollY 1127 | file bar top 680 wholly on screen true | (to end)
+  leaf translateY first 151.5 last 333.9 | drop: first moved frame to the landing frame 168 ms, 10 frames; landing frame ty 333.9, frame before 335.4
+  after scrolling back up to 447 : state empty | stub face front true
+  down again: state read | errors []
+
+== the four other receipts
+390x844 600 px/s  | at load: report-msg:sent:已发出 | import-msg:sent:已发出 | pro-msg:sent:已发出 | pricing:sent:已发出
+  report  | first frame wholly on screen t 3464 (receipt top 822) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 271 ms later (receipt top 742, on screen true) showing "已读 12:08" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  import  | first frame wholly on screen t 5097 (receipt top 828) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 268 ms later (receipt top 758, on screen true) showing "已读 12:08" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  pro     | first frame wholly on screen t 6347 (receipt top 826) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 268 ms later (receipt top 676, on screen true) showing "已读 12:08" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  plans   | first frame wholly on screen t 7530 (receipt top 820) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 269 ms later (receipt top 680, on screen true) showing "已读 12:08" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  errors []
+390x844 1500 px/s  | at load: report-msg:sent:已发出 | import-msg:sent:已发出 | pro-msg:sent:已发出 | pricing:sent:已发出
+  report  | first frame wholly on screen t 1515 (receipt top 822) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 268 ms later (receipt top 597, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  import  | first frame wholly on screen t 2282 (receipt top 818) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 267 ms later (receipt top 643, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  pro     | first frame wholly on screen t 2882 (receipt top 806) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 266 ms later (receipt top 481, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  plans   | first frame wholly on screen t 3382 (receipt top 810) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 268 ms later (receipt top 460, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  errors []
+1280x800 800 px/s  | at load: report-msg:sent:已发出 | import-msg:sent:已发出 | pro-msg:sent:已发出 | pricing:sent:已发出
+  report  | first frame wholly on screen t 3009 (receipt top 780) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 269 ms later (receipt top 598, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  import  | first frame wholly on screen t 4475 (receipt top 784) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 268 ms later (receipt top 589, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  pro     | first frame wholly on screen t 5342 (receipt top 781) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 268 ms later (receipt top 586, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  plans   | first frame wholly on screen t 6175 (receipt top 782) showing "已发出" stroke rgb(185, 211, 204) 2nd tick hidden | cut to read 269 ms later (receipt top 587, on screen true) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: sent
+  errors []
+390x844 600 px/s reduced motion | at load: report-msg:read:已读 23:41 | import-msg:read:已读 23:41 | pro-msg:read:已读 23:41 | pricing:read:已读 23:41
+  report  | first frame wholly on screen t 2906 (receipt top 822) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | cut to read -2901 ms later (receipt top 2472, on screen false) showing "已读 23:41" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: -
+  import  | first frame wholly on screen t 4238 (receipt top 828) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | cut to read -4233 ms later (receipt top 3218, on screen false) showing "已读 23:41" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: -
+  pro     | first frame wholly on screen t 5305 (receipt top 826) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | cut to read -5300 ms later (receipt top 3806, on screen false) showing "已读 23:41" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: -
+  plans   | first frame wholly on screen t 6488 (receipt top 820) showing "已读 12:09" stroke rgb(83, 189, 235) 2nd tick visible | cut to read -6483 ms later (receipt top 4460, on screen false) showing "已读 23:41" stroke rgb(83, 189, 235) 2nd tick visible | frame before the cut: -
+  errors []
+
+== sections at three scroll positions
+rebuild3_sec390zh docH 5079 frames hero0@0 story0@940 story1@1033 story2@1126 reports0@1434 reports1@1880 reports2@2177 import0@2093 import1@2539 import2@2943 pro0@2859 pro1@3305 pro2@3531 pricing0@3447 pricing1@3893 pricing2@4235 errors []
+rebuild3_sec390zh_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 940) | story 2/3 (scroll 1033) | story 3/3 (scroll 1126)
+rebuild3_sec390zh_02.png : reports 1/3 (scroll 1434) | reports 2/3 (scroll 1880) | reports 3/3 (scroll 2177) | import 1/3 (scroll 2093)
+rebuild3_sec390zh_03.png : import 2/3 (scroll 2539) | import 3/3 (scroll 2943) | pro 1/3 (scroll 2859) | pro 2/3 (scroll 3305)
+rebuild3_sec390zh_04.png : pro 3/3 (scroll 3531) | pricing 1/3 (scroll 3447) | pricing 2/3 (scroll 3893) | pricing 3/3 (scroll 4235)
+rebuild3_sec390en docH 5217 frames hero0@0 story0@940 story1@1044 story2@1147 reports0@1455 reports1@1901 reports2@2219 import0@2134 import1@2581 import2@2985 pro0@2900 pro1@3347 pro2@3594 pricing0@3509 pricing1@3956 pricing2@4373 errors []
+rebuild3_sec390en_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 940) | story 2/3 (scroll 1044) | story 3/3 (scroll 1147)
+rebuild3_sec390en_02.png : reports 1/3 (scroll 1455) | reports 2/3 (scroll 1901) | reports 3/3 (scroll 2219) | import 1/3 (scroll 2134)
+rebuild3_sec390en_03.png : import 2/3 (scroll 2581) | import 3/3 (scroll 2985) | pro 1/3 (scroll 2900) | pro 2/3 (scroll 3347)
+rebuild3_sec390en_04.png : pro 3/3 (scroll 3594) | pricing 1/3 (scroll 3509) | pricing 2/3 (scroll 3956) | pricing 3/3 (scroll 4373)
+rebuild3_sec1280zh docH 5141 frames hero0@0 story0@757 story1@951 story2@1146 reports0@1436 reports1@1856 reports2@2257 import0@2177 import1@2597 import2@3119 pro0@3039 pro1@3459 pro2@3753 pricing0@3673 pricing1@4093 pricing2@4341 errors []
+rebuild3_sec1280zh_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 757)
+rebuild3_sec1280zh_02.png : story 2/3 (scroll 951) | story 3/3 (scroll 1146)
+rebuild3_sec1280zh_03.png : reports 1/3 (scroll 1436) | reports 2/3 (scroll 1856)
+rebuild3_sec1280zh_04.png : reports 3/3 (scroll 2257) | import 1/3 (scroll 2177)
+rebuild3_sec1280zh_05.png : import 2/3 (scroll 2597) | import 3/3 (scroll 3119)
+rebuild3_sec1280zh_06.png : pro 1/3 (scroll 3039) | pro 2/3 (scroll 3459)
+rebuild3_sec1280zh_07.png : pro 3/3 (scroll 3753) | pricing 1/3 (scroll 3673)
+rebuild3_sec1280zh_08.png : pricing 2/3 (scroll 4093) | pricing 3/3 (scroll 4341)
+rebuild3_sec1280en docH 5161 frames hero0@0 story0@757 story1@951 story2@1146 reports0@1436 reports1@1856 reports2@2257 import0@2177 import1@2597 import2@3119 pro0@3039 pro1@3459 pro2@3753 pricing0@3673 pricing1@4093 pricing2@4361 errors []
+rebuild3_sec1280en_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 757)
+rebuild3_sec1280en_02.png : story 2/3 (scroll 951) | story 3/3 (scroll 1146)
+rebuild3_sec1280en_03.png : reports 1/3 (scroll 1436) | reports 2/3 (scroll 1856)
+rebuild3_sec1280en_04.png : reports 3/3 (scroll 2257) | import 1/3 (scroll 2177)
+rebuild3_sec1280en_05.png : import 2/3 (scroll 2597) | import 3/3 (scroll 3119)
+rebuild3_sec1280en_06.png : pro 1/3 (scroll 3039) | pro 2/3 (scroll 3459)
+rebuild3_sec1280en_07.png : pro 3/3 (scroll 3753) | pricing 1/3 (scroll 3673)
+rebuild3_sec1280en_08.png : pricing 2/3 (scroll 4093) | pricing 3/3 (scroll 4361)
+
+== reduced motion and no script
+rebuild3_rm390zh docH 5079 frames hero0@0 story0@940 story1@1033 story2@1126 reports0@1434 reports1@1880 reports2@2177 import0@2093 import1@2539 import2@2943 pro0@2859 pro1@3305 pro2@3531 pricing0@3447 pricing1@3893 pricing2@4235 errors []
+rebuild3_rm390zh_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 940) | story 2/3 (scroll 1033) | story 3/3 (scroll 1126)
+rebuild3_rm390zh_02.png : reports 1/3 (scroll 1434) | reports 2/3 (scroll 1880) | reports 3/3 (scroll 2177) | import 1/3 (scroll 2093)
+rebuild3_rm390zh_03.png : import 2/3 (scroll 2539) | import 3/3 (scroll 2943) | pro 1/3 (scroll 2859) | pro 2/3 (scroll 3305)
+rebuild3_rm390zh_04.png : pro 3/3 (scroll 3531) | pricing 1/3 (scroll 3447) | pricing 2/3 (scroll 3893) | pricing 3/3 (scroll 4235)
+rebuild3_rm390en docH 5217 frames hero0@0 story0@940 story1@1044 story2@1147 reports0@1455 reports1@1901 reports2@2219 import0@2134 import1@2581 import2@2985 pro0@2900 pro1@3347 pro2@3594 pricing0@3509 pricing1@3956 pricing2@4373 errors []
+rebuild3_rm390en_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 940) | story 2/3 (scroll 1044) | story 3/3 (scroll 1147)
+rebuild3_rm390en_02.png : reports 1/3 (scroll 1455) | reports 2/3 (scroll 1901) | reports 3/3 (scroll 2219) | import 1/3 (scroll 2134)
+rebuild3_rm390en_03.png : import 2/3 (scroll 2581) | import 3/3 (scroll 2985) | pro 1/3 (scroll 2900) | pro 2/3 (scroll 3347)
+rebuild3_rm390en_04.png : pro 3/3 (scroll 3594) | pricing 1/3 (scroll 3509) | pricing 2/3 (scroll 3956) | pricing 3/3 (scroll 4373)
+rebuild3_rm1280zh docH 5141 frames hero0@0 story0@757 story1@951 story2@1146 reports0@1436 reports1@1856 reports2@2257 import0@2177 import1@2597 import2@3119 pro0@3039 pro1@3459 pro2@3753 pricing0@3673 pricing1@4093 pricing2@4341 errors []
+rebuild3_rm1280zh_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 757)
+rebuild3_rm1280zh_02.png : story 2/3 (scroll 951) | story 3/3 (scroll 1146)
+rebuild3_rm1280zh_03.png : reports 1/3 (scroll 1436) | reports 2/3 (scroll 1856)
+rebuild3_rm1280zh_04.png : reports 3/3 (scroll 2257) | import 1/3 (scroll 2177)
+rebuild3_rm1280zh_05.png : import 2/3 (scroll 2597) | import 3/3 (scroll 3119)
+rebuild3_rm1280zh_06.png : pro 1/3 (scroll 3039) | pro 2/3 (scroll 3459)
+rebuild3_rm1280zh_07.png : pro 3/3 (scroll 3753) | pricing 1/3 (scroll 3673)
+rebuild3_rm1280zh_08.png : pricing 2/3 (scroll 4093) | pricing 3/3 (scroll 4341)
+rebuild3_rm1280en docH 5161 frames hero0@0 story0@757 story1@951 story2@1146 reports0@1436 reports1@1856 reports2@2257 import0@2177 import1@2597 import2@3119 pro0@3039 pro1@3459 pro2@3753 pricing0@3673 pricing1@4093 pricing2@4361 errors []
+rebuild3_rm1280en_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 757)
+rebuild3_rm1280en_02.png : story 2/3 (scroll 951) | story 3/3 (scroll 1146)
+rebuild3_rm1280en_03.png : reports 1/3 (scroll 1436) | reports 2/3 (scroll 1856)
+rebuild3_rm1280en_04.png : reports 3/3 (scroll 2257) | import 1/3 (scroll 2177)
+rebuild3_rm1280en_05.png : import 2/3 (scroll 2597) | import 3/3 (scroll 3119)
+rebuild3_rm1280en_06.png : pro 1/3 (scroll 3039) | pro 2/3 (scroll 3459)
+rebuild3_rm1280en_07.png : pro 3/3 (scroll 3753) | pricing 1/3 (scroll 3673)
+rebuild3_rm1280en_08.png : pricing 2/3 (scroll 4093) | pricing 3/3 (scroll 4361)
+rebuild3_nojs390zh docH 5079 frames hero0@0 story0@940 story1@1033 story2@1126 reports0@1434 reports1@1880 reports2@2177 import0@2093 import1@2539 import2@2943 pro0@2859 pro1@3305 pro2@3531 pricing0@3447 pricing1@3893 pricing2@4235 errors []
+rebuild3_nojs390zh_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 940) | story 2/3 (scroll 1033) | story 3/3 (scroll 1126)
+rebuild3_nojs390zh_02.png : reports 1/3 (scroll 1434) | reports 2/3 (scroll 1880) | reports 3/3 (scroll 2177) | import 1/3 (scroll 2093)
+rebuild3_nojs390zh_03.png : import 2/3 (scroll 2539) | import 3/3 (scroll 2943) | pro 1/3 (scroll 2859) | pro 2/3 (scroll 3305)
+rebuild3_nojs390zh_04.png : pro 3/3 (scroll 3531) | pricing 1/3 (scroll 3447) | pricing 2/3 (scroll 3893) | pricing 3/3 (scroll 4235)
+rebuild3_nojs1280zh docH 5141 frames hero0@0 story0@757 story1@951 story2@1146 reports0@1436 reports1@1856 reports2@2257 import0@2177 import1@2597 import2@3119 pro0@3039 pro1@3459 pro2@3753 pricing0@3673 pricing1@4093 pricing2@4341 errors []
+rebuild3_nojs1280zh_01.png : hero 1/3 (scroll 0) | story 1/3 (scroll 757)
+rebuild3_nojs1280zh_02.png : story 2/3 (scroll 951) | story 3/3 (scroll 1146)
+rebuild3_nojs1280zh_03.png : reports 1/3 (scroll 1436) | reports 2/3 (scroll 1856)
+rebuild3_nojs1280zh_04.png : reports 3/3 (scroll 2257) | import 1/3 (scroll 2177)
+rebuild3_nojs1280zh_05.png : import 2/3 (scroll 2597) | import 3/3 (scroll 3119)
+rebuild3_nojs1280zh_06.png : pro 1/3 (scroll 3039) | pro 2/3 (scroll 3459)
+rebuild3_nojs1280zh_07.png : pro 3/3 (scroll 3753) | pricing 1/3 (scroll 3673)
+rebuild3_nojs1280zh_08.png : pricing 2/3 (scroll 4093) | pricing 3/3 (scroll 4341)
+
+== the language switch with scripts off
+width 390 switch box {"x":158,"y":4,"width":72,"height":44} shots 5
+width 1280 switch box {"x":984,"y":4,"width":72,"height":44} shots 5
+
+== walks by wheel, top to footer
+d1280zh shots 8 at 0,690,1380,2070,2760,3450,4140,4341 -> 4 files; errors []
+d1280en shots 8 at 0,690,1380,2070,2760,3450,4140,4361 -> 4 files; errors []
+d1440zh shots 7 at 0,790,1580,2370,3160,3950,4241 -> 4 files; errors []
+m390zh shots 7 at 0,760,1520,2280,3040,3800,4235 -> 2 files; errors []
+m390en shots 7 at 0,760,1520,2280,3040,3800,4414 -> 2 files; errors []
+tanjung390zh shots 7 at 0,760,1520,2280,3040,3800,4235 -> 2 files; errors []
+aria1280en shots 8 at 0,690,1380,2070,2760,3450,4140,4361 -> 4 files; errors []
+draft390en shots 7 at 0,760,1520,2280,3040,3800,4414 -> 2 files; errors []
+draft1280zh shots 8 at 0,690,1380,2070,2760,3450,4140,4341 -> 4 files; errors []
+
+== other widths
+w320_zh scrollWidth/innerWidth/height 320 / 320 / 4790 errors []
+w768_zh scrollWidth/innerWidth/height 768 / 768 / 5040 errors []
+w900_zh scrollWidth/innerWidth/height 900 / 900 / 5190 errors []
+w1024_en scrollWidth/innerWidth/height 1024 / 1024 / 5210 errors []
+w1440_en scrollWidth/innerWidth/height 1440 / 1440 / 5161 errors []
+
+== margin notes against their targets
+-- 900 x 800 zh
+story tcTop 921 lane x 388 to 868 attachment top 1026 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 32 to 338
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 32 to 338
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 64 x 32 to 338
+reports tcTop 2015 lane x 400 to 868 attachment top 2120 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 32 to 338
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 32 to 338
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 37 x 32 to 338
+import tcTop 2757 lane x 400 to 868 attachment top 2862 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 32 to 338
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 32 to 338
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 37 x 32 to 338
+pro tcTop 3618 lane x 400 to 868 attachment top 3681 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 32 to 338
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 32 to 338
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 64 x 32 to 338
+pricing tcTop 4252 lane x 388 to 868 attachment top 4315 height 463
+    .plans                     target     30 note     30 diff 0.0 note h 41 x 32 to 338
+sheet x 484.5 to 848.5 | landed leaf x 484.5 to 859.9 | scrollWidth 900 | errors []
+-- 900 x 800 en
+story tcTop 921 lane x 388 to 868 attachment top 1026 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 32 to 338
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 32 to 338
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 90 x 32 to 338
+reports tcTop 2041 lane x 400 to 868 attachment top 2146 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 32 to 338
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 32 to 338
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 37 x 32 to 338
+import tcTop 2783 lane x 400 to 868 attachment top 2888 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 32 to 338
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 32 to 338
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 64 x 32 to 338
+pro tcTop 3645 lane x 400 to 868 attachment top 3708 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 32 to 338
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 32 to 338
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 64 x 32 to 338
+pricing tcTop 4278 lane x 388 to 868 attachment top 4342 height 483
+    .plans                     target     30 note     30 diff 0.0 note h 41 x 32 to 338
+sheet x 484.5 to 848.5 | landed leaf x 484.5 to 859.9 | scrollWidth 900 | errors []
+-- 1024 x 768 zh
+story tcTop 921 lane x 512 to 992 attachment top 1026 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 32 to 455
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 32 to 455
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 64 x 32 to 455
+reports tcTop 2015 lane x 524 to 992 attachment top 2120 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 32 to 455
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 32 to 455
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 37 x 32 to 455
+import tcTop 2757 lane x 524 to 992 attachment top 2862 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 32 to 455
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 32 to 455
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 37 x 32 to 455
+pro tcTop 3618 lane x 524 to 992 attachment top 3681 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 32 to 455
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 32 to 455
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 37 x 32 to 455
+pricing tcTop 4252 lane x 512 to 992 attachment top 4315 height 463
+    .plans                     target     30 note     30 diff 0.0 note h 41 x 32 to 455
+sheet x 608.5 to 972.5 | landed leaf x 608.5 to 983.9 | scrollWidth 1024 | errors []
+-- 1024 x 768 en
+story tcTop 921 lane x 512 to 992 attachment top 1026 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 32 to 455
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 32 to 455
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 64 x 32 to 455
+reports tcTop 2015 lane x 524 to 992 attachment top 2120 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 32 to 455
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 32 to 455
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 37 x 32 to 455
+import tcTop 2757 lane x 524 to 992 attachment top 2862 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 32 to 455
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 32 to 455
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 37 x 32 to 455
+pro tcTop 3618 lane x 524 to 992 attachment top 3681 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 32 to 455
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 32 to 455
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 64 x 32 to 455
+pricing tcTop 4252 lane x 512 to 992 attachment top 4315 height 483
+    .plans                     target     30 note     30 diff 0.0 note h 41 x 32 to 455
+sheet x 608.5 to 972.5 | landed leaf x 608.5 to 983.9 | scrollWidth 1024 | errors []
+-- 1280 x 800 zh
+story tcTop 863 lane x 720 to 1200 attachment top 968 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 80 to 648
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 80 to 648
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 69 x 80 to 648
+reports tcTop 1962 lane x 732 to 1200 attachment top 2067 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 80 to 648
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 80 to 648
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 40 x 80 to 648
+import tcTop 2703 lane x 732 to 1200 attachment top 2809 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 80 to 648
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 80 to 648
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 40 x 80 to 648
+pro tcTop 3565 lane x 732 to 1200 attachment top 3628 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 80 to 648
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 80 to 648
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 40 x 80 to 648
+pricing tcTop 4199 lane x 720 to 1200 attachment top 4262 height 463
+    .plans                     target     30 note     30 diff 0.0 note h 44 x 80 to 648
+sheet x 816.5 to 1180.5 | landed leaf x 816.5 to 1191.9 | scrollWidth 1280 | errors []
+-- 1280 x 800 en
+story tcTop 863 lane x 720 to 1200 attachment top 968 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 80 to 648
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 80 to 648
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 69 x 80 to 648
+reports tcTop 1962 lane x 732 to 1200 attachment top 2067 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 80 to 648
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 80 to 648
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 40 x 80 to 648
+import tcTop 2703 lane x 732 to 1200 attachment top 2809 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 80 to 648
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 80 to 648
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 40 x 80 to 648
+pro tcTop 3565 lane x 732 to 1200 attachment top 3628 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 80 to 648
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 80 to 648
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 69 x 80 to 648
+pricing tcTop 4199 lane x 720 to 1200 attachment top 4262 height 483
+    .plans                     target     30 note     30 diff 0.0 note h 44 x 80 to 648
+sheet x 816.5 to 1180.5 | landed leaf x 816.5 to 1191.9 | scrollWidth 1280 | errors []
+-- 1440 x 900 zh
+story tcTop 863 lane x 800 to 1280 attachment top 968 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 160 to 728
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 160 to 728
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 69 x 160 to 728
+reports tcTop 1962 lane x 812 to 1280 attachment top 2067 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 160 to 728
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 160 to 728
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 40 x 160 to 728
+import tcTop 2703 lane x 812 to 1280 attachment top 2809 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 160 to 728
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 160 to 728
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 40 x 160 to 728
+pro tcTop 3565 lane x 812 to 1280 attachment top 3628 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 160 to 728
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 160 to 728
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 40 x 160 to 728
+pricing tcTop 4199 lane x 800 to 1280 attachment top 4262 height 463
+    .plans                     target     30 note     30 diff 0.0 note h 44 x 160 to 728
+sheet x 896.5 to 1260.5 | landed leaf x 896.5 to 1271.9 | scrollWidth 1440 | errors []
+-- 1440 x 900 en
+story tcTop 863 lane x 800 to 1280 attachment top 968 height 890
+    .stub-row                  target   84.5 note     84 diff -0.5 note h 241 x 160 to 728
+    .doc-bubble                target  325.8 note    325 diff -0.8 note h 514 x 160 to 728
+    .doc-bubble .file-bar      target  839.5 note    839 diff -0.5 note h 69 x 160 to 728
+reports tcTop 1962 lane x 812 to 1280 attachment top 2067 height 551
+    .month-bars                target   81.9 note     82 diff 0.1 note h 306 x 160 to 728
+    .rank-h                    target  387.8 note    388 diff 0.2 note h 118 x 160 to 728
+    #report-msg>.file-bar      target  505.5 note    506 diff 0.5 note h 40 x 160 to 728
+import tcTop 2703 lane x 812 to 1280 attachment top 2809 height 670
+    .slot-row                  target   32.7 note     33 diff 0.3 note h 142 x 160 to 728
+    .review-card               target  174.7 note    175 diff 0.3 note h 306 x 160 to 728
+    .review-state.rs-wait      target  480.5 note    481 diff 0.5 note h 40 x 160 to 728
+pro tcTop 3565 lane x 812 to 1280 attachment top 3628 height 485
+    #pro-stage                 target     30 note     30 diff 0.0 note h 251 x 160 to 728
+    .token-state.ts-on         target  281.2 note    281 diff -0.2 note h 111 x 160 to 728
+    .token-btn                 target  391.6 note    392 diff 0.4 note h 69 x 160 to 728
+pricing tcTop 4199 lane x 800 to 1280 attachment top 4262 height 483
+    .plans                     target     30 note     30 diff 0.0 note h 44 x 160 to 728
+sheet x 896.5 to 1260.5 | landed leaf x 896.5 to 1271.9 | scrollWidth 1440 | errors []
+
+== language switch: place held (the critic's c3_lang.js)
+width 390 page height 5079 worst top-edge shift of the block on the reading line 76 px
+  y 300 -> en 300 -> zh 300 | block at 40%: null top null -> undefined (h null -> undefined) | at 25%: 0 px | at 60%: 0 px
+  y 650 -> en 650 -> zh 650 | block at 40%: date-chip top 338 -> 338 (h 24 -> 24) | at 25%: 0 px | at 60%: 0 px
+  y 1000 -> en 1000 -> zh 1000 | block at 40%: sis-card top 138 -> 138 (h 236 -> 236) | at 25%: 0 px | at 60%: null px
+  y 1350 -> en 1350 -> zh 1350 | block at 40%: null top null -> undefined (h null -> undefined) | at 25%: null px | at 60%: 0 px
+  y 1700 -> en 1721 -> zh 1700 | block at 40%: msg in top 316 -> 316 (h 52 -> 52) | at 25%: -21 px | at 60%: 0 px
+  y 2050 -> en 2071 -> zh 2050 | block at 40%: msg out attach top 28 -> 28 (h 424 -> 424) | at 25%: 0 px | at 60%: 0 px
+  y 2400 -> en 2442 -> zh 2400 | block at 40%: msg out attach top 337 -> 336 (h 511 -> 511) | at 25%: null px | at 60%: -1 px
+  y 2750 -> en 2792 -> zh 2750 | block at 40%: msg out attach top -13 -> -14 (h 511 -> 511) | at 25%: -1 px | at 60%: null px
+  y 3100 -> en 3162 -> zh 3100 | block at 40%: msg in top 299 -> 300 (h 52 -> 52) | at 25%: -21 px | at 60%: 0 px
+  y 3450 -> en 3512 -> zh 3450 | block at 40%: msg out attach top 11 -> 11 (h 375 -> 375) | at 25%: 0 px | at 60%: null px
+  y 3800 -> en 3895 -> zh 3800 | block at 40%: msg out attach top 249 -> 237 (h 441 -> 516) | at 25%: -11 px | at 60%: -12 px
+  y 4150 -> en 4309 -> zh 4150 | block at 40%: msg out attach top -101 -> -177 (h 441 -> 516) | at 25%: -76 px | at 60%: 21 px
+width 1280 page height 5141 worst top-edge shift of the block on the reading line 9 px
+  y 300 -> en 300 -> zh 300 | block at 40%: picker-client top 307 -> 307 (h 151 -> 151) | at 25%: 0 px | at 60%: 0 px
+  y 650 -> en 650 -> zh 650 | block at 40%: notice top 308 -> 308 (h 918 -> 918) | at 25%: null px | at 60%: 0 px
+  y 1000 -> en 1000 -> zh 1000 | block at 40%: notice top -42 -> -42 (h 918 -> 918) | at 25%: 0 px | at 60%: 0 px
+  y 1350 -> en 1350 -> zh 1350 | block at 40%: notice top -392 -> -392 (h 918 -> 918) | at 25%: 0 px | at 60%: 0 px
+  y 1700 -> en 1700 -> zh 1700 | block at 40%: msg in top 304 -> 304 (h 53 -> 53) | at 25%: null px | at 60%: 0 px
+  y 2050 -> en 2050 -> zh 2050 | block at 40%: notice top 7 -> 7 (h 556 -> 556) | at 25%: 0 px | at 60%: 0 px
+  y 2400 -> en 2400 -> zh 2400 | block at 40%: chat-head top 303 -> 303 (h 32 -> 32) | at 25%: 0 px | at 60%: 0 px
+  y 2750 -> en 2750 -> zh 2750 | block at 40%: notice top 49 -> 49 (h 531 -> 531) | at 25%: 0 px | at 60%: 0 px
+  y 3100 -> en 3100 -> zh 3100 | block at 40%: msg out attach top -291 -> -291 (h 670 -> 670) | at 25%: 0 px | at 60%: 0 px
+  y 3450 -> en 3450 -> zh 3450 | block at 40%: notice top 168 -> 168 (h 442 -> 471) | at 25%: 0 px | at 60%: 0 px
+  y 3800 -> en 3800 -> zh 3800 | block at 40%: null top null -> undefined (h null -> undefined) | at 25%: 0 px | at 60%: 0 px
+  y 4150 -> en 4159 -> zh 4150 | block at 40%: plan top 142 -> 133 (h 347 -> 388) | at 25%: -9 px | at 60%: -9 px
+
+== contrast (computed)
+today #0B1216 (relative luminance 0.0056): --text #E9EEF0 16.1, --meta #8A9AA3 6.5, --tick #53BDEB (time stamps) 8.9
+month end #0B2346 (relative luminance 0.0172): --text #E9EEF0 13.4, --meta #8A9AA3 5.4, --tick #53BDEB (time stamps) 7.3
+day one #2A1606 (relative luminance 0.0108): --text #E9EEF0 14.8, --meta #8A9AA3 5.9, --tick #53BDEB (time stamps) 8.1
+notice box #05090B (relative luminance 0.0025): --text #E9EEF0 17.1, --meta #8A9AA3 6.9, --tick #53BDEB (time stamps) 9.4
+--text on --bubble #1F2C33: 12.2
+--meta on --bubble: 4.9
+--text on --bubble-out #0F5345: 7.7
+--soft #B9D3CC on --bubble-out: 5.7
+--ink on --sheet: 15.9
+--label #5A6268 on --sheet: 5.5
+--pen on --sheet: 5.4
+marker on tape green (trial button): 5.4
+marker on tape yellow: 11.4
+tape white on tape red (draft, not saved, revoked): 4.5
+tape white on tape blue: 5.4
+--sheet on --ink (filed rows): 15.9
+#AEB8BD on --ink (row dates): 8.8
+--ink on --sheet (lit date chip): 15.9
+--text on --stage (plans): 16.1
+--meta on --stage (plans): 6.5
+ground against ground (the cut): today / month end 1.21, month end / day one 1.10, today / day one 1.09
+bubble grey against each ground: 1.32, 1.09, 1.21
+
+== audit
+width 320 zh:320/4790 en:320/5030 errors 0 
+width 360 zh:360/4953 en:360/5094 errors 0 
+width 390 zh:390/5079 en:390/5217 errors 0 
+width 430 zh:430/5079 en:430/5198 errors 0 
+width 768 zh:768/5040 en:768/5121 errors 0 
+width 900 zh:900/5190 en:900/5237 errors 0 
+width 1024 zh:1024/5190 en:1024/5210 errors 0 
+width 1280 zh:1280/5141 en:1280/5161 errors 0 
+width 1440 zh:1440/5141 en:1440/5161 errors 0 
+
+== zh at 390 x 844 ==
+{
+ "pos": {
+  "claim": "77-167 x16-374",
+  "stage": "173-567 x0-390",
+  "sheet": "181-473 x94-374",
+  "caption": "543-567 x0-390",
+  "cta": "575-631 x16-374",
+  "terms": "608-620 x99-291",
+  "rail": "645-689 x16-374",
+  "toggle": "4-48 x158-230",
+  "topcta": "4-48 x290-374",
+  "pickc": "703-854 x16-374",
+  "pickr": "868-932 x16-374",
+  "note": "942-978 x16-374",
+  "story": "1000-1940 x0-390",
+  "reports": "1940-2599 x0-390",
+  "import": "2599-3365 x0-390",
+  "pro": "3365-3953 x0-390",
+  "pricing": "3953-4693 x0-390",
+  "footer": "4693-5079 x0-390"
+ },
+ "runs": 320,
+ "small": {},
+ "tiny": [],
+ "tg": [],
+ "gut": [],
+ "chineseWeights": {
+  "control w500": 26,
+  "thread+product w500": 106,
+  "h1 w700": 2,
+  "copy w400": 44,
+  "copy w500": 2
+ },
+ "latinWeights": {
+  "Bricolage Grotesque w800": 5,
+  "Bricolage Grotesque w600": 3,
+  "Instrument Sans w400": 46,
+  "Instrument Sans w500": 34,
+  "Instrument Sans w700": 45,
+  "Instrument Sans w600": 27,
+  "Bricolage Grotesque w500": 5,
+  "Kanit w700": 1,
+  "Bricolage Grotesque w400": 21,
+  "Instrument Sans w500i": 4
+ },
+ "examples": {
+  "Bricolage Grotesque w800": "wordmark:SIS",
+  "Bricolage Grotesque w600": "lt-en:EN",
+  "Instrument Sans w400": "dur:0:47",
+  "Instrument Sans w500": "zh:截图的截图：上个月的 Wor",
+  "Instrument Sans w700": "[object SVGAnimatedString]:INV-014 ·",
+  "Instrument Sans w600": "name:Lumen Events S",
+  "Bricolage Grotesque w500": "zh:免费试用 7 天",
+  "Kanit w700": "ro-t:0:02.42",
+  "Bricolage Grotesque w400": "zh:撕下来的这一张就是 PDF。",
+  "Instrument Sans w500i": "zh:↪ SIS · 报表"
+ },
+ "stretch": [
+  "100%"
+ ],
+ "docH": 5079
+}
+
+== en at 390 x 844 ==
+{
+ "pos": {
+  "claim": "77-167 x16-374",
+  "stage": "173-567 x0-390",
+  "sheet": "181-473 x94-374",
+  "caption": "543-567 x0-390",
+  "cta": "575-631 x16-374",
+  "terms": "608-620 x83-307",
+  "rail": "645-689 x16-374",
+  "toggle": "4-48 x152-224",
+  "topcta": "4-48 x290-374",
+  "pickc": "703-854 x16-374",
+  "pickr": "868-932 x16-374",
+  "note": "942-978 x16-374",
+  "story": "1000-1961 x0-390",
+  "reports": "1961-2641 x0-390",
+  "import": "2641-3407 x0-390",
+  "pro": "3407-4016 x0-390",
+  "pricing": "4016-4831 x0-390",
+  "footer": "4831-5217 x0-390"
+ },
+ "runs": 319,
+ "small": {},
+ "tiny": [],
+ "tg": [],
+ "gut": [],
+ "chineseWeights": {
+  "control w500": 1
+ },
+ "latinWeights": {
+  "Bricolage Grotesque w800": 7,
+  "Bricolage Grotesque w600": 13,
+  "Instrument Sans w400i": 3,
+  "Bricolage Grotesque w400": 42,
+  "Instrument Sans w400": 90,
+  "Instrument Sans w700": 66,
+  "Instrument Sans w600": 69,
+  "Instrument Sans w500": 18,
+  "Kanit w700": 1,
+  "Instrument Sans w500i": 4
+ },
+ "examples": {
+  "Bricolage Grotesque w800": "wordmark:SIS",
+  "Bricolage Grotesque w600": "lt-en:EN",
+  "Instrument Sans w400": "dur:0:47",
+  "Instrument Sans w500": "zh:截图的截图：上个月的 Wor",
+  "Instrument Sans w700": "[object SVGAnimatedString]:INV-014 ·",
+  "Instrument Sans w600": "name:Lumen Events S",
+  "Bricolage Grotesque w500": "zh:免费试用 7 天",
+  "Kanit w700": "ro-t:0:02.42",
+  "Bricolage Grotesque w400": "zh:撕下来的这一张就是 PDF。",
+  "Instrument Sans w500i": "zh:↪ SIS · 报表",
+  "Instrument Sans w400i": "en:↪ Forwarded"
+ },
+ "stretch": [
+  "100%"
+ ],
+ "docH": 5217
+}
+state default (read at the foot of the page, every sequence at its end) | fig 2,700.00 | total() 2700 | words 令吉 二千七百 整 | machine NO2026014DATE20112026SEN270000 | chat F / Farah · Lumen Events | card LUMEN Lumen Events Sdn Bhd 公司客户 | stub INV-014 RM 2,700.00 20 NOV 已归档 | past INV-011 RM 1,200.00 更早 已归档 INV-008 RM 3,000.00 更早 已归档 INV-006 RM 2,700.00 更早 已归档 | leaf Lumen Events Sdn Bhd RM 2,700.00 draft=false crossing visible block visible draft-tape hidden | pdf delivered "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,400 net RM 9,250 | rank 1 Lumen Events Sdn Bhd 6 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单
+state client TANJUNG | fig 2,700.00 | total() 2700 | words 令吉 二千七百 整 | machine NO2026014DATE20112026SEN270000 | chat M / Mei Ling · Tanjung Bakery | card TANJUNG Tanjung Bakery 公司客户 | stub INV-014 RM 2,700.00 20 NOV 已归档 | past INV-012 RM 2,100.00 更早 已归档 INV-009 RM 1,200.00 更早 已归档 INV-005 RM 900.00 更早 已归档 | leaf Tanjung Bakery RM 2,700.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,400 net RM 9,250 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Tanjung Bakery 5 张单 3 Aria Lim 4 张单
+state client ARIA | fig 2,700.00 | total() 2700 | words 令吉 二千七百 整 | machine NO2026014DATE20112026SEN270000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 2,700.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 2,700.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,400 net RM 9,250 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 5 张单 3 Tanjung Bakery 4 张单
+state add photo | fig 3,900.00 | total() 3900 | words 令吉 三千九百 整 | machine NO2026014DATE20112026SEN390000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 3,900.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 3,900.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 13,600 net RM 10,450 | rank 1 Aria Lim 5 张单 2 Lumen Events Sdn Bhd 5 张单 3 Tanjung Bakery 4 张单
+state remove edit | fig 3,000.00 | total() 3000 | words 令吉 三千 整 | machine NO2026014DATE20112026SEN300000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 3,000.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 3,000.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,700 net RM 9,550 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 5 张单 3 Tanjung Bakery 4 张单
+state none (draft) | fig 0.00 | total() 0 | words 令吉 零 整 | machine  | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub (hidden) slot: 存根 · 选了价目才有 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 0.00 draft=true crossing hidden block hidden draft-tape visible | pdf empty "PDF · 选了价目才有" | leafT translate(0em, 11.3em) | 014tag absent | nov RM 9,700 net RM 6,550 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单
+state draft after going up and down the page again | fig 0.00 | total() 0 | words 令吉 零 整 | machine  | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub (hidden) slot: 存根 · 选了价目才有 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 0.00 draft=true crossing hidden block hidden draft-tape visible | pdf empty "PDF · 选了价目才有" | leafT translate(0em, 11.3em) | 014tag absent | nov RM 9,700 net RM 6,550 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单
+state add edit | fig 900.00 | total() 900 | words 令吉 九百 整 | machine NO2026014DATE20112026SEN090000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 900.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 900.00 draft=false crossing visible block visible draft-tape hidden | pdf sent "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 10,600 net RM 7,450 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 5 张单 3 Tanjung Bakery 4 张单
+errors []
+
+language switch at 390 x 844: worst movement of the point under the reading line 0.5 px (scroll 4000); worst movement of that block top edge 73.8 px (scroll 4100); worst scrollY not restored after zh > en > zh 0 px
+0: scrollY zh 0 > en 0 > zh 0 | block row: point under the reading line moved 0.0 px, its top edge 0.0 px
+100: scrollY zh 100 > en 100 > zh 100 | block when: point under the reading line moved 0.0 px, its top edge 0.0 px
+200: scrollY zh 200 > en 200 > zh 200 | block set set-end: point under the reading line moved 0.0 px, its top edge 0.0 px
+300: scrollY zh 300 > en 300 > zh 300 | reading line is on a gap
+400: scrollY zh 400 > en 400 > zh 400 | block tape-label: point under the reading line moved 0.0 px, its top edge 0.0 px
+500: scrollY zh 500 > en 500 > zh 500 | block pk-hint: point under the reading line moved 0.0 px, its top edge 0.0 px
+600: scrollY zh 600 > en 600 > zh 600 | reading line is on a gap
+700: scrollY zh 700 > en 700 > zh 700 | block chat-head: point under the reading line moved 0.0 px, its top edge 0.0 px
+800: scrollY zh 800 > en 800 > zh 800 | block sc-head: point under the reading line moved 0.0 px, its top edge 0.0 px
+900: scrollY zh 900 > en 900 > zh 900 | block sface front: point under the reading line moved 0.0 px, its top edge 0.0 px
+1000: scrollY zh 1000 > en 1000 > zh 1000 | block past-row: point under the reading line moved 0.0 px, its top edge 0.0 px
+1100: scrollY zh 1100 > en 1100 > zh 1100 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1200: scrollY zh 1200 > en 1200 > zh 1200 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1300: scrollY zh 1300 > en 1300 > zh 1300 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1400: scrollY zh 1400 > en 1400 > zh 1400 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1500: scrollY zh 1500 > en 1507 > zh 1500 | block nt: point under the reading line moved 0.0 px, its top edge 7.0 px
+1600: scrollY zh 1600 > en 1621 > zh 1600 | block date-chip: point under the reading line moved 0.2 px, its top edge 0.2 px
+1700: scrollY zh 1700 > en 1721 > zh 1700 | block msg in: point under the reading line moved 0.2 px, its top edge 0.2 px
+1800: scrollY zh 1800 > en 1821 > zh 1800 | block rp-head: point under the reading line moved 0.2 px, its top edge 0.2 px
+1900: scrollY zh 1900 > en 1921 > zh 1900 | block bar sales: point under the reading line moved 0.2 px, its top edge 0.2 px
+2000: scrollY zh 2000 > en 2021 > zh 2000 | block SPAN: point under the reading line moved 0.2 px, its top edge 0.2 px
+2100: scrollY zh 2100 > en 2121 > zh 2100 | block SPAN: point under the reading line moved 0.2 px, its top edge 0.2 px
+2200: scrollY zh 2200 > en 2221 > zh 2200 | block nt: point under the reading line moved 0.2 px, its top edge 0.2 px
+2300: scrollY zh 2300 > en 2342 > zh 2300 | block chat-head: point under the reading line moved 0.4 px, its top edge 0.4 px
+2400: scrollY zh 2400 > en 2442 > zh 2400 | block msg out attach: point under the reading line moved 0.4 px, its top edge 0.4 px
+2500: scrollY zh 2500 > en 2542 > zh 2500 | block ok: point under the reading line moved 0.4 px, its top edge 0.4 px
+2600: scrollY zh 2600 > en 2642 > zh 2600 | block DD: point under the reading line moved 0.4 px, its top edge 0.4 px
+2700: scrollY zh 2700 > en 2742 > zh 2700 | block DD: point under the reading line moved 0.4 px, its top edge 0.4 px
+2800: scrollY zh 2800 > en 2842 > zh 2800 | block stage import-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+2900: scrollY zh 2900 > en 2942 > zh 2900 | block file-bar: point under the reading line moved 0.4 px, its top edge 0.4 px
+3000: scrollY zh 3000 > en 3062 > zh 3000 | block notice: point under the reading line moved 0.0 px, its top edge 20.4 px
+3100: scrollY zh 3100 > en 3162 > zh 3100 | block msg in: point under the reading line moved 0.4 px, its top edge 0.4 px
+3200: scrollY zh 3200 > en 3262 > zh 3200 | block stage pro-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+3300: scrollY zh 3300 > en 3362 > zh 3300 | block stage pro-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+3400: scrollY zh 3400 > en 3462 > zh 3400 | block stage pro-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+3500: scrollY zh 3500 > en 3562 > zh 3500 | reading line is on a gap
+3600: scrollY zh 3600 > en 3683 > zh 3600 | reading line is on a gap
+3700: scrollY zh 3700 > en 3783 > zh 3700 | block msg in: point under the reading line moved 0.2 px, its top edge 0.2 px
+3800: scrollY zh 3800 > en 3895 > zh 3800 | block plans: point under the reading line moved 0.2 px, its top edge 11.8 px
+3900: scrollY zh 3900 > en 4016 > zh 3900 | block plans: point under the reading line moved 0.2 px, its top edge 32.8 px
+4000: scrollY zh 4000 > en 4136 > zh 4000 | block plans: point under the reading line moved 0.5 px, its top edge 52.8 px
+4100: scrollY zh 4100 > en 4257 > zh 4100 | block plans: point under the reading line moved 0.1 px, its top edge 73.8 px
+4200: scrollY zh 4200 > en 4359 > zh 4200 | block notice: point under the reading line moved 0.4 px, its top edge 0.4 px
+
+language switch at 1280 x 800: worst movement of the point under the reading line 1.0 px (scroll 4000); worst movement of that block top edge 1.0 px (scroll 4000); worst scrollY not restored after zh > en > zh 0 px
+0: scrollY zh 0 > en 0 > zh 0 | block P: point under the reading line moved 0.0 px, its top edge 0.0 px
+100: scrollY zh 100 > en 100 > zh 100 | block ph: point under the reading line moved 0.0 px, its top edge 0.0 px
+200: scrollY zh 200 > en 200 > zh 200 | block set set-end: point under the reading line moved 0.0 px, its top edge 0.0 px
+300: scrollY zh 300 > en 300 > zh 300 | block pk-label: point under the reading line moved 0.0 px, its top edge 0.0 px
+400: scrollY zh 400 > en 400 > zh 400 | block tile: point under the reading line moved 0.0 px, its top edge 0.0 px
+500: scrollY zh 500 > en 500 > zh 500 | reading line is on a gap
+600: scrollY zh 600 > en 600 > zh 600 | reading line is on a gap
+700: scrollY zh 700 > en 700 > zh 700 | block notice: point under the reading line moved 0.0 px, its top edge 0.0 px
+800: scrollY zh 800 > en 800 > zh 800 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+900: scrollY zh 900 > en 900 > zh 900 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1000: scrollY zh 1000 > en 1000 > zh 1000 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1100: scrollY zh 1100 > en 1100 > zh 1100 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1200: scrollY zh 1200 > en 1200 > zh 1200 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1300: scrollY zh 1300 > en 1300 > zh 1300 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1400: scrollY zh 1400 > en 1400 > zh 1400 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1500: scrollY zh 1500 > en 1500 > zh 1500 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1600: scrollY zh 1600 > en 1600 > zh 1600 | reading line is on a gap
+1700: scrollY zh 1700 > en 1700 > zh 1700 | reading line is on a gap
+1800: scrollY zh 1800 > en 1800 > zh 1800 | block notice: point under the reading line moved 0.0 px, its top edge 0.0 px
+1900: scrollY zh 1900 > en 1900 > zh 1900 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2000: scrollY zh 2000 > en 2000 > zh 2000 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2100: scrollY zh 2100 > en 2100 > zh 2100 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2200: scrollY zh 2200 > en 2200 > zh 2200 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2300: scrollY zh 2300 > en 2300 > zh 2300 | reading line is on a gap
+2400: scrollY zh 2400 > en 2400 > zh 2400 | reading line is on a gap
+2500: scrollY zh 2500 > en 2500 > zh 2500 | block notice: point under the reading line moved 0.0 px, its top edge 0.0 px
+2600: scrollY zh 2600 > en 2600 > zh 2600 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2700: scrollY zh 2700 > en 2700 > zh 2700 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2800: scrollY zh 2800 > en 2800 > zh 2800 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2900: scrollY zh 2900 > en 2900 > zh 2900 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3000: scrollY zh 3000 > en 3000 > zh 3000 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3100: scrollY zh 3100 > en 3100 > zh 3100 | reading line is on a gap
+3200: scrollY zh 3200 > en 3200 > zh 3200 | reading line is on a gap
+3300: scrollY zh 3300 > en 3300 > zh 3300 | block notice: point under the reading line moved 0.1 px, its top edge 0.0 px
+3400: scrollY zh 3400 > en 3400 > zh 3400 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3500: scrollY zh 3500 > en 3500 > zh 3500 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3600: scrollY zh 3600 > en 3600 > zh 3600 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3700: scrollY zh 3700 > en 3700 > zh 3700 | block nt: point under the reading line moved 0.2 px, its top edge 0.0 px
+3800: scrollY zh 3800 > en 3800 > zh 3800 | reading line is on a gap
+3900: scrollY zh 3900 > en 3900 > zh 3900 | reading line is on a gap
+4000: scrollY zh 4000 > en 4001 > zh 4000 | block nt: point under the reading line moved 1.0 px, its top edge 1.0 px
+4100: scrollY zh 4100 > en 4107 > zh 4100 | reading line is on a gap
+4200: scrollY zh 4200 > en 4212 > zh 4200 | reading line is on a gap
+4300: scrollY zh 4300 > en 4317 > zh 4300 | reading line is on a gap
+
+== sizes, targets, gutters, overflow at five widths
+ 320 zh js | scrollWidth 320 ok | height 4790 | text runs 325 under 11 px: 170 10.7:单发了吗？@zh 9.1:↪ 已转发@zh 10.7:上次那张单，可以再发一次吗@zh 9.1:0:47@dur 10.7:语音：新地址和价钱都在里面@zh | targets under 44: 6 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 | past the right edge: 0  | outside the gutter: 2 cta-trial cta-compact 226-310 invoice-sheet 77-307 
+ 320 zh rm | scrollWidth 320 ok | height 4790 | text runs 331 under 11 px: 170 10.7:单发了吗？@zh 9.1:↪ 已转发@zh 10.7:上次那张单，可以再发一次吗@zh 9.1:0:47@dur 10.7:语音：新地址和价钱都在里面@zh | targets under 44: 6 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 | past the right edge: 0  | outside the gutter: 2 cta-trial cta-compact 226-310 invoice-sheet 77-307 
+ 320 en js | scrollWidth 320 ok | height 5087 | text runs 324 under 11 px: 169 10.7:Bill sent yet?@en 9.1:↪ Forwarded@en 10.7:Can you resend@en 9.1:0:47@dur 10.7:Voice note: ne@en | targets under 44: 6 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 | past the right edge: 0  | outside the gutter: 2 cta-trial cta-compact 226-310 invoice-sheet 77-307 
+ 320 en rm | scrollWidth 320 ok | height 5087 | text runs 330 under 11 px: 169 10.7:Bill sent yet?@en 9.1:↪ Forwarded@en 10.7:Can you resend@en 9.1:0:47@dur 10.7:Voice note: ne@en | targets under 44: 6 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 mcol 41x92 | past the right edge: 0  | outside the gutter: 2 cta-trial cta-compact 226-310 invoice-sheet 77-307 
+ 390 zh js | scrollWidth 390 ok | height 5079 | text runs 326 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  | first screen: cta 575-631 prices 608-620 sheet 181-473 "Basic RM 199/年 · Pro RM 399/年"
+ 390 zh rm | scrollWidth 390 ok | height 5079 | text runs 331 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  | first screen: cta 575-631 prices 608-620 sheet 181-473 "Basic RM 199/年 · Pro RM 399/年"
+ 390 en js | scrollWidth 390 ok | height 5238 | text runs 325 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  | first screen: cta 575-631 prices 608-620 sheet 181-473 "Basic RM 199/year · Pro RM 399/year"
+ 390 en rm | scrollWidth 390 ok | height 5238 | text runs 330 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  | first screen: cta 575-631 prices 608-620 sheet 181-473 "Basic RM 199/year · Pro RM 399/year"
+ 768 zh js | scrollWidth 768 ok | height 5040 | text runs 326 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+ 768 zh rm | scrollWidth 768 ok | height 5040 | text runs 331 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+ 768 en js | scrollWidth 768 ok | height 5141 | text runs 325 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+ 768 en rm | scrollWidth 768 ok | height 5141 | text runs 330 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1280 zh js | scrollWidth 1280 ok | height 5141 | text runs 325 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1280 zh rm | scrollWidth 1280 ok | height 5141 | text runs 330 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1280 en js | scrollWidth 1280 ok | height 5161 | text runs 324 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1280 en rm | scrollWidth 1280 ok | height 5161 | text runs 329 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1440 zh js | scrollWidth 1440 ok | height 5141 | text runs 326 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1440 zh rm | scrollWidth 1440 ok | height 5141 | text runs 331 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1440 en js | scrollWidth 1440 ok | height 5161 | text runs 325 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+1440 en rm | scrollWidth 1440 ok | height 5161 | text runs 330 under 11 px: 0  | targets under 44: 0  | past the right edge: 0  | outside the gutter: 0  
+console and page errors over all 20 runs: []
+
+== the last line: does anything in view move when it is cut
+390 zh | height 5079 > 5079 | footer top 4693 > 4693 | moved 0 px | "轮到你回了。" > "12:19:33你在这页待了 1 秒。轮到你回了。"
+390 en | height 5217 > 5238 | footer top 4831 > 4852 | moved 21 px | "Your turn to reply." > "12:19:35You have been on this page for 1 s. Your turn to reply."
+900 zh | height 5190 > 5190 | footer top 4934 > 4934 | moved 0 px | "轮到你回了。" > "12:19:38 你在这页待了 1 秒。轮到你回了。"
+900 en | height 5237 > 5237 | footer top 4981 > 4981 | moved 0 px | "Your turn to reply." > "12:19:40 You have been on this page for 1 s. Your turn to reply."
+1280 zh | height 5141 > 5141 | footer top 4885 > 4885 | moved 0 px | "轮到你回了。" > "12:19:42 你在这页待了 1 秒。轮到你回了。"
+1280 en | height 5161 > 5161 | footer top 4905 > 4905 | moved 0 px | "Your turn to reply." > "12:19:44 You have been on this page for 1 s. Your turn to reply."
+1440 zh | height 5141 > 5141 | footer top 4885 > 4885 | moved 0 px | "轮到你回了。" > "12:19:47 你在这页待了 1 秒。轮到你回了。"
+1440 en | height 5161 > 5161 | footer top 4905 > 4905 | moved 0 px | "Your turn to reply." > "12:19:49 You have been on this page for 1 s. Your turn to reply."
+390x844 en | frame before the cut: line 828 to 864, composer top 874, footer top 956, height 5217 | frame of the cut (scrolled 0 px): line 828 to 885, composer top 895, footer top 977, height 5238 | screen height 844 | composer moved on screen by 21 px, and is below the edge
+390x844 zh | frame before the cut: line 844 to 879, composer top 889, footer top 971, height 5079 | frame of the cut (scrolled 0 px): line 844 to 879, composer top 889, footer top 971, height 5079 | screen height 844 | composer moved on screen by 0 px, and is below the edge
+1280x800 en | frame before the cut: line 784 to 878, composer top 784, footer top 918, height 5161 | frame of the cut (scrolled 0 px): line 784 to 878, composer top 784, footer top 918, height 5161 | screen height 800 | composer moved on screen by 0 px, and is IN VIEW
+
+== code checks
+-- opacity, alpha, fades (every hit is listed)
+42:8 0' fill='none' stroke='%23fff' stroke-opacity='.045' stroke-width='1.4' str
+173:n:absolute;top:0;background:var(--tick);opacity:.6;transform-origin:50% 0;cli
+174:tr[data-c="g"]{background:var(--streak);opacity:.42}
+175: .tr[data-c="s"]{background:var(--soft);opacity:.42}
+207:argin-top:-.17em;background:var(--tick);opacity:.6;transform-origin:0 50%;cli
+208:tr[data-c="g"]{background:var(--streak);opacity:.42}
+-- 4-digit hex colours: 0 lines match the loose pattern; listed:
+-- transition / animation / keyframes
+21:      requestAnimationFrame(function(){window.SIS_T0=performance.now()})
+57:.boot *,.boot *::before,.boot *::after{transition:none!important}
+357::absolute;inset:0;display:block;transform-style:preserve-3d;transition:transform 200ms linear}
+396::absolute;inset:0;display:block;transform-style:preserve-3d;transition:transform 200ms linear}
+441:.old-file .tile-in{transition:transform 160ms linear 150ms}
+608:  *,*::before,*::after{transition:none!important}
+1077:/* ---------- the timeline: one master clock, Web Animations seeked from it ---------- */
+1098:);if(t>=me.dur){me.finish();return}me.seek(t);me.raf=requestAnimationFrame(step)}
+1099:  me.raf=requestAnimationFrame(step);
+1101:TL.prototype.pause=function(){this.playing=false;cancelAnimationFrame(this.raf)};
+1589:function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
+1670:requestAnimationFrame(function(){requestAnimationFrame(function(){BOOT=false;H.classList.remove('bo
+1678:  if(window.SIS_T0)arm();else requestAnimationFrame(arm);
+-- .animate( calls: 2 lines; requestAnimationFrame: 6 lines; canvas: 0
+-- transparent: 17 occurrences (borders and dash gradients)
+-- limit 3:
+   (end; exit 1)
+-- limit 4:
+   (end; exit 1)
+-- payment words:
+   (end)
+-- limit 5:
+42:  background-image:url("data:image/svg+xml,%3Csvg xml
+650:th="100%" height="100%" fill="url(#doodle)"/>
+651:="100%" height="100%" filter="url(#grain)"/>
+873:><span class="fnm">receipt-aug.jpg</span><span class="ok"><span 
+874:<span class="fnm">screenshot-2.png</span><span class="ok"><span 
+876:ne"><span class="fnm">IMG_2291.jpg</span><span class="ok"><span 
+-- limit 6 (long dashes):
+   (end; exit 1)
+-- limit 9:
+187:.wave{display:flex;align-items:cen
+188:.wave i{display:block;width:.19em;
+189:.wave i:nth-child(3n){height:90%}.
+189: i:nth-child(4n+1){height:60%}.wave i:nth-child(5n+2){height:100
+189:%}.wave i:nth-child(7n){height:25%}
+190:.wave .dur{margin-left:.6em;font-s
+1345:  railState('playing');s1.play(from||0);
+1401:  if(HOLD)tl.seek(0);else tl.play(0);
+1683:ll();s1=buildS1(true);if(pl)s1.play(Math.min(performance.now()-t0,
+-- prices:
+      2 RM 1,200
+      1 RM 1,800
+      1 RM 12,400
+      1 RM 199
+      2 RM 199/year
+      3 RM 199/年
+      4 RM 2,700
+      1 RM 3,000
+      1 RM 3,150
+      1 RM 399
+      2 RM 399/year
+      3 RM 399/年
+      1 RM 9,250
+      1 RM 900
+-- external requests:
+      1 997:href="https://sistudio.app/terms-of-service"
+      1 997:href="https://sistudio.app/privacy-policy"
+      1 997:href="https://sistudio.app/cookie-policy"
+      1 997:href="https://sistudio.app/auth/sign-in"
+      1 996:href="https://sistudio.app/contact"
+      1 995:href="https://sistudio.app/trust"
+      1 986:href="https://sistudio.app/auth/sign-up"
+      1 976:href="https://sistudio.app/auth/sign-up"
+      1 954:href="https://sistudio.app/auth/sign-up"
+      1 725:href="https://sistudio.app/auth/sign-up"
+      1 620:href="https://sistudio.app/auth/sign-up"
+      1 619:href="https://sistudio.app/auth/sign-in"
+      1 27:href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=Kanit:ital,wght@0,700;1,700&family=Noto+Sans+SC:wght@400..700&display=swap"
+-- listeners that could trap scroll:
+1375:  e.preventDefault();rail.value=clamp(n,0,S1);rail.dispatc
+1658:  e.preventDefault();
+
+capture run finished 2026-11-20 12:20:03; build modified 2026-11-20 12:02:21

@@ -56,11 +56,20 @@ ul,ol{list-style:none}
 .tn{font-variant-numeric:tabular-nums}
 .boot *,.boot *::before,.boot *::after{transition:none!important}
 
-/* ---------- language: a cut. Stacked containers keep the height of the longer language ---------- */
-html[data-lang="zh"] .en,html[data-lang="en"] .zh{display:none}
+/* ---------- language: a cut. Stacked containers keep the height of the longer language.
+   English is on when the script says so (data-lang) or, with scripts off, when the switch in the top bar is checked:
+   the switch is a native checkbox, and these rules read it with :has(). A browser without :has() gets the last rule. ---------- */
+html[data-lang="zh"]:not(:has(#lang-en:checked)) .en{display:none}
+html:is([data-lang="en"],:has(#lang-en:checked)) .zh{display:none}
 .stack{display:grid}
 .stack>.zh,.stack>.en{grid-area:1/1;display:block}
-html[data-lang="zh"] .stack>.en,html[data-lang="en"] .stack>.zh{display:block;visibility:hidden}
+html[data-lang="zh"]:not(:has(#lang-en:checked)) .stack>.en{display:block;visibility:hidden}
+html:is([data-lang="en"],:has(#lang-en:checked)) .stack>.zh{display:block;visibility:hidden}
+@supports not selector(:has(*)){
+  html[data-lang="zh"] .en{display:none}
+  html[data-lang="zh"] .stack>.en{display:block;visibility:hidden}
+  html[data-lang="zh"] .lt-zh{color:var(--text)}
+}
 .zh,.lt-zh{font-weight:500}
 h1 .zh,h2 .zh{font-weight:700}
 .hero-sub .zh,.sample-note .zh,.pk-hint .zh,.pk-label>span .zh,.hint .zh,.notice .zh,.plan ul.zh,.price>span .zh,footer .zh,.smp .zh{font-weight:400}
@@ -79,13 +88,15 @@ h1 .zh,h2 .zh{font-weight:700}
 .topbar{position:sticky;top:0;z-index:100;background:var(--night);border-bottom:1px solid var(--bubble)}
 .tb{height:52px;display:flex;align-items:center;gap:8px;padding:0 16px;max-width:1152px;margin:0 auto}
 .wordmark{margin-right:auto;min-height:44px;min-width:44px;display:flex;align-items:center;font:800 21px/1 var(--f-page);letter-spacing:.03em;text-decoration:none}
-.lang-toggle{height:44px;padding:6px 0;background:none;border:0;cursor:pointer}
+.lang-toggle{position:relative;display:block;height:44px;padding:6px 0;cursor:pointer}
+.lang-toggle input{position:absolute;inset:0;z-index:1;width:100%;height:100%;margin:0;padding:0;-webkit-appearance:none;appearance:none;background:none;border:0;border-radius:3px;cursor:pointer}
 .lt-track{position:relative;display:grid;grid-template-columns:36px 36px;width:72px;height:32px;align-items:center;justify-items:center;box-shadow:inset 0 0 0 1px var(--meta);border-radius:3px;font:600 12px/1 var(--f-page)}
 .lt-thumb{position:absolute;left:2px;top:2px;width:32px;height:28px;background:var(--text);border-radius:2px}
-html[data-lang="en"] .lt-thumb{transform:translateX(36px)}
+html:is([data-lang="en"],:has(#lang-en:checked)) .lt-thumb{transform:translateX(36px)}
 .lt-zh,.lt-en{position:relative;color:#95ACB9;mix-blend-mode:difference}
-html[data-lang="zh"] .lt-zh,html[data-lang="en"] .lt-en{color:var(--text)}
-.lang-toggle:active .lt-track{transform:translateY(1px)}
+html[data-lang="zh"]:not(:has(#lang-en:checked)) .lt-zh{color:var(--text)}
+html:is([data-lang="en"],:has(#lang-en:checked)) .lt-en{color:var(--text)}
+.lang-toggle input:active+.lt-track{transform:translateY(1px)}
 .signin{min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;padding:0 2px;font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
 .cta-trial{display:flex;align-items:center;justify-content:center;height:52px;background:var(--t-green);color:var(--marker);font:600 17px/1 var(--f-page);text-decoration:none;white-space:nowrap;border-radius:3px;box-shadow:inset 0 0 0 2px var(--marker)}
 .cta-trial:active{transform:translateY(1px);box-shadow:inset 0 0 0 1px var(--marker)}
@@ -150,9 +161,10 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .wall{position:absolute;inset:0;width:100%;height:100%}
 .mover{position:absolute;left:0;right:0;bottom:0;height:177.8em}
 .strip{position:absolute;inset:0}
-/* the smear. While the band runs a bubble is not drawn at all: no text, no rounded card. In its place stands its drag:
-   a square-ended head whose trailing edge breaks into tines, and three to five thin bars along the travel, uneven in
-   width, each tapered at its trailing end. Fixed transparency, cut on with the first step and cut off on the last. */
+/* the smear. While the band runs a bubble is not drawn at all: no text, no rounded card, no slab. In its place stands its
+   drag: separate tines of uneven width, start and length, a few scraps of its leading edge no deeper than 1.2em, and three
+   to five thin bars along the travel, some starting ahead of the edge, each tapered at its trailing end. Fixed
+   transparency, cut on with the first step and cut off on the last. */
 .smear{position:absolute;left:0;right:0;top:0;height:calc(100% + var(--tl,6em));font-size:.76923em;visibility:hidden;pointer-events:none}
 .thread-band.running .strip .bubble{visibility:hidden}
 .thread-band.running .strip .smear{visibility:visible}
@@ -167,8 +179,8 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .set-start{top:0;padding-bottom:.6em}
 .set-end{bottom:0;padding-bottom:.2em}
 .pb{position:absolute;left:0;right:0;display:flex;flex-direction:column}
-.bubble{position:relative;flex:none;width:fit-content;max-width:20.5em;margin-left:.92em;align-self:flex-start;padding:.38em .7em;background:var(--bubble);color:var(--text);border-radius:.7em;font:400 1.3em/1.35 var(--f-ui);white-space:nowrap}
-.bubble.out{background:var(--bubble-out);align-self:flex-end;margin-left:0;margin-right:.92em}
+.bubble{position:relative;flex:none;width:fit-content;max-width:20.5em;margin-left:max(16px,1.231em);align-self:flex-start;padding:.38em .7em;background:var(--bubble);color:var(--text);border-radius:.7em;font:400 1.3em/1.35 var(--f-ui);white-space:nowrap}
+.bubble.out{background:var(--bubble-out);align-self:flex-end;margin-left:0;margin-right:max(16px,1.231em)}
 .bubble .fw{display:block;font-style:italic;font-size:.85em;color:var(--meta)}
 .bubble .mt{margin-left:.6em;font-size:.85em;color:var(--soft);font-variant-numeric:tabular-nums}
 .tk-svg{display:inline-block;vertical-align:-.05em;width:1.35em;height:.8em;fill:none;stroke:var(--soft);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -184,8 +196,8 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .beam{position:absolute;inset:0;background:#0F394B;mix-blend-mode:screen;clip-path:polygon(56% 0,100% 0,100% 36%,22% 100%,0 100%,0 80%);pointer-events:none}
 .hang-layer{position:absolute;inset:0;pointer-events:none}
 .hang{position:absolute;visibility:hidden;margin:0}
-.hang.in{left:.92em}
-.hang.out{right:.92em;margin:0}
+.hang.in{left:max(16px,1.231em)}
+.hang.out{right:max(16px,1.231em);margin:0}
 .hang .frag{font-weight:600}
 .hang .frag.amt{font-variant-numeric:tabular-nums}
 .catch-layer{position:absolute;inset:0;z-index:6;pointer-events:none}
@@ -365,7 +377,6 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .doc-bubble[data-state="empty"]{background:none;outline:1px dashed var(--meta);outline-offset:-1px}
 .doc-bubble[data-state="empty"]::before,.doc-bubble[data-state="empty"] .file-bar{visibility:hidden}
 .doc-bubble[data-state="empty"] .empty-label{display:block}
-.doc-bubble[data-state="file"] .st{visibility:hidden}
 .empty-label .l-draft{display:none;letter-spacing:.04em}
 /* the finished frame: the leaf is in his message. Script moves it back to the stub and plays it in. */
 .invoice-sheet.leaf{left:0;top:0;height:36.2em;z-index:4;transform:translate(7.2em,24.9em)}
@@ -522,9 +533,11 @@ footer a{color:var(--text);text-underline-offset:3px}
 .legal a{min-height:44px;min-width:44px;display:inline-flex;align-items:center}
 .support-whatsapp a,.trust-line a{display:flex;width:fit-content;min-width:44px;min-height:44px;align-items:center}
 
-/* ---------- 900 and up. The first screen: the claim on the left, the stage on the right with room for the thread to run,
-   and the transport and both pickers on one console under the sheet. Below it the thread is a 480 px lane left of
-   centre and the page's own notes stand in the right margin, beside the thing they describe. No sequence changes its timing. ---------- */
+/* ---------- 900 and up. Two columns all the way down: the page's own voice on the left (the claim and the trial button,
+   then the notes), the thread on the right (the stage, then a 480 px lane that ends on the stage's right edge). The sheet
+   and the leaf that lands in his reply share their left edge. The transport and both pickers are one console under the
+   stage. Each note stands at the height of the thing it is about, on a perforated leader that runs across to the lane.
+   No sequence changes its timing. ---------- */
 @media (min-width:900px){
   .ep{padding:46px 32px 40px}
   .col{max-width:1120px}
@@ -535,6 +548,7 @@ footer a{color:var(--text);text-underline-offset:3px}
   #hero .hero-cta{grid-column:1;grid-row:4;margin-top:28px;max-width:390px;height:60px}
   .stage-wrap{grid-column:2;grid-row:1 / 6;margin-top:0}
   .hero-stage{margin:0;font-size:13px}
+  .hero-stage .invoice-sheet{right:1.5em}
   .stage-caption>span{font-size:14px}
   .hero-claim h1{font-size:clamp(35px,3.9vw,50px);line-height:1.16;font-variation-settings:"opsz" 40}
   .hero-claim h1 .en{font-size:clamp(24px,calc(3.4vw - 5.5px),37px);line-height:1.3;padding-top:8px;font-variation-settings:"opsz" 37}
@@ -544,25 +558,43 @@ footer a{color:var(--text);text-underline-offset:3px}
   .console .cut-rail{grid-column:1 / -1;max-width:390px;margin-top:0}
   .console .picker-client,.console .picker-rate{margin-top:0}
   .sample-note{grid-column:1 / -1;grid-row:7}
-  .tc{display:grid;grid-template-columns:minmax(0,480px) minmax(0,1fr);column-gap:72px;align-items:start}
-  .tc>*{grid-column:1}
-  .tc>h2{position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;grid-column:2;grid-row:1 / span 2;align-self:start;font:800 30px/1.2 var(--f-page);font-variation-settings:"opsz" 30;letter-spacing:-.01em}
-  .tc.nh>h2{grid-row:1}
-  .tc>.notice{grid-column:2;grid-row:3 / span 8;position:sticky;top:84px;width:auto;max-width:27rem;margin:6px 0 0;padding:14px 0 0;border-radius:0;font-size:16px;line-height:1.65;background:repeating-linear-gradient(to right,var(--meta) 0 4px,transparent 4px 8px) top / 100% 1px no-repeat}
-  .tc.nh>.notice{grid-row:2 / span 8}
-  .tc>.notice .ck{display:block;margin:0 0 6px;font-size:13px}
-  .date-chip{left:calc(50% - min(1120px,100% - 64px) / 2 + 240px)}
+  .tc{--gap:clamp(44px,5.6vw,72px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);column-gap:var(--gap);align-items:start}
+  .tc>*{grid-column:2}
+  /* the notes: one grid in the margin, in the row of the attachment. Its first track is the distance down to the first
+     thing a note is about; each later track is at least the distance to the next, and grows if a note runs long. */
+  .tc>.notice{grid-column:1;grid-row:3;display:grid;grid-template-rows:var(--rows,0 auto);width:auto;max-width:none;margin:0;padding:0;border-radius:0;background:none;font-size:16px;line-height:1.65}
+  .tc.nh>.notice{grid-row:2}
+  .nt{position:relative;display:block;padding:11px max(0px,100% - 28rem) 14px 0}
+  .nt::before,.tail>.elapsed::before{content:"";position:absolute;left:0;right:calc(-1 * var(--gap));top:0;height:1px;background:repeating-linear-gradient(to right,var(--meta) 0 4px,transparent 4px 8px)}
+  .nt:nth-child(1){grid-row:2}.nt:nth-child(2){grid-row:3}.nt:nth-child(3){grid-row:4}
+  .nt .ck,.tail>.elapsed .ck{display:block;margin:0 0 4px;font-size:13px}
+  /* the last line stands beside the composer it points at */
+  .tail{display:contents}
+  .tail>.composer{grid-column:2;margin-top:26px}
+  .tail>.elapsed{grid-column:1;grid-row:3;position:relative;width:auto;max-width:none;margin:26px 0 0;min-height:90px;padding:11px max(0px,100% - 28rem) 0 0;border-radius:0;background:none;font-size:16px;line-height:1.65}
+  .nt:last-child{padding-bottom:0}
+  #reports .nt::before,#import .nt::before,#pro .nt::before{right:calc(-1 * var(--gap) - 12px)}
+  /* measured from the top of the attachment's row: the stub, the reply the leaf lands in, its file bar; the bars, the
+     ranking, the CSV; the files, the card, the saved state; the plate, the scope line, the token button; the prices */
+  #story .notice{--rows:94px minmax(241px,auto) minmax(514px,auto) auto}
+  #reports .notice{--rows:92px minmax(306px,auto) minmax(118px,auto) auto}
+  #import .notice{--rows:43px minmax(142px,auto) minmax(306px,auto) auto}
+  #pro .notice{--rows:40px minmax(251px,auto) minmax(111px,auto) auto}
+  #pricing .notice{--rows:40px auto}
+  .date-chip{left:calc(50% + min(1120px,100% - 64px) / 2 - 240px)}
   .stage{font-size:calc(456px / 33.4)}
   .story-stage{font-size:calc(480px / 35.8)}
   .msg{font-size:15.5px}
   .plan{padding:24px 14px 14px}
   .plan li,.plan .cta-trial,.plan .cta-trial .en{font-size:14px}
   footer{padding:30px 32px 56px}
-  footer .col{display:grid;grid-template-columns:minmax(0,480px) minmax(0,1fr);column-gap:72px;align-items:start}
-  footer .trust-line{grid-column:1;grid-row:1 / span 2}
-  footer .support-whatsapp,footer .legal{grid-column:2;margin-top:0}
+  footer .col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);column-gap:clamp(44px,5.6vw,72px);align-items:start}
+  footer .trust-line{grid-column:2;grid-row:1 / span 2}
+  footer .support-whatsapp,footer .legal{grid-column:1;margin-top:0}
 }
 @media (min-width:1120px){
+  .tc>.notice,.tail>.elapsed{font-size:18px;line-height:1.6}
+  .tail>.elapsed{min-height:94px}
   .console{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1.2fr)}
   .console .cut-rail{grid-column:auto;margin-top:18px}
 }
@@ -583,9 +615,7 @@ footer a{color:var(--text);text-underline-offset:3px}
 <header class="topbar">
   <div class="tb">
     <a class="wordmark" href="#top" aria-label="SIS">SIS</a>
-    <button class="lang-toggle" type="button" role="switch" aria-checked="false" aria-label="English">
-      <span class="lt-track"><span class="lt-thumb"></span><span class="lt-zh">中文</span><span class="lt-en">EN</span></span>
-    </button>
+    <label class="lang-toggle"><input type="checkbox" id="lang-en" role="switch" aria-label="English" autocomplete="off"><span class="lt-track"><span class="lt-thumb"></span><span class="lt-zh">中文</span><span class="lt-en">EN</span></span></label>
     <a class="signin" href="https://sistudio.app/auth/sign-in"><span class="zh">登录</span><span class="en">Sign in</span></a>
     <a class="cta-trial cta-compact" href="https://sistudio.app/auth/sign-up"><span class="zh">免费试用</span><span class="en">Free trial</span></a>
   </div>
@@ -779,7 +809,7 @@ footer a{color:var(--text);text-underline-offset:3px}
         <div class="machine-line"><span class="ml"><i>NO</i><b>2026014</b><i>DATE</i><b>16112026</b><i>SEN</i><b>270000</b></span></div>
       </article>
     </div>
-    <p class="notice"><span class="ck" data-stamp></span><span class="zh">撕下来的这一张就是 PDF。发给客户这一步，是你在自己的聊天里做的：那两个勾是聊天软件的，不是 SIS 的。存根留在客户页，跟之前的单排在一起；公司客户和个人客户分开放。</span><span class="en">This sheet tears off as its PDF. Sending it is something you do in your own chat: those ticks belong to your chat app, not to SIS. Its stub stays on your client's page, next to earlier invoices; company and individual clients are kept apart.</span></p>
+    <p class="notice"><span class="nt"><span class="ck" data-stamp></span><span class="zh">存根留在客户页，跟之前的单排在一起；公司客户和个人客户分开放。</span><span class="en">The stub stays on your client's page, next to earlier invoices; company and individual clients are kept apart. </span></span><span class="nt"><span class="zh">撕下来的这一张就是 PDF。</span><span class="en">The sheet that tears off is its PDF. </span></span><span class="nt"><span class="zh">发给客户这一步，是你在自己的聊天里做的：那两个勾是聊天软件的，不是 SIS 的。</span><span class="en">Sending it is something you do in your own chat: those ticks belong to your chat app, not to SIS.</span></span></p>
   </div>
 </section>
 
@@ -820,10 +850,10 @@ footer a{color:var(--text);text-underline-offset:3px}
       <div class="file-bar">
         <span class="fk" aria-hidden="true">CSV</span>
         <span><span class="fn tn csv-name">sis-report-2026-11.csv</span><span class="fm"><span class="zh">CSV · 给会计</span><span class="en">CSV · for your accountant</span></span></span>
-        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn" data-clock>23:41</span></span>
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发出</span><span class="en">Sent</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
       </div>
     </div>
-    <p class="notice"><span class="ck" data-stamp></span><span class="zh">销售、开销、净利，按月看；点一个月，看那个月。客户有排名。要交给会计，导出 CSV。</span><span class="en">Sales, expenses and net profit, month by month; tap a month to read it. Clients are ranked. For your accountant, export a CSV.</span></p>
+    <p class="notice"><span class="nt"><span class="ck" data-stamp></span><span class="zh">销售、开销、净利，按月看；点一个月，看那个月。</span><span class="en">Sales, expenses and net profit, month by month; tap a month to read it. </span></span><span class="nt"><span class="zh">客户有排名。</span><span class="en">Clients are ranked. </span></span><span class="nt"><span class="zh">要交给会计，导出 CSV。</span><span class="en">For your accountant, export a CSV.</span></span></p>
   </div>
 </section>
 
@@ -860,10 +890,10 @@ footer a{color:var(--text);text-underline-offset:3px}
         <button class="act approve" type="button"><span class="l-go"><span class="zh">核对无误，保存</span><span class="en">Looks right. Save.</span></span><span class="l-undo"><span class="zh">撤销</span><span class="en">Undo</span></span></button>
       </div>
       <div class="file-bar">
-        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn" data-clock>23:41</span></span>
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发出</span><span class="en">Sent</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
       </div>
     </div>
-    <p class="notice"><span class="ck" data-stamp></span><span class="zh">旧发票、收据、照片都能上传：PDF、JPG、PNG，一批最多 50 个。AI 读出客户资料；你核对并批准之前，什么都不保存。</span><span class="en">Upload old invoices, receipts or photos: PDF, JPG, PNG, up to 50 a batch. AI reads client details; nothing is saved until you review and approve.</span></p>
+    <p class="notice"><span class="nt"><span class="ck" data-stamp></span><span class="zh">旧发票、收据、照片都能上传：PDF、JPG、PNG，一批最多 50 个。</span><span class="en">Upload old invoices, receipts or photos: PDF, JPG, PNG, up to 50 a batch. </span></span><span class="nt"><span class="zh">AI 读出客户资料。</span><span class="en">AI reads client details. </span></span><span class="nt"><span class="zh">你核对并批准之前，什么都不保存。</span><span class="en">Nothing is saved until you review and approve.</span></span></p>
   </div>
 </section>
 
@@ -886,10 +916,10 @@ footer a{color:var(--text);text-underline-offset:3px}
         <button class="act token-btn" type="button"><span class="l-rev"><span class="zh">撤销令牌</span><span class="en">Revoke token</span></span><span class="l-new"><span class="zh">新建令牌</span><span class="en">Create token</span></span></button>
       </div>
       <div class="file-bar">
-        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn" data-clock>23:41</span></span>
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发出</span><span class="en">Sent</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
       </div>
     </div>
-    <p class="notice"><span class="ck" data-stamp></span><span class="zh">Pro 可以接上你自己的 AI，走 API / MCP。令牌由获授权的工作室成员创建，随时可以撤销。AI 只在获准的工作室范围内做事。</span><span class="en">On Pro, connect your own AI through API / MCP. Authorised studio members create each token and can revoke it at any time. Your AI only works inside its permitted studio scope.</span></p>
+    <p class="notice"><span class="nt"><span class="ck" data-stamp></span><span class="zh">Pro 可以接上你自己的 AI，走 API / MCP。</span><span class="en">On Pro, connect your own AI through API / MCP. </span></span><span class="nt"><span class="zh">AI 只在获准的工作室范围内做事。</span><span class="en">Your AI only works inside its permitted studio scope. </span></span><span class="nt"><span class="zh">令牌由获授权的工作室成员创建，随时可以撤销。</span><span class="en">Authorised studio members create each token and can revoke it at any time.</span></span></p>
   </div>
 </section>
 
@@ -947,10 +977,10 @@ footer a{color:var(--text);text-underline-offset:3px}
         </article>
       </div>
       <div class="file-bar">
-        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn" data-clock>23:41</span></span>
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发出</span><span class="en">Sent</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
       </div>
     </div>
-    <p class="notice"><span class="ck" data-stamp></span><span class="zh">两个方案都先免费试用 7 天。</span><span class="en">Both plans start with a 7-day free trial.</span></p>
+    <p class="notice"><span class="nt"><span class="ck" data-stamp></span><span class="zh">两个方案都先免费试用 7 天。</span><span class="en">Both plans start with a 7-day free trial.</span></span></p>
     <div class="tail">
       <p class="notice elapsed"><span class="zh">轮到你回了。</span><span class="en">Your turn to reply.</span></p>
       <a class="composer" href="https://sistudio.app/auth/sign-up"><span class="composer-field"><span class="zh">开始 7 天免费试用</span><span class="en">Start 7-day free trial</span></span><span class="composer-send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h15M13 5.5l6.5 6.5-6.5 6.5"/></svg></span></a>
@@ -1062,7 +1092,7 @@ TL.prototype.seek=function(t){
   for(var f=0;f<this.fns.length;f++)this.fns[f](t);
 };
 TL.prototype.play=function(from){
-  var me=this,t0=performance.now()-(from||0);me.playing=true;
+  var me=this,t0=performance.now()-(from||0);me.playing=true;me.t0=t0;
   me.seek(from||0);
   /* the clock never runs backwards: a frame stamped before play() was called holds the frame already shown */
   function step(now){if(!me.playing)return;var t=Math.max(now-t0,me.t);if(t>=me.dur){me.finish();return}me.seek(t);me.raf=requestAnimationFrame(step)}
@@ -1176,24 +1206,36 @@ function bubbleHTML(k,zh,en){
   if(k==='f')return '<span class="fw">'+B('↪ 已转发','↪ Forwarded')+'</span><p>'+B(zh,en)+'</p>';
   return '<p>'+B(zh,en)+'</p>';
 }
-/* the smear of one bubble: a square head whose trailing edge breaks into tines, and three to five thin bars along the travel */
+/* the smear of one bubble. There is no slab and no spine. What stands in the bubble's place is a row of separate tines of
+   uneven width (a hair to a ninth of the bubble), each starting at its own height and cut off on a slant at its own
+   length, and here and there a scrap of the leading edge no deeper than 1.2em that joins two of them. Over that, three to
+   five thin bars along the travel, two or three of which start 2 to 4em ahead of the leading edge. */
 function lcg(seed){var v=seed;return function(){v=(v*1103515245+12345)&0x7fffffff;return v/0x7fffffff}}
 function addSmear(bub,k){
-  var r=lcg(k*7919+101),out=bub.classList.contains('out'),tl=5.5+r()*4.5;
+  var r=lcg(k*7919+101),out=bub.classList.contains('out'),tl=5.5+r()*4.5,i;
+  /* Y: below the bubble's own foot by a share of the drag length; G: a share of the bubble's own depth */
   function Y(f){return 'calc(100% - '+(tl*(1-f)).toFixed(2)+'em)'}
-  /* between the tines the trailing edge is torn up into the body, to a different height each time */
-  function V(k){return 'calc((100% - '+tl.toFixed(2)+'em) * '+k.toFixed(2)+')'}
-  var k0=.35+r()*.5,pts=['0 0','100% 0','100% '+V(k0)],x=100,i;
-  for(i=0;i<6&&x>12;i++){
-    var gap=2+r()*10,w=3+r()*12,f=.3+r()*.7,x1=x-gap,x0=Math.max(1,x1-w),k1=.3+r()*.6;
-    pts.push(x1.toFixed(1)+'% '+V(k0),x1.toFixed(1)+'% '+Y(f),x0.toFixed(1)+'% '+Y(f*.5),x0.toFixed(1)+'% '+V(k1));
-    k0=k1;x=x0;
+  function G(g){return 'calc((100% - '+tl.toFixed(2)+'em) * '+Math.min(g,1).toFixed(2)+')'}
+  /* one four-cornered piece hung from the top line of the box; the pieces do not touch unless a scrap joins them */
+  function quad(xa,xb,yt,ya,yb){var A=xa.toFixed(1)+'% ',Z=xb.toFixed(1)+'% ';return [Z+'0',Z+yb,A+ya,A+yt,Z+yt,Z+'0']}
+  /* widths are shares of the bubble; on a short bubble a tine is never thinner than 2 px and gaps open up to match */
+  var WD=[1,6,2,9.5,3.5,1.4,7.5,2.5,5,8],pts=['100% 0'],x=100-r()*5,mn=200/(bub.offsetWidth||200),top0=false;
+  for(i=0;i<12&&x>Math.max(2,mn);i++){
+    var w=Math.max(WD[(i*3+k)%10]*(.75+r()*.5),mn),x0=Math.max(0,x-w),f=.15+r()*.85,sl=f*(.5+r()*.42),shrt=r()<.28,up=r()<.5,g=.6+r()*.4;
+    var top=r()<.55,yt=top?'0':(.3+r()*2.2).toFixed(2)+'em',d=(.5+r()*.7).toFixed(2)+'em',join=r()<.4;
+    pts=pts.concat(quad(x0,x,yt,shrt?G(g*(up?.85:1.15)):Y(up?sl:f),shrt?G(g):Y(up?f:sl)));
+    /* a scrap of the leading edge joins this tine to the one before it only when both start on that edge */
+    if(top&&top0&&join)pts=pts.concat(quad(x-.3,gx+.3,'0',d,d));
+    var gx=x0,gap=Math.max(1.5+r()*r()*13,mn*1.5);
+    top0=top;x=x0-gap;
   }
-  pts.push('0 '+V(k0));
-  var h='<i class="hd" style="clip-path:polygon('+pts.join(',')+')"></i>',nb=3+Math.floor(r()*3),W=[.26,.6,.34,1,.44],OFF=[5,24,44,63,82];
+  pts.push('0 0');
+  var h='<i class="hd" style="clip-path:polygon('+pts.join(',')+')"></i>',nb=3+Math.floor(r()*3),W=[.26,.6,.34,.85,.44],OFF=[5,24,44,63,82];
+  var np=2+Math.floor(r()*2),first=Math.floor(r()*nb),ahead={};
+  for(i=0;i<np;i++)ahead[(first+i*2)%nb]=1;
   for(i=0;i<nb;i++){
-    var wd=W[(i+k)%5],len=7+r()*10.5,off=OFF[i]+(r()-.5)*6,col=(i+k)%4===3?'s':(i+k)%3===(out?0:1)?(out?'b':'g'):(out?'g':'b');
-    h+='<i class="tr" data-c="'+col+'" style="'+(out?'right':'left')+':'+off.toFixed(1)+'%;width:'+wd+'em;height:'+len.toFixed(1)+'em"></i>';
+    var wd=W[(i+k)%5],len=7.6+r()*11,off=OFF[i]+(r()-.5)*6,col=(i+k)%4===3?'s':(i+k)%3===(out?0:1)?(out?'b':'g'):(out?'g':'b'),tp=ahead[i]?-(2+r()*2):0;
+    h+='<i class="tr" data-c="'+col+'" style="'+(out?'right':'left')+':'+off.toFixed(1)+'%;top:'+tp.toFixed(2)+'em;width:'+wd+'em;height:'+len.toFixed(1)+'em"></i>';
   }
   var sm=D.createElement('span');sm.className='smear';sm.setAttribute('aria-hidden','true');sm.style.setProperty('--tl',tl.toFixed(2)+'em');sm.innerHTML=h;
   bub.appendChild(sm);
@@ -1240,7 +1282,7 @@ function buildS1(keepT0){
     buildBand();
     /* 22 steps of 6.4em; the first on the first frame of the run, the last 84 ms before the band is cut back to sharp */
     tl.add(mover,[{transform:'translateY('+TRAVEL+'em)'},{transform:'translateY(0)'}],1,RUN-1,'backwards','steps('+STEPS+', jump-start)');
-    var h1=hanger('in',B('抬头写 ','Bill it to ')+'<span class="frag f-n">'+c.name+'</span>',0,T1-260,T1);
+    var h1=hanger('in',B('抬头写 ','Bill it to ')+'<span class="frag f-n">'+c.name+'</span>',0,1,T1);
     chip(frag(h1,'.f-n',nameEl),nameEl,T1,140,'',c.name);
     if(rows[0]){
       var r0=RATE[ids[0]],h2=hanger('out','<span class="frag f-d">'+B(r0.zh,r0.en)+'</span> <span class="frag amt f-a">'+fmt(r0.amt)+'</span>',1,T2-220,T2);
@@ -1432,26 +1474,42 @@ function latch(key,on){var was=flags[key];flags[key]=on;return was===undefined?(
 /* S4 and S5. Where the stage stands on the screen decides the beat; every threshold is a position, so it runs backwards.
    tear: the leaf slides 7.2em sideways along the perforation, under the thumb (90 px of scroll).
    drop: one hard-stopped translate of 13.6em into his reply, as soon as the landing place is on screen.
-   then the stub turns over, and the ticks come one at a time, each a good thumb's move apart. */
-var forced=null,dropAn=null,UP1='translate(7.2em,11.3em)',DOWN='translate(7.2em,24.9em)';
+   then the stub turns over.
+   The receipt is not tied to the thumb. Its clock starts on the frame the leaf lands: one grey tick and "sent" on that
+   frame, two grey and "delivered" 260 ms later, two blue and "read" at 520 ms, each a cut. Going back above the drop
+   takes the leaf out of the message and all three with it. Where the drop is not played (reduced motion, a page opened
+   below it) the receipt stands at read. */
+var forced=null,dropAn=null,UP1='translate(7.2em,11.3em)',DOWN='translate(7.2em,24.9em)',tick=3,tickT=[],TICK=260;
 function storyBeat(){
   var r=storyStage.getBoundingClientRect(),vh=window.innerHeight,em=r.width/35.8,S=r.top;
-  var SD=Math.max(vh-8-61.1*em,64-6.3*em),SS=Math.min(SD-50,vh-12-66.1*em),d=clamp(vh*.09,56,84);
-  return {tear:clamp((SD+114-S)/90,0,1),drop:S<=SD,filed:S<=SD-30,tick:S<=SS-2*d?3:S<=SS-d?2:S<=SS?1:0};
+  var SD=Math.max(vh-8-61.1*em,64-6.3*em);
+  return {tear:clamp((SD+114-S)/90,0,1),drop:S<=SD,filed:S<=SD-30};
+}
+function tickStop(){clearTimeout(tickT[0]);clearTimeout(tickT[1]);tickT=[]}
+function landed(){
+  dropAn=null;tickStop();tick=1;
+  tickT=[setTimeout(function(){tick=2;story()},TICK),setTimeout(function(){tick=3;story()},2*TICK)];
+  story();
 }
 function story(){
-  var draft=!state.rates.length,b=draft?{tear:0,drop:false,filed:false,tick:0}:forced?forced:RM?{tear:1,drop:true,filed:true,tick:3}:storyBeat();
+  var draft=!state.rates.length,b=draft?{tear:0,drop:false,filed:false}:forced?forced:RM?{tear:1,drop:true,filed:true}:storyBeat();
   storyStage.classList.toggle('is-draft',draft);
   var ch=latch('drop',b.drop);
   if(ch!==0&&dropAn){var a0=dropAn;dropAn=null;a0.cancel()}
   if(b.drop){
     leaf.style.transform=DOWN;
-    if(ch===1)dropAn=run(leaf,[{transform:UP1},{transform:'translate(7.2em,25.1em)',offset:.9},{transform:DOWN}],177,function(){dropAn=null;story()});
+    if(ch===1){
+      tickStop();
+      if(RM||BOOT||!CAN)tick=3;
+      else{tick=0;dropAn=run(leaf,[{transform:UP1},{transform:'translate(7.2em,25.1em)',offset:.9},{transform:DOWN}],177,landed)}
+    }
   }else{
+    tickStop();tick=0;
     leaf.style.transform='translate('+(7.2*b.tear).toFixed(3)+'em,11.3em)';
     if(ch===-1)run(leaf,[{transform:DOWN},{transform:UP1}],140);
   }
-  var st=!b.drop||dropAn?'empty':b.tick===0?'file':b.tick===1?'sent':b.tick===2?'delivered':'read';
+  var tk=forced&&forced.tick?forced.tick:tick;
+  var st=!b.drop||dropAn||!tk?'empty':tk===1?'sent':tk===2?'delivered':'read';
   if(docBubble.getAttribute('data-state')!==st){docBubble.setAttribute('data-state',st);if(st==='read'&&!docBubble.stamped){docBubble.stamped=true;$('.tm',docBubble).textContent=hm(new Date())}}
   stub.classList.toggle('is-front',!b.filed);
 }
@@ -1501,14 +1559,32 @@ function stamps(){
   var vh=window.innerHeight,i,r;
   for(i=stampEls.length-1;i>=0;i--){r=stampEls[i].getBoundingClientRect();if(r.top<vh&&r.bottom>0){stampEls[i].textContent=hms(new Date());stampEls.splice(i,1)}}
   for(i=clockEls.length-1;i>=0;i--){r=clockEls[i].getBoundingClientRect();if(r.top<vh&&r.bottom>0){clockEls[i].textContent=hm(new Date());clockEls.splice(i,1)}}
-  if(elapsedEl){var c=composer.getBoundingClientRect();if(c.top<vh&&c.bottom>0){var n=new Date(),sec=Math.max(1,Math.round((n-T_LOAD)/1000)),m=Math.floor(sec/60),s2=sec%60;
+  /* the last line is cut as it comes on screen, while everything under it is still below the edge, so nothing in view moves */
+  if(elapsedEl){var c=elapsedEl.getBoundingClientRect();if(c.top<vh&&c.bottom>0){var n=new Date(),sec=Math.max(1,Math.round((n-T_LOAD)/1000)),m=Math.floor(sec/60),s2=sec%60;
     elapsedEl.innerHTML='<span class="ck">'+hms(n)+'</span>'+B('你在这页待了 '+(m?m+' 分 ':'')+s2+' 秒。轮到你回了。','You have been on this page for '+(m?m+' min ':'')+s2+' s. Your turn to reply.');elapsedEl=null}}
 }
+/* The four other messages he sends (report, old files, token, plans). Each stands at one grey tick and "sent" until its
+   receipt, the last line of the attachment, has been wholly on screen for 260 ms; then it is cut to two blue and "read"
+   with the minute, and stays read. A receipt that is already on or above the screen when the page opens, or that has
+   gone past the top unseen, is read. Reduced motion and no script: read from the first frame. */
+var rcpts=$$('.msg.attach[data-state]').map(function(m){return {m:m,st:$('.st',m),tm:$('.st .tm',m),t:0,done:false}});
+function rcptRead(q){q.done=true;q.m.setAttribute('data-state','read');q.tm.textContent=hm(new Date())}
+function receipts(){
+  var vh=window.innerHeight;
+  rcpts.forEach(function(q){
+    if(q.done||q.t)return;
+    var r=q.st.getBoundingClientRect();
+    if(RM){if(r.top<vh&&r.bottom>0){q.done=true;q.tm.textContent=hm(new Date())}return}
+    if(r.bottom<52||(BOOT&&r.top<vh)){rcptRead(q);return}
+    if(r.top>=52&&r.bottom<=vh)q.t=setTimeout(function(){rcptRead(q)},TICK);
+  });
+}
+if(!RM)rcpts.forEach(function(q){q.m.setAttribute('data-state','sent')});
 var ticking=false;
 function frame(){
   ticking=false;
   story();month(RM?1:prog(report,.8,.36));if(!RM)sort(prog(importStage,.75,.33));
-  cutGround();stamps();
+  cutGround();stamps();receipts();
 }
 function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
 window.addEventListener('scroll',onScroll,{passive:true});
@@ -1550,14 +1626,16 @@ tokenBtn.addEventListener('click',function(){
 });
 
 /* S11 language cut */
-var toggle=$('.lang-toggle'),thumb=$('.lt-thumb'),langBusy=false;
+var toggle=$('#lang-en'),thumb=$('.lt-thumb'),langBusy=false,WIDE=window.matchMedia?matchMedia('(min-width:900px)'):{matches:false};
 /* The block nearest the reading line (40% down the screen) is held where it is. Blocks are whole things (a message,
-   a notice, a stage, a plan list), never a language span, so the anchor exists in both languages. */
-var ANCH='.fwd-label,.hero-claim,.hero-stage,.hero-cta,.cut-rail,.picker-client,.picker-rate,.sample-note,.chat-head,.msg.in,.at-head,.stage,.plans,.file-bar,.notice,.composer,footer p';
+   a notice or one sentence of it, a stage, a plan list), never a language span, so the anchor exists in both languages. */
+var ANCH='.fwd-label,.hero-claim,.hero-stage,.hero-cta,.cut-rail,.picker-client,.picker-rate,.sample-note,.chat-head,.msg.in,.at-head,.stage,.plans,.file-bar,.notice,.nt,.composer,footer p';
 function setLang(l){
   var y=window.innerHeight*.4,best=null,bd=1e9,bh=0;
   $$(ANCH).forEach(function(e){
-    var r=e.getBoundingClientRect();if(!r.height||getComputedStyle(e).position==='sticky')return;
+    /* at 900 and up the notes of an episode stand in the margin at several heights; the lane is what is held */
+    if(WIDE.matches&&(e.classList.contains('nt')||(e.classList.contains('notice')&&e.parentNode.classList.contains('tc'))))return;
+    var r=e.getBoundingClientRect();if(!r.height)return;
     var d=y<r.top?r.top-y:y>r.bottom?y-r.bottom:0;
     if(d<bd||(d===bd&&r.height<bh)){bd=d;best=e;bh=r.height}
   });
@@ -1569,17 +1647,23 @@ function setLang(l){
 var DESC={zh:'SIS：给马来西亚摄像师、摄影师和小型工作室的开单与记录工具。7 天免费试用，Basic RM 199/年，Pro RM 399/年。',en:'SIS: invoicing and records for Malaysian videographers, photographers and small studios. 7-day free trial, Basic RM 199/year, Pro RM 399/year.'};
 function setLang0(l){
   H.setAttribute('data-lang',l);H.setAttribute('lang',l==='zh'?'zh-Hans':'en');
-  toggle.setAttribute('aria-checked',l==='en'?'true':'false');
+  toggle.checked=l==='en';
   D.title=l==='zh'?'SIS · 选客户，选价目，单就开好了':'SIS · Pick a client. Pick a rate. Invoice done.';
   var md=D.getElementById('meta-desc');if(md)md.setAttribute('content',DESC[l]);
 }
-toggle.addEventListener('click',function(){
-  if(langBusy)return;var to=H.getAttribute('data-lang')==='zh'?'en':'zh';langBusy=true;
-  run(thumb,to==='en'?[{transform:'translateX(0)'},{transform:'translateX(36px)'}]:[{transform:'translateX(36px)'},{transform:'translateX(0)'}],80,function(){setLang(to);langBusy=false});
+/* The switch is a native checkbox, so it works with scripts off (the stylesheet reads :checked). With script the strings
+   are cut on the frame the thumb stops, so the click's own change is cancelled and the state is written then. A change
+   written inside the cancelled click would be undone by the browser, so the no-motion path writes it one task later. */
+toggle.addEventListener('click',function(e){
+  e.preventDefault();
+  if(langBusy)return;var to=H.getAttribute('data-lang')==='zh'?'en':'zh',inClick=true,apply=function(){setLang(to);langBusy=false};langBusy=true;
+  run(thumb,to==='en'?[{transform:'translateX(0)'},{transform:'translateX(36px)'}]:[{transform:'translateX(36px)'},{transform:'translateX(0)'}],80,function(){if(inClick)setTimeout(apply,0);else apply()});
+  inClick=false;
 });
+toggle.addEventListener('keydown',function(e){if(e.key==='Enter')toggle.click()});
 
 /* ---------- start ---------- */
-if(H.getAttribute('data-lang')==='en')setLang0('en');
+if(H.getAttribute('data-lang')==='en'||toggle.checked)setLang0('en');
 $$('[data-ago]').forEach(function(e){e.textContent=ago(+e.getAttribute('data-ago'))});
 renderAll();
 if(RM){$('.tm',docBubble).textContent=hm(new Date())}
@@ -1595,7 +1679,8 @@ if(AUTO&&!RM&&CAN&&onStage()){
   /* if the faces arrive while the opening runs, the catches are measured again where the sheet's text now stands */
   if(D.fonts&&D.fonts.status==='loading'&&D.fonts.ready)D.fonts.ready.then(function(){
     if(!s1||s1.done||rc)return;
-    var t=s1.t,pl=s1.playing;s1.kill();s1=buildS1(true);if(pl)s1.play(t);else s1.seek(t);
+    /* the clock is not stopped for it: the new timeline is started where the wall clock now stands */
+    var pl=s1.playing,t0=s1.t0,t=s1.t;s1.kill();s1=buildS1(true);if(pl)s1.play(Math.min(performance.now()-t0,S1));else s1.seek(t);
   });
 }else H.classList.remove('s1-pre');
 window.SIS_READY=true;
