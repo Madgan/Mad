@@ -5,11 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SIS · 选客户，选价目，单就开好了</title>
 <meta name="description" content="SIS：给马来西亚摄像师、摄影师和小型工作室的开单与记录工具。7 天免费试用，Basic RM 199/年，Pro RM 399/年。">
+<script>
+/* Start frame before first paint: when motion is allowed, hold the opening shot (the thread, no sheet yet).
+   Reduced motion, no script, or this script failing all leave the finished frame that the stylesheet draws. */
+(function(){
+  try{
+    var h=document.documentElement;
+    h.classList.add('cuts');
+    var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var auto=!/[?&]autoplay=0/.test(location.search);
+    if(!rm&&auto&&typeof Element.prototype.animate==='function'){
+      h.classList.add('s1-pre');
+      setTimeout(function(){if(!window.SIS_READY)h.classList.remove('s1-pre')},1500);
+    }
+  }catch(e){}
+})();
+</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&family=Kanit:ital,wght@0,700;1,700&family=Noto+Sans+SC:wght@400..700&display=swap">
 <style>
-/* ---------- tokens: stage palette (borrowings 1.3) and tape palette (1.2, estimates from the camera-tape entry) ---------- */
+/* ---------- tokens: stage palette and tape palette (tape values are estimates from the camera-tape entry) ---------- */
 :root{
-  --night:#0B1216; --counter:#121C22; --bubble:#1F2C33; --bubble-out:#0F5345; --tick:#53BDEB;
+  --stage:#0B1216; --bubble:#1F2C33; --bubble-out:#0F5345; --tick:#53BDEB; --streak:#12A07E; --soft:#B9D3CC;
   --text:#E9EEF0; --meta:#8A9AA3; --sheet:#F5F2E9; --ink:#14181B; --pen:#1F5FBF; --label:#5A6268;
   --t-green:#1E9E4A; --t-red:#D4262C; --t-yellow:#F2C418; --t-blue:#1F5FBF; --t-white:#F3F1EA; --marker:#111111;
   --f-page:"Bricolage Grotesque","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
@@ -17,8 +33,15 @@
   --f-fly:"Kanit","Instrument Sans","Noto Sans SC",system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{background:var(--night);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--night);color:var(--text);font:400 15px/1.55 var(--f-page);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+html{background:#0B1216;-webkit-text-size-adjust:100%}
+/* the ground is the scene. Each episode has its own night; with script the whole ground changes on one frame (S7). */
+body{--night:#0B1216;margin:0;background:var(--night);color:var(--text);font:400 15px/1.55 var(--f-page);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Cpath d='M6 9l3 3 6-6M27 30h9M31.5 25.5v9M34 8a4 4 0 1 1-6 3M9 34c2-4 6-4 8 0s6 4 8 0' fill='none' stroke='%23fff' stroke-opacity='.045' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E")}
+body[data-ep="month"]{--night:#081530}
+body[data-ep="dayone"]{--night:#1B1208}
+.ep[data-ep="month"]{background-color:#081530}
+.ep[data-ep="dayone"],footer{background-color:#1B1208}
+.cuts .ep,.cuts footer{background-color:transparent}
 a{color:inherit}
 button{font:inherit;color:inherit;border-radius:0}
 p,h1,h2,h3,ul,ol,dl,dd{margin:0;padding:0}
@@ -47,7 +70,7 @@ html[data-lang="zh"] .stack>.en,html[data-lang="en"] .stack>.zh{display:block;vi
 .skip{position:absolute;left:8px;top:-70px;z-index:200;background:var(--sheet);color:var(--ink);padding:12px 14px;font-weight:600}
 .skip:focus{top:8px}
 .topbar{position:sticky;top:0;z-index:100;background:var(--night);border-bottom:1px solid var(--bubble)}
-.tb{height:52px;display:flex;align-items:center;gap:10px;padding:0 16px;max-width:1152px;margin:0 auto}
+.tb{height:52px;display:flex;align-items:center;gap:8px;padding:0 16px;max-width:1152px;margin:0 auto}
 .wordmark{margin-right:auto;min-height:44px;min-width:44px;display:flex;align-items:center;font:800 21px/1 var(--f-page);letter-spacing:.03em;text-decoration:none}
 .lang-toggle{height:44px;padding:6px 0;background:none;border:0;cursor:pointer}
 .lt-track{position:relative;display:grid;grid-template-columns:36px 36px;width:72px;height:32px;align-items:center;justify-items:center;box-shadow:inset 0 0 0 1px var(--meta);border-radius:3px;font:600 12px/1 var(--f-ui)}
@@ -56,136 +79,185 @@ html[data-lang="en"] .lt-thumb{transform:translateX(36px)}
 .lt-zh,.lt-en{position:relative;color:#95ACB9;mix-blend-mode:difference}
 html[data-lang="zh"] .lt-zh,html[data-lang="en"] .lt-en{color:var(--text);font-weight:700}
 .lang-toggle:active .lt-track{transform:translateY(1px)}
-.signin{min-height:44px;display:flex;align-items:center;padding:0 4px;font-weight:500;font-size:14px;text-decoration:none;white-space:nowrap}
+.signin{min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;padding:0 2px;font-weight:500;font-size:14px;text-decoration:none;white-space:nowrap}
 .cta-trial{display:flex;align-items:center;justify-content:center;height:52px;background:var(--t-green);color:var(--marker);font:700 17px/1 var(--f-page);text-decoration:none;white-space:nowrap;border-radius:3px;box-shadow:inset 0 0 0 2px var(--marker)}
 .cta-trial:active{transform:translateY(1px);box-shadow:inset 0 0 0 1px var(--marker)}
 .cta-compact{position:relative;width:84px;height:36px;font-size:13px}
 .cta-compact::after{content:"";position:absolute;inset:-4px 0}
 @media (hover:hover) and (pointer:fine){
-  .cta-trial:hover,.signin:hover,footer a:hover{text-decoration:underline;text-underline-offset:3px}
+  .cta-trial:hover .cta-l,.cta-compact:hover,.plan .cta-trial:hover,.signin:hover,footer a:hover{text-decoration:underline;text-underline-offset:3px}
   .composer:hover .composer-field{text-decoration:underline;text-underline-offset:3px}
   .tile:hover .nm,.rstrip:hover .sv,.mcol:hover .mo,.act:hover>span,.replay:hover{text-decoration:underline;text-underline-offset:2px}
 }
 
-/* ---------- thread spine ---------- */
-.ep{position:relative;padding:28px 16px}
-.ep.alt{background:var(--counter)}
+/* ---------- the thread: two voices, time stamps, notices, attachments ---------- */
+.ep{position:relative;padding:34px 16px 26px}
 .col{max-width:440px;margin:0 auto}
-.msg{position:relative;width:fit-content;max-width:min(100%,21rem);padding:8px 11px 5px;background:var(--bubble);border-radius:8px;font:400 14px/1.55 var(--f-ui)}
-.msg.first{border-top-left-radius:0}
-.msg.first::before{content:"";position:absolute;left:-7px;top:0;border-style:solid;border-width:0 8px 9px 0;border-color:transparent var(--bubble) transparent transparent}
-.ep.alt .msg{background:var(--bubble)}
-.msg .time{margin-top:2px;justify-items:end;font-size:11px;line-height:1.4;color:var(--meta);font-variant-numeric:tabular-nums}
-.msg+.msg{margin-top:8px}
 .date-chip{position:absolute;left:50%;top:0;z-index:3;transform:translate(-50%,-50%);padding:3px 14px;background:var(--bubble);color:var(--text);border-radius:6px;font:600 12px/1.5 var(--f-ui);white-space:nowrap}
-.stage{position:relative;font-size:min(10px,calc((100vw - 32px) / 35.8));width:35.8em;font-family:var(--f-ui)}
-.slab{margin:14px -16px;padding:18px 16px;background:var(--counter)}
-.ep.alt .slab{background:var(--night)}
+.chat-head{display:flex;align-items:center;gap:8px;min-height:32px;margin-bottom:10px;font:600 13px/1.3 var(--f-ui)}
+.chat-head .av{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bubble);display:grid;place-items:center;font-style:normal;font-weight:700}
+.chat-head .who{color:var(--text)}
+.chat-head .tape-label{margin-left:auto}
+.msg{position:relative;width:fit-content;max-width:min(88%,21rem);padding:7px 11px 6px;border-radius:9px;font:400 14.5px/1.5 var(--f-ui)}
+.msg.in{background:var(--bubble);border-top-left-radius:0}
+.msg.in::before{content:"";position:absolute;left:-7px;top:0;border-style:solid;border-width:0 8px 9px 0;border-color:transparent var(--bubble) transparent transparent}
+.msg.out{background:var(--bubble-out);margin-left:auto;border-top-right-radius:0}
+.msg.out::before{content:"";position:absolute;right:-7px;top:0;border-style:solid;border-width:9px 8px 0 0;border-color:var(--bubble-out) transparent transparent transparent}
+.msg .mt{display:block;margin-top:1px;text-align:right;font-size:11.5px;line-height:1.4;color:var(--meta);font-variant-numeric:tabular-nums}
+.msg+.msg,.msg+.stage,.stage+.msg{margin-top:10px}
+.attach{width:auto;max-width:none;margin-left:12px;padding:6px 6px 5px}
+.at-head{display:flex;align-items:center;gap:8px;min-height:24px;padding:0 5px 6px;font:italic 500 12.5px/1.3 var(--f-ui);color:var(--soft)}
+.at-head .tape-label{margin-left:auto;font-style:normal}
+.file-bar{display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 5px 0}
+.fk{flex:none;display:grid;place-items:center;width:30px;height:30px;background:var(--t-white);color:var(--marker);font:700 11px/1 var(--f-ui);letter-spacing:.02em;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.fk[data-kind="pdf"]{background:var(--t-red);color:var(--t-white)}
+.fn{display:block;font:600 13px/1.3 var(--f-ui)}
+.fm{display:block;font:400 11.5px/1.35 var(--f-ui);color:var(--soft)}
+.st{margin-left:auto;display:flex;align-items:center;gap:5px;font:500 11.5px/1.4 var(--f-ui);color:var(--soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ticks{flex:none;width:19px;height:11px;fill:none;stroke:var(--soft);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+[data-state="read"] .ticks{stroke:var(--tick)}
+[data-state="sent"] .ticks .t2{visibility:hidden}
+.st .w-sent,.st .w-deliv,.st .w-read,.st .tm{display:none}
+[data-state="sent"] .st .w-sent,[data-state="delivered"] .st .w-deliv,[data-state="read"] .st .w-read,[data-state="read"] .st .tm{display:inline}
+.notice{width:fit-content;max-width:min(100%,21.5rem);margin:14px auto 0;padding:7px 12px 8px;background:#05090B;border-radius:8px;font:400 13px/1.6 var(--f-ui);color:var(--text)}
+.notice .ck,.stage-caption .ck,.elapsed .ck{margin-right:6px;color:var(--tick);font-variant-numeric:tabular-nums}
+.stage{position:relative;font-size:min(10px,calc((100vw - 56px) / 33.4));width:33.4em;font-family:var(--f-ui)}
 .slot{position:absolute;outline:1px dashed var(--meta);outline-offset:-1px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:.5em;color:var(--meta);font-size:1em}
-.slot em{font:600 .85em/1.2 var(--f-ui);font-style:normal;letter-spacing:.04em;text-align:center}
+.slot em{font:600 1.1em/1.2 var(--f-ui);font-style:normal;letter-spacing:.04em;text-align:center}
 
 /* ---------- hero ---------- */
-#hero{padding-top:8px;padding-bottom:20px}
+#hero{padding-top:6px;padding-bottom:22px}
 .fwd-label{height:16px;font:italic 400 12px/16px var(--f-ui);color:var(--meta)}
-.hero-claim{margin-top:4px}
+.hero-claim{margin-top:2px}
 .hero-claim h1{font-size:31px;line-height:35px;font-weight:700;letter-spacing:-.01em;font-variation-settings:"opsz" 31}
-.hero-claim h1 .en{font-size:30px;line-height:34px;font-weight:800;letter-spacing:-.015em}
-.hero-sub{margin-top:4px;font-size:13px;line-height:18px;color:var(--meta)}
+.hero-claim h1 .en{font-size:26.5px;font-weight:800;letter-spacing:-.02em;font-variation-settings:"opsz" 27;white-space:nowrap}
+.hero-sub{margin-top:2px;font-size:13px;line-height:18px;color:var(--meta)}
 .hero-sub .en{font-size:11.6px;white-space:nowrap}
-.stage-wrap{margin-top:8px}
-.hero-stage{position:relative;height:30.4em;margin:0 -16px;font-size:min(10px,calc((100vw - 60px) / 25.2));background:var(--counter);overflow:hidden}
-.thread-band{position:absolute;left:0;top:0;bottom:0;right:26.4em;overflow:hidden;background:var(--night)}
-.wall{position:absolute;inset:0;width:100%;height:100%}
-.strip,.ghost{position:absolute;left:0;right:0;bottom:0;height:156.4em}
-.ghost{visibility:hidden;opacity:.38}
-.ghost[data-n="2"]{opacity:.2}
-.ghost .bubble{background:var(--tick)}
-.ghost[data-n="2"] .bubble{background:var(--bubble-out)}
-.ghost .bubble>*{visibility:hidden}
-.rest{position:absolute;left:0;right:0;bottom:0;height:30.4em;display:flex;flex-direction:column;justify-content:center;gap:.7em}
-.bubble{position:relative;width:min(10em,calc(100% - 2.2em));margin-left:1.6em;padding:.5em .7em;background:var(--bubble);color:var(--text);border-radius:.8em;font:400 1em/1.35 var(--f-ui)}
-.bubble.pass{position:absolute;left:0}
-.bubble.out{background:var(--bubble-out);width:fit-content;max-width:min(9em,calc(100% - 2.2em));margin-left:auto;margin-right:.6em}
-.bubble.pass.out{left:auto;right:0}
-.bubble .fw{display:block;font-style:italic;font-size:.85em;color:var(--meta)}
-.bubble .mt{display:flex;justify-content:flex-end;align-items:center;gap:.3em;font-size:.85em;color:var(--meta);font-variant-numeric:tabular-nums}
-.thread-band.running .bubble{transform:scaleY(1.2)}
-.wave{display:flex;align-items:center;gap:.22em;height:1.8em}
-.wave i{display:block;width:.24em;height:40%;background:var(--meta);border-radius:.12em}
-.wave i:nth-child(3n){height:90%}.wave i:nth-child(4n+1){height:60%}.wave i:nth-child(5n+2){height:100%}.wave i:nth-child(7n){height:25%}
-.wave .dur{margin-left:auto;font-size:.85em;color:var(--meta);font-variant-numeric:tabular-nums}
-.wave+.stack,.shot+.stack{font-size:.9em}
-.shot{display:block;position:relative;width:5.4em;height:6em;margin:.2em 0 .5em .2em}
-.ph{position:absolute;inset:0;display:block;border:.16em solid #50626C;border-radius:.6em;background:#0E171C}
-.ph .ph{inset:.5em .35em .35em;transform:translate(.3em,.1em) rotate(2deg);border-radius:.4em}
-.ph .doc{position:absolute;inset:.45em .3em .3em;display:block;background:var(--sheet) repeating-linear-gradient(to bottom,transparent 0 .32em,#9AA3A8 .32em .42em);transform:translate(.3em,.1em) rotate(2deg)}
-.tk-svg{width:1.5em;height:.9em;fill:none;stroke:var(--meta);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.catch-layer{position:absolute;inset:0;z-index:6;pointer-events:none}
-.catch{position:absolute;visibility:hidden;white-space:nowrap;padding:0 .35em;margin-left:-.35em;background:var(--bubble);color:var(--text);border-radius:.3em;font-family:var(--f-ui);font-weight:600;line-height:1.3;transform-origin:0 50%}
-.catch.amt,.fly.amt{font-family:var(--f-fly);font-style:italic;font-weight:700}
+.stage-wrap{margin-top:6px}
 
-/* the sheet: the one sharp thing. Zones are fixed like a printed leaf. */
-.invoice-sheet{position:absolute;width:25.2em;height:29.6em;background:var(--sheet);color:var(--ink);font-family:var(--f-ui);font-size:1em;line-height:1.25;box-shadow:.4em .4em 0 #04080A}
-.hero-stage .invoice-sheet{top:.4em;right:1.6em;z-index:2}
+/* the stage: a thread at night, one hard light from the upper right, one sheet laid over it */
+.hero-stage{position:relative;height:39.4em;margin:0 -16px;font-size:min(10px,calc(100vw / 39));background:var(--stage);overflow:hidden}
+.thread-band{position:absolute;left:0;right:0;top:0;height:37em;overflow:hidden;isolation:isolate;background:var(--stage)}
+.wall{position:absolute;inset:0;width:100%;height:100%}
+.mover{position:absolute;left:0;right:0;bottom:0;height:177.8em}
+.strip,.ghost{position:absolute;inset:0}
+/* the smear: two stretched copies, off the step grid, fixed transparency, cut on and cut off */
+.ghost{visibility:hidden;opacity:.6;transform:translate(.3em,2.2em)}
+.ghost[data-n="2"]{opacity:.42;transform:translate(-.4em,4.7em)}
+.thread-band.running .ghost{visibility:visible}
+.ghost .bubble{background:var(--tick);transform-origin:50% 0;transform:scaleY(2.6)}
+.ghost[data-n="2"] .bubble{background:var(--streak);transform:scaleY(3.6)}
+.ghost .bubble>*{visibility:hidden}
+.thread-band.running .strip .bubble{transform-origin:50% 0;transform:scaleY(1.5)}
+.set{position:absolute;left:0;right:0;height:37em;display:flex;flex-direction:column;justify-content:flex-end;gap:.6em}
+.set-start{top:0;padding-bottom:.6em}
+.set-end{bottom:0;padding-bottom:.2em}
+.pb{position:absolute;left:0;right:0;display:flex;flex-direction:column}
+.bubble{position:relative;flex:none;width:fit-content;max-width:20.5em;margin-left:.92em;align-self:flex-start;padding:.38em .7em;background:var(--bubble);color:var(--text);border-radius:.7em;font:400 1.3em/1.35 var(--f-ui);white-space:nowrap}
+.bubble.out{background:var(--bubble-out);align-self:flex-end;margin-left:0;margin-right:.92em}
+.bubble .fw{display:block;font-style:italic;font-size:.85em;color:var(--meta)}
+.bubble .mt{margin-left:.6em;font-size:.85em;color:var(--soft);font-variant-numeric:tabular-nums}
+.tk-svg{display:inline-block;vertical-align:-.05em;width:1.35em;height:.8em;fill:none;stroke:var(--soft);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wave{display:flex;align-items:center;gap:.17em;height:1.6em}
+.wave i{display:block;width:.19em;height:40%;background:var(--meta);border-radius:.1em}
+.wave i:nth-child(3n){height:90%}.wave i:nth-child(4n+1){height:60%}.wave i:nth-child(5n+2){height:100%}.wave i:nth-child(7n){height:25%}
+.wave .dur{margin-left:.6em;font-size:.85em;color:var(--meta);font-variant-numeric:tabular-nums}
+.shot{display:block;position:relative;width:4.2em;height:4.6em;margin:.15em 0 .4em}
+.ph{position:absolute;inset:0;display:block;border:.14em solid #50626C;border-radius:.5em;background:#0E171C}
+.ph .ph{inset:.4em .3em .3em;transform:translate(.25em,.1em) rotate(2deg);border-radius:.35em}
+.ph .doc{position:absolute;inset:.35em .25em .25em;display:block;background:var(--sheet) repeating-linear-gradient(to bottom,transparent 0 .26em,#9AA3A8 .26em .34em);transform:translate(.25em,.1em) rotate(2deg)}
+/* the light: one flat shaft with hard edges, laid over the thread and under the sheet. It does not move. */
+.beam{position:absolute;inset:0;background:#0F394B;mix-blend-mode:screen;clip-path:polygon(56% 0,100% 0,100% 36%,22% 100%,0 100%,0 80%);pointer-events:none}
+.hang-layer{position:absolute;inset:0;pointer-events:none}
+.hang{position:absolute;visibility:hidden;margin:0}
+.hang.in{left:.92em}
+.hang.out{right:.92em;margin:0}
+.hang .frag{font-weight:600}
+.hang .frag.amt{font-variant-numeric:tabular-nums}
+.catch-layer{position:absolute;inset:0;z-index:6;pointer-events:none}
+.catch{position:absolute;visibility:hidden;white-space:nowrap;padding:.12em .4em;margin:-.12em 0 0 -.4em;background:var(--bubble);color:var(--text);border-radius:.4em;font-family:var(--f-ui);font-weight:600;line-height:1.3;transform-origin:0 50%}
+.catch.out{background:var(--bubble-out)}
+.catch.amt,.fly.amt{font-family:var(--f-fly);font-style:italic;font-weight:700}
+.catch.g1{background:var(--tick);opacity:.6}
+.catch.g2{background:var(--streak);opacity:.42}
+.stage-caption{position:absolute;left:0;right:0;top:37em;bottom:0;z-index:7;display:flex;align-items:center;padding:0 16px;background:#05090B;font-size:1em;white-space:nowrap;overflow:hidden}
+.stage-caption>span{font:500 13px/1 var(--f-ui)}
+.cap-start{display:none}
+
+/* the sheet: the one sharp thing. Zones are fixed like a printed leaf. Nothing on it is set below 1.1em. */
+.invoice-sheet{position:absolute;width:28em;height:29.2em;background:var(--sheet);color:var(--ink);font-family:var(--f-ui);font-size:1em;line-height:1.25}
+.hero-stage .invoice-sheet{top:.8em;right:1.6em;z-index:2;box-shadow:-.7em .6em 0 #020507}
 .invoice-sheet>*{position:absolute}
-.invoice-sheet .lb{font-size:.8em;font-weight:600;letter-spacing:.05em;color:var(--label);text-transform:uppercase;white-space:nowrap}
-.crossing{left:0;top:0;width:10em;height:7.8em;overflow:visible}
-.crossing .stroke{fill:none;stroke:var(--pen);stroke-width:2;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:0}
-.crossing .phrase{font:700 8.4px var(--f-ui);fill:var(--pen);letter-spacing:.03em}
+.invoice-sheet .lb{font-size:1.1em;font-weight:600;letter-spacing:.03em;color:var(--label);white-space:nowrap}
+.crossing{left:0;top:0;width:11em;height:7em;overflow:visible}
+.crossing .stroke{fill:none;stroke:var(--pen);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 2;stroke-dashoffset:0}
+.crossing .s2{stroke-width:1.7}
+.crossing .phrase{font:700 11px var(--f-ui);fill:var(--pen);letter-spacing:.02em}
 .crossing.no-phrase .phrase{visibility:hidden}
-.invoice-sheet .sample{right:-.5em;top:.45em;font-size:.85em;transform:rotate(4deg);z-index:3}
-.from{right:1.2em;top:2.6em;text-align:right;white-space:nowrap}
-.from b{display:block;font-size:1.1em;line-height:1.3;font-weight:700}
-.from span{display:block;font-size:.8em;line-height:1.3;color:var(--label)}
-.meta{right:1.2em;top:5.4em;height:1.5em;min-width:14.5em;text-align:right;white-space:nowrap}
-.meta .tn{font-size:.9em;line-height:1.65}
-.hr1{left:1.2em;right:1.2em;top:8.1em;height:1px;background:var(--ink)}
-.bill-to{left:1.2em;right:1.2em;top:8.5em;height:3.7em}
-.bill-to .lb{position:absolute;left:0;top:.1em;line-height:1.3}
-.bill-to .code{position:absolute;right:0;top:0;font-size:.8em;transform:rotate(-2deg)}
-.bill-to .name{position:absolute;left:0;top:.95em;font-size:1.1em;font-weight:600;line-height:1.3;white-space:nowrap}
-.bill-to .sub{position:absolute;left:0;top:3.15em;font-size:.8em;line-height:1.3;color:var(--label);white-space:nowrap}
+.invoice-sheet .sample{right:.8em;top:-.5em;font-size:1.1em;transform:rotate(3deg);z-index:3}
+.from{right:1.2em;top:1.7em;text-align:right;white-space:nowrap}
+.from b{display:block;font-size:1.4em;line-height:1.3;font-weight:700}
+.from span{display:block;font-size:1.1em;line-height:1.3;color:var(--label)}
+.meta{right:1.2em;top:5.1em;height:1.5em;min-width:15.5em;text-align:right;white-space:nowrap}
+.meta .tn{display:inline-block;font-size:1.1em;line-height:1.36}
+.hr1{left:1.2em;right:1.2em;top:6.9em;height:1px;background:var(--ink)}
+.bill-to{left:1.2em;right:1.2em;top:7.3em;height:3.5em}
+.bill-to .lb{position:absolute;left:0;top:0;line-height:1.3}
+.bill-to .code{position:absolute;right:0;top:-.1em;font-size:1.1em;transform:rotate(-2deg)}
+.bill-to .name{position:absolute;left:0;top:1.5em;font-size:1.4em;font-weight:600;line-height:1.3;white-space:nowrap}
+.bill-to .sub{position:absolute;left:0;top:3.4em;font-size:1.1em;line-height:1.3;color:var(--label);white-space:nowrap}
 .bill-to.is-empty .name,.bill-to.is-empty .sub,.bill-to.is-empty .code{visibility:hidden}
 .strike{position:absolute;left:0;top:50%;width:100%;height:.6em;margin-top:-.3em;overflow:visible;visibility:hidden;pointer-events:none}
 .strike.on{visibility:visible}
-.strike path{fill:none;stroke:var(--pen);stroke-width:2;stroke-linecap:round;stroke-dasharray:1 2;stroke-dashoffset:0;vector-effect:none}
-.bill-to .strike{top:1.75em;width:auto}
-.lines{left:1.2em;right:1.2em;top:12.6em;height:5.9em}
-.lines .lh{display:flex;justify-content:space-between;align-items:center;height:1.25em;border-bottom:1px solid var(--ink)}
-.rows{position:relative;height:4.5em;margin-top:.1em}
-.row{position:relative;display:flex;justify-content:space-between;align-items:center;height:1.5em;white-space:nowrap}
-.row .d{font-size:.95em;font-weight:600}
-.row .a{font-size:.95em}
+.strike path{fill:none;stroke:var(--pen);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 2;stroke-dashoffset:0}
+.bill-to .strike{top:2.4em;width:auto}
+.lines{left:1.2em;right:1.2em;top:11.5em;height:7.4em}
+.lines .lh{display:flex;justify-content:space-between;align-items:center;height:1.6em;border-bottom:1px solid var(--ink)}
+.rows{position:relative;height:5.7em;margin-top:.1em}
+.row{position:relative;display:flex;justify-content:space-between;align-items:center;height:1.9em;white-space:nowrap}
+.row .d{font-size:1.2em;font-weight:600}
+.row .a{font-size:1.2em}
 .row.pending .d,.row.pending .a{visibility:hidden}
-.total-wrap{left:1.2em;right:1.2em;top:18.6em;height:2.95em;border-top:2px solid var(--ink)}
-.total{display:flex;justify-content:space-between;align-items:baseline;height:1.75em;padding-top:.1em}
-.total b{font-size:1.3em;font-weight:700;white-space:nowrap}
-.total-words{font-size:.78em;line-height:1.3;text-align:right;white-space:nowrap}
-.terms{left:1.2em;right:1.2em;top:21.75em;height:3em}
-.terms p{font-size:.78em;line-height:1.32;white-space:nowrap}
-.terms p.lbp{line-height:1.2}
-.record-zone{left:1.2em;right:1.2em;top:24.95em;height:3em}
-.record-block{position:absolute;inset:0;display:grid;grid-template-columns:2.5em 1fr;grid-template-rows:1fr 1fr;column-gap:.6em;align-items:center;padding:.25em 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-.record-block .mark{grid-row:1 / span 2;width:2.5em;height:2.5em;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--ink);font-weight:700;font-size:1em;font-variant-numeric:tabular-nums}
-.record-block .id,.record-block .when{font-size:.8em;line-height:1.2;letter-spacing:.05em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.total-wrap{left:1.2em;right:1.2em;top:18.9em;height:4em;border-top:2px solid var(--ink)}
+.total{display:flex;justify-content:space-between;align-items:baseline;height:2.5em;padding-top:.1em}
+.total b{font-size:1.8em;font-weight:700;white-space:nowrap}
+.total-words{font-size:1.1em;line-height:1.25;text-align:right;white-space:nowrap}
+.terms{left:1.2em;right:1.2em;display:none}
+.terms p{font-size:1.1em;line-height:1.4;white-space:nowrap}
+.record-zone{left:1.2em;right:1.2em;top:23.1em;height:3.4em}
+.record-block{position:absolute;inset:0;display:grid;grid-template-columns:2.6em 1fr;grid-template-rows:1fr 1fr;column-gap:.7em;align-items:center;padding:.3em 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.record-block .mark{grid-row:1 / span 2;width:2.6em;height:2.6em;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--ink);font-weight:700;font-size:1em;font-variant-numeric:tabular-nums}
+.record-block .mark b{font-size:1.1em}
+.record-block .id,.record-block .when{font-size:1.1em;line-height:1.2;letter-spacing:.03em;white-space:nowrap;font-variant-numeric:tabular-nums}
 .record-block .id{align-self:end}.record-block .when{align-self:start}
-.machine-line{left:1.2em;right:1.2em;top:28.3em;height:1em;text-align:left;white-space:pre}
-.machine-line span{font-size:.8em;line-height:1.2;letter-spacing:.18em;font-variant-numeric:tabular-nums}
-.slot-empty{position:absolute;inset:-.1em -.3em;z-index:2;display:flex;align-items:center;justify-content:center;background:var(--sheet);outline:1px dashed var(--label);outline-offset:-1px;color:var(--label);font:600 .8em/1 var(--f-ui);letter-spacing:.1em;text-transform:uppercase;visibility:hidden}
-.slot-empty[data-slot="item"]{inset:1.45em 37% 1.4em -.3em}
-.slot-empty[data-slot="rate"]{inset:1.45em -.3em 1.4em 65%}
-.slot-empty[data-slot="none"]{inset:1.45em -.3em 2.9em}
+.machine-line{left:1.2em;right:1.2em;top:26.9em;height:1.4em;white-space:nowrap}
+.machine-line .ml{font-size:1.1em;line-height:1.25;letter-spacing:.1em;font-variant-numeric:tabular-nums}
+.machine-line i{font-style:normal;letter-spacing:.03em;color:var(--label);margin-right:.25em}
+.machine-line i+b{font-weight:400;margin-right:.7em}
+.slot-empty{position:absolute;inset:0 -.3em;z-index:2;display:flex;align-items:center;justify-content:center;background:var(--sheet);outline:1px dashed var(--label);outline-offset:-1px;color:var(--label);font:600 1.1em/1 var(--f-ui);letter-spacing:.1em;visibility:hidden}
+.slot-empty[data-slot="client"]{inset:-.2em -.3em -.2em}
+.slot-empty[data-slot="item"]{inset:1.75em 36% 1.85em -.3em}
+.slot-empty[data-slot="rate"]{inset:1.75em -.3em 1.85em 66%}
+.slot-empty[data-slot="none"]{inset:1.75em -.3em 1.85em}
+.slot-empty[data-slot="total"]{inset:.1em -.3em -.1em}
+.slot-empty[data-slot="pdf"]{inset:-.1em -.3em -2em}
 .invoice-sheet.is-draft .crossing,.invoice-sheet.is-draft .record-block,.invoice-sheet.is-draft .machine-line{visibility:hidden}
 .invoice-sheet.is-draft .slot-empty[data-slot="none"],.lines.is-none .slot-empty[data-slot="none"]{visibility:visible}
 
-.stage-caption{margin-top:4px;height:18px;font:500 13px/18px var(--f-ui);white-space:nowrap;overflow:hidden}
-.ck{margin-right:6px;color:var(--tick);font-variant-numeric:tabular-nums}
-#hero .hero-cta{margin-top:8px}
-.trial-terms{margin-top:6px;min-height:36px;align-content:center;text-align:center;font:600 14px/18px var(--f-page);font-variant-numeric:tabular-nums}
-.trial-terms .en{font-size:13px;white-space:nowrap}
+/* the start frame, held before the clock starts (set by the script in the head) */
+.s1-pre .mover{transform:translateY(140.8em)}
+.s1-pre #sheet{visibility:hidden}
+.s1-pre .cap-end{display:none}
+.s1-pre .cap-start{display:inline}
+.s1-pre .ro-t{display:none}
+.s1-pre .readout::before{content:"0:00.00"}
+
+/* the offer: one button, the trial on its first line and both prices on its second */
+#hero .hero-cta{margin-top:8px;height:56px;flex-direction:column;gap:5px}
+.trial-terms{font:600 12.5px/1 var(--f-page);font-variant-numeric:tabular-nums}
 
 /* cut rail: the hand transport */
-.cut-rail{display:grid;grid-template-columns:auto 1fr auto;column-gap:10px;align-items:center;height:44px;margin-top:12px}
+.cut-rail{display:grid;grid-template-columns:auto 1fr auto;column-gap:10px;align-items:center;height:44px;margin-top:14px}
 .replay{height:44px;min-width:66px;padding:0 8px;background:none;border:0;box-shadow:inset 0 0 0 1px var(--meta);border-radius:3px;font:600 12px/1 var(--f-ui);white-space:nowrap;cursor:pointer}
 .replay:active{transform:translateY(1px)}
 .rail{position:relative;height:44px}
@@ -203,148 +275,151 @@ html[data-lang="zh"] .lt-zh,html[data-lang="en"] .lt-en{color:var(--text);font-w
 /* pickers */
 .pk-label{display:flex;align-items:baseline;gap:8px;height:18px;font:600 12px/18px var(--f-ui);color:var(--meta)}
 .pk-label b{color:var(--text);font-weight:700}
-.picker-client{margin-top:12px}
-.tiles{display:flex;gap:12px;align-items:flex-start}
-.tile{position:relative;flex:none;width:84px;height:112px;padding:9px 6px 6px 17px;background:var(--sheet);color:var(--ink);border:0;text-align:left;font:500 11px/1.25 var(--f-ui);cursor:pointer;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
-.tile .tape-label{position:absolute;left:6px;top:10px;font-size:10px;padding-left:.5em;padding-right:.5em}
-.tile .nm{position:absolute;left:8px;right:4px;top:33px;font-weight:600;font-size:10.5px;line-height:13px}
-.tile .kd{position:absolute;left:17px;top:67px;font-size:10.5px;line-height:13px;color:var(--label)}
-.tile .lock{position:absolute;left:5px;top:68px;width:6px;height:28px;box-shadow:inset 0 0 0 1px var(--ink)}
-.tile .lock i{position:absolute;left:0;top:1px;width:6px;height:14px;background:var(--ink)}
-.tile[aria-pressed="true"] .lock i{transform:translateY(12px)}
-.tile .pk{position:absolute;left:17px;top:83px;font-size:10.5px;line-height:13px;font-weight:700;visibility:hidden}
+.picker-client{margin-top:14px}
+.tiles{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.tile{position:relative;flex:1 1 0;min-width:0;height:108px;padding:0;background:var(--sheet);color:var(--ink);border:0;text-align:left;font:500 11px/1.25 var(--f-ui);cursor:pointer;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%)}
+.tile .tape-label{position:absolute;left:6px;top:10px;font-size:11px;padding-left:.5em;padding-right:.5em}
+.tile .nm{position:absolute;left:8px;right:4px;top:34px;font-weight:600;font-size:11.5px;line-height:14px}
+/* the lock switch: a track with a knob. Down, beside the closed padlock, is picked. */
+.tile .lock{position:absolute;left:8px;top:64px;width:12px;height:36px;box-shadow:inset 0 0 0 1px var(--ink)}
+.tile .lock i{position:absolute;left:0;top:0;width:12px;height:18px;background:var(--ink);box-shadow:inset 0 5px 0 var(--ink),inset 0 7px 0 var(--sheet),inset 0 10px 0 var(--ink),inset 0 12px 0 var(--sheet)}
+.tile[aria-pressed="true"] .lock i{transform:translateY(18px)}
+.tile .pad{position:absolute;left:25px;top:85px;width:11px;height:13px;fill:none;stroke:var(--ink);stroke-width:1.5}
+.tile .pad rect{fill:var(--ink)}
+.tile .kd{position:absolute;left:26px;top:64px;font-size:11px;line-height:14px;color:var(--label)}
+.tile .pk{position:absolute;left:41px;top:84px;font-size:11px;line-height:14px;font-weight:700;visibility:hidden}
 .tile[aria-pressed="true"] .pk{visibility:visible}
 .tile[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--ink)}
 .tile:active{transform:translateY(1px)}
 .tile:focus-visible{outline:0;box-shadow:inset 0 0 0 3px var(--pen)}
-.pk-hint{align-self:center;font:400 12px/1.45 var(--f-ui);color:var(--meta)}
-.picker-rate{margin-top:12px}
+.pk-hint{flex:0 0 100%;margin-top:-4px;font:400 12px/1.45 var(--f-ui);color:var(--meta)}
+.picker-rate{margin-top:14px}
 .strips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.rstrip{position:relative;height:44px;padding:5px 9px;background:var(--t-yellow);color:var(--marker);border:0;text-align:left;font:600 10.5px/1.25 var(--f-ui);white-space:nowrap;overflow:hidden;cursor:pointer;
+.rstrip{position:relative;height:46px;padding:6px 7px;background:var(--t-yellow);color:var(--marker);border:0;text-align:left;font:600 11px/1.25 var(--f-ui);white-space:nowrap;overflow:hidden;cursor:pointer;
   clip-path:polygon(0 6%,2% 0,98% 0,100% 8%,98.6% 30%,100% 50%,98.8% 72%,100% 92%,98% 100%,2% 100%,0 90%,1.4% 68%,0 48%,1.6% 26%)}
 .rstrip span{display:block}
-.rstrip .am{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
-.rstrip .ad{display:none;margin-top:2px;font-weight:500;font-size:10.5px;color:var(--meta)}
+.rstrip .am{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px}
+.rstrip .ad{display:none;margin-top:3px;font-weight:500;font-size:11px;color:var(--meta)}
 .rstrip[aria-pressed="true"]{background:none;color:var(--text);clip-path:none;outline:1px dashed var(--meta);outline-offset:-1px}
 .rstrip[aria-pressed="true"]:focus-visible{outline:2px solid var(--tick);outline-offset:2px}
 .rstrip[aria-pressed="true"] .am{display:none}
 .rstrip[aria-pressed="true"] .ad{display:block}
 .rstrip:active{transform:translateY(1px)}
 .rstrip:focus-visible{clip-path:none}
-.sample-note{margin-top:8px;font:400 12px/18px var(--f-ui);color:var(--meta)}
+.sample-note{margin-top:10px;font:400 12px/18px var(--f-ui);color:var(--meta)}
 .fly-layer{position:absolute;left:0;top:0;width:100%;height:0;z-index:90;pointer-events:none}
 .fly{position:absolute;white-space:nowrap;background:var(--sheet);color:var(--ink);padding:0 .35em;margin-left:-.35em;font-family:var(--f-ui);font-weight:600;line-height:1.3;transform-origin:0 50%}
 .fly .tape-label{font-size:.8em;margin-right:.4em;transform:none}
 
-/* ---------- story: tear-off, drop, filed ---------- */
-.story-stage{height:50em}
-.origin{position:absolute;top:0;outline:1px dashed var(--meta);outline-offset:-1px;display:grid;place-items:center;padding:.6em;text-align:center;color:var(--meta);font:500 1em/1.4 var(--f-ui)}
-.origin>span{font-size:1.1em}
-.stub-origin{left:0;width:7.8em;height:10.4em}
-.leaf-origin{left:8.6em;width:18.15em;height:21.3em}
-.perforation{position:absolute;left:8.05em;top:0;width:1px;height:21.3em;background:repeating-linear-gradient(to bottom,var(--meta) 0 4px,transparent 4px 8px)}
-.invoice-sheet.leaf{left:8em;top:0;z-index:4;transform-origin:0 0;transform:translate(4.6em,24.8em) scale(.24);box-shadow:none}
-.doc-bubble{position:absolute;right:0;top:24em;width:24em;height:8.8em;padding:.8em .9em .7em 8em;background:var(--bubble-out);color:var(--text);border-radius:.8em .8em 0 .8em}
-.doc-bubble .thumb{position:absolute;left:.8em;top:.8em;width:6.05em;height:7.1em;outline:1px dashed var(--meta);outline-offset:-1px}
-.doc-bubble .fn{display:block;font-size:1.35em;font-weight:600;line-height:1.3}
-.doc-bubble .fm{display:block;font-size:1.15em;line-height:1.4;color:#B9D3CC}
-.doc-bubble .st{position:absolute;right:.9em;bottom:.6em;display:flex;align-items:center;gap:.4em;font-size:1.15em;line-height:1.3}
-.doc-bubble .st .tm{color:#B9D3CC}
-.ticks{width:1.9em;height:1.1em;fill:none;stroke:var(--meta);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.doc-bubble .ticks{stroke:#B9D3CC}
-.doc-bubble[data-state="read"] .ticks{stroke:var(--tick)}
-.doc-bubble[data-state="sent"] .ticks .t2{visibility:hidden}
-.doc-bubble .w-sent,.doc-bubble .w-deliv,.doc-bubble .w-read,.doc-bubble .tm{display:none}
-.doc-bubble[data-state="sent"] .w-sent,.doc-bubble[data-state="delivered"] .w-deliv,.doc-bubble[data-state="read"] .w-read,.doc-bubble[data-state="read"] .tm{display:inline}
-.doc-bubble[data-state="file"] .st{visibility:hidden}
-.doc-bubble .empty-label{display:none;position:absolute;right:1em;top:50%;margin-top:-.7em;font:600 1.3em/1.4 var(--f-ui);letter-spacing:.1em;color:var(--meta)}
+/* ---------- today: the leaf tears off and goes out as his own message; the stub stays in SIS ---------- */
+.story-stage{font-size:min(10px,calc((100vw - 32px) / 35.8));width:35.8em;height:64.2em}
+.perforation{position:absolute;left:6.9em;top:0;width:1px;height:36.2em;background:repeating-linear-gradient(to bottom,var(--meta) 0 4px,transparent 4px 8px)}
+.invoice-sheet.leaf{left:0;top:0;height:36.2em;z-index:4;transform:translate(7.2em,4em)}
+.leaf .bill-to{height:5em}
+.leaf .lines{top:13.3em}
+.leaf .total-wrap{top:20.7em}
+.leaf .terms{display:block;top:24.9em}
+.leaf .record-zone{top:29.9em}
+.leaf .machine-line{top:33.8em}
+.doc-bubble{position:absolute;left:6.6em;top:3.4em;width:29.2em;height:41.8em;background:var(--bubble-out);color:var(--text);border-radius:.9em 0 .9em .9em}
+.doc-bubble::before{content:"";position:absolute;right:-7px;top:0;border-style:solid;border-width:9px 8px 0 0;border-color:var(--bubble-out) transparent transparent transparent}
+.doc-bubble .file-bar{position:absolute;left:.6em;right:.6em;bottom:.5em;padding:0}
+.doc-bubble .empty-label{display:none;position:absolute;left:0;right:0;bottom:1.4em;text-align:center;font:600 1.3em/1.4 var(--f-ui);letter-spacing:.1em;color:var(--meta)}
 .doc-bubble[data-state="empty"]{background:none;outline:1px dashed var(--meta);outline-offset:-1px}
-.doc-bubble[data-state="empty"] .fn,.doc-bubble[data-state="empty"] .fm,.doc-bubble[data-state="empty"] .st{visibility:hidden}
+.doc-bubble[data-state="empty"]::before,.doc-bubble[data-state="empty"] .file-bar{visibility:hidden}
 .doc-bubble[data-state="empty"] .empty-label{display:block}
-.client-head{position:absolute;left:0;right:0;top:34.6em;height:3em;display:flex;align-items:center;gap:.8em;border-bottom:1px solid var(--bubble)}
-.client-head .tape-label{font-size:1.05em}
-.client-head b{font-size:1.3em;font-weight:600}
-.client-head .kd2{margin-left:auto;font-size:1.15em;color:var(--meta)}
+.doc-bubble[data-state="file"] .st{visibility:hidden}
+.sis-card{position:absolute;left:0;right:0;top:46.6em;height:17.6em;padding:.9em 0 0;border-top:1px solid #3A464D}
+.sc-head{display:flex;align-items:center;gap:.7em;height:2.4em}
+.sis-chip{padding:.15em .5em;background:var(--sheet);color:var(--ink);font:800 1.2em/1.3 var(--f-page);letter-spacing:.03em}
+.sc-head .pg{font-size:1.25em;font-weight:600}
+.sc-head .tape-label{margin-left:auto;font-size:1.1em}
+.sc-client{display:flex;align-items:center;gap:.7em;height:2.8em}
+.sc-client .tape-label{font-size:1.1em}
+.sc-client b{font-size:1.3em;font-weight:600;white-space:nowrap}
+.sc-client .kd2{margin-left:auto;font-size:1.15em;color:var(--meta);white-space:nowrap}
 .slot-row{position:absolute;left:0;right:0}
-.story-stage .slot-row{top:38.8em;height:10.4em}
-.story-stage .slot{top:0;width:7.8em;height:10.4em;left:calc(var(--i) * 9.333em)}
-.slot-tile{position:absolute;top:0;width:7.8em;height:10.4em;left:calc(var(--i) * 9.333em);perspective:40em;z-index:5}
+.story-stage .slot-row{top:6.6em;height:10.4em}
+.story-stage .slot{top:0;width:6.6em;height:10.4em;left:calc(var(--i) * 7.4em)}
+.slot-tile{position:absolute;top:0;width:6.6em;height:10.4em;left:calc(var(--i) * 7.4em);perspective:40em;z-index:5}
 .tile-in{position:absolute;inset:0;display:block;transform-style:preserve-3d;transition:transform 200ms linear}
 .is-front>.tile-in{transform:rotateY(180deg)}
-.face{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:.7em .6em .6em;backface-visibility:hidden;-webkit-backface-visibility:hidden;clip-path:polygon(0 0,calc(100% - 1.2em) 0,100% 1.2em,100% 100%,0 100%);font-size:1em;line-height:1.25}
+.face{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:.6em .5em .5em;backface-visibility:hidden;-webkit-backface-visibility:hidden;clip-path:polygon(0 0,calc(100% - 1.2em) 0,100% 1.2em,100% 100%,0 100%);font-size:1em;line-height:1.25}
 .face.done{background:var(--ink);color:var(--sheet);box-shadow:inset 0 0 0 1px #3A464D}
 .face.front{background:var(--sheet);color:var(--ink);transform:rotateY(180deg)}
-.face b{display:block;font-size:1.15em;font-weight:700;font-variant-numeric:tabular-nums}
-.face .am2{display:block;font-size:.98em;font-variant-numeric:tabular-nums;white-space:nowrap}
-.face .dt{display:block;font-size:.9em;color:var(--label)}
-.face.done .dt{color:#AEB8BD}
-.face .ok{display:flex;align-items:center;gap:.3em;font-size:.95em;font-weight:600}
-.face .ok svg{width:1.3em;height:1em;fill:none;stroke:var(--tick);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.face .tape-label{font-size:.82em;align-self:flex-start;padding-left:.45em;padding-right:.45em}
+.face b{display:block;font-size:1.15em;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.face .rm{display:block;font-size:1.1em;line-height:1.15;color:var(--label)}
+.face.done .rm,.face.done .dt{color:#AEB8BD}
+.face .am2{display:block;font-size:1.15em;line-height:1.15;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.face .dt{display:block;font-size:1.1em;color:var(--label);white-space:nowrap}
+.face .ok{display:flex;align-items:center;gap:.25em;font-size:1.1em;font-weight:600;white-space:nowrap}
+.face .ok svg{flex:none;width:1.1em;height:.9em;fill:none;stroke:var(--tick);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.face .tape-label{font-size:1.1em;align-self:flex-start;padding-left:.3em;padding-right:.3em;letter-spacing:.03em}
 
-/* ---------- reports ---------- */
-.report-screen{position:relative;height:31em;padding:1.2em 1.3em 1em;background:var(--sheet);color:var(--ink);box-shadow:.4em .4em 0 #04080A}
-.rp-head{display:flex;align-items:center;gap:1em;height:2em;font-size:1em}
-.rp-head b{font-size:1.25em;font-weight:700;margin-right:auto}
-.lg{display:flex;align-items:center;gap:.4em;font-size:1.05em}
+/* ---------- month end: the report goes out as an attachment ---------- */
+.report-screen{position:relative;padding:1.1em 1.2em .6em;background:var(--sheet);color:var(--ink)}
+.rp-head{display:flex;align-items:center;gap:1em;height:2.2em;font-size:1em}
+.rp-head b{font-size:1.4em;font-weight:700;margin-right:auto}
+.lg{display:flex;align-items:center;gap:.4em;font-size:1.15em}
 .sw{display:inline-block;width:1em;height:1em;background:var(--ink)}
 .sw.hx,.bar.exp{background:repeating-linear-gradient(135deg,var(--ink) 0 1.5px,transparent 1.5px 4.5px);box-shadow:inset 0 0 0 1px var(--ink)}
-.csv-tab{position:absolute;right:1.4em;top:-1.5em;padding:.35em .9em .5em;background:var(--sheet);color:var(--ink);font:700 1.05em/1.3 var(--f-ui);box-shadow:inset 0 -1px 0 var(--label)}
-.month-bars{position:relative;display:grid;grid-template-columns:repeat(6,1fr);height:14.4em;margin-top:.5em}
+.month-bars{position:relative;display:grid;grid-template-columns:repeat(6,1fr);height:11.6em;margin-top:.5em}
 .mcol{position:relative;display:block;padding:0;background:none;border:0;color:inherit;font-family:var(--f-ui);cursor:pointer;text-align:center}
 .mcol .bars{position:absolute;left:0;right:0;top:0;height:9.4em;display:flex;align-items:flex-end;justify-content:center;gap:.25em;border-bottom:1px solid var(--ink)}
-.bar{display:block;width:1.9em;transform-origin:50% 100%}
+.bar{display:block;width:1.8em;transform-origin:50% 100%}
 .bar.sales{background:var(--ink)}
-.tag014{position:absolute;left:50%;margin-left:-2.2em;font-size:.95em;transform:rotate(-3deg);z-index:2}
+.tag014{position:absolute;left:50%;margin-left:-2.1em;font-size:1.1em;transform:rotate(-3deg);z-index:2}
 .tag014.pre{visibility:hidden}
-.mcol .mo{position:absolute;left:0;right:0;top:9.9em;font-size:1em;font-weight:700;line-height:1.2}
-.mcol .fs{position:absolute;left:0;right:0;top:11.6em;font-size:.95em;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}
-.mcol .fe{position:absolute;left:0;right:0;top:13.4em;font-size:.95em;line-height:1.2;color:var(--label);font-variant-numeric:tabular-nums}
-.mcol[aria-pressed="true"] .mo{text-decoration:underline;text-underline-offset:2px}
-.bracket{position:absolute;left:0;bottom:-.35em;width:16.666%;height:.5em;border:2px solid var(--pen);border-top:0;transform:translateX(500%);pointer-events:none}
-.detail{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:.8em;align-items:baseline;margin-top:1em;padding:.5em 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-size:1em;font-variant-numeric:tabular-nums}
-.detail b{font-size:1.2em}
-.detail span{font-size:1.02em;white-space:nowrap}
-.detail span i{font-style:normal;color:var(--label);margin-right:.3em}
-.detail .net{font-weight:700}
-.rank{margin-top:.6em}
-.rank-h{font-size:1em;font-weight:600;color:var(--label);margin-top:.7em}
-.rank li{display:grid;grid-template-columns:1.4em 1fr auto auto;gap:.6em;align-items:baseline;height:1.9em;font-size:1em;border-bottom:1px solid #D9D5C8}
-.rank li span{font-size:1.08em;white-space:nowrap}
-.rank li .rk{font-weight:700}.rank li .ct{color:var(--label)}.rank li .sm{font-weight:600;font-variant-numeric:tabular-nums}
+.mcol .mo{position:absolute;left:0;right:0;top:8.3em;font-size:1.2em;font-weight:600;line-height:1.2}
+.mcol[aria-pressed="true"] .mo{font-weight:700}
+.bracket{position:absolute;left:0;bottom:-.5em;width:16.666%;height:.6em;border:2px solid var(--pen);border-top:0;transform:translateX(500%);pointer-events:none}
+/* one month at a time, its three figures at reading size */
+.detail{display:grid;grid-template-columns:1fr auto;column-gap:1em;align-items:end;margin-top:1.1em;padding:.7em 0 .8em;border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);font-variant-numeric:tabular-nums}
+.detail .d-mo{grid-column:1 / span 2;font-size:1.2em;font-weight:700;line-height:1.4}
+.detail .two{display:grid;row-gap:.1em}
+.detail .two span{font-size:1.4em;line-height:1.35;white-space:nowrap}
+.detail i{font-style:normal;color:var(--label);margin-right:.5em}
+.detail .net{text-align:right;line-height:1.1}
+.detail .net i{display:block;margin:0;font-size:1.2em}
+.detail .net b{font-size:2.6em;font-weight:700;white-space:nowrap}
+.rank-h{font-size:1.15em;font-weight:600;color:var(--label);margin-top:.8em}
+.rank li{display:grid;grid-template-columns:1.4em 1fr auto;gap:.6em;align-items:baseline;height:2.1em;border-bottom:1px solid #D9D5C8}
+.rank li span{font-size:1.25em;white-space:nowrap}
+.rank li .rk{font-weight:700}.rank li .ct{font-size:1.15em;color:var(--label)}
 
-/* ---------- import: sort, review, green wrap ---------- */
-.import-stage{height:42.8em}
-.import-stage .slot-row{top:1.6em;height:8.5em}
-.import-stage .slot,.old-file{top:0;width:6.4em;height:8.5em;left:calc(var(--i) * 7.35em)}
+/* ---------- day one: sort, review, green wrap ---------- */
+.import-stage{height:43.6em}
+.import-stage .slot-row{top:.2em;height:7.8em}
+.import-stage .slot,.old-file{top:0;width:5.8em;height:7.8em;left:calc(var(--i) * 6.9em)}
+.import-stage .slot{outline-color:var(--soft);color:var(--soft)}
 .old-file{position:absolute;perspective:40em;z-index:5;transform:none}
 .old-file.is-heap{transform:var(--heap);z-index:4}
 .old-file .tile-in{transition:transform 160ms linear 150ms}
-.old-file .face{padding:.6em .5em .5em;clip-path:none}
+.old-file .face{padding:.5em .45em .45em;clip-path:none}
 .old-file .face.front{box-shadow:.3em .3em 0 #C9C4B4,.6em .6em 0 #8E8A7D}
-.old-file .face.done{justify-content:flex-end;gap:.5em}
-.old-file .fnm{display:block;font-size:.9em;line-height:1.2;word-break:break-all;font-weight:600}
-.old-file .kind{font:700 .85em/1 var(--f-ui);letter-spacing:.06em;align-self:flex-start;padding:.2em .4em;box-shadow:inset 0 0 0 1px var(--ink)}
+.old-file .face.done{justify-content:flex-end;gap:.4em}
+.old-file .fnm{display:block;font-size:1.1em;line-height:1.15;word-break:break-all;font-weight:600}
+.old-file .kind{font:700 1.1em/1 var(--f-ui);letter-spacing:.06em;align-self:flex-start;padding:.2em .35em;box-shadow:inset 0 0 0 1px var(--ink)}
 .old-file .dr{flex:1;margin-top:.5em;background:repeating-linear-gradient(to bottom,#9AA3A8 0 .1em,transparent .1em .7em)}
 .old-file[data-kind="jpg"] .dr{background:#C9C4B4;box-shadow:inset 0 0 0 1px var(--label);clip-path:polygon(0 0,100% 0,100% 86%,84% 100%,0 100%)}
 .old-file[data-kind="png"] .dr{position:relative;background:none}
 .old-file[data-kind="png"] .dr .ph{border-width:.14em;border-color:var(--ink);background:#DAD6C8}
-.review-card{position:absolute;left:0;right:0;top:12.4em;height:20.2em;padding:1.1em 1.2em;background:var(--sheet);color:var(--ink);box-shadow:.4em .4em 0 #04080A}
-.rc-head{font-size:1.2em;font-weight:700;line-height:1.3}
-.field{position:relative;height:4.3em;padding-top:.6em;border-top:1px solid var(--ink);margin-top:.5em}
+.review-card{position:absolute;left:0;right:0;top:10.6em;height:21.6em;padding:1.1em 1.2em;background:var(--sheet);color:var(--ink)}
+.rc-head{font-size:1.3em;font-weight:700;line-height:1.3}
+.field{position:relative;height:4.6em;padding-top:.6em;border-top:1px solid var(--ink);margin-top:.5em}
 .field+.field{margin-top:0}
-.field dt{font-size:1em;font-weight:600;color:var(--label);line-height:1.3}
-.field dd{font-size:1.3em;font-weight:600;line-height:1.35;white-space:nowrap}
-.field .tape-label{position:absolute;right:0;top:2.55em;font-size:.95em}
+.field dt{font-size:1.15em;font-weight:600;color:var(--label);line-height:1.3}
+.field dd{font-size:1.4em;font-weight:600;line-height:1.35;white-space:nowrap}
+.field .tape-label{position:absolute;right:0;top:2.5em;font-size:1.1em}
 .field.is-unread{clip-path:inset(0 100% 0 0)}
-.wrap-checked{position:absolute;left:-.6em;right:-.6em;top:15.15em;height:3em;display:flex;align-items:center;justify-content:flex-end;padding:0 1.4em;background:var(--t-green);color:var(--marker);font:700 1em/1 var(--f-ui);transform:rotate(-4deg);visibility:hidden;z-index:3;
+.wrap-checked{position:absolute;left:-.6em;right:-.6em;top:16.2em;height:3.2em;display:flex;align-items:center;justify-content:flex-end;padding:0 1.4em;background:var(--t-green);color:var(--marker);font:700 1em/1 var(--f-ui);transform:rotate(-4deg);visibility:hidden;z-index:3;
   clip-path:polygon(0 8%,1% 0,99% 0,100% 10%,99.3% 34%,100% 55%,99.4% 78%,100% 100%,1% 100%,0 86%,.7% 62%,0 40%,.8% 22%)}
-.wrap-checked>span{font-size:1.3em}
+.wrap-checked>span{font-size:1.4em}
 .is-wrapped .wrap-checked{visibility:visible}
-.wrap-slot{position:absolute;left:1.2em;right:6.6em;top:15.75em;height:2.6em;display:flex;align-items:center;justify-content:center;outline:1px dashed var(--label);outline-offset:-1px;color:var(--label);font:600 1em/1 var(--f-ui);transform:rotate(-4deg)}
-.wrap-slot>span{font-size:1.05em}
+.wrap-slot{position:absolute;left:1.2em;right:6.8em;top:16.9em;height:2.6em;display:flex;align-items:center;justify-content:center;outline:1px dashed var(--label);outline-offset:-1px;color:var(--label);font:600 1em/1 var(--f-ui);transform:rotate(-4deg)}
+.wrap-slot>span{font-size:1.1em}
 .is-wrapped .wrap-slot{visibility:hidden}
-.review-state{position:absolute;left:0;right:0;top:33.6em;min-height:3.6em;display:flex;align-items:center;gap:.9em;font-size:1em}
+.review-state{position:absolute;left:0;right:0;top:33em;min-height:4em;display:flex;align-items:center;gap:.9em;font-size:1em}
 .review-state .tape-label{font-size:1.15em;flex:none}
 .review-state .rs-t{font-size:1.3em;line-height:1.35}
 .rs-saved{display:none}
@@ -352,55 +427,57 @@ html[data-lang="zh"] .lt-zh,html[data-lang="en"] .lt-en{color:var(--text);font-w
 .act{position:absolute;left:0;right:0;height:48px;display:flex;align-items:center;justify-content:center;background:var(--t-green);color:var(--marker);border:0;border-radius:3px;box-shadow:inset 0 0 0 2px var(--marker);font:700 1em/1 var(--f-ui);cursor:pointer}
 .act>span{font-size:15px}
 .act:active{transform:translateY(1px);box-shadow:inset 0 0 0 1px var(--marker)}
-.import-stage .act{top:38em}
+.import-stage .act{bottom:0}
 .act .l-undo{display:none}
 .is-saved .act{background:none;color:var(--text);box-shadow:inset 0 0 0 2px var(--text)}
 .is-saved .act .l-undo{display:inline}.is-saved .act .l-go{display:none}
+.attach .st .w-wait,.attach .st .w-done{display:none}
+.attach[data-state="sent"] .st .w-wait,.attach[data-state="read"] .st .w-done{display:inline}
 
 /* ---------- pro: token ---------- */
-.pro-stage{height:29.4em}
+.pro-stage{height:30em}
 .sis-plate{position:absolute;left:0;top:1.2em;width:11.4em;height:13em;padding:1em;background:var(--sheet);color:var(--ink);display:flex;flex-direction:column;gap:.3em;clip-path:polygon(0 0,calc(100% - 1.4em) 0,100% 1.4em,100% 100%,0 100%)}
 .sis-plate b{font:800 1.9em/1.1 var(--f-page)}
-.sis-plate span{font-size:1.1em;line-height:1.3}
-.sis-plate .scope{margin-top:auto;font-size:1em;color:var(--label)}
-.ai-list{position:absolute;right:0;top:0;width:13.6em;height:15.4em;padding:.9em 1em;background:var(--bubble);color:var(--text);border-radius:.8em}
-.ai-list li{font-size:1.15em;line-height:1.6}
+.sis-plate span{font-size:1.2em;line-height:1.3}
+.sis-plate .scope{margin-top:auto;font-size:1.1em;color:var(--label)}
+.ai-list{position:absolute;right:0;top:0;width:14.8em;height:16.4em;padding:.9em 1em;background:var(--stage);color:var(--text);border-radius:.8em}
+.ai-list li{font-size:1.25em;line-height:1.55}
 .ai-list li.last{line-height:1.25;margin-top:.2em}
-.ai-list li.hd{font-size:1em;color:var(--meta);line-height:1.5}
-.token-strip{position:absolute;left:9.4em;top:6.3em;width:13.5em;height:2.9em;display:flex;align-items:center;justify-content:center;background:var(--t-blue);color:var(--t-white);font:700 1em/1 var(--f-ui);letter-spacing:.05em;transform:rotate(-2deg);z-index:3;
+.ai-list li.hd{font-size:1.1em;color:var(--meta);line-height:1.5}
+.token-strip{position:absolute;left:7.6em;top:6.3em;width:11.4em;height:3em;display:flex;align-items:center;justify-content:center;background:var(--t-blue);color:var(--t-white);font:700 1em/1 var(--f-ui);letter-spacing:.05em;transform:rotate(-2deg);z-index:3;
   clip-path:polygon(0 8%,1.5% 0,98.5% 0,100% 10%,98.9% 34%,100% 55%,99% 78%,100% 100%,1.5% 100%,0 86%,1.1% 62%,0 40%,1.2% 22%)}
-.token-strip>span{font-size:1.15em}
+.token-strip>span{font-size:1.2em}
 .token-strip .strike{left:8%;width:84%}
 .token-strip .strike path{stroke:var(--t-white)}
 [data-token="off"] .token-strip{visibility:hidden}
-.token-state{position:absolute;left:0;right:0;top:17.6em;min-height:3.6em;display:flex;align-items:center;gap:.9em}
+.token-state{position:absolute;left:0;right:0;top:18.4em;min-height:4em;display:flex;align-items:center;gap:.9em}
 .token-state .tape-label{font-size:1.15em;flex:none}
 .token-state .rs-t{font-size:1.3em;line-height:1.35}
 .ts-off{display:none}
 [data-token="off"] .ts-off{display:flex}[data-token="off"] .ts-on{display:none}
-.pro-stage .act{top:22.4em;background:none;color:var(--text);box-shadow:inset 0 0 0 2px var(--text)}
+.pro-stage .act{bottom:0;background:none;color:var(--text);box-shadow:inset 0 0 0 2px var(--text)}
 .pro-stage .act .l-new{display:none}
 [data-token="off"] .act{background:var(--t-blue);color:var(--t-white);box-shadow:inset 0 0 0 2px var(--t-white)}
 [data-token="off"] .act .l-new{display:inline}[data-token="off"] .act .l-rev{display:none}
 
-/* ---------- pricing ---------- */
-.plans{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:22px}
-.plan{position:relative;display:flex;flex-direction:column;padding:22px 10px 12px;background:var(--counter)}
-.plan>.tape-label{position:absolute;left:8px;top:-9px;font-size:12px}
-.plan h3{font:600 14px/1.3 var(--f-page);color:var(--meta)}
-.price{margin-top:4px}
-.price b{display:block;white-space:nowrap;font:800 34px/1.1 var(--f-page);font-variation-settings:"opsz" 34;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+/* ---------- plans: two leaves of unequal length in one message ---------- */
+.plans{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:start}
+.plan{position:relative;display:flex;flex-direction:column;padding:20px 9px 9px;background:var(--stage)}
+.plan>.tape-label{position:absolute;left:7px;top:-7px;font-size:12px}
+.plan h3{font:600 13.5px/1.3 var(--f-page);color:var(--meta)}
+.price{margin-top:2px}
+.price b{display:block;white-space:nowrap;font:800 32px/1.1 var(--f-page);font-variation-settings:"opsz" 32;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .price>span{display:block;font-size:13px;line-height:1.4;color:var(--meta);white-space:nowrap}
-.plan .pl{margin:12px 0 14px}
-.plan li+li{margin-top:8px}
-.plan li{position:relative;padding-left:12px;font-size:13px;line-height:1.45}
+.plan .pl{margin:10px 0 12px}
+.plan li+li{margin-top:7px}
+.plan li{position:relative;padding-left:11px;font-size:13px;line-height:1.45}
 .plan li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:2px;background:var(--text)}
-.plan .cta-trial{margin-top:auto;height:44px;font-size:13px}
+.plan .cta-trial{height:44px;font-size:13px}
 .plan .cta-trial .en{font-size:12px}
 
 /* ---------- composer, footer ---------- */
-.elapsed{margin-top:34px;font:500 13px/1.5 var(--f-ui);color:var(--meta);font-variant-numeric:tabular-nums}
-.composer{display:flex;align-items:center;gap:10px;margin-top:8px;min-height:56px;padding:4px 4px 4px 18px;background:var(--bubble);border-radius:28px;text-decoration:none;font:600 16px/1.3 var(--f-ui)}
+.elapsed{margin-top:26px}
+.composer{display:flex;align-items:center;gap:10px;margin-top:10px;min-height:56px;padding:4px 4px 4px 18px;background:var(--bubble);border-radius:28px;text-decoration:none;font:600 16px/1.3 var(--f-ui)}
 .composer:active{transform:translateY(1px)}
 .composer-send{margin-left:auto;flex:none;width:48px;height:48px;border-radius:50%;background:var(--t-green);color:var(--marker);display:grid;place-items:center}
 .composer-send svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
@@ -414,42 +491,39 @@ footer a{color:var(--text);text-underline-offset:3px}
 .legal a{min-height:44px;min-width:44px;display:inline-flex;align-items:center}
 .support-whatsapp a,.trust-line a{display:flex;width:fit-content;min-width:44px;min-height:44px;align-items:center}
 
-/* ---------- 900 and up: two columns; no sequence changes its timing ---------- */
+/* ---------- 900 and up: the hero in two columns, the thread in one; no sequence changes its timing ---------- */
 @media (min-width:900px){
-  .col{max-width:1120px}
-  .ep{padding:44px 32px}
+  .ep{padding:46px 32px 34px}
   #hero{padding-top:24px;padding-bottom:40px}
+  #hero .col{max-width:1120px}
   .hero-grid{display:grid;grid-template-columns:5fr 7fr;column-gap:44px;align-items:start}
   .hero-grid>*{grid-column:1}
   .stage-wrap{grid-column:2;grid-row:1 / span 8;margin-top:0}
   .hero-stage{margin:0;font-size:clamp(12.5px,1.25vw,16px)}
+  .stage-caption>span{font-size:15px}
   .hero-claim{margin-top:10px}
   .hero-claim h1{font-size:50px;line-height:58px;font-variation-settings:"opsz" 40}
-  .hero-claim h1 .en{font-size:46px;line-height:54px;white-space:nowrap}
-  .hero-sub,.hero-sub .en{font-size:16px;line-height:24px;margin-top:10px}
-  .stage-caption{font-size:15px;height:24px;line-height:24px;margin-top:8px}
-  #hero .hero-cta{margin-top:26px;max-width:390px}
-  .trial-terms{max-width:390px;font-size:15px}
-  .cut-rail{max-width:390px;margin-top:18px}
-  .picker-client,.picker-rate{max-width:390px;margin-top:16px}
-  .beat{display:grid;grid-template-columns:4fr 8fr;column-gap:44px;row-gap:12px;align-items:start}
-  .beat>.msg+.msg,.beat>.msg{margin-top:0}
-  .beat>*{grid-column:1}
-  .beat>.slab{grid-column:2;grid-row:1 / span 6;margin:0;padding:28px;justify-self:start}
-  .stage{font-size:14px}
-  .msg{font-size:15px}
-  .plans{grid-template-columns:400px 400px;gap:28px}
-  .plan{padding:28px 22px 22px}
+  .hero-claim h1 .en{font-size:33px;line-height:44px;padding-top:6px;font-variation-settings:"opsz" 33}
+  .hero-sub,.hero-sub .en{font-size:16px;line-height:24px;margin-top:10px;white-space:normal}
+  #hero .hero-cta{margin-top:26px;max-width:390px;height:60px}
+  .trial-terms{font-size:13.5px}
+  .cut-rail{max-width:390px;margin-top:22px}
+  .picker-client,.picker-rate{max-width:390px;margin-top:18px}
+  .col{max-width:510px}
+  .stage{font-size:calc(486px / 33.4)}
+  .story-stage{font-size:calc(510px / 35.8)}
+  .msg{font-size:15.5px}
+  .notice{font-size:14px}
+  .plan{padding:24px 14px 14px}
   .plan li,.plan .cta-trial,.plan .cta-trial .en{font-size:14px}
-  .tail{max-width:640px}
-  footer p{max-width:760px}
+  footer .col{max-width:760px}
   footer{padding:30px 32px 56px}
 }
 @media (max-width:379px){
-  .hero-sub .en,.trial-terms .en{white-space:normal}
-  .pk-hint{display:none}
+  .hero-sub .en{white-space:normal}
   .hero-claim h1{font-size:27px;line-height:35px}
-  .hero-claim h1 .en{font-size:25px}
+  .hero-claim h1 .en{font-size:22px}
+  .tb{gap:5px;padding:0 10px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none!important}
@@ -472,19 +546,19 @@ footer a{color:var(--text);text-underline-offset:3px}
 
 <main class="thread">
 
-<!-- ================= HERO: the claim, the stage, the offer, the transport, the pickers ================= -->
-<section id="hero" class="ep">
+<!-- ================= HERO: the claim, the stage (thread, light, sheet, subtitle), the offer, the transport, the pickers ================= -->
+<section id="hero" class="ep" data-ep="today">
   <div class="col hero-grid">
     <p class="fwd-label"><span class="zh">↪ 已转发</span><span class="en">↪ Forwarded</span></p>
 
     <div class="hero-claim">
-      <h1 class="stack"><span class="zh">选客户，选价目，<br>单就开好了。</span><span class="en">Pick a client, a rate.<br>Invoice done.</span></h1>
+      <h1 class="stack"><span class="zh">选客户，选价目，<br>单就开好了。</span><span class="en">Pick a client. Pick a rate.<br>Invoice done.</span></h1>
       <p class="hero-sub stack"><span class="zh">给马来西亚的摄像师、摄影师和小型工作室。</span><span class="en">For Malaysian videographers, photographers and small studios.</span></p>
     </div>
 
     <div class="stage-wrap">
       <div class="hero-stage" data-state="end">
-        <p class="sr"><span class="zh">示例聊天记录：一条转发的消息问上次那张单能不能再发，一段语音里有地址和价钱，一张截图的截图，一句“发票再发一次？”，一句“等下，我找找”。</span><span class="en">Sample chat: a forwarded message asking for that last bill again, a voice note holding an address and a price, a screenshot of a screenshot, "Invoice again?", and "Wait, looking".</span></p>
+        <p class="sr"><span class="zh">示例聊天记录：一条转发的旧单，一段语音里有地址和价钱，一张截图的截图，一句“发票呢？”，一句“等下，我找找”。聊天上面放着一张开好的单。</span><span class="en">Sample chat: a forwarded old bill, a voice note holding an address and a price, a screenshot of a screenshot, "Invoice?", and "Wait, looking". A finished invoice lies over this chat.</span></p>
         <div class="thread-band" aria-hidden="true">
           <svg class="wall" aria-hidden="true" focusable="false">
             <defs>
@@ -499,86 +573,96 @@ footer a{color:var(--text);text-underline-offset:3px}
             <rect width="100%" height="100%" fill="url(#doodle)"/>
             <rect width="100%" height="100%" filter="url(#grain)"/>
           </svg>
-          <div class="strip">
-            <div class="rest">
-              <div class="bubble"><span class="fw"><span class="zh">↪ 已转发</span><span class="en">↪ Forwarded</span></span><p class="stack"><span class="zh">上次那张单，可以再发吗</span><span class="en">Resend that last bill?</span></p></div>
-              <div class="bubble" data-kind="voice"><span class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="dur">0:47</span></span><p class="stack"><span class="zh">语音：地址、价钱</span><span class="en">Voice: address, price</span></p></div>
-              <div class="bubble" data-kind="shot"><span class="shot"><span class="ph"><span class="ph"><span class="doc"></span></span></span></span><p class="stack"><span class="zh">截图的截图</span><span class="en">Screenshot of a screenshot</span></p></div>
-              <div class="bubble"><p class="stack"><span class="zh">发票再发一次？</span><span class="en">Invoice again?</span></p></div>
-              <div class="bubble out"><p class="stack"><span class="zh">等下，我找找</span><span class="en">Wait, looking</span></p><span class="mt">23:02 <svg class="tk-svg" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg></span></div>
+          <div class="mover">
+            <div class="strip">
+              <!-- the opening shot: the thread as he left it, at message size -->
+              <div class="set set-start">
+                <div class="bubble"><p><span class="zh">单发了吗？</span><span class="en">Bill sent yet?</span></p></div>
+                <div class="bubble"><span class="fw"><span class="zh">↪ 已转发</span><span class="en">↪ Forwarded</span></span><p><span class="zh">上次那张单，可以再发一次吗</span><span class="en">Can you resend that last bill?</span></p></div>
+                <div class="bubble" data-kind="voice"><span class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="dur">0:47</span></span><p><span class="zh">语音：新地址和价钱都在里面</span><span class="en">Voice note: new address and price</span></p></div>
+                <div class="bubble out"><p><span class="zh">收到，晚点开</span><span class="en">Got it. Billing later</span><span class="mt">22:41 <svg class="tk-svg" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg></span></p></div>
+                <div class="bubble" data-kind="shot"><span class="shot"><span class="ph"><span class="ph"><span class="doc"></span></span></span></span><p><span class="zh">截图的截图：上个月的 Word 单</span><span class="en">Screenshot of a screenshot: old Word bill</span></p></div>
+                <div class="bubble"><p><span class="zh">地址是 Puchong 还是 PJ？</span><span class="en">Puchong or PJ?</span></p></div>
+                <div class="bubble out"><p><span class="zh">在翻聊天记录</span><span class="en">Scrolling back</span><span class="mt">22:58 <svg class="tk-svg" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg></span></p></div>
+              </div>
+              <!-- the still: what lies round and under the sheet when everything has landed -->
+              <div class="set set-end">
+                <div class="bubble"><p><span class="zh">单发了吗？</span><span class="en">Bill sent yet?</span></p></div>
+                <div class="bubble"><p><span class="zh">PDF 在哪个文件夹</span><span class="en">Which folder is it in</span></p></div>
+                <div class="bubble"><span class="fw"><span class="zh">↪ 已转发</span><span class="en">↪ Forwarded</span></span><p><span class="zh">旧单 2023.pdf</span><span class="en">Old bill 2023.pdf</span></p></div>
+                <div class="bubble" data-kind="voice"><span class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="dur">1:05</span></span><p><span class="zh">语音：地址、价钱</span><span class="en">Voice: address, price</span></p></div>
+                <div class="bubble" data-kind="shot"><span class="shot"><span class="ph"><span class="ph"><span class="doc"></span></span></span></span><p><span class="zh">截图的截图</span><span class="en">Screenshot of a screenshot</span></p></div>
+                <div class="bubble"><p><span class="zh">发票呢？</span><span class="en">Invoice?</span><span class="mt">23:02</span></p></div>
+                <div class="bubble out"><p><span class="zh">等下，我找找</span><span class="en">Wait, looking</span><span class="mt">23:02 <svg class="tk-svg" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg></span></p></div>
+              </div>
             </div>
           </div>
+          <div class="beam"></div>
+          <div class="hang-layer"></div>
         </div>
 
         <article class="invoice-sheet" id="sheet" aria-label="示例发票 Invoice, sample data">
-          <svg class="crossing" viewBox="0 0 100 78" aria-hidden="true" focusable="false">
-            <path class="stroke s1" d="M1.6 34.4 L44.6 1.2" pathLength="1"/>
-            <path class="stroke s2" d="M1.2 77.2 L98.4 1.4" pathLength="1"/>
-            <text class="phrase zh" x="36" y="31.2" text-anchor="middle" transform="rotate(-37.9 36 28)">INV-014 · 开好了</text>
-            <text class="phrase en" x="36" y="31.2" text-anchor="middle" transform="rotate(-37.9 36 28)">INV-014 · DONE</text>
+          <svg class="crossing" viewBox="0 0 110 70" aria-hidden="true" focusable="false">
+            <path class="stroke s1" d="M3.2 37.6 L4.8 36.2 Q30 19.4 56.8 2.4" pathLength="1"/>
+            <path class="stroke s2" d="M2.4 66.6 Q52 34.6 103 3.6 L105.2 3.9" pathLength="1"/>
+            <text class="phrase zh" x="41" y="30.6" text-anchor="middle" transform="rotate(-32.4 41 27)">INV-014 · 开好了</text>
+            <text class="phrase en" x="41" y="30.6" text-anchor="middle" transform="rotate(-32.4 41 27)">INV-014 · DONE</text>
           </svg>
           <span class="tape-label sample"><span class="zh">示例 SAMPLE</span><span class="en">SAMPLE DATA</span></span>
           <div class="from"><b>Kite &amp; Reel Studio</b><span>Video and photography · Kuala Lumpur</span></div>
-          <div class="meta"><span class="tn"><span class="inv-no">INV-2026-014</span> · <span class="inv-date">16 Nov 2026</span></span><span class="slot-empty" data-slot="date"><span class="zh">日期</span><span class="en">Date</span></span></div>
+          <div class="meta"><span class="tn"><span class="inv-no">INV-2026-014</span> · <span class="inv-date">16 Nov 2026</span></span><span class="slot-empty" data-slot="date"><span class="zh">日期</span><span class="en">DATE</span></span></div>
           <div class="hr1"></div>
           <div class="bill-to">
             <span class="lb"><span class="zh">客户</span><span class="en">Bill to</span></span>
             <span class="tape-label code">LUMEN</span>
             <span class="name">Lumen Events Sdn Bhd</span>
-            <span class="sub">Attn: Farah Aziz · Puchong, Selangor</span>
-            <svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.6 L100 2.4" pathLength="1"/></svg>
-            <span class="slot-empty" data-slot="client"><span class="zh">客户</span><span class="en">Client</span></span>
+            <svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.9 L1.4 3.4 L100 2.4" pathLength="1"/></svg>
+            <span class="slot-empty" data-slot="client"><span class="zh">客户</span><span class="en">CLIENT</span></span>
           </div>
           <div class="lines">
             <div class="lh"><span class="lb"><span class="zh">项目</span><span class="en">Description</span></span><span class="lb"><span class="zh">金额 RM</span><span class="en">Amount RM</span></span></div>
             <div class="rows">
-              <div class="row" data-id="video"><span class="d"><span class="zh">活动录影，半天</span><span class="en">Event video, half day</span></span><span class="a tn">1,800.00</span><svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.6 L100 2.4" pathLength="1"/></svg></div>
-              <div class="row" data-id="edit"><span class="d"><span class="zh">精华剪辑，1 支</span><span class="en">Highlight edit, 1 video</span></span><span class="a tn">900.00</span><svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.6 L100 2.4" pathLength="1"/></svg></div>
+              <div class="row" data-id="video"><span class="d"><span class="zh">活动录影，半天</span><span class="en">Event video, half day</span></span><span class="a tn">1,800.00</span><svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.9 L1.4 3.4 L100 2.4" pathLength="1"/></svg></div>
+              <div class="row" data-id="edit"><span class="d"><span class="zh">精华剪辑，1 支</span><span class="en">Highlight edit, 1 video</span></span><span class="a tn">900.00</span><svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.9 L1.4 3.4 L100 2.4" pathLength="1"/></svg></div>
             </div>
-            <span class="slot-empty" data-slot="item"><span class="zh">项目</span><span class="en">Item</span></span>
-            <span class="slot-empty" data-slot="rate"><span class="zh">价目</span><span class="en">Rate</span></span>
-            <span class="slot-empty" data-slot="none"><span class="zh">选一个价目</span><span class="en">Pick a rate</span></span>
+            <span class="slot-empty" data-slot="item"><span class="zh">项目</span><span class="en">ITEM</span></span>
+            <span class="slot-empty" data-slot="rate"><span class="zh">价目</span><span class="en">RATE</span></span>
+            <span class="slot-empty" data-slot="none"><span class="zh">选一个价目</span><span class="en">PICK A RATE</span></span>
           </div>
           <div class="total-wrap">
             <div class="total"><span class="lb"><span class="zh">合计</span><span class="en">Total</span></span><b class="tn">RM <span class="fig">2,700.00</span></b></div>
-            <div class="total-words"><span class="zh">令吉 二千七百 整</span><span class="en">Ringgit Malaysia two thousand seven hundred only</span></div>
-            <span class="slot-empty" data-slot="total"><span class="zh">合计</span><span class="en">Total</span></span>
-          </div>
-          <div class="terms">
-            <p class="lbp"><span class="lb"><span class="zh">付款条件</span><span class="en">Terms</span></span></p>
-            <p><span class="zh">确认时付 50% 订金，交片后 14 天内付清。</span><span class="en">50% deposit to confirm. Balance within 14 days of delivery.</span></p>
-            <p><span class="zh">银行资料：示例里不显示。</span><span class="en">Bank details: not shown in this sample.</span></p>
+            <div class="total-words"><span class="zh">令吉 二千七百 整</span><span class="en">RM two thousand seven hundred only</span></div>
+            <span class="slot-empty" data-slot="total"><span class="zh">合计</span><span class="en">TOTAL</span></span>
           </div>
           <div class="record-zone">
-            <div class="record-block"><span class="mark">1/1</span><span class="id"><span class="rec-no">INV-2026-014</span> · <span class="zh">PDF 出自同一份记录</span><span class="en">PDF FROM ONE RECORD</span></span><span class="when">16 NOV 2026 23:41:07</span></div>
+            <div class="record-block"><span class="mark"><b>1/1</b></span><span class="id"><span class="rec-no">INV-2026-014</span> · <span class="zh">PDF · 同一份记录</span><span class="en">PDF · ONE RECORD</span></span><span class="when">16 NOV 2026 23:41:07</span></div>
             <span class="slot-empty" data-slot="pdf">PDF</span>
           </div>
-          <div class="machine-line" aria-hidden="true"><span>2026014  16112026  270000</span></div>
+          <div class="machine-line" aria-hidden="true"><span class="ml"><i>NO</i><b>2026014</b><i>DATE</i><b>16112026</b><i>SEN</i><b>270000</b></span></div>
         </article>
         <div class="catch-layer" aria-hidden="true"></div>
+        <p class="stage-caption" aria-live="polite"><span class="cap-end"><span class="ck">23:41:07</span><span class="zh">单开好了。</span><span class="en">Invoice done.</span></span><span class="cap-start" aria-hidden="true"><span class="zh">聊天记录里，资料到处都是。</span><span class="en">Client details, all over your chat.</span></span></p>
       </div>
-      <p class="stage-caption" aria-live="polite"><span class="ck">23:41:07</span><span class="zh">单开好了。</span><span class="en">Invoice done.</span></p>
     </div>
 
-    <a class="cta-trial hero-cta" href="https://sistudio.app/auth/sign-up"><span class="zh">免费试用 7 天</span><span class="en">Start 7-day free trial</span></a>
-    <p class="trial-terms stack"><span class="zh">7 天免费试用 · Basic RM 199/年 · Pro RM 399/年</span><span class="en">7-day free trial · Basic RM 199/year · Pro RM 399/year</span></p>
+    <a class="cta-trial hero-cta" href="https://sistudio.app/auth/sign-up"><span class="cta-l"><span class="zh">免费试用 7 天</span><span class="en">Start 7-day free trial</span></span><span class="trial-terms"><span class="zh">Basic RM 199/年 · Pro RM 399/年</span><span class="en">Basic RM 199/year · Pro RM 399/year</span></span></a>
 
     <div class="cut-rail" data-state="end">
       <button class="replay" type="button"><span class="rp-end"><span class="zh">↺ 重看</span><span class="en">↺ Replay</span></span></button>
       <div class="rail">
-        <span class="marks" aria-hidden="true"><i style="--p:.17"></i><i style="--p:.36"></i><i style="--p:.50"></i><i style="--p:.60"></i><i style="--p:.69"></i><i style="--p:.75"></i><i style="--p:.79"></i><i style="--p:.93"></i><i style="--p:1"></i></span>
+        <span class="marks" aria-hidden="true"><i style="--p:.14"></i><i style="--p:.314"></i><i style="--p:.455"></i><i style="--p:.562"></i><i style="--p:.645"></i><i style="--p:.711"></i><i style="--p:.76"></i><i style="--p:.785"></i><i style="--p:.921"></i><i style="--p:1"></i></span>
         <input type="range" min="0" max="2420" step="1" value="2420" aria-label="逐格看开单过程 Step through the sequence">
         <span class="hint"><span class="zh">无声 · 拖动逐格看</span><span class="en">Silent. Drag to step through.</span></span>
       </div>
-      <span class="readout" aria-hidden="true">0:02.42</span>
+      <span class="readout" aria-hidden="true"><span class="ro-t">0:02.42</span></span>
     </div>
 
     <div class="picker-client" role="group" aria-label="客户 Client">
       <p class="pk-label"><b><span class="zh">客户</span><span class="en">Client</span></b><span><span class="zh">点一位，上面的单马上换</span><span class="en">Tap one. Your sheet above re-cuts.</span></span></p>
       <div class="tiles">
-        <button class="tile" type="button" aria-pressed="true" data-i="0"><span class="tape-label">LUMEN</span><span class="nm">Lumen Events Sdn Bhd</span><span class="kd"><span class="zh">公司</span><span class="en">Company</span></span><span class="lock" aria-hidden="true"><i></i></span><span class="pk"><span class="zh">已选</span><span class="en">Picked</span></span></button>
-        <button class="tile" type="button" aria-pressed="false" data-i="1"><span class="tape-label">TANJUNG</span><span class="nm">Tanjung Bakery</span><span class="kd"><span class="zh">公司</span><span class="en">Company</span></span><span class="lock" aria-hidden="true"><i></i></span><span class="pk"><span class="zh">已选</span><span class="en">Picked</span></span></button>
-        <button class="tile" type="button" aria-pressed="false" data-i="2"><span class="tape-label">ARIA</span><span class="nm">Aria Lim</span><span class="kd"><span class="zh">个人</span><span class="en">Individual</span></span><span class="lock" aria-hidden="true"><i></i></span><span class="pk"><span class="zh">已选</span><span class="en">Picked</span></span></button>
+        <button class="tile" type="button" aria-pressed="true" data-i="0"><span class="tape-label">LUMEN</span><span class="nm">Lumen Events Sdn Bhd</span><span class="lock" aria-hidden="true"><i></i></span><svg class="pad" viewBox="0 0 11 13" aria-hidden="true"><path d="M3 6V4a2.5 2.5 0 0 1 5 0v2"/><rect x="1" y="6" width="9" height="6.4"/></svg><span class="kd"><span class="zh">公司</span><span class="en">Company</span></span><span class="pk"><span class="zh">已选</span><span class="en">Picked</span></span></button>
+        <button class="tile" type="button" aria-pressed="false" data-i="1"><span class="tape-label">TANJUNG</span><span class="nm">Tanjung Bakery</span><span class="lock" aria-hidden="true"><i></i></span><svg class="pad" viewBox="0 0 11 13" aria-hidden="true"><path d="M3 6V4a2.5 2.5 0 0 1 5 0v2"/><rect x="1" y="6" width="9" height="6.4"/></svg><span class="kd"><span class="zh">公司</span><span class="en">Company</span></span><span class="pk"><span class="zh">已选</span><span class="en">Picked</span></span></button>
+        <button class="tile" type="button" aria-pressed="false" data-i="2"><span class="tape-label">ARIA</span><span class="nm">Aria Lim</span><span class="lock" aria-hidden="true"><i></i></span><svg class="pad" viewBox="0 0 11 13" aria-hidden="true"><path d="M3 6V4a2.5 2.5 0 0 1 5 0v2"/><rect x="1" y="6" width="9" height="6.4"/></svg><span class="kd"><span class="zh">个人</span><span class="en">Individual</span></span><span class="pk"><span class="zh">已选</span><span class="en">Picked</span></span></button>
         <p class="pk-hint"><span class="zh">客户存一次，下张单直接选。</span><span class="en">Saved once. Picked on your next bill.</span></p>
       </div>
     </div>
@@ -586,137 +670,160 @@ footer a{color:var(--text);text-underline-offset:3px}
     <div class="picker-rate" role="group" aria-label="价目 Rates">
       <p class="pk-label"><b><span class="zh">价目</span><span class="en">Rates</span></b><span><span class="zh">点一下加上，再点移除</span><span class="en">Tap to add. Tap again to remove.</span></span></p>
       <div class="strips">
-        <button class="rstrip" type="button" aria-pressed="true" data-id="video"><span class="sv"><span class="zh">活动录影 · 半天</span><span class="en">Event video, ½ day</span></span><span class="am">RM 1,800</span><span class="ad"><span class="zh">已加 · 点可移除</span><span class="en">Added · remove</span></span></button>
-        <button class="rstrip" type="button" aria-pressed="false" data-id="photo"><span class="sv"><span class="zh">活动摄影 · 半天</span><span class="en">Event photo, ½ day</span></span><span class="am">RM 1,200</span><span class="ad"><span class="zh">已加 · 点可移除</span><span class="en">Added · remove</span></span></button>
+        <button class="rstrip" type="button" aria-pressed="true" data-id="video"><span class="sv"><span class="zh">活动录影 · 半天</span><span class="en">Event video ½ day</span></span><span class="am">RM 1,800</span><span class="ad"><span class="zh">已加 · 点可移除</span><span class="en">Added · remove</span></span></button>
+        <button class="rstrip" type="button" aria-pressed="false" data-id="photo"><span class="sv"><span class="zh">活动摄影 · 半天</span><span class="en">Event photo ½ day</span></span><span class="am">RM 1,200</span><span class="ad"><span class="zh">已加 · 点可移除</span><span class="en">Added · remove</span></span></button>
         <button class="rstrip" type="button" aria-pressed="true" data-id="edit"><span class="sv"><span class="zh">精华剪辑 · 1 支</span><span class="en">Highlight edit ×1</span></span><span class="am">RM 900</span><span class="ad"><span class="zh">已加 · 点可移除</span><span class="en">Added · remove</span></span></button>
       </div>
     </div>
 
-    <p class="sample-note"><span class="zh">示例资料：工作室、客户、价目和聊天内容都是虚构的。</span><span class="en">Sample data: studio, clients, rates and chat lines are made up.</span></p>
+    <p class="sample-note"><span class="zh">示例资料：工作室、客户、价目、聊天内容、旧单和报表数字，全是虚构的。</span><span class="en">Sample data: studio, clients, rates, chat lines, past invoices and report figures are all made up.</span></p>
   </div>
 </section>
 
-<!-- ================= STORY: tear-off, drop, filed ================= -->
-<section id="story" class="ep">
+<!-- ================= TODAY: she asks, the leaf tears off and goes out as his message, the stub stays in SIS ================= -->
+<section id="story" class="ep" data-ep="today">
+  <span class="date-chip"><span class="zh">今天</span><span class="en">Today</span></span>
   <h2 class="sr"><span class="zh">PDF 和记录</span><span class="en">PDF and record</span></h2>
-  <div class="col beat">
-    <p class="msg first" data-beat="pdf"><span class="stack"><span class="zh">PDF 和这张单出自同一份记录。客户收到的，就是你刚才看着开好的这一张。</span><span class="en">PDF and invoice come from one record. What your client gets is what you just watched being made.</span></span><span class="time stack"><span class="zh">今天</span><span class="en">Today</span></span></p>
-    <div class="slab">
-      <div class="stage story-stage" id="story-stage">
-        <div class="origin stub-origin"><span class="stack"><span class="zh">存根<br>↓<br>归档</span><span class="en">Stub<br>↓<br>filed</span></span></div>
-        <div class="origin leaf-origin"><span class="stack"><span class="zh">这张单撕下来，<br>变成 PDF ↓</span><span class="en">This sheet tears off<br>and becomes a PDF ↓</span></span></div>
-        <span class="perforation" aria-hidden="true"></span>
-        <article class="invoice-sheet leaf" aria-hidden="true">
-          <svg class="crossing" viewBox="0 0 100 78" aria-hidden="true" focusable="false"><path class="stroke s1" d="M1.6 34.4 L44.6 1.2" pathLength="1"/><path class="stroke s2" d="M1.2 77.2 L98.4 1.4" pathLength="1"/><text class="phrase zh" x="36" y="31.2" text-anchor="middle" transform="rotate(-37.9 36 28)">INV-014 · 开好了</text><text class="phrase en" x="36" y="31.2" text-anchor="middle" transform="rotate(-37.9 36 28)">INV-014 · DONE</text></svg>
-          <div class="from"><b>Kite &amp; Reel Studio</b><span>Video and photography · Kuala Lumpur</span></div>
-          <div class="meta"><span class="tn">INV-2026-014 · 16 Nov 2026</span></div>
-          <div class="hr1"></div>
-          <div class="bill-to"><span class="lb"><span class="zh">客户</span><span class="en">Bill to</span></span><span class="name">Lumen Events Sdn Bhd</span><span class="sub">Attn: Farah Aziz · Puchong, Selangor</span></div>
-          <div class="lines"><div class="lh"><span class="lb"><span class="zh">项目</span><span class="en">Description</span></span><span class="lb"><span class="zh">金额 RM</span><span class="en">Amount RM</span></span></div><div class="rows"><div class="row"><span class="d"><span class="zh">活动录影，半天</span><span class="en">Event video, half day</span></span><span class="a tn">1,800.00</span></div><div class="row"><span class="d"><span class="zh">精华剪辑，1 支</span><span class="en">Highlight edit, 1 video</span></span><span class="a tn">900.00</span></div></div></div>
-          <div class="total-wrap"><div class="total"><span class="lb"><span class="zh">合计</span><span class="en">Total</span></span><b class="tn">RM 2,700.00</b></div></div>
-          <div class="record-zone"><div class="record-block"><span class="mark">1/1</span><span class="id">INV-2026-014 · PDF</span><span class="when">16 NOV 2026 23:41:07</span></div></div>
-        </article>
-        <div class="doc-bubble" data-state="read">
-          <span class="thumb" aria-hidden="true"></span>
-          <span class="fn tn">INV-2026-014.pdf</span>
-          <span class="fm"><span class="zh">1 页 · PDF</span><span class="en">1 page · PDF</span></span>
-          <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发送</span><span class="en">Sent</span></span><span class="w-deliv"><span class="zh">已送达</span><span class="en">Delivered</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
-          <span class="empty-label">PDF</span>
+  <div class="col">
+    <p class="chat-head"><i class="av" aria-hidden="true">F</i><span class="who">Farah · Lumen Events</span><span class="tape-label"><span class="zh">示例聊天 SAMPLE</span><span class="en">SAMPLE CHAT</span></span></p>
+    <p class="msg in"><span class="zh">发票呢？</span><span class="en">Invoice?</span><span class="mt">23:02</span></p>
+    <div class="stage story-stage" id="story-stage">
+      <span class="perforation" aria-hidden="true"></span>
+      <div class="doc-bubble" data-state="read" data-beat="pdf">
+        <div class="file-bar">
+          <span class="fk" data-kind="pdf" aria-hidden="true">PDF</span>
+          <span><span class="fn tn">INV-2026-014.pdf</span><span class="fm"><span class="zh">1 页 · PDF</span><span class="en">1 page · PDF</span></span></span>
+          <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发出</span><span class="en">Sent</span></span><span class="w-deliv"><span class="zh">已送达</span><span class="en">Delivered</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
         </div>
-        <div class="client-head"><span class="tape-label code">LUMEN</span><b class="cn">Lumen Events Sdn Bhd</b><span class="kd2"><span class="zh">公司客户</span><span class="en">Company client</span></span></div>
+        <span class="empty-label">PDF</span>
+      </div>
+      <article class="invoice-sheet leaf" aria-hidden="true">
+        <svg class="crossing" viewBox="0 0 110 70" aria-hidden="true" focusable="false"><path class="stroke s1" d="M3.2 37.6 L4.8 36.2 Q30 19.4 56.8 2.4" pathLength="1"/><path class="stroke s2" d="M2.4 66.6 Q52 34.6 103 3.6 L105.2 3.9" pathLength="1"/><text class="phrase zh" x="41" y="30.6" text-anchor="middle" transform="rotate(-32.4 41 27)">INV-014 · 开好了</text><text class="phrase en" x="41" y="30.6" text-anchor="middle" transform="rotate(-32.4 41 27)">INV-014 · DONE</text></svg>
+        <span class="tape-label sample"><span class="zh">示例 SAMPLE</span><span class="en">SAMPLE DATA</span></span>
+        <div class="from"><b>Kite &amp; Reel Studio</b><span>Video and photography · Kuala Lumpur</span></div>
+        <div class="meta"><span class="tn">INV-2026-014 · 16 Nov 2026</span></div>
+        <div class="hr1"></div>
+        <div class="bill-to"><span class="lb"><span class="zh">客户</span><span class="en">Bill to</span></span><span class="tape-label code">LUMEN</span><span class="name">Lumen Events Sdn Bhd</span><span class="sub">Attn: Farah Aziz · Puchong, Selangor</span></div>
+        <div class="lines"><div class="lh"><span class="lb"><span class="zh">项目</span><span class="en">Description</span></span><span class="lb"><span class="zh">金额 RM</span><span class="en">Amount RM</span></span></div><div class="rows"><div class="row"><span class="d"><span class="zh">活动录影，半天</span><span class="en">Event video, half day</span></span><span class="a tn">1,800.00</span></div><div class="row"><span class="d"><span class="zh">精华剪辑，1 支</span><span class="en">Highlight edit, 1 video</span></span><span class="a tn">900.00</span></div></div></div>
+        <div class="total-wrap"><div class="total"><span class="lb"><span class="zh">合计</span><span class="en">Total</span></span><b class="tn">RM 2,700.00</b></div><div class="total-words"><span class="zh">令吉 二千七百 整</span><span class="en">RM two thousand seven hundred only</span></div></div>
+        <div class="terms"><p><span class="lb"><span class="zh">付款条件</span><span class="en">Terms</span></span></p><p><span class="zh">确认时付 50% 订金，交片后 14 天内付清。</span><span class="en">50% deposit to confirm. Balance in 14 days.</span></p><p><span class="zh">银行资料：示例里不显示。</span><span class="en">Bank details: not shown in this sample.</span></p></div>
+        <div class="record-zone"><div class="record-block"><span class="mark"><b>1/1</b></span><span class="id">INV-2026-014 · <span class="zh">PDF · 同一份记录</span><span class="en">PDF · ONE RECORD</span></span><span class="when">16 NOV 2026 23:41:07</span></div></div>
+        <div class="machine-line"><span class="ml"><i>NO</i><b>2026014</b><i>DATE</i><b>16112026</b><i>SEN</i><b>270000</b></span></div>
+      </article>
+      <div class="sis-card" data-beat="record">
+        <p class="sc-head"><span class="sis-chip">SIS</span><span class="pg"><span class="zh">客户页</span><span class="en">Client page</span></span><span class="tape-label"><span class="zh">示例 SAMPLE</span><span class="en">SAMPLE DATA</span></span></p>
+        <p class="sc-client"><span class="tape-label code">LUMEN</span><b class="cn">Lumen Events Sdn Bhd</b><span class="kd2"><span class="zh">公司客户</span><span class="en">Company client</span></span></p>
         <div class="slot-row">
           <span class="slot" style="--i:0"><em><span class="zh">新单</span><span class="en">New</span></em></span>
           <div class="slot-tile stub" style="--i:0">
             <span class="tile-in">
-              <span class="face done"><b>INV-014</b><span class="am2">RM 2,700.00</span><span class="dt">16 NOV</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span>
-              <span class="face front"><b>INV-014</b><span class="tape-label code">LUMEN</span><span class="am2">RM 2,700.00</span><span class="dt">16 NOV</span></span>
+              <span class="face done"><b>INV-014</b><span><span class="rm">RM</span><span class="am2">2,700.00</span></span><span class="dt">16 NOV</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span>
+              <span class="face front"><b>INV-014</b><span class="tape-label code">LUMEN</span><span><span class="rm">RM</span><span class="am2">2,700.00</span></span><span class="dt">16 NOV</span></span>
             </span>
           </div>
-          <div class="slot-tile past" style="--i:1"><span class="tile-in"><span class="face done"><b>INV-011</b><span class="am2">RM 1,200.00</span><span class="dt"><span class="zh">更早</span><span class="en">Earlier</span></span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span></span></div>
-          <div class="slot-tile past" style="--i:2"><span class="tile-in"><span class="face done"><b>INV-008</b><span class="am2">RM 3,000.00</span><span class="dt"><span class="zh">更早</span><span class="en">Earlier</span></span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span></span></div>
-          <div class="slot-tile past" style="--i:3"><span class="tile-in"><span class="face done"><b>INV-006</b><span class="am2">RM 2,700.00</span><span class="dt"><span class="zh">更早</span><span class="en">Earlier</span></span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span></span></div>
+          <div class="slot-tile past" style="--i:1"><span class="tile-in"><span class="face done"><b>INV-011</b><span><span class="rm">RM</span><span class="am2">1,200.00</span></span><span class="dt"><span class="zh">更早</span><span class="en">Earlier</span></span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span></span></div>
+          <div class="slot-tile past" style="--i:2"><span class="tile-in"><span class="face done"><b>INV-008</b><span><span class="rm">RM</span><span class="am2">3,000.00</span></span><span class="dt"><span class="zh">更早</span><span class="en">Earlier</span></span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span></span></div>
+          <div class="slot-tile past" style="--i:3"><span class="tile-in"><span class="face done"><b>INV-006</b><span><span class="rm">RM</span><span class="am2">2,700.00</span></span><span class="dt"><span class="zh">更早</span><span class="en">Earlier</span></span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已归档</span><span class="en">Filed</span></span></span></span></div>
         </div>
       </div>
     </div>
-    <p class="msg first" data-beat="record"><span class="stack"><span class="zh">存根留在客户页，跟之前的单排在一起。公司客户和个人客户分开放。</span><span class="en">Its stub stays on your client's page, next to earlier invoices. Company and individual clients are kept apart.</span></span><span class="time stack"><span class="zh">今天</span><span class="en">Today</span></span></p>
+    <p class="notice"><span class="ck" data-stamp></span><span class="zh">撕下来的这一张就是 PDF。发给客户这一步，是你在自己的聊天里做的：那两个勾是聊天软件的，不是 SIS 的。存根留在客户页，跟之前的单排在一起；公司客户和个人客户分开放。</span><span class="en">This sheet tears off as its PDF. Sending it is something you do in your own chat: those ticks belong to your chat app, not to SIS. Its stub stays on your client's page, next to earlier invoices; company and individual clients are kept apart.</span></p>
   </div>
 </section>
 
-<!-- ================= MONTH END ================= -->
-<section id="reports" class="ep alt">
+<!-- ================= MONTH END: another chat. The ground cuts. ================= -->
+<section id="reports" class="ep" data-ep="month">
   <span class="date-chip"><span class="zh">月底</span><span class="en">Month end</span></span>
   <h2 class="sr"><span class="zh">月报表</span><span class="en">Monthly report</span></h2>
-  <div class="col beat">
-    <p class="msg first" data-beat="month"><span class="stack"><span class="zh">销售、开销、净利，按月看。客户有排名。要交给会计，导出 CSV。</span><span class="en">Sales, expenses and net profit, month by month. Clients are ranked. For your accountant, export a CSV.</span></span><span class="time stack"><span class="zh">今天</span><span class="en">Today</span></span></p>
-    <div class="slab">
+  <div class="col">
+    <p class="chat-head"><i class="av" aria-hidden="true">陈</i><span class="who"><span class="zh">陈小姐 · 会计</span><span class="en">Ms Chan · accountant</span></span><span class="tape-label"><span class="zh">示例聊天 SAMPLE</span><span class="en">SAMPLE CHAT</span></span></p>
+    <p class="msg in"><span class="zh">月底了，这个月的数字呢？</span><span class="en">Month end. This month's numbers?</span><span class="mt" data-clock>23:02</span></p>
+    <div class="msg out attach" id="report-msg" data-state="read" data-beat="month">
+      <p class="at-head"><span><span class="zh">↪ SIS · 报表</span><span class="en">↪ SIS · Report</span></span><span class="tape-label"><span class="zh">示例 SAMPLE</span><span class="en">SAMPLE DATA</span></span></p>
       <div class="stage">
         <div class="report-screen on-paper" id="report">
-          <span class="csv-tab"><span class="zh">CSV · 给会计</span><span class="en">CSV · for your accountant</span></span>
           <div class="rp-head"><b><span class="zh">报表 · 按月</span><span class="en">Report · by month</span></b><span class="lg"><i class="sw"></i><span class="zh">销售</span><span class="en">Sales</span></span><span class="lg"><i class="sw hx"></i><span class="zh">开销</span><span class="en">Expenses</span></span></div>
           <div class="month-bars" role="group" aria-label="六个月 Six months">
-            <button class="mcol" type="button" aria-pressed="false" data-i="0"><span class="bars"><span class="bar sales" style="height:5.68em"></span><span class="bar exp" style="height:2.01em"></span></span><span class="mo"><span class="zh">6月</span><span class="en">Jun</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span></span><span class="fs">8,200</span><span class="sr"><span class="zh">开销</span><span class="en">Expenses</span></span><span class="fe">2,900</span></button>
-            <button class="mcol" type="button" aria-pressed="false" data-i="1"><span class="bars"><span class="bar sales" style="height:4.43em"></span><span class="bar exp" style="height:1.45em"></span></span><span class="mo"><span class="zh">7月</span><span class="en">Jul</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span></span><span class="fs">6,400</span><span class="sr"><span class="zh">开销</span><span class="en">Expenses</span></span><span class="fe">2,100</span></button>
-            <button class="mcol" type="button" aria-pressed="false" data-i="2"><span class="bars"><span class="bar sales" style="height:7.55em"></span><span class="bar exp" style="height:2.63em"></span></span><span class="mo"><span class="zh">8月</span><span class="en">Aug</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span></span><span class="fs">10,900</span><span class="sr"><span class="zh">开销</span><span class="en">Expenses</span></span><span class="fe">3,800</span></button>
-            <button class="mcol" type="button" aria-pressed="false" data-i="3"><span class="bars"><span class="bar sales" style="height:5.05em"></span><span class="bar exp" style="height:1.8em"></span></span><span class="mo"><span class="zh">9月</span><span class="en">Sep</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span></span><span class="fs">7,300</span><span class="sr"><span class="zh">开销</span><span class="en">Expenses</span></span><span class="fe">2,600</span></button>
-            <button class="mcol" type="button" aria-pressed="false" data-i="4"><span class="bars"><span class="bar sales" style="height:8.03em"></span><span class="bar exp" style="height:2.8em"></span></span><span class="mo"><span class="zh">10月</span><span class="en">Oct</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span></span><span class="fs">11,600</span><span class="sr"><span class="zh">开销</span><span class="en">Expenses</span></span><span class="fe">4,050</span></button>
-            <button class="mcol" type="button" aria-pressed="true" data-i="5"><span class="bars"><span class="tag014 tape-label" style="bottom:7.26em">014</span><span class="bar sales" style="height:6.72em"></span><span class="bar exp" style="height:2.18em"></span></span><span class="mo"><span class="zh">11月</span><span class="en">Nov</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span></span><span class="fs">12,400</span><span class="sr"><span class="zh">开销</span><span class="en">Expenses</span></span><span class="fe">3,150</span></button>
+            <button class="mcol" type="button" aria-pressed="false" data-i="0"><span class="bars"><span class="bar sales" style="height:5.68em"></span><span class="bar exp" style="height:2.01em"></span></span><span class="mo"><span class="zh">6月</span><span class="en">Jun</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span> <span class="fs">8,200</span> <span class="zh">开销</span><span class="en">Expenses</span> <span class="fe">2,900</span></span></button>
+            <button class="mcol" type="button" aria-pressed="false" data-i="1"><span class="bars"><span class="bar sales" style="height:4.43em"></span><span class="bar exp" style="height:1.45em"></span></span><span class="mo"><span class="zh">7月</span><span class="en">Jul</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span> <span class="fs">6,400</span> <span class="zh">开销</span><span class="en">Expenses</span> <span class="fe">2,100</span></span></button>
+            <button class="mcol" type="button" aria-pressed="false" data-i="2"><span class="bars"><span class="bar sales" style="height:7.55em"></span><span class="bar exp" style="height:2.63em"></span></span><span class="mo"><span class="zh">8月</span><span class="en">Aug</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span> <span class="fs">10,900</span> <span class="zh">开销</span><span class="en">Expenses</span> <span class="fe">3,800</span></span></button>
+            <button class="mcol" type="button" aria-pressed="false" data-i="3"><span class="bars"><span class="bar sales" style="height:5.05em"></span><span class="bar exp" style="height:1.8em"></span></span><span class="mo"><span class="zh">9月</span><span class="en">Sep</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span> <span class="fs">7,300</span> <span class="zh">开销</span><span class="en">Expenses</span> <span class="fe">2,600</span></span></button>
+            <button class="mcol" type="button" aria-pressed="false" data-i="4"><span class="bars"><span class="bar sales" style="height:8.03em"></span><span class="bar exp" style="height:2.8em"></span></span><span class="mo"><span class="zh">10月</span><span class="en">Oct</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span> <span class="fs">11,600</span> <span class="zh">开销</span><span class="en">Expenses</span> <span class="fe">4,050</span></span></button>
+            <button class="mcol" type="button" aria-pressed="true" data-i="5"><span class="bars"><span class="tag014 tape-label" style="bottom:6.2em">014</span><span class="bar sales" style="height:6.72em"></span><span class="bar exp" style="height:2.18em"></span></span><span class="mo"><span class="zh">11月</span><span class="en">Nov</span></span><span class="sr"><span class="zh">销售</span><span class="en">Sales</span> <span class="fs">12,400</span> <span class="zh">开销</span><span class="en">Expenses</span> <span class="fe">3,150</span></span></button>
             <span class="bracket" aria-hidden="true"></span>
           </div>
-          <div class="detail" aria-live="polite"><b class="d-mo"><span class="zh">11月</span><span class="en">Nov</span></b><span><i><span class="zh">销售</span><span class="en">Sales</span></i><span class="d-s">RM 12,400</span></span><span><i><span class="zh">开销</span><span class="en">Exp.</span></i><span class="d-e">RM 3,150</span></span><span class="net"><i><span class="zh">净利</span><span class="en">Net</span></i><span class="d-n">RM 9,250</span></span></div>
-          <p class="rank-h"><span class="zh">客户排名 · 按开单金额</span><span class="en">Clients ranked by amount invoiced</span></p>
+          <div class="detail" aria-live="polite">
+            <span class="d-mo"><span class="zh">11月</span><span class="en">Nov</span></span>
+            <span class="two"><span><i><span class="zh">销售</span><span class="en">Sales</span></i><span class="d-s">RM 12,400</span></span><span><i><span class="zh">开销</span><span class="en">Expenses</span></i><span class="d-e">RM 3,150</span></span></span>
+            <span class="net"><i><span class="zh">净利</span><span class="en">Net profit</span></i><b class="d-n">RM 9,250</b></span>
+          </div>
+          <p class="rank-h"><span class="zh">客户排名 · 按开单金额</span><span class="en">Clients, ranked by amount invoiced</span></p>
           <ol class="rank">
-            <li><span class="rk">1</span><span>Lumen Events Sdn Bhd</span><span class="ct"><span class="zh">6 张</span><span class="en">6 inv.</span></span><span class="sm">RM 14,400</span></li>
-            <li><span class="rk">2</span><span>Aria Lim</span><span class="ct"><span class="zh">4 张</span><span class="en">4 inv.</span></span><span class="sm">RM 8,400</span></li>
-            <li><span class="rk">3</span><span>Tanjung Bakery</span><span class="ct"><span class="zh">4 张</span><span class="en">4 inv.</span></span><span class="sm">RM 6,000</span></li>
+            <li><span class="rk">1</span><span>Lumen Events Sdn Bhd</span><span class="ct"><span class="zh">6 张单</span><span class="en">6 invoices</span></span></li>
+            <li><span class="rk">2</span><span>Aria Lim</span><span class="ct"><span class="zh">4 张单</span><span class="en">4 invoices</span></span></li>
+            <li><span class="rk">3</span><span>Tanjung Bakery</span><span class="ct"><span class="zh">4 张单</span><span class="en">4 invoices</span></span></li>
           </ol>
         </div>
       </div>
+      <div class="file-bar">
+        <span class="fk" aria-hidden="true">CSV</span>
+        <span><span class="fn tn csv-name">sis-report-2026-11.csv</span><span class="fm"><span class="zh">CSV · 给会计</span><span class="en">CSV · for your accountant</span></span></span>
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-sent"><span class="zh">已发出</span><span class="en">Sent</span></span><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span><span class="tm tn">23:41</span></span>
+      </div>
     </div>
+    <p class="notice"><span class="ck" data-stamp></span><span class="zh">销售、开销、净利，按月看；点一个月，看那个月。客户有排名。要交给会计，导出 CSV。</span><span class="en">Sales, expenses and net profit, month by month; tap a month to read it. Clients are ranked. For your accountant, export a CSV.</span></p>
   </div>
 </section>
 
-<!-- ================= DAY ONE: import, then Pro ================= -->
-<section id="import" class="ep">
+<!-- ================= DAY ONE: a fellow shooter asks. The ground cuts again. ================= -->
+<section id="import" class="ep" data-ep="dayone">
   <span class="date-chip"><span class="zh">第一天</span><span class="en">Day one</span></span>
   <h2 class="sr"><span class="zh">把旧文件读进来</span><span class="en">Reading your old files in</span></h2>
-  <div class="col beat">
-    <p class="msg first" data-beat="import"><span class="stack"><span class="zh">旧发票、收据、照片都能上传：PDF、JPG、PNG，一批最多 50 个。AI 读出客户资料，你核对并批准之前，什么都不保存。</span><span class="en">Upload old invoices, receipts or photos: PDF, JPG, PNG, up to 50 a batch. AI reads client details. Nothing is saved until you review and approve.</span></span><span class="time stack"><span class="zh">今天</span><span class="en">Today</span></span></p>
-    <div class="slab">
+  <div class="col">
+    <p class="chat-head"><i class="av" aria-hidden="true">杰</i><span class="who"><span class="zh">阿杰 · 同行</span><span class="en">Jay · fellow shooter</span></span><span class="tape-label"><span class="zh">示例聊天 SAMPLE</span><span class="en">SAMPLE CHAT</span></span></p>
+    <p class="msg in"><span class="zh">你那堆旧单怎么办，重新打一遍？</span><span class="en">And your pile of old bills? Retype them all?</span><span class="mt" data-clock>23:02</span></p>
+    <div class="msg out attach" id="import-msg" data-state="sent" data-beat="import">
+      <p class="at-head"><span><span class="zh">↪ SIS · 读旧文件</span><span class="en">↪ SIS · Reading old files</span></span><span class="tape-label"><span class="zh">示例 SAMPLE</span><span class="en">SAMPLE DATA</span></span></p>
       <div class="stage import-stage" id="import-stage">
         <div class="slot-row">
           <span class="slot" style="--i:0"><em>01</em></span><span class="slot" style="--i:1"><em>02</em></span><span class="slot" style="--i:2"><em>03</em></span><span class="slot" style="--i:3"><em>04</em></span><span class="slot" style="--i:4"><em>05</em></span>
-          <div class="old-file" data-kind="pdf" style="--i:0;--heap:translate(10.2em,1.1em) rotate(-9deg)"><span class="tile-in"><span class="face done"><span class="fnm">inv-2024-031.pdf</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">PDF</span><span class="dr"></span></span></span></div>
-          <div class="old-file" data-kind="jpg" style="--i:1;--heap:translate(5.3em,-.7em) rotate(6deg)"><span class="tile-in"><span class="face done"><span class="fnm">receipt-aug.jpg</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">JPG</span><span class="dr"></span></span></span></div>
-          <div class="old-file" data-kind="png" style="--i:2;--heap:translate(.9em,1.5em) rotate(-4deg)"><span class="tile-in"><span class="face done"><span class="fnm">screenshot-2.png</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">PNG</span><span class="dr"><span class="ph"><span class="ph"><span class="doc"></span></span></span></span></span></span></div>
-          <div class="old-file" data-kind="pdf" style="--i:3;--heap:translate(-3.6em,-.3em) rotate(11deg)"><span class="tile-in"><span class="face done"><span class="fnm">quote-lumen.pdf</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">PDF</span><span class="dr"></span></span></span></div>
-          <div class="old-file" data-kind="jpg" style="--i:4;--heap:translate(-9em,1em) rotate(3deg)"><span class="tile-in"><span class="face done"><span class="fnm">IMG_2291.jpg</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">JPG</span><span class="dr"></span></span></span></div>
+          <div class="old-file" data-kind="pdf" style="--i:0;--heap:translate(9.6em,1.1em) rotate(-9deg)"><span class="tile-in"><span class="face done"><span class="fnm">inv-2024-031.pdf</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">PDF</span><span class="dr"></span></span></span></div>
+          <div class="old-file" data-kind="jpg" style="--i:1;--heap:translate(5em,-.6em) rotate(6deg)"><span class="tile-in"><span class="face done"><span class="fnm">receipt-aug.jpg</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">JPG</span><span class="dr"></span></span></span></div>
+          <div class="old-file" data-kind="png" style="--i:2;--heap:translate(.9em,1.3em) rotate(-4deg)"><span class="tile-in"><span class="face done"><span class="fnm">screenshot-2.png</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">PNG</span><span class="dr"><span class="ph"><span class="ph"><span class="doc"></span></span></span></span></span></span></div>
+          <div class="old-file" data-kind="pdf" style="--i:3;--heap:translate(-3.4em,-.3em) rotate(11deg)"><span class="tile-in"><span class="face done"><span class="fnm">quote-lumen.pdf</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">PDF</span><span class="dr"></span></span></span></div>
+          <div class="old-file" data-kind="jpg" style="--i:4;--heap:translate(-8.4em,1em) rotate(3deg)"><span class="tile-in"><span class="face done"><span class="fnm">IMG_2291.jpg</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg><span class="zh">已读</span><span class="en">Read</span></span></span><span class="face front"><span class="kind">JPG</span><span class="dr"></span></span></span></div>
         </div>
         <div class="review-card on-paper">
-          <p class="rc-head"><span class="zh">AI 读到的客户资料 · 示例</span><span class="en">Client details AI read · sample</span></p>
+          <p class="rc-head"><span class="zh">AI 读到的客户资料</span><span class="en">Client details AI read</span></p>
           <dl>
             <div class="field"><dt><span class="zh">公司</span><span class="en">Company</span></dt><dd>Lumen Events Sdn Bhd</dd><span class="tape-label"><span class="zh">AI 读到</span><span class="en">AI READ</span></span></div>
             <div class="field"><dt><span class="zh">联络人</span><span class="en">Contact</span></dt><dd>Farah Aziz</dd><span class="tape-label"><span class="zh">AI 读到</span><span class="en">AI READ</span></span></div>
             <div class="field"><dt><span class="zh">地址</span><span class="en">Address</span></dt><dd>Puchong, Selangor</dd><span class="tape-label"><span class="zh">AI 读到</span><span class="en">AI READ</span></span></div>
           </dl>
-          <div class="wrap-slot"><span><span class="zh">核对之后，绿胶带贴在这里</span><span class="en">Green wrap goes here once you have checked</span></span></div>
+          <div class="wrap-slot"><span><span class="zh">核对之后，绿胶带贴在这里</span><span class="en">Green wrap goes here once checked</span></span></div>
           <div class="wrap-checked"><span><span class="zh">已核对</span><span class="en">CHECKED</span> · <span class="wc-t tn">23:41:07</span></span></div>
         </div>
         <p class="review-state rs-wait"><span class="tape-label" data-tone="red"><span class="zh">未保存</span><span class="en">NOT SAVED</span></span><span class="rs-t"><span class="zh">等你核对。AI 不会直接改记录。</span><span class="en">Waiting for you. AI never edits records directly.</span></span></p>
         <p class="review-state rs-saved" aria-live="polite"><span class="tape-label" data-tone="green"><span class="zh">已保存</span><span class="en">SAVED</span></span><span class="rs-t"><span class="zh">1 位客户进了名单。</span><span class="en">1 client is now on your list.</span></span></p>
         <button class="act approve" type="button"><span class="l-go"><span class="zh">核对无误，保存</span><span class="en">Looks right. Save.</span></span><span class="l-undo"><span class="zh">撤销</span><span class="en">Undo</span></span></button>
       </div>
+      <div class="file-bar">
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-wait"><span class="zh">还没保存</span><span class="en">Nothing saved yet</span></span><span class="w-done"><span class="zh">你批准了，已保存</span><span class="en">You approved. Saved</span></span><span class="tm tn">23:41</span></span>
+      </div>
     </div>
+    <p class="notice"><span class="ck" data-stamp></span><span class="zh">旧发票、收据、照片都能上传：PDF、JPG、PNG，一批最多 50 个。AI 读出客户资料；你核对并批准之前，什么都不保存。</span><span class="en">Upload old invoices, receipts or photos: PDF, JPG, PNG, up to 50 a batch. AI reads client details; nothing is saved until you review and approve.</span></p>
   </div>
 </section>
 
-<section id="pro" class="ep">
+<section id="pro" class="ep" data-ep="dayone">
   <h2 class="sr"><span class="zh">Pro：接上你自己的 AI</span><span class="en">Pro: connect your own AI</span></h2>
-  <div class="col beat">
-    <p class="msg first" data-beat="pro"><span class="stack"><span class="zh">Pro 可以接上你自己的 AI，走 API / MCP。令牌由获授权的工作室成员创建，随时可以撤销。AI 只在获准的工作室范围内做事。</span><span class="en">On Pro, connect your own AI through API / MCP. Authorised studio members create each token and can revoke it at any time. Your AI only works inside its permitted studio scope.</span></span><span class="time stack"><span class="zh">今天</span><span class="en">Today</span></span></p>
-    <div class="slab">
+  <div class="col">
+    <p class="msg in"><span class="zh">我自己的 AI 能接进去吗？</span><span class="en">Can I plug my own AI in?</span><span class="mt" data-clock>23:02</span></p>
+    <div class="msg out attach" id="pro-msg" data-state="read" data-beat="pro">
+      <p class="at-head"><span>↪ SIS · Pro · API / MCP</span><span class="tape-label"><span class="zh">示例 SAMPLE</span><span class="en">SAMPLE DATA</span></span></p>
       <div class="stage pro-stage" id="pro-stage" data-token="on">
-        <div class="sis-plate"><b>SIS</b><span>Kite &amp; Reel Studio</span><span class="scope"><span class="zh">工作室范围 · 示例</span><span class="en">Studio scope · sample</span></span></div>
-        <div class="token-strip"><span><span class="zh">令牌 TOKEN</span><span class="en">TOKEN</span></span><svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.6 L100 2.4" pathLength="1"/></svg></div>
+        <div class="sis-plate"><b>SIS</b><span>Kite &amp; Reel Studio</span><span class="scope"><span class="zh">工作室范围</span><span class="en">Studio scope</span></span></div>
+        <div class="token-strip"><span><span class="zh">令牌 TOKEN</span><span class="en">TOKEN</span></span><svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.9 L1.4 3.4 L100 2.4" pathLength="1"/></svg></div>
         <ul class="ai-list">
           <li class="hd"><span class="zh">你自己的 AI</span><span class="en">Your own AI</span></li>
           <li>Claude</li><li>Claude Code</li><li>OpenAI Codex</li><li>Cursor</li><li>Gemini CLI</li>
@@ -726,63 +833,74 @@ footer a{color:var(--text);text-underline-offset:3px}
         <p class="token-state ts-off"><span class="tape-label" data-tone="red"><span class="zh">已撤销</span><span class="en">REVOKED</span></span><span class="rs-t"><span class="zh">这个 AI 进不来了。</span><span class="en">This AI can no longer get in.</span></span></p>
         <button class="act token-btn" type="button"><span class="l-rev"><span class="zh">撤销令牌</span><span class="en">Revoke token</span></span><span class="l-new"><span class="zh">新建令牌</span><span class="en">Create token</span></span></button>
       </div>
+      <div class="file-bar">
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-wait"><span class="zh">令牌已撤销</span><span class="en">Token revoked</span></span><span class="w-done"><span class="zh">令牌有效</span><span class="en">Token live</span></span></span>
+      </div>
     </div>
+    <p class="notice"><span class="ck" data-stamp></span><span class="zh">Pro 可以接上你自己的 AI，走 API / MCP。令牌由获授权的工作室成员创建，随时可以撤销。AI 只在获准的工作室范围内做事。</span><span class="en">On Pro, connect your own AI through API / MCP. Authorised studio members create each token and can revoke it at any time. Your AI only works inside its permitted studio scope.</span></p>
   </div>
 </section>
 
-<!-- ================= PRICING, COMPOSER ================= -->
-<section id="pricing" class="ep">
+<!-- ================= PLANS, COMPOSER ================= -->
+<section id="pricing" class="ep" data-ep="dayone">
   <h2 class="sr"><span class="zh">价格</span><span class="en">Pricing</span></h2>
   <div class="col">
-    <p class="msg first" data-beat="pricing"><span class="stack"><span class="zh">两个方案都先免费试用 7 天。</span><span class="en">Both plans start with a 7-day free trial.</span></span><span class="time stack"><span class="zh">今天</span><span class="en">Today</span></span></p>
-    <div class="plans">
-      <article class="plan" data-plan="basic">
-        <span class="tape-label" data-tone="white">BASIC</span>
-        <h3>S.I.S. Basic</h3>
-        <p class="price"><b>RM 199</b><span><span class="zh">/ 年</span><span class="en">/ year</span></span></p>
-        <div class="stack pl">
-          <ul class="zh">
-            <li>可直接打印的 PDF 发票</li>
-            <li>上传旧文件，AI 读出客户资料（有用量额度）</li>
-            <li>销售、开销、净利和生意总览</li>
-            <li>客户、价目、brief、工作和记录</li>
-            <li>报表和 CSV 导出</li>
-          </ul>
-          <ul class="en">
-            <li>Print-ready PDF invoices</li>
-            <li>Upload old files and let AI read client details (usage allowance applies)</li>
-            <li>Sales, expenses, net profit and business overview</li>
-            <li>Clients, rates, briefs, jobs and records</li>
-            <li>Reports and CSV export</li>
-          </ul>
-        </div>
-        <a class="cta-trial" href="https://sistudio.app/auth/sign-up"><span class="zh">免费试用 7 天</span><span class="en">Start 7-day free trial</span></a>
-      </article>
-      <article class="plan" data-plan="pro">
-        <span class="tape-label" data-tone="blue">PRO</span>
-        <h3>S.I.S. Pro</h3>
-        <p class="price"><b>RM 399</b><span><span class="zh">/ 年</span><span class="en">/ year</span></span></p>
-        <div class="stack pl">
-          <ul class="zh">
-            <li>Basic 的全部功能</li>
-            <li>应用内的工作室 AI，处理发票和客户记录</li>
-            <li>通过 API / MCP 接上你自己的 AI</li>
-            <li>在发票页手动备份到 Google Drive</li>
-            <li>优先 WhatsApp 支持，抢先用新工具</li>
-          </ul>
-          <ul class="en">
-            <li>Everything in Basic</li>
-            <li>In-app studio AI for invoices and client records</li>
-            <li>Connect your own AI through API / MCP</li>
-            <li>Manual Google Drive backup from an invoice page</li>
-            <li>Priority WhatsApp support and early access to new tools</li>
-          </ul>
-        </div>
-        <a class="cta-trial" href="https://sistudio.app/auth/sign-up"><span class="zh">免费试用 7 天</span><span class="en">Start 7-day free trial</span></a>
-      </article>
+    <p class="msg in"><span class="zh">多少钱？</span><span class="en">How much?</span><span class="mt" data-clock>23:02</span></p>
+    <div class="msg out attach" data-state="read" data-beat="pricing">
+      <p class="at-head"><span><span class="zh">↪ SIS · 两个方案</span><span class="en">↪ SIS · Two plans</span></span></p>
+      <div class="plans">
+        <article class="plan" data-plan="basic">
+          <span class="tape-label" data-tone="white">BASIC</span>
+          <h3>S.I.S. Basic</h3>
+          <p class="price"><b>RM 199</b><span><span class="zh">/ 年</span><span class="en">/ year</span></span></p>
+          <div class="pl">
+            <ul class="zh">
+              <li>可直接打印的 PDF 发票</li>
+              <li>上传旧文件，AI 读出客户资料（有用量额度）</li>
+              <li>销售、开销、净利和生意总览</li>
+              <li>客户、价目、brief、工作和记录</li>
+              <li>报表和 CSV 导出</li>
+            </ul>
+            <ul class="en">
+              <li>Print-ready PDF invoices</li>
+              <li>Upload old files and let AI read client details (usage allowance applies)</li>
+              <li>Sales, expenses, net profit and business overview</li>
+              <li>Clients, rates, briefs, jobs and records</li>
+              <li>Reports and CSV export</li>
+            </ul>
+          </div>
+          <a class="cta-trial" href="https://sistudio.app/auth/sign-up"><span class="zh">试用 Basic</span><span class="en">Try Basic</span></a>
+        </article>
+        <article class="plan" data-plan="pro">
+          <span class="tape-label" data-tone="blue">PRO</span>
+          <h3>S.I.S. Pro</h3>
+          <p class="price"><b>RM 399</b><span><span class="zh">/ 年</span><span class="en">/ year</span></span></p>
+          <div class="pl">
+            <ul class="zh">
+              <li>Basic 的全部功能</li>
+              <li>应用内的工作室 AI，处理发票和客户记录</li>
+              <li>通过 API / MCP 接上你自己的 AI</li>
+              <li>在发票页手动备份到 Google Drive</li>
+              <li>优先 WhatsApp 支持，抢先用新工具</li>
+            </ul>
+            <ul class="en">
+              <li>Everything in Basic</li>
+              <li>In-app studio AI for invoices and client records</li>
+              <li>Connect your own AI through API / MCP</li>
+              <li>Manual Google Drive backup from an invoice page</li>
+              <li>Priority WhatsApp support and early access to new tools</li>
+            </ul>
+          </div>
+          <a class="cta-trial" href="https://sistudio.app/auth/sign-up"><span class="zh">试用 Pro</span><span class="en">Try Pro</span></a>
+        </article>
+      </div>
+      <div class="file-bar">
+        <span class="st"><svg class="ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3.4L10.5 1.5"/><path class="t2" d="M7.5 8.2l1.2 1.2L15.5 1.5"/></svg><span class="w-read"><span class="zh">已读</span><span class="en">Read</span></span></span>
+      </div>
     </div>
+    <p class="notice"><span class="ck" data-stamp></span><span class="zh">两个方案都先免费试用 7 天。</span><span class="en">Both plans start with a 7-day free trial.</span></p>
     <div class="tail">
-      <p class="elapsed"><span class="zh">看到这里了。</span><span class="en">You read this far.</span></p>
+      <p class="notice elapsed"><span class="zh">轮到你回了。</span><span class="en">Your turn to reply.</span></p>
       <a class="composer" href="https://sistudio.app/auth/sign-up"><span class="composer-field"><span class="zh">开始 7 天免费试用</span><span class="en">Start 7-day free trial</span></span><span class="composer-send" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h15M13 5.5l6.5 6.5-6.5 6.5"/></svg></span></a>
     </div>
   </div>
@@ -790,7 +908,7 @@ footer a{color:var(--text);text-underline-offset:3px}
 
 </main>
 
-<footer>
+<footer data-ep="dayone">
   <div class="col">
     <p class="trust-line"><span class="stack"><span class="zh">资料（客户、发票、上传的收据）存放在 Supabase 的新加坡区域，网站运行在 Vercel 的新加坡节点。每个工作室的资料在数据库层面隔离（行级安全）。资料不出售，也不交给任何人做营销。由 Madvengers Production 运营，马来西亚商业注册号 <span class="nb">003357155-P</span>。</span><span class="en">Data (clients, invoices, uploaded receipts) is stored in Supabase's Singapore region; this site runs on Vercel's Singapore edge. Each studio's data is isolated at database level with row-level security. Data is not sold and not handed to anyone for marketing. Run by Madvengers Production, Malaysian business registration <span class="nb">003357155-P</span>.</span></span> <a href="https://sistudio.app/trust"><span class="zh">信任与安全</span><span class="en">Trust</span></a></p>
     <p class="support-whatsapp"><span class="stack"><span class="zh">找人最快是 WhatsApp，电邮也可以。</span><span class="en">WhatsApp is fastest; email also works.</span></span> <a href="https://sistudio.app/contact"><span class="zh">联络我们</span><span class="en">Contact</span></a></p>
@@ -816,6 +934,7 @@ var BOOT=true,HOLD=false;
 function B(zh,en){return '<span class="zh">'+zh+'</span><span class="en">'+en+'</span>'}
 function p2(n){return (n<10?'0':'')+n}
 function hms(d){return p2(d.getHours())+':'+p2(d.getMinutes())+':'+p2(d.getSeconds())}
+function hm(d){return p2(d.getHours())+':'+p2(d.getMinutes())}
 var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function fmt(n){return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
 function fmt0(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
@@ -862,13 +981,14 @@ function dateShort(d){return d.getDate()+' '+MON[d.getMonth()]+' '+d.getFullYear
 function dateCaps(d){return p2(d.getDate())+' '+MON[d.getMonth()].toUpperCase()+' '+d.getFullYear()}
 
 /* ---------- elements ---------- */
-var stage=$('.hero-stage'),band=$('.thread-band'),strip=$('.strip'),sheet=$('#sheet'),layer=$('.catch-layer'),caption=$('.stage-caption');
-var billTo=$('.bill-to',sheet),nameEl=$('.name',billTo),subEl=$('.sub',billTo),codeEl=$('.code',billTo),billStrike=$('.strike',billTo);
+var stage=$('.hero-stage'),band=$('.thread-band'),mover=$('.mover'),strip=$('.strip'),hangLayer=$('.hang-layer'),sheet=$('#sheet'),layer=$('.catch-layer'),caption=$('.stage-caption');
+var billTo=$('.bill-to',sheet),nameEl=$('.name',billTo),codeEl=$('.code',billTo),billStrike=$('.strike',billTo),metaTn=$('.meta .tn',sheet);
 var linesEl=$('.lines',sheet),rowsEl=$('.rows',sheet),figEl=$('.fig',sheet),wordsEl=$('.total-words',sheet);
 var crossing=$('.crossing',sheet),st1=$('.s1',crossing),st2=$('.s2',crossing),block=$('.record-block',sheet),whenEl=$('.when',block),machine=$('.machine-line',sheet);
 var tiles=$$('.tile'),rstrips=$$('.rstrip'),flyLayer=$('.fly-layer');
 var railBox=$('.cut-rail'),rail=$('.rail input'),readout=$('.readout'),replay=$('.replay');
-var STRIKE='<svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.6 L100 2.4" pathLength="1"/></svg>';
+var STRIKE='<svg class="strike" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true"><path d="M0 3.9 L1.4 3.4 L100 2.4" pathLength="1"/></svg>';
+var TERMS='<div class="terms"><p><span class="lb">'+B('付款条件','Terms')+'</span></p><p>'+B('确认时付 50% 订金，交片后 14 天内付清。','50% deposit to confirm. Balance in 14 days.')+'</p><p>'+B('银行资料：示例里不显示。','Bank details: not shown in this sample.')+'</p></div>';
 
 /* ---------- the timeline: one master clock, Web Animations seeked from it ---------- */
 function TL(dur){this.dur=dur;this.an=[];this.fns=[];this.cues=[];this.trash=[];this.t=0;this.playing=false;this.raf=0;this.onend=null;this.done=false}
@@ -878,7 +998,7 @@ TL.prototype.add=function(el,frames,start,dur,fill,easing){
   a.pause();this.an.push(a);return a;
 };
 TL.prototype.hideUntil=function(el,T){if(T>0)this.add(el,[{visibility:'hidden'},{visibility:'hidden'}],0,T,'backwards')};
-TL.prototype.showUntil=function(el,T){if(T>0)this.add(el,[{visibility:'visible'},{visibility:'visible'}],0,T,'backwards')};
+TL.prototype.showBetween=function(el,A,Z){if(Z>A)this.add(el,[{visibility:'visible'},{visibility:'visible'}],A,Z-A,'none')};
 TL.prototype.on=function(fn){this.fns.push(fn)};
 TL.prototype.at=function(T,fn){this.cues.push({t:T,fn:fn,hit:false})};
 TL.prototype.seek=function(t){
@@ -914,11 +1034,11 @@ function run(el,frames,dur,done,delay){
 
 /* ---------- writing the sheet: every figure is computed here ---------- */
 function rowHTML(r,cls){return '<div class="row'+(cls?' '+cls:'')+'" data-id="'+r.id+'"><span class="d">'+B(r.zh,r.en)+'</span><span class="a tn">'+fmt(r.amt)+'</span>'+STRIKE+'</div>'}
-function writeClient(){var c=CLIENTS[state.client];nameEl.textContent=c.name;subEl.textContent=c.sub;codeEl.textContent=c.code}
+function writeClient(){var c=CLIENTS[state.client];nameEl.textContent=c.name;codeEl.textContent=c.code}
 function writeFig(n){figEl.textContent=fmt(n)}
-function writeWords(n){wordsEl.innerHTML=B('令吉 '+zhWords(n)+' 整','Ringgit Malaysia '+enWords(n)+' only')}
+function writeWords(n){wordsEl.innerHTML=B('令吉 '+zhWords(n)+' 整','RM '+enWords(n)+' only')}
 function writeStamp(){whenEl.textContent=dateCaps(stamp)+' '+hms(stamp)}
-function writeMachine(){$('span',machine).textContent=YEAR+'014  '+p2(NOW.getDate())+p2(NOW.getMonth()+1)+YEAR+'  '+('000000'+Math.round(total()*100)).slice(-6)}
+function writeMachine(){$('.ml',machine).innerHTML='<i>NO</i><b>'+YEAR+'014</b><i>DATE</i><b>'+p2(NOW.getDate())+p2(NOW.getMonth()+1)+YEAR+'</b><i>SEN</i><b>'+('000000'+Math.round(total()*100)).slice(-6)+'</b>'}
 function capHTML(d,zh,en){return '<span class="ck">'+hms(d)+'</span>'+B(zh,en)}
 function restCaption(){caption.innerHTML=state.rates.length?capHTML(stamp,'单开好了。','Invoice done.'):capHTML(stamp,'还没选价目。','No rate picked yet.')}
 function renderSheet(){
@@ -936,10 +1056,12 @@ function renderPickers(){
 function renderAll(){renderSheet();renderPickers();restCaption();syncLater()}
 
 /* ---------- things further down the thread that carry the same record ---------- */
-var storyStage=$('#story-stage'),leaf=$('.leaf',storyStage),docBubble=$('.doc-bubble'),stub=$('.stub'),report=$('#report');
+var storyStage=$('#story-stage'),leaf=$('.leaf',storyStage),docBubble=$('.doc-bubble'),stub=$('.stub'),report=$('#report'),reportMsg=$('#report-msg');
 var mcols=$$('.mcol'),bracket=$('.bracket'),tag014=$('.tag014'),picked=5,novAdded=true;
 var MONTHS=[];(function(){for(var i=5;i>=0;i--){var d=new Date(NOW.getFullYear(),NOW.getMonth()-i,1);MONTHS.push(d.getMonth())}})();
-function doneFace(no,amt,dateHTML){return '<b>INV-'+no+'</b><span class="am2">RM '+fmt(amt)+'</span><span class="dt">'+dateHTML+'</span><span class="ok"><svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg>'+B('已归档','Filed')+'</span>'}
+var OKSVG='<svg viewBox="0 0 13 10" aria-hidden="true"><path d="M1 5.4l3.2 3.2L12 1.2"/></svg>';
+function amtHTML(a){return '<span><span class="rm">RM</span><span class="am2">'+fmt(a)+'</span></span>'}
+function doneFace(no,amt,dateHTML){return '<b>INV-'+no+'</b>'+amtHTML(amt)+'<span class="dt">'+dateHTML+'</span><span class="ok">'+OKSVG+B('已归档','Filed')+'</span>'}
 function novSales(){return SALES[5]+(novAdded?total():0)}
 function writeMonth(i){
   var s=i===5?novSales():SALES[i],e=EXP[i];
@@ -949,14 +1071,16 @@ function writeMonth(i){
 function writeNov(v){$('.fs',mcols[5]).textContent=fmt0(v);if(picked===5){$('.d-s',report).textContent='RM '+fmt0(v);$('.d-n',report).textContent='RM '+fmt0(v-EXP[5])}}
 function syncLater(){
   var c=CLIENTS[state.client],t=total(),dcap=p2(NOW.getDate())+' '+MON[NOW.getMonth()].toUpperCase();
-  /* the leaf is the sheet he just watched, copied as it now stands */
+  /* the leaf is the sheet he just watched, copied as it now stands, with the small print the first screen leaves out */
   leaf.innerHTML=sheet.innerHTML;
-  $$('.slot-empty,.strike,.sample',leaf).forEach(function(n){n.parentNode.removeChild(n)});
+  $$('.slot-empty,.strike',leaf).forEach(function(n){n.parentNode.removeChild(n)});
+  $('.bill-to',leaf).insertAdjacentHTML('beforeend','<span class="sub">'+c.sub+'</span>');
+  $('.total-wrap',leaf).insertAdjacentHTML('afterend',TERMS);
   $('.fn',docBubble).textContent=INV+'.pdf';
-  $('.client-head .code').textContent=c.code;$('.client-head .cn').textContent=c.name;
-  $('.client-head .kd2').innerHTML=c.co?B('公司客户','Company client'):B('个人客户','Individual client');
+  $('.sc-client .code').textContent=c.code;$('.sc-client .cn').textContent=c.name;
+  $('.sc-client .kd2').innerHTML=c.co?B('公司客户','Company client'):B('个人客户','Individual client');
   $('.face.done',stub).innerHTML=doneFace('014',t,dcap);
-  $('.face.front',stub).innerHTML='<b>INV-014</b><span class="tape-label code">'+c.code+'</span><span class="am2">RM '+fmt(t)+'</span><span class="dt">'+dcap+'</span>';
+  $('.face.front',stub).innerHTML='<b>INV-014</b><span class="tape-label code">'+c.code+'</span>'+amtHTML(t)+'<span class="dt">'+dcap+'</span>';
   $$('.slot-tile.past').forEach(function(el,i){var p=c.past[i];$('.face.done',el).innerHTML=doneFace(p[0],sumOf(p[1]),B('更早','Earlier'))});
   /* report */
   mcols.forEach(function(m,i){
@@ -964,111 +1088,121 @@ function syncLater(){
     $('.fs',m).textContent=fmt0(i===5?novSales():SALES[i]);$('.fe',m).textContent=fmt0(EXP[i]);
     $('.bar.sales',m).style.height=(SALES[i]/13000*9).toFixed(2)+'em';$('.bar.exp',m).style.height=(EXP[i]/13000*9).toFixed(2)+'em';
   });
-  tag014.style.bottom=((SALES[5]/13000*9+.18)/.95).toFixed(2)+'em';
+  tag014.style.bottom=((SALES[5]/13000*9+.2)/1.1).toFixed(2)+'em';
+  $('.csv-name').textContent='sis-report-'+YEAR+'-'+p2(NOW.getMonth()+1)+'.csv';
   writeMonth(picked);
   var rk=CLIENTS.map(function(k,i){var s=k.past.reduce(function(a,p){return a+sumOf(p[1])},0),n=k.past.length;if(i===state.client){s+=t;n+=1}return {name:k.name,n:n,s:s}});
   rk.sort(function(a,b){return b.s-a.s});
-  $('.rank',report).innerHTML=rk.map(function(r,i){return '<li><span class="rk">'+(i+1)+'</span><span>'+r.name+'</span><span class="ct">'+B(r.n+' 张',r.n+' inv.')+'</span><span class="sm">RM '+fmt0(r.s)+'</span></li>'}).join('');
+  $('.rank',report).innerHTML=rk.map(function(r,i){return '<li><span class="rk">'+(i+1)+'</span><span>'+r.name+'</span><span class="ct">'+B(r.n+' 张单',r.n+' invoices')+'</span></li>'}).join('');
 }
 
 /* ---------- S1 The Catch ---------- */
-var S1=2420,STEP=1820/21,s1=null,s1T0=new Date(),ghosts=[];
-var BEATS=[420,860,1200,1460,1660,1820,1900,2240,2420];
-var PASS=[
-  [1,'t','单发了吗？','Bill sent yet?'],[4.8,'v','0:32'],[10.4,'s'],[20.2,'t','地址是 Puchong 还是 PJ？','Puchong or PJ address?'],[25.8,'o','等等','One sec'],[28.6,'f','报价 v3 final','Quote v3 final'],
-  [38.8,'t','上次算多少来着','What did we charge last time'],[43.6,'v','1:05'],[49.2,'s'],[58.8,'t','发票呢？','Invoice?'],[62,'o','在找','Looking'],
-  [72.8,'t','PDF 在哪个文件夹','Which folder is that PDF in'],[77.6,'v','0:18'],[83.2,'s'],
-  [97.5,'o','马上','Soon'],[105.4,'v','0:47'],[110.8,'t','再发一次可以吗','Can you send it again'],[115.4,'o','好','OK'],[118.2,'f','旧单 2023.pdf','Old bill 2023.pdf']
+var S1=2420,STEPS=22,TRAVEL=140.8,RUN=1840,CUTIN=340,s1=null,s1T0=new Date();
+var BEATS=[340,760,1100,1360,1560,1720,1840,1900,2230,2420];
+/* what streaks past between the opening shot and the still: [y in em, kind, zh, en] */
+var MID=[
+  [39.5,'i','单发了吗？','Bill sent yet?'],[44.4,'o','等等','One sec'],[50,'v','0:32'],[58.4,'f','报价 v3 final','Quote v3 final'],[65.6,'o','在找','Looking'],
+  [70.2,'s'],[82.6,'i','上次算多少来着','What did we charge last time'],[88,'o','我翻一下','Let me scroll back'],[93.4,'v','1:05'],
+  [101.6,'i','PDF 在哪个文件夹','Which folder is that PDF in'],[107,'f','旧单 2023.pdf','Old bill 2023.pdf'],[114.4,'o','马上','Soon'],[119,'s'],
+  [130.6,'i','再发一次可以吗','Can you send it again'],[135.4,'o','好','OK']
 ];
-var WAVE='<span class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="dur">';
+var WAVE='<span class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="dur">';
 function bubbleHTML(k,zh,en){
   if(k==='v')return WAVE+zh+'</span></span>';
   if(k==='s')return '<span class="shot"><span class="ph"><span class="ph"><span class="doc"></span></span></span></span>';
   if(k==='f')return '<span class="fw">'+B('↪ 已转发','↪ Forwarded')+'</span><p>'+B(zh,en)+'</p>';
   return '<p>'+B(zh,en)+'</p>';
 }
-var srcEls={};
+var bandBuilt=false;
 function buildBand(){
-  if($('.pass',strip))return;
+  if(bandBuilt)return;bandBuilt=true;
   var frag=D.createDocumentFragment();
-  PASS.forEach(function(b){var el=D.createElement('div');el.className='bubble pass'+(b[1]==='o'?' out':'');if(b[1]==='v')el.setAttribute('data-kind','voice');if(b[1]==='s')el.setAttribute('data-kind','shot');el.style.top=b[0]+'em';el.innerHTML=bubbleHTML(b[1],b[2],b[3]);frag.appendChild(el)});
-  ['client','row1','row2','meta'].forEach(function(k){var el=D.createElement('div');el.className='bubble pass src';el.innerHTML='<p></p>';srcEls[k]=el;frag.appendChild(el)});
-  strip.insertBefore(frag,strip.firstChild);
-}
-function buildGhosts(){
-  ghosts.forEach(function(g){if(g.parentNode)g.parentNode.removeChild(g)});ghosts=[];
-  for(var n=2;n>=1;n--){var g=strip.cloneNode(true);g.className='ghost';g.setAttribute('data-n',n);band.insertBefore(g,strip);ghosts[n-1]=g}
+  MID.forEach(function(b){var w=D.createElement('div');w.className='pb';w.style.top=b[0]+'em';w.innerHTML='<div class="bubble'+(b[1]==='o'?' out':'')+'">'+bubbleHTML(b[1],b[2],b[3])+'</div>';frag.appendChild(w)});
+  strip.appendChild(frag);
+  for(var n=2;n>=1;n--){var g=strip.cloneNode(true);g.className='ghost';g.setAttribute('data-n',n);mover.insertBefore(g,strip)}
 }
 function buildS1(){
   var tl=new TL(S1);s1T0=new Date();
   var c=CLIENTS[state.client],rows=$$('.row',rowsEl),ids=state.rates.slice(),draft=!ids.length;
   var fs=parseFloat(getComputedStyle(stage).fontSize),sr=stage.getBoundingClientRect();
   var live=!RM;
-  function land(k,html,target){
-    /* put the source bubble where it will be passing at step k, level with its slot */
-    var el=srcEls[k.key];el.firstChild.innerHTML=html;
-    var r=target.getBoundingClientRect(),cy=(r.top+r.height/2-sr.top)/fs;
-    el.style.top=(k.step*6+cy-el.offsetHeight/fs/2)+'em';
+  /* a message that hangs still in the band under the sheet while the thread streaks behind it */
+  function hanger(side,html,row,on,off){
+    var el=D.createElement('div');el.className='hang bubble '+side;el.innerHTML='<p>'+html+'</p>';
+    el.style.top=((row?33.8:30.8)*fs)+'px';hangLayer.appendChild(el);tl.trash.push(el);
+    tl.showBetween(el,on,off);return el;
   }
-  var lead={};
-  function chip(html,target,start,dur,cls){
-    var r=target.getBoundingClientRect();if(!r.width)return;
+  function frag(hang,sel,target){var f=$(sel,hang);f.style.fontSize=getComputedStyle(target).fontSize;return f}
+  /* the catch: one translate, linear, a hard stop, one frame of settle; two fixed-alpha copies trail it */
+  function chip(fragEl,target,start,dur,cls,html){
+    var r=target.getBoundingClientRect(),f=fragEl.getBoundingClientRect();if(!r.width)return;
     var el=D.createElement('span');el.className='catch'+(cls?' '+cls:'');el.innerHTML=html;
     el.style.left=(r.left-sr.left)+'px';el.style.top=(r.top-sr.top)+'px';el.style.fontSize=getComputedStyle(target).fontSize;
     layer.appendChild(el);tl.trash.push(el);
-    var x0=lead[start]||2.3*fs;lead[start]=x0+el.offsetWidth+.6*fs;
-    var dx=(r.left-sr.left)-x0,from='translate('+(-dx)+'px,0) skewX(-12deg)',past='translate(2px,0) skewX(-12deg)';
+    var dx=f.left-r.left,dy=f.top-r.top,len=Math.hypot(dx,dy)||1,ux=dx/len,uy=dy/len;
+    var w=el.offsetWidth,h=el.offsetHeight;
+    [[30,'g1'],[66,'g2']].forEach(function(g){
+      var k=D.createElement('span');k.className='catch '+g[1];k.style.left=el.style.left;k.style.top=el.style.top;k.style.width=w+'px';k.style.height=h+'px';
+      layer.insertBefore(k,el);tl.trash.push(k);
+      var ox=ux*g[0],oy=uy*g[0];
+      tl.add(k,[{transform:'translate('+(dx+ox)+'px,'+(dy+oy)+'px) skewX(-12deg) scaleX(1.5)',visibility:'visible'},{transform:'translate('+ox+'px,'+oy+'px) skewX(-12deg) scaleX(1.5)',visibility:'visible'}],start,dur,'none');
+    });
+    var from='translate('+dx+'px,'+dy+'px) skewX(-12deg)',past='translate('+(-ux*2)+'px,'+(-uy*2)+'px) skewX(-12deg)';
     tl.add(el,[{transform:from,visibility:'visible'},{transform:past,visibility:'visible',offset:dur/(dur+17)},{transform:past,visibility:'visible'}],start,dur+17,'none');
   }
+  var T1=760,T2=1100,T3=1360,T4=1560;
   if(live){
     buildBand();
-    land({key:'client',step:4},c.name,nameEl);
-    if(rows[0])land({key:'row1',step:9},B(RATE[ids[0]].zh,RATE[ids[0]].en)+' RM '+fmt0(RATE[ids[0]].amt),rows[0]);else srcEls.row1.style.top='-20em';
-    if(rows[1])land({key:'row2',step:13},B(RATE[ids[1]].zh,RATE[ids[1]].en)+' RM '+fmt0(RATE[ids[1]].amt),rows[1]);else srcEls.row2.style.top='-20em';
-    land({key:'meta',step:16},B(NOW.getDate()+'/'+(NOW.getMonth()+1)+' · 第 014 张',NOW.getDate()+'/'+(NOW.getMonth()+1)+' · no. 014'),$('.meta .tn',sheet));
-    buildGhosts();
-    tl.add(strip,[{transform:'translateY(126em)'},{transform:'translateY(0)'}],0,1820,'backwards','steps(21, end)');
-    ghosts.forEach(function(g,i){var n=i+1,d=STEP*n,len=1820-d+STEP;
-      tl.add(g,[{transform:'translateY(126em)',visibility:'visible',easing:'steps('+(21-n)+', end)'},{transform:'translateY('+6*n+'em)',visibility:'visible',offset:(1820-d)/len},{transform:'translateY('+6*n+'em)',visibility:'visible'}],d,len,'backwards');
-    });
-    chip(c.name,nameEl,420,140);
-    if(rows[0]){chip($('.d',rows[0]).innerHTML,$('.d',rows[0]),860,140);chip($('.a',rows[0]).textContent,$('.a',rows[0]),860,140,'amt')}
-    if(rows[1]){chip($('.d',rows[1]).innerHTML,$('.d',rows[1]),1200,120);chip($('.a',rows[1]).textContent,$('.a',rows[1]),1200,120,'amt')}
-    chip($('.inv-no',sheet).textContent,$('.inv-no',sheet),1460,120);chip($('.inv-date',sheet).textContent,$('.inv-date',sheet),1460,120);
+    tl.add(mover,[{transform:'translateY('+TRAVEL+'em)'},{transform:'translateY(0)'}],0,RUN,'backwards','steps('+STEPS+', end)');
+    var h1=hanger('in',B('抬头写 ','Bill it to ')+'<span class="frag f-n">'+c.name+'</span>',0,T1-260,T1);
+    chip(frag(h1,'.f-n',nameEl),nameEl,T1,140,'',c.name);
+    if(rows[0]){
+      var r0=RATE[ids[0]],h2=hanger('out','<span class="frag f-d">'+B(r0.zh,r0.en)+'</span> <span class="frag amt f-a">'+fmt(r0.amt)+'</span>',1,T2-220,T2);
+      chip(frag(h2,'.f-d',$('.d',rows[0])),$('.d',rows[0]),T2,140,'out',$('.d',rows[0]).innerHTML);
+      chip(frag(h2,'.f-a',$('.a',rows[0])),$('.a',rows[0]),T2,140,'out amt',fmt(r0.amt));
+    }
+    if(rows[1]){
+      var r1=RATE[ids[1]],h3=hanger('out','<span class="frag f-d">'+B(r1.zh,r1.en)+'</span> <span class="frag amt f-a">'+fmt(r1.amt)+'</span>',0,T3-190,T3);
+      chip(frag(h3,'.f-d',$('.d',rows[1])),$('.d',rows[1]),T3,120,'out',$('.d',rows[1]).innerHTML);
+      chip(frag(h3,'.f-a',$('.a',rows[1])),$('.a',rows[1]),T3,120,'out amt',fmt(r1.amt));
+    }
   }
-  var L1=live?577:420,L2=live?1017:860,L3=live?1337:1200,L4=live?1597:1460;
-  tl.showUntil($('[data-slot="client"]',sheet),L1);
-  tl.showUntil($('[data-slot="item"]',sheet),L2);tl.showUntil($('[data-slot="rate"]',sheet),L2);
+  var L1=live?T1+157:T1,L2=live?T2+157:T2,L3=live?T3+137:T3;
+  /* the cut: the sheet is not there, and then it is, with six labelled empty slots */
+  tl.hideUntil(sheet,CUTIN);
+  tl.showBetween($('[data-slot="client"]',sheet),CUTIN,L1);
+  tl.showBetween($('[data-slot="item"]',sheet),CUTIN,L2);tl.showBetween($('[data-slot="rate"]',sheet),CUTIN,L2);
   for(var i=1;i<rows.length;i++)tl.hideUntil(rows[i],L3);
-  tl.showUntil($('[data-slot="date"]',sheet),L4);
-  tl.showUntil($('[data-slot="total"]',sheet),1660);
-  tl.hideUntil(wordsEl,1780);
-  tl.showUntil($('[data-slot="pdf"]',sheet),2240);
+  tl.showBetween($('[data-slot="date"]',sheet),CUTIN,T4);
+  if(live)tl.add(metaTn,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],T4,120);
+  tl.showBetween($('[data-slot="total"]',sheet),CUTIN,1720);
+  tl.hideUntil(wordsEl,1820);
+  tl.showBetween($('[data-slot="pdf"]',sheet),CUTIN,2230);
   if(!draft){
     if(live){
       tl.add(st1,[{strokeDashoffset:1},{strokeDashoffset:0}],1900,110);
-      tl.add(st2,[{strokeDashoffset:1},{strokeDashoffset:0}],2040,110);
-      tl.add(block,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],2240,180);
-      tl.add(machine,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],2240,180);
+      tl.add(st2,[{strokeDashoffset:1},{strokeDashoffset:0}],2030,110);
+      tl.add(block,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],2230,170);
+      tl.add(machine,[{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],2230,170);
     }else{
-      tl.hideUntil(st1,1900);tl.hideUntil(st2,1900);tl.hideUntil(block,2240);tl.hideUntil(machine,2240);
+      tl.hideUntil(st1,1900);tl.hideUntil(st2,1900);tl.hideUntil(block,2230);tl.hideUntil(machine,2230);
     }
     $$('.phrase',crossing).forEach(function(p){tl.hideUntil(p,live?2150:1900)});
   }
   var tot=total(),first=ids.length?RATE[ids[0]].amt:0,capI=-1,figV=-1;
-  var CAPS=[[0,'聊天记录里，资料到处都是。','Client details, all over your chat.'],[420,'客户，抓到。','Client, caught.'],[860,'价目，抓到。','Rate, caught.'],[1460,'日期和单号，自动填。','Date and number, filled in.'],[1660,'合计 RM '+fmt(tot)+'。','Total RM '+fmt(tot)+'.'],[1900,draft?'还没选价目。':'划线。',draft?'No rate picked yet.':'Crossed.'],[2240,draft?'还没选价目。':'单开好了。',draft?'No rate picked yet.':'Invoice done.']];
+  var CAPS=[[0,'聊天记录里，资料到处都是。','Client details, all over your chat.'],[CUTIN,'一张空单。','A blank sheet.'],[T1,'客户，抓到。','Client, caught.'],[T2,'价目，抓到。','Rate, caught.'],[T4,'单号和日期，系统填。','Number and date: filled in.'],[1720,'合计 RM '+fmt(tot)+'。','Total RM '+fmt(tot)+'.'],[1900,draft?'还没选价目。':'划线。',draft?'No rate picked yet.':'Crossed.'],[2230,draft?'还没选价目。':'单开好了。',draft?'No rate picked yet.':'Invoice done.']];
   tl.on(function(t){
     var ci=0;for(var k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])ci=k;
     if(ci!==capI){capI=ci;caption.innerHTML=capHTML(new Date(s1T0.getTime()+CAPS[ci][0]),CAPS[ci][1],CAPS[ci][2])}
-    var fv=t<1720?0:t<1780?first:tot;if(fv!==figV){figV=fv;writeFig(fv)}
-    band.classList.toggle('running',live&&t<1820);
+    var fv=t<1770?0:t<1820?first:tot;if(fv!==figV){figV=fv;writeFig(fv)}
+    band.classList.toggle('running',live&&t>0&&t<RUN);
     stage.setAttribute('data-state',t>=S1?'end':'run');
     railShow(t);
   });
   tl.onend=function(){s1=null;stamp=new Date();writeStamp();restCaption();railState('end');syncLater()};
   return tl;
 }
-function s1End(){if(s1)s1.finish()}
+function s1End(){if(s1)s1.finish();H.classList.remove('s1-pre')}
 function s1Seek(t){
   if(t>=S1||!CAN){s1End();railShow(S1);return}
   if(!s1)s1=buildS1();
@@ -1080,10 +1214,10 @@ function s1Play(from){
   if(!s1)s1=buildS1();
   railState('playing');s1.play(from||0);
 }
-function capAt(t){var i=0,zh=['聊天记录里，资料到处都是。','客户，抓到。','价目，抓到。','日期和单号，自动填。','合计','划线。','单开好了。'],en=['Client details, all over your chat.','Client, caught.','Rate, caught.','Date and number, filled in.','Total','Crossed.','Invoice done.'],ts=[0,420,860,1460,1660,1900,2240];for(var k=0;k<ts.length;k++)if(t>=ts[k])i=k;return (H.getAttribute('data-lang')==='en'?en:zh)[i]}
+function capAt(t){var i=0,zh=['聊天记录里，资料到处都是。','一张空单。','客户，抓到。','价目，抓到。','单号和日期，系统填。','合计','划线。','单开好了。'],en=['Client details, all over your chat.','A blank sheet.','Client, caught.','Rate, caught.','Number and date: filled in.','Total','Crossed.','Invoice done.'],ts=[0,340,760,1100,1560,1720,1900,2230];for(var k=0;k<ts.length;k++)if(t>=ts[k])i=k;return (H.getAttribute('data-lang')==='en'?en:zh)[i]}
 function railShow(t){
   if(D.activeElement!==rail||!railBox.classList.contains('drag'))rail.value=Math.round(t);
-  var cs=Math.round(t/10);readout.textContent='0:'+p2(Math.floor(cs/100))+'.'+p2(cs%100);
+  var cs=Math.round(t/10);readout.innerHTML='<span class="ro-t">0:'+p2(Math.floor(cs/100))+'.'+p2(cs%100)+'</span>';
   rail.setAttribute('aria-valuetext',readout.textContent+' '+capAt(t));
 }
 function railState(st){
@@ -1146,8 +1280,8 @@ function pickClient(i){
   var old=state.client;state.client=i;renderPickers();
   if(RM||!CAN){stamp=new Date();renderAll();return}
   var tl=new TL(420),c=CLIENTS[i];
-  tl.add($('.lock i',tiles[old]),[{transform:'translateY(12px)'},{transform:'translateY(0)'}],0,80);
-  tl.add($('.lock i',tiles[i]),[{transform:'translateY(0)'},{transform:'translateY(12px)'}],0,80);
+  tl.add($('.lock i',tiles[old]),[{transform:'translateY(18px)'},{transform:'translateY(0)'}],0,80);
+  tl.add($('.lock i',tiles[i]),[{transform:'translateY(0)'},{transform:'translateY(18px)'}],0,80);
   billStrike.style.width=(nameEl.getBoundingClientRect().width+4)+'px';billStrike.classList.add('on');
   tl.add($('path',billStrike),[{strokeDashoffset:1},{strokeDashoffset:0}],0,90);
   tl.at(120,function(){billTo.classList.add('is-empty');billStrike.classList.remove('on')});
@@ -1188,7 +1322,7 @@ function toggleRate(id){
     var sk=$('.strike',gone);sk.classList.add('on');
     t2.add($('path',sk),[{strokeDashoffset:1},{strokeDashoffset:0}],0,90);
     t2.at(100,function(){if(gone.parentNode)gone.parentNode.removeChild(gone);renderPickers();if(empty){linesEl.classList.add('is-none');crossing.classList.add('no-phrase')}});
-    rows.slice(idx+1).forEach(function(n){t2.add(n,[{transform:'translateY(1.5em)'},{transform:'translateY(0)'}],100,100,'none')});
+    rows.slice(idx+1).forEach(function(n){t2.add(n,[{transform:'translateY(1.9em)'},{transform:'translateY(0)'}],100,100,'none')});
     stepTotal(t2,prev,total(),220,260);
     if(empty){
       t2.add(st2,[{strokeDashoffset:0},{strokeDashoffset:1}],100,90,'forwards');
@@ -1205,36 +1339,44 @@ rstrips.forEach(function(b){b.addEventListener('click',function(){toggleRate(b.g
 
 /* ---------- scroll-linked: a pure function of scroll position, both ways ---------- */
 function prog(el,a,b){var r=el.getBoundingClientRect(),vh=window.innerHeight;return clamp((a*vh-r.top)/((a-b)*vh),0,1)}
+/* S4 starts only when the whole leaf is on screen (or, on a short screen, when the stage reaches the top bar) */
+function progStory(){
+  var r=storyStage.getBoundingClientRect(),vh=window.innerHeight,em=r.width/35.8;
+  return clamp(Math.max(vh*.97-(r.top+36.2*em),64-r.top)/(vh*.5),0,1);
+}
 var flags={};
 function latch(key,on){var was=flags[key];flags[key]=on;return was===undefined?(on?0:-1):(was===on?0:(on?1:-1))}
 function story(p){
-  var x,y,s;
-  if(p<=.08){x=.6*p/.08;y=0;s=.72}else if(p<.5){var q=(p-.08)/.42;x=.6+4*q;y=24.8*q;s=.72-.48*q}else{x=4.6;y=24.8;s=.24}
-  leaf.style.transform='translate('+x.toFixed(3)+'em,'+y.toFixed(3)+'em) scale('+s.toFixed(4)+')';
-  var st=p<.5?'empty':p<.56?'file':p<.64?'sent':p<.72?'delivered':'read';
-  if(docBubble.getAttribute('data-state')!==st){docBubble.setAttribute('data-state',st);if(st==='read'&&!docBubble.stamped){docBubble.stamped=true;$('.tm',docBubble).textContent=hms(new Date()).slice(0,5)}}
-  var sy=p<=.72?-38.8:p<.92?-38.8*(1-(p-.72)/.2):0;
+  var x,y;
+  if(p<=.08){x=6.9+.3*p/.08;y=0}else if(p<.4){x=7.2;y=4*(p-.08)/.32}else{x=7.2;y=4}
+  leaf.style.transform='translate('+x.toFixed(3)+'em,'+y.toFixed(3)+'em)';
+  var st=p<.4?'empty':p<.47?'file':p<.54?'sent':p<.61?'delivered':'read';
+  if(docBubble.getAttribute('data-state')!==st){docBubble.setAttribute('data-state',st);if(st==='read'&&!docBubble.stamped){docBubble.stamped=true;$('.tm',docBubble).textContent=hm(new Date())}}
+  var sy=p<=.66?-53.2:p<.9?-53.2*(1-(p-.66)/.24):0;
   stub.style.transform='translateY('+sy.toFixed(3)+'em)';
-  stub.classList.toggle('is-front',p<.94);
+  stub.classList.toggle('is-front',p<.93);
 }
-var NOVT=0;
+/* S6: the months come in at shortening intervals, then a hold, then number 014 drops on */
+var NOVT=0,MT=[0,.2,.37,.51,.62,.7];
 function month(p){
-  mcols.forEach(function(m,i){var k=clamp((p-.13*i)/.2,0,1),bs=$$('.bar',m);bs[0].style.transform=bs[1].style.transform='scaleY('+k.toFixed(4)+')'});
-  var ch=latch('nov',p>=.9);
+  mcols.forEach(function(m,i){var k=clamp((p-MT[i])/.14,0,1),bs=$$('.bar',m);bs[0].style.transform=bs[1].style.transform='scaleY('+k.toFixed(4)+')'});
+  var ch=latch('nov',p>=.92);
   if(ch===0&&flags.novInit)return;
   flags.novInit=true;
   clearTimeout(NOVT);
-  if(p>=.9){
-    novAdded=true;tag014.classList.remove('pre');
+  if(p>=.92){
+    novAdded=true;tag014.classList.remove('pre');reportMsg.setAttribute('data-state','read');
+    if(!reportMsg.stamped){reportMsg.stamped=true;$('.tm',reportMsg).textContent=hm(new Date())}
     if(ch===1&&!BOOT&&!RM){
       run(tag014,[{transform:'translateY(-3.6em) rotate(-3deg)'},{transform:'translateY(.2em) rotate(-3deg)',offset:.88},{transform:'rotate(-3deg)'}],137);
       writeNov(SALES[5]);var mid=SALES[5]+Math.round(total()/2/50)*50;
       NOVT=setTimeout(function(){writeNov(mid);NOVT=setTimeout(function(){writeNov(novSales())},60)},120);
     }else writeNov(novSales());
-  }else{novAdded=false;tag014.classList.add('pre');writeNov(SALES[5])}
+  }else{novAdded=false;tag014.classList.add('pre');reportMsg.setAttribute('data-state','sent');writeNov(SALES[5])}
 }
-var importStage=$('#import-stage'),files=$$('.old-file'),fields=$$('.field',importStage);
-var FT=[.12,.26,.40,.54,.68],DT=[.78,.85,.92];
+/* S8: files land at shortening intervals, a hold, then the fields are read */
+var importStage=$('#import-stage'),importMsg=$('#import-msg'),files=$$('.old-file'),fields=$$('.field',importStage);
+var FT=[.06,.25,.4,.51,.59],DT=[.72,.8,.86];
 function sort(p){
   files.forEach(function(f,i){
     var ch=latch('f'+i,p>=FT[i]),heap=f.heapT||(f.heapT=getComputedStyle(f).getPropertyValue('--heap').trim());
@@ -1247,19 +1389,27 @@ function sort(p){
     else{f.classList.add('is-unread');if(ch===-1)run(f,[{clipPath:'inset(0 0% 0 0)'},{clipPath:'inset(0 100% 0 0)'}],100)}
   });
 }
+/* S7: the episode cut. When a new episode's first line passes the middle of the screen, the whole ground changes on one frame. */
+var eps=$$('.ep[data-ep]'),curEp='';
+function cutGround(){
+  var mid=window.innerHeight*.5,ep='today';
+  for(var i=0;i<eps.length;i++){if(eps[i].getBoundingClientRect().top<=mid)ep=eps[i].getAttribute('data-ep')}
+  if(ep!==curEp){curEp=ep;D.body.setAttribute('data-ep',ep)}
+}
 /* S12: clock stamps, each a single cut */
-var stampEls=$$('.msg .time'),elapsedEl=$('.elapsed'),composer=$('.composer');
+var stampEls=$$('[data-stamp]'),clockEls=$$('[data-clock]'),elapsedEl=$('.elapsed'),composer=$('.composer');
 function stamps(){
-  var vh=window.innerHeight;
-  for(var i=stampEls.length-1;i>=0;i--){var r=stampEls[i].getBoundingClientRect();if(r.top<vh&&r.bottom>0){var t=hms(new Date());stampEls[i].innerHTML=B(t,t);stampEls.splice(i,1)}}
+  var vh=window.innerHeight,i,r;
+  for(i=stampEls.length-1;i>=0;i--){r=stampEls[i].getBoundingClientRect();if(r.top<vh&&r.bottom>0){stampEls[i].textContent=hms(new Date());stampEls.splice(i,1)}}
+  for(i=clockEls.length-1;i>=0;i--){r=clockEls[i].getBoundingClientRect();if(r.top<vh&&r.bottom>0){clockEls[i].textContent=hm(new Date());clockEls.splice(i,1)}}
   if(elapsedEl){var c=composer.getBoundingClientRect();if(c.top<vh&&c.bottom>0){var n=new Date(),sec=Math.max(1,Math.round((n-T_LOAD)/1000)),m=Math.floor(sec/60),s2=sec%60;
-    elapsedEl.innerHTML='<span class="ck">'+hms(n)+'</span>'+B('你在这页待了 '+(m?m+' 分 ':'')+s2+' 秒。','You have been on this page for '+(m?m+' min ':'')+s2+' s.');elapsedEl=null}}
+    elapsedEl.innerHTML='<span class="ck">'+hms(n)+'</span>'+B('你在这页待了 '+(m?m+' 分 ':'')+s2+' 秒。轮到你回了。','You have been on this page for '+(m?m+' min ':'')+s2+' s. Your turn to reply.');elapsedEl=null}}
 }
 var ticking=false;
 function frame(){
   ticking=false;
-  if(!RM){story(prog(storyStage,.78,.28));month(prog(report,.8,.4));sort(prog(importStage,.75,.35))}
-  stamps();
+  if(!RM){story(progStory());month(prog(report,.8,.36));sort(prog(importStage,.75,.33))}
+  cutGround();stamps();
 }
 function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
 window.addEventListener('scroll',onScroll,{passive:true});
@@ -1274,28 +1424,28 @@ mcols.forEach(function(m,i){m.addEventListener('click',function(){
   writeMonth(i);
 })});
 
-/* S9 green wrap */
+/* S9 green wrap. The message's ticks are the end signal: one grey tick until he approves. */
 var approve=$('.approve'),card=$('.review-card'),wrap=$('.wrap-checked'),busy9=false;
 approve.addEventListener('click',function(){
   if(busy9)return;
   if(!importStage.classList.contains('is-saved')){
-    $('.wc-t',wrap).textContent=hms(new Date());card.classList.add('is-wrapped');busy9=true;
-    run(wrap,[{clipPath:'inset(0 100% 0 0)',transform:'translateX(-1.2em) rotate(-4deg)'},{clipPath:'inset(0 0% 0 0)',transform:'translateX(.2em) rotate(-4deg)',offset:.92},{clipPath:'inset(0 0% 0 0)',transform:'rotate(-4deg)'}],217,function(){importStage.classList.add('is-saved');busy9=false});
+    var n=new Date();$('.wc-t',wrap).textContent=hms(n);card.classList.add('is-wrapped');busy9=true;
+    run(wrap,[{clipPath:'inset(0 100% 0 0)',transform:'translateX(-1.2em) rotate(-4deg)'},{clipPath:'inset(0 0% 0 0)',transform:'translateX(.2em) rotate(-4deg)',offset:.92},{clipPath:'inset(0 0% 0 0)',transform:'rotate(-4deg)'}],217,function(){importStage.classList.add('is-saved');importMsg.setAttribute('data-state','read');$('.tm',importMsg).textContent=hm(n);busy9=false});
   }else{
     busy9=true;
-    run(wrap,[{clipPath:'inset(0 0% 0 0)'},{clipPath:'inset(0 100% 0 0)'}],160,function(){card.classList.remove('is-wrapped');importStage.classList.remove('is-saved');busy9=false});
+    run(wrap,[{clipPath:'inset(0 0% 0 0)'},{clipPath:'inset(0 100% 0 0)'}],160,function(){card.classList.remove('is-wrapped');importStage.classList.remove('is-saved');importMsg.setAttribute('data-state','sent');busy9=false});
   }
 });
 /* S10 token */
-var proStage=$('#pro-stage'),tokenStrip=$('.token-strip'),tokenBtn=$('.token-btn'),busy10=false;
+var proStage=$('#pro-stage'),proMsg=$('#pro-msg'),tokenStrip=$('.token-strip'),tokenBtn=$('.token-btn'),busy10=false;
 tokenBtn.addEventListener('click',function(){
   if(busy10)return;busy10=true;
   if(proStage.getAttribute('data-token')==='on'){
     var sk=$('.strike',tokenStrip);sk.classList.add('on');
     run($('path',sk),[{strokeDashoffset:1},{strokeDashoffset:0}],90);
-    run(tokenStrip,[{clipPath:'inset(0 0% 0 0)'},{clipPath:'inset(0 100% 0 0)'}],180,function(){sk.classList.remove('on');proStage.setAttribute('data-token','off');busy10=false},120);
+    run(tokenStrip,[{clipPath:'inset(0 0% 0 0)'},{clipPath:'inset(0 100% 0 0)'}],180,function(){sk.classList.remove('on');proStage.setAttribute('data-token','off');proMsg.setAttribute('data-state','sent');busy10=false},120);
   }else{
-    proStage.setAttribute('data-token','on');
+    proStage.setAttribute('data-token','on');proMsg.setAttribute('data-state','read');
     run(tokenStrip,[{clipPath:'inset(0 100% 0 0)',transform:'translateX(0) rotate(-2deg)'},{clipPath:'inset(0 0% 0 0)',transform:'translateX(.2em) rotate(-2deg)',offset:.9},{clipPath:'inset(0 0% 0 0)',transform:'rotate(-2deg)'}],180,function(){busy10=false});
   }
 });
@@ -1303,9 +1453,14 @@ tokenBtn.addEventListener('click',function(){
 /* S11 language cut */
 var toggle=$('.lang-toggle'),thumb=$('.lt-thumb'),langBusy=false;
 function setLang(l){
+  var a=D.elementFromPoint(window.innerWidth/2,Math.min(window.innerHeight-10,200)),a0=a?a.getBoundingClientRect().top:0;
+  setLang0(l);
+  if(a&&window.pageYOffset>60){var d=a.getBoundingClientRect().top-a0;if(d)window.scrollBy(0,d)}
+}
+function setLang0(l){
   H.setAttribute('data-lang',l);H.setAttribute('lang',l==='zh'?'zh-Hans':'en');
   toggle.setAttribute('aria-checked',l==='en'?'true':'false');
-  D.title=l==='zh'?'SIS · 选客户，选价目，单就开好了':'SIS · Pick a client, a rate. Invoice done.';
+  D.title=l==='zh'?'SIS · 选客户，选价目，单就开好了':'SIS · Pick a client. Pick a rate. Invoice done.';
 }
 toggle.addEventListener('click',function(){
   if(langBusy)return;var to=H.getAttribute('data-lang')==='zh'?'en':'zh';langBusy=true;
@@ -1314,19 +1469,24 @@ toggle.addEventListener('click',function(){
 
 /* ---------- start ---------- */
 renderAll();
-if(RM)$('.tm',docBubble).textContent=hms(new Date()).slice(0,5);
+if(RM){var nn=hm(new Date());$('.tm',docBubble).textContent=nn;$('.tm',reportMsg).textContent=nn}
 frame();
 requestAnimationFrame(function(){requestAnimationFrame(function(){BOOT=false;H.classList.remove('boot')})});
 function onStage(){var r=stage.getBoundingClientRect();return r.bottom>60&&r.top<window.innerHeight}
-if(AUTO&&!RM&&CAN){
-  var started=false,go=function(){if(started)return;started=true;if(onStage()&&!rc&&!s1)s1Play(0)};
-  setTimeout(go,400);
-  if(D.fonts&&D.fonts.ready)D.fonts.ready.then(go);
-}
+if(AUTO&&!RM&&CAN&&onStage()){
+  /* take over the held start frame from the stylesheet without a visible change, then start the clock */
+  s1=buildS1();s1.seek(0);railState('paused');H.classList.remove('s1-pre');
+  var started=false,t0=performance.now(),go=function(){if(started)return;started=true;if(s1&&!rc&&onStage())s1Play(0);else s1End()};
+  var ready=function(){setTimeout(go,Math.max(0,320-(performance.now()-t0)))};
+  setTimeout(go,700);
+  if(D.fonts&&D.fonts.ready)D.fonts.ready.then(ready);
+}else H.classList.remove('s1-pre');
+window.SIS_READY=true;
 /* a handle for stepping frames by hand (used for frame-by-frame review) */
 window.SIS={
   seek:function(t){s1Seek(t);railState(t>=S1?'end':'paused')},play:function(t){s1Play(t||0)},end:function(){s1End();railShow(S1);railState('end')},
-  hold:function(v){HOLD=!!v},recut:function(){return rc},flush:flushRc,pickClient:pickClient,toggleRate:toggleRate,state:state,total:total
+  hold:function(v){HOLD=!!v},recut:function(){return rc},flush:flushRc,pickClient:pickClient,toggleRate:toggleRate,state:state,total:total,
+  progress:{story:story,month:month,sort:sort}
 };
 })();
 </script>
