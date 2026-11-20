@@ -1,0 +1,445 @@
+
+################ MODE normal ################
+
+=== load + S1 autoplay (237 frames) ===
+animations seen:
+   WAAPI | transform  x88  target=div.thread-band > div.mover  e.g. ["transform=translateY(140.8em)","transform=translateY(0px)"]
+   WAAPI | visibility  x827  target=div.hang-layer > div.hang.bubble.in  e.g. ["visibility=visible","visibility=visible"]
+   WAAPI | transform,visibility  x1141  target=div.catch-layer > i.catch-tr  e.g. ["transform=translate(-42.4844px, 210.938px) rotate(101.4deg)","visibility=visible","transform=translate(0px, 0px) rotate(101.4deg)","visibility=visible"]
+   WAAPI | clipPath  x308  target=div.meta > span.tn  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+   WAAPI | strokeDashoffset  x198  target=svg > path.stroke s1  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+external requests: ["https://fonts.googleapis.com/css2","https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bT","https://fonts.gstatic.com/s/instrumentsans/v4/pxiTypc9vsFDm0","https://fonts.gstatic.com/s/kanit/v17/nKKU-Go6G5tXcr4uPhWnVa","https://fonts.gstatic.com/s/notosanssc/v41/k3kXo84MPvpLmixcA","https://fonts.gstatic.com/s/kanit/v17/nKKS-Go6G5tXcraQI7mlZa"]
+
+=== language toggle zh->en (58 frames) ===
+animations seen:
+   WAAPI | transform  x6  target=span.lt-track > span.lt-thumb  e.g. ["transform=translateX(0px)","transform=translateX(36px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 6 kinds:
+   color: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   color: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   borderTopColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   outlineColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+
+=== language toggle en->zh (58 frames) ===
+animations seen:
+   WAAPI | transform  x5  target=span.lt-track > span.lt-thumb  e.g. ["transform=translateX(36px)","transform=translateX(0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 6 kinds:
+   color: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   borderTopColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   outlineColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   color: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+
+=== replay button (260 frames) ===
+animations seen:
+   WAAPI | transform  x134  target=div.thread-band > div.mover  e.g. ["transform=translateY(140.8em)","transform=translateY(0px)"]
+   WAAPI | visibility  x1304  target=div.hang-layer > div.hang.bubble.in  e.g. ["visibility=visible","visibility=visible"]
+   WAAPI | transform,visibility  x1852  target=div.catch-layer > i.catch-tr  e.g. ["transform=translate(-43.3906px, 210.938px) rotate(101.6deg)","visibility=visible","transform=translate(0px, 0px) rotate(101.6deg)","visibility=visible"]
+   WAAPI | clipPath  x470  target=div.meta > span.tn  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+   WAAPI | strokeDashoffset  x302  target=svg > path.stroke s1  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== rail keyboard: Home, ArrowRight x20, End (87 frames) ===
+animations seen:
+   WAAPI | transform  x47  target=div.thread-band > div.mover  e.g. ["transform=translateY(140.8em)","transform=translateY(0px)"]
+   WAAPI | visibility  x566  target=div.hang-layer > div.hang.bubble.in  e.g. ["visibility=visible","visibility=visible"]
+   WAAPI | transform,visibility  x940  target=div.catch-layer > i.catch-tr  e.g. ["transform=translate(-43.3906px, 210.938px) rotate(101.6deg)","visibility=visible","transform=translate(0px, 0px) rotate(101.6deg)","visibility=visible"]
+   WAAPI | clipPath  x141  target=div.meta > span.tn  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+   WAAPI | strokeDashoffset  x94  target=svg > path.stroke s1  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 1 kinds:
+   outlineColor: rgb(157, 150, 142) -> rgb(83, 189, 235)  x1
+
+=== rail drag (240 frames) ===
+animations seen:
+   WAAPI | clipPath  x545  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+   WAAPI | visibility  x1544  target=div.record-zone > span.slot-empty  e.g. ["visibility=visible","visibility=visible"]
+   WAAPI | strokeDashoffset  x350  target=svg > path.stroke s2  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | transform  x155  target=div.thread-band > div.mover  e.g. ["transform=translateY(140.8em)","transform=translateY(0px)"]
+   WAAPI | transform,visibility  x2212  target=div.catch-layer > i.catch-tr  e.g. ["transform=translate(138.719px, 152.938px) rotate(47.8deg)","visibility=visible","transform=translate(0px, 0px) rotate(47.8deg)","visibility=visible"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== tap client tile 2 (Tanjung) (60 frames) ===
+animations seen:
+   WAAPI | transform  x12  target=span.lock > i  e.g. ["transform=translateY(18px)","transform=translateY(0px)"]
+   WAAPI | strokeDashoffset  x6  target=svg > path  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | transform,visibility  x16  target=div.fly-layer > span.fly  e.g. ["transform=translate(44.9074px, 454.278px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visi
+   WAAPI | clipPath  x23  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 1 kinds:
+   outlineColor: rgb(83, 189, 235) -> rgb(157, 150, 142)  x1
+
+=== tap client tile 3 (Aria) (65 frames) ===
+animations seen:
+   WAAPI | transform  x12  target=span.lock > i  e.g. ["transform=translateY(18px)","transform=translateY(0px)"]
+   WAAPI | strokeDashoffset  x7  target=svg > path  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | transform,visibility  x19  target=div.fly-layer > span.fly  e.g. ["transform=translate(168.233px, 454.97px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visib
+   WAAPI | clipPath  x27  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== add rate photo (59 frames) ===
+animations seen:
+   WAAPI | transform,visibility  x22  target=div.fly-layer > span.fly  e.g. ["transform=translate(45px, 541.141px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visibilit
+   WAAPI | clipPath  x23  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 5 kinds:
+   color: rgb(17, 17, 17) -> rgb(233, 238, 240)  x5
+   backgroundColor: rgb(242, 196, 24) -> rgba(0, 0, 0, 0)  x1
+   borderTopColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x5
+   outlineColor: rgb(17, 17, 17) -> rgb(138, 154, 163)  x1
+   outlineColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x4
+
+=== remove rate edit (70 frames) ===
+animations seen:
+   WAAPI | strokeDashoffset  x12  target=svg > path  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | transform  x20  target=div.rows > div.row  e.g. ["transform=translateY(1.9em)","transform=translateY(0px)"]
+   WAAPI | clipPath  x30  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 5 kinds:
+   color: rgb(233, 238, 240) -> rgb(17, 17, 17)  x5
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(242, 196, 24)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x5
+   outlineColor: rgb(138, 154, 163) -> rgb(17, 17, 17)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x4
+
+=== remove rate photo + video (none left) (105 frames) ===
+animations seen:
+   WAAPI | strokeDashoffset  x56  target=svg > path  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | clipPath  x62  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 5 kinds:
+   color: rgb(233, 238, 240) -> rgb(17, 17, 17)  x10
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(242, 196, 24)  x2
+   borderTopColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x10
+   outlineColor: rgb(138, 154, 163) -> rgb(17, 17, 17)  x2
+   outlineColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x8
+
+=== add rate video back + edit (186 frames) ===
+animations seen:
+   WAAPI | strokeDashoffset  x58  target=svg > path.stroke s1  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | visibility  x92  target=svg > text.phrase  e.g. ["visibility=hidden","visibility=hidden"]
+   WAAPI | transform,visibility  x72  target=div.fly-layer > span.fly  e.g. ["transform=translate(-77px, 579.141px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visibility=visible","transform=translate(0px, -2px) skewX(-12deg)","visibili
+   WAAPI | clipPath  x76  target=div.record-zone > div.record-block  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 5 kinds:
+   color: rgb(17, 17, 17) -> rgb(233, 238, 240)  x10
+   backgroundColor: rgb(242, 196, 24) -> rgba(0, 0, 0, 0)  x2
+   borderTopColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x10
+   outlineColor: rgb(17, 17, 17) -> rgb(138, 154, 163)  x2
+   outlineColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x8
+
+=== scroll down full page (wheel 60px steps) (246 frames) ===
+animations seen:
+   TRANSITION:transform | transform  x76  target=div.stub > span.tile-in  e.g. ["transform=rotateX(180deg)","transform=none"]
+   WAAPI | transform  x49  target=div.stage > article.invoice-sheet.leaf  e.g. ["transform=translate(7.2em, 11.3em)","transform=translate(7.2em, 25.1em)","transform=translate(7.2em, 24.9em)"]
+   WAAPI | clipPath  x17  target=dl > div.field  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 2
+   html.cuts > body#top [backgroundColor] [["rgb(11, 18, 22)",45],["rgb(11, 35, 70)",29],["rgb(42, 22, 6)",172]]
+   body > header.topbar [backgroundColor] [["rgb(11, 18, 22)",45],["rgb(11, 35, 70)",29],["rgb(42, 22, 6)",172]]
+elements toggling back and forth between 2 values: 10  e.g. section.ep > span.date-chip[color][["rgb(233, 238, 240)",45],["rgb(20, 24, 27)",29],["rgb(233, 238, 240)",172]] ; section.ep > span.date-chip[backgroundColor][["rgb(31, 44, 51)",45],["rgb(245, 242, 233)",29],["rgb(31, 44, 51)",172]] ; section.ep > span.date-chip[borderTopColor][["rgb(233, 238, 240)",45],["rgb(20, 24, 27)",29],["rgb(233, 238, 240)",172]] ; section.ep > span.date-chip[outlineColor][["rgb(233, 238, 240)",45],["rgb(20, 24, 27)",29],["rgb(233, 238, 240)",172]]
+single cuts (2 values, one change), 11 kinds:
+   color: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgb(245, 242, 233) -> rgb(31, 44, 51)  x1
+   borderTopColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   outlineColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(15, 83, 69)  x1
+   outlineColor: rgb(138, 154, 163) -> rgb(233, 238, 240)  x1
+   stroke: rgb(185, 211, 204) -> rgb(83, 189, 235)  x3
+   color: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(31, 44, 51) -> rgb(245, 242, 233)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   outlineColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+
+=== scroll back up (wheel) (274 frames) ===
+animations seen:
+   WAAPI | clipPath  x13  target=dl > div.field.is-unread  e.g. ["clipPath=inset(0px 0% 0px 0px)","clipPath=inset(0px 100% 0px 0px)"]
+   TRANSITION:transform | transform  x75  target=div.old-file > span.tile-in  e.g. ["transform=none","transform=rotateY(180deg)"]
+   WAAPI | transform  x43  target=div.slot-row > div.old-file.is-heap.is-front  e.g. ["transform=none","transform=translate(-8.4em, 1em) rotate(3deg)"]
+elements with >=3 DISTINCT values of a watched prop: 2
+   html.cuts > body#top [backgroundColor] [["rgb(42, 22, 6)",81],["rgb(11, 35, 70)",27],["rgb(11, 18, 22)",166]]
+   body > header.topbar [backgroundColor] [["rgb(42, 22, 6)",81],["rgb(11, 35, 70)",27],["rgb(11, 18, 22)",166]]
+elements toggling back and forth between 2 values: 10  e.g. section.ep > span.date-chip[color][["rgb(233, 238, 240)",81],["rgb(20, 24, 27)",27],["rgb(233, 238, 240)",166]] ; section.ep > span.date-chip[backgroundColor][["rgb(31, 44, 51)",81],["rgb(245, 242, 233)",27],["rgb(31, 44, 51)",166]] ; section.ep > span.date-chip[borderTopColor][["rgb(233, 238, 240)",81],["rgb(20, 24, 27)",27],["rgb(233, 238, 240)",166]] ; section.ep > span.date-chip[outlineColor][["rgb(233, 238, 240)",81],["rgb(20, 24, 27)",27],["rgb(233, 238, 240)",166]]
+single cuts (2 values, one change), 11 kinds:
+   color: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(31, 44, 51) -> rgb(245, 242, 233)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   outlineColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(15, 83, 69) -> rgba(0, 0, 0, 0)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(138, 154, 163)  x1
+   stroke: rgb(83, 189, 235) -> rgb(185, 211, 204)  x3
+   color: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgb(245, 242, 233) -> rgb(31, 44, 51)  x1
+   borderTopColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   outlineColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+
+=== fast flick to bottom and back (scrollTo jumps) (79 frames) ===
+animations seen:
+   TRANSITION:transform | transform  x215  target=div.stub > span.tile-in  e.g. ["transform=rotateX(180deg)","transform=none"]
+   WAAPI | transform  x124  target=div.stage > article.invoice-sheet.leaf  e.g. ["transform=translate(7.2em, 11.3em)","transform=translate(7.2em, 25.1em)","transform=translate(7.2em, 24.9em)"]
+   WAAPI | clipPath  x36  target=dl > div.field  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 27  e.g. html.cuts > body#top[backgroundColor][["rgb(11, 18, 22)",1],["rgb(42, 22, 6)",31],["rgb(11, 18, 22)",47]] ; body > header.topbar[backgroundColor][["rgb(11, 18, 22)",1],["rgb(42, 22, 6)",31],["rgb(11, 18, 22)",47]] ; section.ep > span.date-chip[color][["rgb(20, 24, 27)",1],["rgb(233, 238, 240)",31],["rgb(20, 24, 27)",47]] ; section.ep > span.date-chip[backgroundColor][["rgb(245, 242, 233)",1],["rgb(31, 44, 51)",31],["rgb(245, 242, 233)",47]]
+single cuts (2 values, one change), 0 kinds:
+
+=== month tap (col 2 then col 6) (88 frames) ===
+animations seen:
+   WAAPI | transform  x12  target=div.month-bars > span.bracket  e.g. ["transform=translateX(500%)","transform=translateX(100%)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== approve (green wrap) then undo (105 frames) ===
+animations seen:
+   WAAPI | clipPath,transform  x14  target=div.review-card > div.wrap-checked  e.g. ["clipPath=inset(0px 100% 0px 0px)","transform=translateX(-1.2em) rotate(-4deg)","clipPath=inset(0px 0% 0px 0px)","transform=translateX(0.2em) rotate(-4deg)","clipPath=inset(0px 0% 0px 0px)","transfor
+   WAAPI | clipPath  x10  target=div.review-card > div.wrap-checked  e.g. ["clipPath=inset(0px 0% 0px 0px)","clipPath=inset(0px 100% 0px 0px)"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 22  e.g. div.stage > button.act.approve[color][["rgb(17, 17, 17)",20],["rgb(233, 238, 240)",43],["rgb(17, 17, 17)",42]] ; div.stage > button.act.approve[backgroundColor][["rgb(30, 158, 74)",20],["rgba(0, 0, 0, 0)",43],["rgb(30, 158, 74)",42]] ; div.stage > button.act.approve[borderTopColor][["rgb(17, 17, 17)",20],["rgb(233, 238, 240)",43],["rgb(17, 17, 17)",42]] ; div.stage > button.act.approve[outlineColor][["rgb(17, 17, 17)",20],["rgb(233, 238, 240)",43],["rgb(17, 17, 17)",42]]
+single cuts (2 values, one change), 0 kinds:
+
+=== token revoke then create (108 frames) ===
+animations seen:
+   WAAPI | strokeDashoffset  x6  target=svg > path  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   WAAPI | clipPath  x19  target=div.stage > div.token-strip  e.g. ["clipPath=inset(0px 0% 0px 0px)","clipPath=inset(0px 100% 0px 0px)"]
+   WAAPI | clipPath,transform  x8  target=div.stage > div.token-strip  e.g. ["clipPath=inset(0px 100% 0px 0px)","transform=translateX(0px) rotate(-2deg)","clipPath=inset(0px 0% 0px 0px)","transform=translateX(0.2em) rotate(-2deg)","clipPath=inset(0px 0% 0px 0px)","transform=r
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 22  e.g. div.stage > button.act.token-btn[color][["rgb(233, 238, 240)",24],["rgb(243, 241, 234)",33],["rgb(233, 238, 240)",51]] ; div.stage > button.act.token-btn[backgroundColor][["rgba(0, 0, 0, 0)",24],["rgb(31, 95, 191)",33],["rgba(0, 0, 0, 0)",51]] ; div.stage > button.act.token-btn[borderTopColor][["rgb(233, 238, 240)",24],["rgb(243, 241, 234)",33],["rgb(233, 238, 240)",51]] ; div.stage > button.act.token-btn[outlineColor][["rgb(233, 238, 240)",24],["rgb(243, 241, 234)",33],["rgb(233, 238, 240)",51]]
+single cuts (2 values, one change), 0 kinds:
+   (skip 0: locator.hover: Element is outside of the viewport)
+
+=== hover + focus + press on all 31 interactive elements (902 frames) ===
+animations seen:
+   WAAPI | transform  x779  target=div.thread-band > div.mover  e.g. ["transform=translateY(140.8em)","transform=translateY(0px)"]
+   WAAPI | transform,visibility  x14160  target=div.catch-layer > i.catch-tr  e.g. ["transform=translate(122.375px, 201.938px) rotate(58.8deg)","visibility=visible","transform=translate(0px, 0px) rotate(58.8deg)","visibility=visible"]
+   WAAPI | visibility  x9197  target=div.hang-layer > div.hang.bubble.out  e.g. ["visibility=visible","visibility=visible"]
+   WAAPI | clipPath  x2151  target=div.meta > span.tn  e.g. ["clipPath=inset(0px 100% 0px 0px)","clipPath=inset(0px 0% 0px 0px)"]
+   WAAPI | strokeDashoffset  x1418  target=svg > path.stroke s1  e.g. ["strokeDashoffset=1","strokeDashoffset=0"]
+   TRANSITION:transform | transform  x102  target=div.stub > span.tile-in  e.g. ["transform=rotateX(180deg)","transform=none"]
+elements with >=3 DISTINCT values of a watched prop: 2
+   html.cuts > body#top [backgroundColor] [["rgb(11, 18, 22)",367],["rgb(11, 35, 70)",165],["rgb(42, 22, 6)",370]]
+   body > header.topbar [backgroundColor] [["rgb(11, 18, 22)",367],["rgb(11, 35, 70)",165],["rgb(42, 22, 6)",370]]
+elements toggling back and forth between 2 values: 10  e.g. section.ep > span.date-chip[color][["rgb(233, 238, 240)",367],["rgb(20, 24, 27)",165],["rgb(233, 238, 240)",370]] ; section.ep > span.date-chip[backgroundColor][["rgb(31, 44, 51)",367],["rgb(245, 242, 233)",165],["rgb(31, 44, 51)",370]] ; section.ep > span.date-chip[borderTopColor][["rgb(233, 238, 240)",367],["rgb(20, 24, 27)",165],["rgb(233, 238, 240)",370]] ; section.ep > span.date-chip[outlineColor][["rgb(233, 238, 240)",367],["rgb(20, 24, 27)",165],["rgb(233, 238, 240)",370]]
+single cuts (2 values, one change), 11 kinds:
+   color: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgb(245, 242, 233) -> rgb(31, 44, 51)  x1
+   borderTopColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   outlineColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(15, 83, 69)  x1
+   outlineColor: rgb(138, 154, 163) -> rgb(233, 238, 240)  x1
+   stroke: rgb(185, 211, 204) -> rgb(83, 189, 235)  x3
+   color: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(31, 44, 51) -> rgb(245, 242, 233)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   outlineColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+page errors: []
+
+################ MODE reduce ################
+
+=== load + S1 autoplay (275 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+external requests: ["https://fonts.googleapis.com/css2","https://fonts.gstatic.com/s/bricolagegrotesque/v9/3y9K6as8bT","https://fonts.gstatic.com/s/instrumentsans/v4/pxiTypc9vsFDm0","https://fonts.gstatic.com/s/kanit/v17/nKKU-Go6G5tXcr4uPhWnVa","https://fonts.gstatic.com/s/notosanssc/v41/k3kXo84MPvpLmixcA"]
+
+=== language toggle zh->en (62 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 6 kinds:
+   color: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   color: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   borderTopColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   outlineColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+
+=== language toggle en->zh (114 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 6 kinds:
+   color: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   borderTopColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   outlineColor: rgb(149, 172, 185) -> rgb(233, 238, 240)  x1
+   color: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(149, 172, 185)  x1
+
+=== replay button (197 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== rail keyboard: Home, ArrowRight x20, End (61 frames) ===
+animations seen:
+   WAAPI | visibility  x80  target=div.hero-stage > article#sheet.invoice-sheet  e.g. ["visibility=hidden","visibility=hidden"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== rail drag (484 frames) ===
+animations seen:
+   WAAPI | visibility  x3608  target=div.record-zone > span.slot-empty  e.g. ["visibility=visible","visibility=visible"]
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== tap client tile 2 (Tanjung) (62 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 1 kinds:
+   outlineColor: rgb(83, 189, 235) -> rgb(157, 150, 142)  x1
+
+=== tap client tile 3 (Aria) (59 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== add rate photo (118 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 5 kinds:
+   color: rgb(17, 17, 17) -> rgb(233, 238, 240)  x5
+   backgroundColor: rgb(242, 196, 24) -> rgba(0, 0, 0, 0)  x1
+   borderTopColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x5
+   outlineColor: rgb(17, 17, 17) -> rgb(138, 154, 163)  x1
+   outlineColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x4
+
+=== remove rate edit (58 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 5 kinds:
+   color: rgb(233, 238, 240) -> rgb(17, 17, 17)  x5
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(242, 196, 24)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x5
+   outlineColor: rgb(138, 154, 163) -> rgb(17, 17, 17)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x4
+
+=== remove rate photo + video (none left) (113 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 8 kinds:
+   color: rgb(233, 238, 240) -> rgb(17, 17, 17)  x10
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(242, 196, 24)  x2
+   borderTopColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x10
+   outlineColor: rgb(138, 154, 163) -> rgb(17, 17, 17)  x2
+   outlineColor: rgb(233, 238, 240) -> rgb(17, 17, 17)  x8
+   backgroundColor: rgb(15, 83, 69) -> rgba(0, 0, 0, 0)  x1
+   outlineColor: rgb(233, 238, 240) -> rgb(138, 154, 163)  x1
+   stroke: rgb(83, 189, 235) -> rgb(185, 211, 204)  x3
+
+=== add rate video back + edit (226 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 8 kinds:
+   color: rgb(17, 17, 17) -> rgb(233, 238, 240)  x10
+   backgroundColor: rgb(242, 196, 24) -> rgba(0, 0, 0, 0)  x2
+   borderTopColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x10
+   outlineColor: rgb(17, 17, 17) -> rgb(138, 154, 163)  x2
+   outlineColor: rgb(17, 17, 17) -> rgb(233, 238, 240)  x8
+   backgroundColor: rgba(0, 0, 0, 0) -> rgb(15, 83, 69)  x1
+   outlineColor: rgb(138, 154, 163) -> rgb(233, 238, 240)  x1
+   stroke: rgb(185, 211, 204) -> rgb(83, 189, 235)  x3
+
+=== scroll down full page (wheel 60px steps) (234 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 2
+   html.cuts > body#top [backgroundColor] [["rgb(11, 18, 22)",44],["rgb(11, 35, 70)",24],["rgb(42, 22, 6)",166]]
+   body > header.topbar [backgroundColor] [["rgb(11, 18, 22)",44],["rgb(11, 35, 70)",24],["rgb(42, 22, 6)",166]]
+elements toggling back and forth between 2 values: 10  e.g. section.ep > span.date-chip[color][["rgb(233, 238, 240)",44],["rgb(20, 24, 27)",24],["rgb(233, 238, 240)",166]] ; section.ep > span.date-chip[backgroundColor][["rgb(31, 44, 51)",44],["rgb(245, 242, 233)",24],["rgb(31, 44, 51)",166]] ; section.ep > span.date-chip[borderTopColor][["rgb(233, 238, 240)",44],["rgb(20, 24, 27)",24],["rgb(233, 238, 240)",166]] ; section.ep > span.date-chip[outlineColor][["rgb(233, 238, 240)",44],["rgb(20, 24, 27)",24],["rgb(233, 238, 240)",166]]
+single cuts (2 values, one change), 8 kinds:
+   color: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgb(245, 242, 233) -> rgb(31, 44, 51)  x1
+   borderTopColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   outlineColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   color: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(31, 44, 51) -> rgb(245, 242, 233)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   outlineColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+
+=== scroll back up (wheel) (524 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 2
+   html.cuts > body#top [backgroundColor] [["rgb(42, 22, 6)",164],["rgb(11, 35, 70)",52],["rgb(11, 18, 22)",308]]
+   body > header.topbar [backgroundColor] [["rgb(42, 22, 6)",164],["rgb(11, 35, 70)",52],["rgb(11, 18, 22)",308]]
+elements toggling back and forth between 2 values: 10  e.g. section.ep > span.date-chip[color][["rgb(233, 238, 240)",164],["rgb(20, 24, 27)",52],["rgb(233, 238, 240)",308]] ; section.ep > span.date-chip[backgroundColor][["rgb(31, 44, 51)",164],["rgb(245, 242, 233)",52],["rgb(31, 44, 51)",308]] ; section.ep > span.date-chip[borderTopColor][["rgb(233, 238, 240)",164],["rgb(20, 24, 27)",52],["rgb(233, 238, 240)",308]] ; section.ep > span.date-chip[outlineColor][["rgb(233, 238, 240)",164],["rgb(20, 24, 27)",52],["rgb(233, 238, 240)",308]]
+single cuts (2 values, one change), 8 kinds:
+   color: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(31, 44, 51) -> rgb(245, 242, 233)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   outlineColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   color: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgb(245, 242, 233) -> rgb(31, 44, 51)  x1
+   borderTopColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   outlineColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+
+=== fast flick to bottom and back (scrollTo jumps) (82 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 22  e.g. html.cuts > body#top[backgroundColor][["rgb(11, 18, 22)",2],["rgb(42, 22, 6)",32],["rgb(11, 18, 22)",48]] ; body > header.topbar[backgroundColor][["rgb(11, 18, 22)",2],["rgb(42, 22, 6)",32],["rgb(11, 18, 22)",48]] ; section.ep > span.date-chip[color][["rgb(20, 24, 27)",2],["rgb(233, 238, 240)",32],["rgb(20, 24, 27)",48]] ; section.ep > span.date-chip[backgroundColor][["rgb(245, 242, 233)",2],["rgb(31, 44, 51)",32],["rgb(245, 242, 233)",48]]
+single cuts (2 values, one change), 0 kinds:
+
+=== month tap (col 2 then col 6) (88 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 0
+single cuts (2 values, one change), 0 kinds:
+
+=== approve (green wrap) then undo (110 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 22  e.g. div.stage > button.act.approve[color][["rgb(17, 17, 17)",8],["rgb(233, 238, 240)",47],["rgb(17, 17, 17)",55]] ; div.stage > button.act.approve[backgroundColor][["rgb(30, 158, 74)",8],["rgba(0, 0, 0, 0)",47],["rgb(30, 158, 74)",55]] ; div.stage > button.act.approve[borderTopColor][["rgb(17, 17, 17)",8],["rgb(233, 238, 240)",47],["rgb(17, 17, 17)",55]] ; div.stage > button.act.approve[outlineColor][["rgb(17, 17, 17)",8],["rgb(233, 238, 240)",47],["rgb(17, 17, 17)",55]]
+single cuts (2 values, one change), 0 kinds:
+
+=== token revoke then create (107 frames) ===
+animations seen:
+elements with >=3 DISTINCT values of a watched prop: 0
+elements toggling back and forth between 2 values: 22  e.g. div.stage > button.act.token-btn[color][["rgb(233, 238, 240)",5],["rgb(243, 241, 234)",47],["rgb(233, 238, 240)",55]] ; div.stage > button.act.token-btn[backgroundColor][["rgba(0, 0, 0, 0)",5],["rgb(31, 95, 191)",47],["rgba(0, 0, 0, 0)",55]] ; div.stage > button.act.token-btn[borderTopColor][["rgb(233, 238, 240)",5],["rgb(243, 241, 234)",47],["rgb(233, 238, 240)",55]] ; div.stage > button.act.token-btn[outlineColor][["rgb(233, 238, 240)",5],["rgb(243, 241, 234)",47],["rgb(233, 238, 240)",55]]
+single cuts (2 values, one change), 0 kinds:
+   (skip 0: locator.hover: Element is outside of the viewport)
+
+=== hover + focus + press on all 31 interactive elements (779 frames) ===
+animations seen:
+   WAAPI | visibility  x8632  target=div.rows > div.row  e.g. ["visibility=hidden","visibility=hidden"]
+elements with >=3 DISTINCT values of a watched prop: 2
+   html.cuts > body#top [backgroundColor] [["rgb(11, 18, 22)",309],["rgb(11, 35, 70)",152],["rgb(42, 22, 6)",318]]
+   body > header.topbar [backgroundColor] [["rgb(11, 18, 22)",309],["rgb(11, 35, 70)",152],["rgb(42, 22, 6)",318]]
+elements toggling back and forth between 2 values: 10  e.g. section.ep > span.date-chip[color][["rgb(233, 238, 240)",309],["rgb(20, 24, 27)",152],["rgb(233, 238, 240)",318]] ; section.ep > span.date-chip[backgroundColor][["rgb(31, 44, 51)",309],["rgb(245, 242, 233)",152],["rgb(31, 44, 51)",318]] ; section.ep > span.date-chip[borderTopColor][["rgb(233, 238, 240)",309],["rgb(20, 24, 27)",152],["rgb(233, 238, 240)",318]] ; section.ep > span.date-chip[outlineColor][["rgb(233, 238, 240)",309],["rgb(20, 24, 27)",152],["rgb(233, 238, 240)",318]]
+single cuts (2 values, one change), 8 kinds:
+   color: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   backgroundColor: rgb(245, 242, 233) -> rgb(31, 44, 51)  x1
+   borderTopColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   outlineColor: rgb(20, 24, 27) -> rgb(233, 238, 240)  x3
+   color: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   backgroundColor: rgb(31, 44, 51) -> rgb(245, 242, 233)  x1
+   borderTopColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+   outlineColor: rgb(233, 238, 240) -> rgb(20, 24, 27)  x3
+page errors: []
