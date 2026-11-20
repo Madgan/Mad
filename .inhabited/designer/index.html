@@ -40,9 +40,9 @@ html{background:#0B1216;-webkit-text-size-adjust:100%}
 /* the ground is the scene. Each episode has its own night; with script the whole ground changes on one frame (S7). */
 body{--night:#0B1216;margin:0;background:var(--night);color:var(--text);font:400 15px/1.55 var(--f-page);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Cpath d='M6 9l3 3 6-6M27 30h9M31.5 25.5v9M34 8a4 4 0 1 1-6 3M9 34c2-4 6-4 8 0s6 4 8 0' fill='none' stroke='%23fff' stroke-opacity='.045' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E")}
-body[data-ep="month"]{--night:#0A1B4A}
+body[data-ep="month"]{--night:#0B2346}
 body[data-ep="dayone"]{--night:#2A1606}
-.ep[data-ep="month"]{background-color:#0A1B4A}
+.ep[data-ep="month"]{background-color:#0B2346}
 .ep[data-ep="dayone"],footer{background-color:#2A1606}
 .cuts .ep,.cuts footer{background-color:transparent}
 a{color:inherit}
@@ -62,7 +62,7 @@ html[data-lang="zh"] .en,html[data-lang="en"] .zh{display:none}
 .stack>.zh,.stack>.en{grid-area:1/1;display:block}
 html[data-lang="zh"] .stack>.en,html[data-lang="en"] .stack>.zh{display:block;visibility:hidden}
 .zh,.lt-zh{font-weight:500}
-h1 .zh{font-weight:700}
+h1 .zh,h2 .zh{font-weight:700}
 .hero-sub .zh,.sample-note .zh,.pk-hint .zh,.pk-label>span .zh,.hint .zh,.notice .zh,.plan ul.zh,.price>span .zh,footer .zh,.smp .zh{font-weight:400}
 
 /* ---------- tape label (camera-tape entry, element 2) ---------- */
@@ -160,6 +160,7 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .bubble.out .smear .hd{background:var(--bubble-out)}
 .smear .tr{position:absolute;top:0;background:var(--tick);opacity:.6;transform-origin:50% 0;clip-path:polygon(0 0,100% 0,100% 100%,0 calc(100% - 2.4em))}
 .smear .tr[data-c="g"]{background:var(--streak);opacity:.42}
+.smear .tr[data-c="s"]{background:var(--soft);opacity:.42}
 .thread-band[data-ph="1"] .smear .tr:nth-of-type(odd){transform:scaleY(.62)}
 .thread-band[data-ph="1"] .smear .tr:nth-of-type(even){transform:scaleY(1.24)}
 .set{position:absolute;left:0;right:0;height:37em;display:flex;flex-direction:column;justify-content:flex-end;gap:.6em}
@@ -332,14 +333,14 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .sc-head{display:flex;align-items:center;gap:.7em;height:2.6em}
 .sis-chip{padding:.15em .5em;background:var(--sheet);color:var(--ink);font:800 1.2em/1.3 var(--f-page);letter-spacing:.03em}
 .sc-head .pg{font-size:1.25em;font-weight:600}
-.sc-head .tape-label{margin-left:auto;font-size:1.1em}
+.sc-head .smp{margin-left:auto;font:400 12px/1.3 var(--f-page);color:var(--meta)}
 .sc-client{display:flex;align-items:center;gap:.7em;height:3em}
 .sc-client .tape-label{font-size:1.1em}
 .sc-client b{font-size:1.3em;font-weight:600;white-space:nowrap}
 .sc-client .kd2{margin-left:auto;font-size:1.15em;color:var(--meta);white-space:nowrap}
 /* the counterfoil: a strip across the top of the leaf. It stays. Filed is its other face. */
 .stub-row{position:absolute;left:0;right:0;top:6.3em;height:5em}
-.stub-slot{position:absolute;inset:0;visibility:hidden}
+.stub-slot{position:absolute;inset:0;visibility:hidden;align-items:center;padding-bottom:0}
 .stub{position:absolute;inset:0;perspective:60em}
 .stub .tile-in{position:absolute;inset:0;display:block;transform-style:preserve-3d;transition:transform 200ms linear}
 .stub.is-front>.tile-in{transform:rotateX(180deg)}
@@ -448,7 +449,7 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
   clip-path:polygon(0 8%,1% 0,99% 0,100% 10%,99.3% 34%,100% 55%,99.4% 78%,100% 100%,1% 100%,0 86%,.7% 62%,0 40%,.8% 22%)}
 .wrap-checked>span{font-size:1.4em}
 .is-wrapped .wrap-checked{visibility:visible}
-.wrap-slot{position:absolute;left:1.2em;right:6.8em;top:16.9em;height:2.6em;display:flex;align-items:center;justify-content:center;outline:1px dashed var(--label);outline-offset:-1px;color:var(--label);font:600 1em/1 var(--f-ui);transform:rotate(-4deg)}
+.wrap-slot{position:absolute;left:1.2em;right:8.8em;top:16.9em;height:2.6em;display:flex;align-items:center;justify-content:center;outline:1px dashed var(--label);outline-offset:-1px;color:var(--label);font:600 1em/1 var(--f-ui);transform:rotate(-4deg)}
 .wrap-slot>span{font-size:1.1em}
 .is-wrapped .wrap-slot{visibility:hidden}
 .review-state{position:absolute;left:0;right:0;top:33em;min-height:4em;display:flex;align-items:center;gap:.9em;font-size:1em}
@@ -471,7 +472,7 @@ body[data-ep="today"] #story .date-chip,body[data-ep="month"] #reports .date-chi
 .sis-plate span{font-size:1.2em;line-height:1.3}
 .sis-plate .scope{margin-top:auto;font-size:1.1em;color:var(--label)}
 .ai-list{position:absolute;right:0;top:0;width:14.8em;height:16.4em;padding:.9em 1em;background:var(--stage);color:var(--text);border-radius:.8em}
-.ai-list li{font-size:1.25em;line-height:1.55}
+.ai-list li{font-size:1.25em;line-height:1.55;font-weight:500}
 .ai-list li.last{line-height:1.25;margin-top:.2em}
 .ai-list li.hd{font-size:1.1em;color:var(--meta);line-height:1.5}
 .token-strip{position:absolute;left:7.6em;top:6.3em;width:11.4em;height:3em;display:flex;align-items:center;justify-content:center;background:var(--t-blue);color:var(--t-white);font:700 1em/1 var(--f-ui);letter-spacing:.05em;transform:rotate(-2deg);z-index:3;
@@ -536,7 +537,7 @@ footer a{color:var(--text);text-underline-offset:3px}
   .hero-stage{margin:0;font-size:13px}
   .stage-caption>span{font-size:14px}
   .hero-claim h1{font-size:clamp(35px,3.9vw,50px);line-height:1.16;font-variation-settings:"opsz" 40}
-  .hero-claim h1 .en{font-size:clamp(24px,2.6vw,33px);line-height:1.33;padding-top:6px;font-variation-settings:"opsz" 33}
+  .hero-claim h1 .en{font-size:clamp(24px,calc(3.4vw - 5.5px),37px);line-height:1.3;padding-top:8px;font-variation-settings:"opsz" 37}
   .hero-sub,.hero-sub .en{font-size:16px;line-height:24px;margin-top:10px;white-space:normal}
   .trial-terms{font-size:13.5px}
   .console{grid-column:1 / -1;grid-row:6;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:44px;row-gap:14px;align-items:start;margin-top:18px}
@@ -545,7 +546,10 @@ footer a{color:var(--text);text-underline-offset:3px}
   .sample-note{grid-column:1 / -1;grid-row:7}
   .tc{display:grid;grid-template-columns:minmax(0,480px) minmax(0,1fr);column-gap:72px;align-items:start}
   .tc>*{grid-column:1}
-  .tc>.notice{grid-column:2;grid-row:1 / span 8;position:sticky;top:84px;width:auto;max-width:27rem;margin:4px 0 0;padding:14px 0 0;border-radius:0;font-size:16px;line-height:1.65;background:repeating-linear-gradient(to right,var(--meta) 0 4px,transparent 4px 8px) top / 100% 1px no-repeat}
+  .tc>h2{position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;grid-column:2;grid-row:1 / span 2;align-self:start;font:800 30px/1.2 var(--f-page);font-variation-settings:"opsz" 30;letter-spacing:-.01em}
+  .tc.nh>h2{grid-row:1}
+  .tc>.notice{grid-column:2;grid-row:3 / span 8;position:sticky;top:84px;width:auto;max-width:27rem;margin:6px 0 0;padding:14px 0 0;border-radius:0;font-size:16px;line-height:1.65;background:repeating-linear-gradient(to right,var(--meta) 0 4px,transparent 4px 8px) top / 100% 1px no-repeat}
+  .tc.nh>.notice{grid-row:2 / span 8}
   .tc>.notice .ck{display:block;margin:0 0 6px;font-size:13px}
   .date-chip{left:calc(50% - min(1120px,100% - 64px) / 2 + 240px)}
   .stage{font-size:calc(456px / 33.4)}
@@ -694,7 +698,7 @@ footer a{color:var(--text);text-underline-offset:3px}
     <div class="cut-rail" data-state="end">
       <button class="replay" type="button"><span class="rp-end"><span class="zh">↺ 重看</span><span class="en">↺ Replay</span></span></button>
       <div class="rail">
-        <span class="marks" aria-hidden="true"><i style="--p:.14"></i><i style="--p:.314"></i><i style="--p:.455"></i><i style="--p:.562"></i><i style="--p:.645"></i><i style="--p:.711"></i><i style="--p:.76"></i><i style="--p:.785"></i><i style="--p:.921"></i><i style="--p:1"></i></span>
+        <span class="marks" aria-hidden="true"><i style="--p:.124"></i><i style="--p:.314"></i><i style="--p:.455"></i><i style="--p:.562"></i><i style="--p:.645"></i><i style="--p:.711"></i><i style="--p:.76"></i><i style="--p:.785"></i><i style="--p:.921"></i><i style="--p:1"></i></span>
         <input type="range" min="0" max="2420" step="1" value="2420" aria-label="逐格看开单过程 Step through the sequence">
         <span class="hint"><span class="zh">无声 · 拖动逐格看</span><span class="en">Silent. Drag to step through.</span></span>
       </div>
@@ -729,13 +733,13 @@ footer a{color:var(--text);text-underline-offset:3px}
 <!-- ================= TODAY: she asks. His client page in SIS: the stub stays, the leaf tears off sideways and drops into his reply. ================= -->
 <section id="story" class="ep" data-ep="today">
   <span class="date-chip"><span class="zh">今天</span><span class="en">Today</span></span>
-  <h2 class="sr"><span class="zh">PDF 和记录</span><span class="en">PDF and record</span></h2>
   <div class="col tc">
+    <h2 class="sr"><span class="zh">PDF 和记录</span><span class="en">PDF and record</span></h2>
     <p class="chat-head"><i class="av" aria-hidden="true">F</i><span class="who">Farah · Lumen Events</span><span class="smp"><span class="zh">示例聊天</span><span class="en">sample chat</span></span></p>
     <p class="msg in"><span class="zh">发票呢？</span><span class="en">Invoice?</span><span class="mt" data-ago="20">23:02</span></p>
     <div class="stage story-stage" id="story-stage">
       <div class="sis-card" data-beat="record">
-        <p class="sc-head"><span class="sis-chip">SIS</span><span class="pg"><span class="zh">客户页</span><span class="en">Client page</span></span><span class="tape-label"><span class="zh">示例 </span>SAMPLE<span class="en"> DATA</span></span></p>
+        <p class="sc-head"><span class="sis-chip">SIS</span><span class="pg"><span class="zh">客户页</span><span class="en">Client page</span></span><span class="smp"><span class="zh">示例资料</span><span class="en">sample data</span></span></p>
         <p class="sc-client"><span class="tape-label code">LUMEN</span><b class="cn">Lumen Events Sdn Bhd</b><span class="kd2"><span class="zh">公司客户</span><span class="en">Company client</span></span></p>
         <div class="stub-row">
           <span class="slot stub-slot"><em><span class="zh">存根 · 选了价目才有</span><span class="en">STUB · NEEDS A RATE</span></em></span>
@@ -782,8 +786,8 @@ footer a{color:var(--text);text-underline-offset:3px}
 <!-- ================= MONTH END: another chat. The ground cuts. ================= -->
 <section id="reports" class="ep" data-ep="month">
   <span class="date-chip"><span class="zh">月底</span><span class="en">Month end</span></span>
-  <h2 class="sr"><span class="zh">月报表</span><span class="en">Monthly report</span></h2>
   <div class="col tc">
+    <h2 class="sr"><span class="zh">月报表</span><span class="en">Monthly report</span></h2>
     <p class="chat-head"><i class="av" aria-hidden="true"><span class="zh">陈</span><span class="en">C</span></i><span class="who"><span class="zh">陈小姐 · 会计</span><span class="en">Ms Chan · accountant</span></span><span class="smp"><span class="zh">示例聊天</span><span class="en">sample chat</span></span></p>
     <p class="msg in"><span class="zh">月底了，这个月的数字呢？</span><span class="en">Month end. This month's numbers?</span><span class="mt" data-clock>23:02</span></p>
     <div class="msg out attach" id="report-msg" data-state="read" data-beat="month">
@@ -826,8 +830,8 @@ footer a{color:var(--text);text-underline-offset:3px}
 <!-- ================= DAY ONE: a fellow shooter asks. The ground cuts again. ================= -->
 <section id="import" class="ep" data-ep="dayone">
   <span class="date-chip"><span class="zh">第一天</span><span class="en">Day one</span></span>
-  <h2 class="sr"><span class="zh">把旧文件读进来</span><span class="en">Reading your old files in</span></h2>
   <div class="col tc">
+    <h2 class="sr"><span class="zh">把旧文件读进来</span><span class="en">Reading your old files in</span></h2>
     <p class="chat-head"><i class="av" aria-hidden="true"><span class="zh">杰</span><span class="en">J</span></i><span class="who"><span class="zh">阿杰 · 同行</span><span class="en">Jay · fellow shooter</span></span><span class="smp"><span class="zh">示例聊天</span><span class="en">sample chat</span></span></p>
     <p class="msg in"><span class="zh">你那堆旧单怎么办，重新打一遍？</span><span class="en">And your pile of old bills? Retype them all?</span><span class="mt" data-clock>23:02</span></p>
     <div class="msg out attach" id="import-msg" data-state="read" data-beat="import">
@@ -864,8 +868,8 @@ footer a{color:var(--text);text-underline-offset:3px}
 </section>
 
 <section id="pro" class="ep" data-ep="dayone">
-  <h2 class="sr"><span class="zh">Pro：接上你自己的 AI</span><span class="en">Pro: connect your own AI</span></h2>
-  <div class="col tc">
+  <div class="col tc nh">
+    <h2 class="sr"><span class="zh">Pro：接上你自己的 AI</span><span class="en">Pro: connect your own AI</span></h2>
     <p class="msg in"><span class="zh">我自己的 AI 能接进去吗？</span><span class="en">Can I plug my own AI in?</span><span class="mt" data-clock>23:02</span></p>
     <div class="msg out attach" id="pro-msg" data-state="read" data-beat="pro">
       <p class="at-head"><span>↪ SIS · Pro · API / MCP</span><span class="tape-label"><span class="zh">示例 </span>SAMPLE<span class="en"> DATA</span></span></p>
@@ -891,8 +895,8 @@ footer a{color:var(--text);text-underline-offset:3px}
 
 <!-- ================= PLANS, COMPOSER ================= -->
 <section id="pricing" class="ep" data-ep="dayone">
-  <h2 class="sr"><span class="zh">价格</span><span class="en">Pricing</span></h2>
-  <div class="col tc">
+  <div class="col tc nh">
+    <h2 class="sr"><span class="zh">价格</span><span class="en">Pricing</span></h2>
     <p class="msg in"><span class="zh">多少钱？</span><span class="en">How much?</span><span class="mt" data-clock>23:02</span></p>
     <div class="msg out attach" data-state="read" data-beat="pricing">
       <p class="at-head"><span><span class="zh">↪ SIS · 两个方案</span><span class="en">↪ SIS · Two plans</span></span></p>
@@ -1060,7 +1064,8 @@ TL.prototype.seek=function(t){
 TL.prototype.play=function(from){
   var me=this,t0=performance.now()-(from||0);me.playing=true;
   me.seek(from||0);
-  function step(now){if(!me.playing)return;var t=now-t0;if(t>=me.dur){me.finish();return}me.seek(t);me.raf=requestAnimationFrame(step)}
+  /* the clock never runs backwards: a frame stamped before play() was called holds the frame already shown */
+  function step(now){if(!me.playing)return;var t=Math.max(now-t0,me.t);if(t>=me.dur){me.finish();return}me.seek(t);me.raf=requestAnimationFrame(step)}
   me.raf=requestAnimationFrame(step);
 };
 TL.prototype.pause=function(){this.playing=false;cancelAnimationFrame(this.raf)};
@@ -1155,8 +1160,8 @@ function syncLater(){
 }
 
 /* ---------- S1 The Catch ---------- */
-var S1=2420,STEPS=22,TRAVEL=140.8,RUN=1840,CUTIN=340,s1=null,s1T0=new Date();
-var BEATS=[340,760,1100,1360,1560,1720,1840,1900,2230,2420];
+var S1=2420,STEPS=22,TRAVEL=140.8,RUN=1840,CUTIN=300,s1=null,s1T0=new Date();
+var BEATS=[300,760,1100,1360,1560,1720,1840,1900,2230,2420];
 /* what streaks past between the opening shot and the still: [y in em, kind, zh, en] */
 var MID=[
   [39.5,'i','单发了吗？','Bill sent yet?'],[44.4,'o','等等','One sec'],[50,'v','0:32'],[58.4,'f','报价 v3 final','Quote v3 final'],[65.6,'o','在找','Looking'],
@@ -1176,17 +1181,19 @@ function lcg(seed){var v=seed;return function(){v=(v*1103515245+12345)&0x7ffffff
 function addSmear(bub,k){
   var r=lcg(k*7919+101),out=bub.classList.contains('out'),tl=5.5+r()*4.5;
   function Y(f){return 'calc(100% - '+(tl*(1-f)).toFixed(2)+'em)'}
-  var pts=['0 0','100% 0','100% '+Y(0)],x=100,i;
-  for(i=0;i<5&&x>14;i++){
-    var gap=2+r()*9,w=5+r()*17,f=.3+r()*.7,x1=x-gap,x0=Math.max(1,x1-w);
-    pts.push(x1.toFixed(1)+'% '+Y(0),x1.toFixed(1)+'% '+Y(f),x0.toFixed(1)+'% '+Y(f*.5),x0.toFixed(1)+'% '+Y(0));
-    x=x0;
+  /* between the tines the trailing edge is torn up into the body, to a different height each time */
+  function V(k){return 'calc((100% - '+tl.toFixed(2)+'em) * '+k.toFixed(2)+')'}
+  var k0=.35+r()*.5,pts=['0 0','100% 0','100% '+V(k0)],x=100,i;
+  for(i=0;i<6&&x>12;i++){
+    var gap=2+r()*10,w=3+r()*12,f=.3+r()*.7,x1=x-gap,x0=Math.max(1,x1-w),k1=.3+r()*.6;
+    pts.push(x1.toFixed(1)+'% '+V(k0),x1.toFixed(1)+'% '+Y(f),x0.toFixed(1)+'% '+Y(f*.5),x0.toFixed(1)+'% '+V(k1));
+    k0=k1;x=x0;
   }
-  pts.push('0 '+Y(0));
-  var h='<i class="hd" style="clip-path:polygon('+pts.join(',')+')"></i>',nb=3+Math.floor(r()*3),W=[.22,.5,.3,.9,.36],OFF=[.7,2.5,4.4,6.1,8.4];
+  pts.push('0 '+V(k0));
+  var h='<i class="hd" style="clip-path:polygon('+pts.join(',')+')"></i>',nb=3+Math.floor(r()*3),W=[.26,.6,.34,1,.44],OFF=[5,24,44,63,82];
   for(i=0;i<nb;i++){
-    var wd=W[(i+k)%5],len=7+r()*10.5,off=OFF[i]+(r()-.5)*.6,col=(i+k)%3===(out?0:1)?(out?'b':'g'):(out?'g':'b');
-    h+='<i class="tr" data-c="'+col+'" style="'+(out?'right':'left')+':'+off.toFixed(2)+'em;width:'+wd+'em;height:'+len.toFixed(1)+'em"></i>';
+    var wd=W[(i+k)%5],len=7+r()*10.5,off=OFF[i]+(r()-.5)*6,col=(i+k)%4===3?'s':(i+k)%3===(out?0:1)?(out?'b':'g'):(out?'g':'b');
+    h+='<i class="tr" data-c="'+col+'" style="'+(out?'right':'left')+':'+off.toFixed(1)+'%;width:'+wd+'em;height:'+len.toFixed(1)+'em"></i>';
   }
   var sm=D.createElement('span');sm.className='smear';sm.setAttribute('aria-hidden','true');sm.style.setProperty('--tl',tl.toFixed(2)+'em');sm.innerHTML=h;
   bub.appendChild(sm);
@@ -1295,7 +1302,7 @@ function s1Play(from){
   if(!s1)s1=buildS1();
   railState('playing');s1.play(from||0);
 }
-function capAt(t){var i=0,zh=['聊天记录里，资料到处都是。','一张空单。','客户，抓到。','价目，抓到。','单号和日期，系统填。','合计','划线。','单开好了。'],en=['Client details, all over your chat.','A blank sheet.','Client, caught.','Rate, caught.','Number and date: filled in.','Total','Crossed.','Invoice ready.'],ts=[0,340,760,1100,1560,1720,1900,2230];for(var k=0;k<ts.length;k++)if(t>=ts[k])i=k;return (H.getAttribute('data-lang')==='en'?en:zh)[i]}
+function capAt(t){var i=0,zh=['聊天记录里，资料到处都是。','一张空单。','客户，抓到。','价目，抓到。','单号和日期，系统填。','合计','划线。','单开好了。'],en=['Client details, all over your chat.','A blank sheet.','Client, caught.','Rate, caught.','Number and date: filled in.','Total','Crossed.','Invoice ready.'],ts=[0,300,760,1100,1560,1720,1900,2230];for(var k=0;k<ts.length;k++)if(t>=ts[k])i=k;return (H.getAttribute('data-lang')==='en'?en:zh)[i]}
 function railShow(t){
   if(D.activeElement!==rail||!railBox.classList.contains('drag'))rail.value=Math.round(t);
   var cs=Math.round(t/10);readout.innerHTML='<span class="ro-t">0:'+p2(Math.floor(cs/100))+'.'+p2(cs%100)+'</span>';
@@ -1452,7 +1459,7 @@ function story(){
 var NOVT=0,MT=[0,.2,.37,.51,.62,.7];
 function month(p){
   mcols.forEach(function(m,i){var k=clamp((p-MT[i])/.14,0,1),bs=$$('.bar',m);bs[0].style.transform=bs[1].style.transform='scaleY('+k.toFixed(4)+')'});
-  /* number 014 reaches the month only if the invoice exists: a draft does not drop */
+  /* number 014 reaches the month only if that sheet is complete: a draft does not drop */
   var on=p>=.92&&state.rates.length>0,ch=latch('nov',on);
   if(ch===0&&flags.novInit)return;
   flags.novInit=true;
