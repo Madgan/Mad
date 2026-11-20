@@ -19,7 +19,7 @@ Last updated: 2026-11-20T12:00:00Z
 | 10 | Typography VS | done | 2026-11-16T03:31:45Z | sampling_parts/typography.md, to be appended verbatim to sampling.md §Typography VS (15 generated, 4 dropped at brief-fitness filter and replaced same-band, 15-pool 3/6/6 with brand-voice words "plain-spoken, exact, after-hours" and object anchor "tin of pineapple, best before 1 May"; SEED_K=1794799831142 K=3; SEED=1794799835954 PICKS=[4, 8, 10]; locked: Bricolage Grotesque primary, Instrument Sans product and invoice text, Kanit accent, Noto Sans SC Chinese companion; no banned-canon repool; all on Google Fonts and npm fontsource, verified) |
 | 11 | Anti-defaults research | done | 2026-11-16T03:14:45Z | claude_anti_defaults.md (13 patterns from 6 web searches) |
 | 12 | Designer persona + per-axis output | done | 2026-11-16T04:11:49Z | claude_designer.md, claude_icp.md, claude_critic.md, borrowings_v1.md (10-axis manifest), framing.md, inspiration.md, sampling.md §Synthesis |
-| 13 | Critic loop | in_progress | — | cycle 1: 6/7/7/5; cycle 2: 8/8/8/6; cycle 3: 9/9/9/9, constraint PASS, hard limits 10/10, slop gate not run (critic_verdict_3.md); rebuild 3 dispatched |
+| 13 | Critic loop | in_progress | — | cycle 1: 6/7/7/5; cycle 2: 8/8/8/6; cycle 3: 9/9/9/9, constraint PASS, hard limits 10/10, slop gate not run (critic_verdict_3.md); rebuild 3 done (borrowings_v4.md, designer/build_notes_v4.md); critic cycle 4 dispatched |
 | 14 | ICP loop | pending | — | — |
 
 ## Resume notes

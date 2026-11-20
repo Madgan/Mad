@@ -1019,3 +1019,43 @@ console and page errors over all 20 runs: []
 1658:  e.preventDefault();
 
 capture run finished 2026-11-20 12:20:03; build modified 2026-11-20 12:02:21
+
+== added after the run, on the same build (modified 12:02:21): the language switch by every route
+-- with script
+   at load:         data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 189, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   click:           data-lang en | lang en | checked true | h1 shows en | .zh shown 0, .en shown 188 | thumb x 38 | title SIS · Pick a client. P | scrollY 0
+   click again:     data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 189, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   Space:           data-lang en | lang en | checked true | h1 shows en | .zh shown 0, .en shown 188 | thumb x 38 | title SIS · Pick a client. P | scrollY 0
+   Enter:           data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 189, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   two fast clicks: data-lang en | lang en | checked true | h1 shows en | .zh shown 0, .en shown 188 | thumb x 38 | title SIS · Pick a client. P | scrollY 0 (the second lands while the thumb travels and is ignored)
+   back to Chinese: data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 189, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   after a reload:  data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 189, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+-- with script, reduced motion
+   at load:         data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 191, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   click:           data-lang en | lang en | checked true | h1 shows en | .zh shown 0, .en shown 190 | thumb x 38 | title SIS · Pick a client. P | scrollY 0
+   click again:     data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 191, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   Space:           data-lang en | lang en | checked true | h1 shows en | .zh shown 0, .en shown 190 | thumb x 38 | title SIS · Pick a client. P | scrollY 0
+   Enter:           data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 191, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+   two fast clicks: data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 191, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0 (the second lands while the thumb travels and is ignored)
+   back to Chinese: data-lang en | lang en | checked true | h1 shows en | .zh shown 0, .en shown 190 | thumb x 38 | title SIS · Pick a client. P | scrollY 0
+   after a reload:  data-lang zh | lang zh-Hans | checked false | h1 shows zh | .zh shown 191, .en shown 0 | thumb x 2 | title SIS · 选客户，选价目，单就开好了 | scrollY 0
+-- scripts off
+   at load: checked false | h1 .zh visible true, h1 .en visible false | visible .cta-l text "免费试用 7 天" | thumb x 2
+   click:   checked true | h1 .zh visible false, h1 .en visible true | visible .cta-l text "Start 7-day free trial" | thumb x 38
+   Space:   checked false | h1 .zh visible true, h1 .en visible false | visible .cta-l text "免费试用 7 天" | thumb x 2
+   Space:   checked true | h1 .zh visible false, h1 .en visible true | visible .cta-l text "Start 7-day free trial" | thumb x 38
+errors []
+
+== added after the run, on the same build: the critic's constraint sampler (full output in tools/rb3_sampler_log.txt)
+sequences sampled: 38; lines holding the word opacity: 0; elements with three or more values of a watched property:
+      6    body > header.topbar [backgroundColor]
+      6    html.cuts > body#top [backgroundColor]
+kinds of animation seen:
+     16 WAAPI | clipPath  x
+      2 WAAPI | clipPath,transform  x
+     11 WAAPI | strokeDashoffset  x
+     14 WAAPI | transform  x
+      9 WAAPI | transform,visibility  x
+      9 WAAPI | visibility  x
+page errors: []
+page errors: []
