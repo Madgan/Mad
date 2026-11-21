@@ -1,0 +1,36 @@
+smear at t=168 (390): {"smears":29,"barCount":117,"barW":[2.6,8.5],"barH":[76,185],"opac":["0.6","0.42"]}
+tine widths (approx, from polygon quads): {"n":487,"min":1.9,"p10":2.4,"median":8.6,"max":40.7}
+   recut client | I | transform -> 80
+   recut client |  | strokeDashoffset -> 90
+   recut client | fly | transform,visibility -> 177
+   recut client | record-block | clipPath -> 120
+   rate remove |  | strokeDashoffset -> 90
+   rate remove | record-block | clipPath -> 120
+   rate add | fly | transform,visibility -> 177
+   rate add | fly amt | transform,visibility -> 177
+   rate add | record-block | clipPath -> 120
+   draft complete |  | strokeDashoffset -> 90
+   draft complete | row | transform -> 100
+   draft complete | record-block | clipPath -> 120
+   draft complete | stroke s2 | strokeDashoffset -> 90,80
+   draft complete | stroke s1 | strokeDashoffset -> 90,80
+   draft complete | machine-line | clipPath -> 120
+   draft complete | phrase | visibility -> 350
+   draft complete | record-block | visibility -> 320
+   draft complete | machine-line | visibility -> 320
+   draft complete | fly | transform,visibility -> 177
+   draft complete | fly amt | transform,visibility -> 177
+   scroll page | invoice-sheet leaf | transform -> 177
+   scroll page | tag014 tape-label | transform -> 137
+   scroll page | old-file | transform -> 157
+   scroll page | field | clipPath -> 100
+   approve/undo | wrap-checked | clipPath,transform -> 217
+   approve/undo | wrap-checked | clipPath -> 160
+   token |  | strokeDashoffset -> 90
+   token | token-strip | clipPath -> 180
+   token | token-strip | clipPath,transform -> 180
+   lang | lt-thumb | transform -> 80
+extra {"red":"rgba(0, 0, 0, 0)","slots":"date:日期DATE:hidden | client:客户CLIENT:hidden | item:项目ITEM:hidden | rate:价目RATE:hidden | none:选一个价目PICK A :hidden | total:合计TOTAL:hidden | pdf:PDF:hidden","readTick":"rgb(83, 189, 235),rgb(83, 189, 235)","reportState":"read"}
+desktop 900 {"sheetLeft":484.5,"leafLeft":388,"lane":"388..868","noteFont":"16px","gapsBetweenNotes":"0,0,0,0,0,0,0,0"}
+desktop 1280 {"sheetLeft":816.5,"leafLeft":720,"lane":"720..1200","noteFont":"18px","gapsBetweenNotes":"0,0,0,0,0,0,0,0"}
+desktop 1440 {"sheetLeft":896.5,"leafLeft":800,"lane":"800..1280","noteFont":"18px","gapsBetweenNotes":"0,0,0,0,0,0,0,0"}

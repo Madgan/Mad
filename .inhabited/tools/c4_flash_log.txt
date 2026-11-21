@@ -1,0 +1,24 @@
+frames 146 {"x":0,"y":173,"width":390,"height":394}
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 26.0% (window from frame 31)
+pixels with 6 or more opposing transitions in one second: worst share of a 341 x 256 box 8.5% (window from frame 44)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.3% (window from frame 51)
+pixels with 8 or more opposing transitions in one second: worst share of a 341 x 256 box 0.2% (window from frame 51)
+stage 390 x 394, frames 146; pixels with any transition 76.7%; most transitions at one pixel over the run 12; in one second 8
+frames 146 {"x":0,"y":173,"width":390,"height":394}
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 30.8% (window from frame 36)
+pixels with 6 or more opposing transitions in one second: worst share of a 341 x 256 box 11.0% (window from frame 46)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.1% (window from frame 44)
+pixels with 8 or more opposing transitions in one second: worst share of a 341 x 256 box 0.0% (window from frame 51)
+stage 390 x 394, frames 146; pixels with any transition 77.0%; most transitions at one pixel over the run 12; in one second 9
+frames 146 {"x":538,"y":77,"width":662,"height":512}
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 30.7% (window from frame 30)
+pixels with 6 or more opposing transitions in one second: worst share of a 341 x 256 box 6.8% (window from frame 44)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.7% (window from frame 51)
+pixels with 8 or more opposing transitions in one second: worst share of a 341 x 256 box 0.3% (window from frame 51)
+stage 662 x 512, frames 146; pixels with any transition 64.7%; most transitions at one pixel over the run 12; in one second 10
+frames 146 {"x":538,"y":77,"width":662,"height":512}
+pixels with 4 or more opposing transitions in one second: worst share of a 341 x 256 box 38.2% (window from frame 31)
+pixels with 6 or more opposing transitions in one second: worst share of a 341 x 256 box 7.8% (window from frame 46)
+pixels with 7 or more opposing transitions in one second: worst share of a 341 x 256 box 0.3% (window from frame 44)
+pixels with 8 or more opposing transitions in one second: worst share of a 341 x 256 box 0.0% (window from frame 1)
+stage 662 x 512, frames 146; pixels with any transition 66.8%; most transitions at one pixel over the run 12; in one second 9

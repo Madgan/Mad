@@ -1,0 +1,234 @@
+width 320 zh:320/4790 en:320/5030 errors 0 
+width 360 zh:360/4953 en:360/5094 errors 0 
+width 390 zh:390/5079 en:390/5217 errors 0 
+width 430 zh:430/5079 en:430/5198 errors 0 
+width 768 zh:768/5040 en:768/5121 errors 0 
+width 900 zh:900/5156 en:900/5203 errors 0 
+width 1024 zh:1024/5156 en:1024/5176 errors 0 
+width 1280 zh:1280/5103 en:1280/5123 errors 0 
+width 1440 zh:1440/5103 en:1440/5123 errors 0 
+
+== zh at 390 x 844 ==
+{
+ "pos": {
+  "claim": "77-167 x16-374",
+  "stage": "173-567 x0-390",
+  "sheet": "181-473 x94-374",
+  "caption": "543-567 x0-390",
+  "cta": "575-631 x16-374",
+  "terms": "608-620 x99-291",
+  "rail": "645-689 x16-374",
+  "toggle": "4-48 x158-230",
+  "topcta": "4-48 x290-374",
+  "pickc": "703-854 x16-374",
+  "pickr": "868-932 x16-374",
+  "note": "942-978 x16-374",
+  "story": "1000-1940 x0-390",
+  "reports": "1940-2599 x0-390",
+  "import": "2599-3365 x0-390",
+  "pro": "3365-3953 x0-390",
+  "pricing": "3953-4693 x0-390",
+  "footer": "4693-5079 x0-390"
+ },
+ "runs": 320,
+ "small": {},
+ "tiny": [],
+ "tg": [],
+ "gut": [],
+ "chineseWeights": {
+  "control w500": 26,
+  "thread+product w500": 106,
+  "h1 w700": 2,
+  "copy w400": 44,
+  "copy w500": 2
+ },
+ "latinWeights": {
+  "Bricolage Grotesque w800": 5,
+  "Bricolage Grotesque w600": 3,
+  "Instrument Sans w400": 46,
+  "Instrument Sans w500": 34,
+  "Instrument Sans w700": 45,
+  "Instrument Sans w600": 27,
+  "Bricolage Grotesque w500": 5,
+  "Kanit w700": 1,
+  "Bricolage Grotesque w400": 21,
+  "Instrument Sans w500i": 4
+ },
+ "examples": {
+  "Bricolage Grotesque w800": "wordmark:SIS",
+  "Bricolage Grotesque w600": "lt-en:EN",
+  "Instrument Sans w400": "dur:0:47",
+  "Instrument Sans w500": "zh:截图的截图：上个月的 Wor",
+  "Instrument Sans w700": "[object SVGAnimatedString]:INV-014 ·",
+  "Instrument Sans w600": "name:Lumen Events S",
+  "Bricolage Grotesque w500": "zh:免费试用 7 天",
+  "Kanit w700": "ro-t:0:02.42",
+  "Bricolage Grotesque w400": "zh:撕下来的这一张就是 PDF。",
+  "Instrument Sans w500i": "zh:↪ SIS · 报表"
+ },
+ "stretch": [
+  "100%"
+ ],
+ "docH": 5079
+}
+
+== en at 390 x 844 ==
+{
+ "pos": {
+  "claim": "77-167 x16-374",
+  "stage": "173-567 x0-390",
+  "sheet": "181-473 x94-374",
+  "caption": "543-567 x0-390",
+  "cta": "575-631 x16-374",
+  "terms": "608-620 x83-307",
+  "rail": "645-689 x16-374",
+  "toggle": "4-48 x152-224",
+  "topcta": "4-48 x290-374",
+  "pickc": "703-854 x16-374",
+  "pickr": "868-932 x16-374",
+  "note": "942-978 x16-374",
+  "story": "1000-1961 x0-390",
+  "reports": "1961-2641 x0-390",
+  "import": "2641-3407 x0-390",
+  "pro": "3407-4016 x0-390",
+  "pricing": "4016-4831 x0-390",
+  "footer": "4831-5217 x0-390"
+ },
+ "runs": 319,
+ "small": {},
+ "tiny": [],
+ "tg": [],
+ "gut": [],
+ "chineseWeights": {
+  "control w500": 1
+ },
+ "latinWeights": {
+  "Bricolage Grotesque w800": 7,
+  "Bricolage Grotesque w600": 13,
+  "Instrument Sans w400i": 3,
+  "Bricolage Grotesque w400": 42,
+  "Instrument Sans w400": 90,
+  "Instrument Sans w700": 66,
+  "Instrument Sans w600": 69,
+  "Instrument Sans w500": 18,
+  "Kanit w700": 1,
+  "Instrument Sans w500i": 4
+ },
+ "examples": {
+  "Bricolage Grotesque w800": "wordmark:SIS",
+  "Bricolage Grotesque w600": "lt-en:EN",
+  "Instrument Sans w400": "dur:0:47",
+  "Instrument Sans w500": "zh:截图的截图：上个月的 Wor",
+  "Instrument Sans w700": "[object SVGAnimatedString]:INV-014 ·",
+  "Instrument Sans w600": "name:Lumen Events S",
+  "Bricolage Grotesque w500": "zh:免费试用 7 天",
+  "Kanit w700": "ro-t:0:02.42",
+  "Bricolage Grotesque w400": "zh:撕下来的这一张就是 PDF。",
+  "Instrument Sans w500i": "zh:↪ SIS · 报表",
+  "Instrument Sans w400i": "en:↪ Forwarded"
+ },
+ "stretch": [
+  "100%"
+ ],
+ "docH": 5217
+}
+state default (read at the foot of the page, every sequence at its end) | fig 2,700.00 | total() 2700 | words 令吉 二千七百 整 | machine NO2026014DATE20112026SEN270000 | chat F / Farah · Lumen Events | card LUMEN Lumen Events Sdn Bhd 公司客户 | stub INV-014 RM 2,700.00 20 NOV 已归档 | past INV-011 RM 1,200.00 更早 已归档 INV-008 RM 3,000.00 更早 已归档 INV-006 RM 2,700.00 更早 已归档 | leaf Lumen Events Sdn Bhd RM 2,700.00 draft=false crossing visible block visible draft-tape hidden | pdf delivered "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,400 net RM 9,250 | rank 1 Lumen Events Sdn Bhd 6 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单
+state client TANJUNG | fig 2,700.00 | total() 2700 | words 令吉 二千七百 整 | machine NO2026014DATE20112026SEN270000 | chat M / Mei Ling · Tanjung Bakery | card TANJUNG Tanjung Bakery 公司客户 | stub INV-014 RM 2,700.00 20 NOV 已归档 | past INV-012 RM 2,100.00 更早 已归档 INV-009 RM 1,200.00 更早 已归档 INV-005 RM 900.00 更早 已归档 | leaf Tanjung Bakery RM 2,700.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,400 net RM 9,250 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Tanjung Bakery 5 张单 3 Aria Lim 4 张单
+state client ARIA | fig 2,700.00 | total() 2700 | words 令吉 二千七百 整 | machine NO2026014DATE20112026SEN270000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 2,700.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 2,700.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,400 net RM 9,250 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 5 张单 3 Tanjung Bakery 4 张单
+state add photo | fig 3,900.00 | total() 3900 | words 令吉 三千九百 整 | machine NO2026014DATE20112026SEN390000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 3,900.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 3,900.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 13,600 net RM 10,450 | rank 1 Aria Lim 5 张单 2 Lumen Events Sdn Bhd 5 张单 3 Tanjung Bakery 4 张单
+state remove edit | fig 3,000.00 | total() 3000 | words 令吉 三千 整 | machine NO2026014DATE20112026SEN300000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 3,000.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 3,000.00 draft=false crossing visible block visible draft-tape hidden | pdf read "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 12,700 net RM 9,550 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 5 张单 3 Tanjung Bakery 4 张单
+state none (draft) | fig 0.00 | total() 0 | words 令吉 零 整 | machine  | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub (hidden) slot: 存根 · 选了价目才有 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 0.00 draft=true crossing hidden block hidden draft-tape visible | pdf empty "PDF · 选了价目才有" | leafT translate(0em, 11.3em) | 014tag absent | nov RM 9,700 net RM 6,550 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单
+state draft after going up and down the page again | fig 0.00 | total() 0 | words 令吉 零 整 | machine  | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub (hidden) slot: 存根 · 选了价目才有 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 0.00 draft=true crossing hidden block hidden draft-tape visible | pdf empty "PDF · 选了价目才有" | leafT translate(0em, 11.3em) | 014tag absent | nov RM 9,700 net RM 6,550 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 4 张单 3 Tanjung Bakery 4 张单
+state add edit | fig 900.00 | total() 900 | words 令吉 九百 整 | machine NO2026014DATE20112026SEN090000 | chat A / Aria Lim | card ARIA Aria Lim 个人客户 | stub INV-014 RM 900.00 20 NOV 已归档 | past INV-013 RM 2,700.00 更早 已归档 INV-010 RM 1,800.00 更早 已归档 INV-007 RM 3,000.00 更早 已归档 | leaf Aria Lim RM 900.00 draft=false crossing visible block visible draft-tape hidden | pdf sent "PDFPDF · 选了价目才有NEEDS A RATE" | leafT translate(7.2em, 24.9em) | 014tag on | nov RM 10,600 net RM 7,450 | rank 1 Lumen Events Sdn Bhd 5 张单 2 Aria Lim 5 张单 3 Tanjung Bakery 4 张单
+errors []
+
+language switch at 390 x 844: worst movement of the point under the reading line 0.5 px (scroll 4000); worst movement of that block top edge 73.8 px (scroll 4100); worst scrollY not restored after zh > en > zh 0 px
+0: scrollY zh 0 > en 0 > zh 0 | block row: point under the reading line moved 0.0 px, its top edge 0.0 px
+100: scrollY zh 100 > en 100 > zh 100 | block when: point under the reading line moved 0.0 px, its top edge 0.0 px
+200: scrollY zh 200 > en 200 > zh 200 | block set set-end: point under the reading line moved 0.0 px, its top edge 0.0 px
+300: scrollY zh 300 > en 300 > zh 300 | reading line is on a gap
+400: scrollY zh 400 > en 400 > zh 400 | block tape-label: point under the reading line moved 0.0 px, its top edge 0.0 px
+500: scrollY zh 500 > en 500 > zh 500 | block pk-hint: point under the reading line moved 0.0 px, its top edge 0.0 px
+600: scrollY zh 600 > en 600 > zh 600 | reading line is on a gap
+700: scrollY zh 700 > en 700 > zh 700 | block chat-head: point under the reading line moved 0.0 px, its top edge 0.0 px
+800: scrollY zh 800 > en 800 > zh 800 | block sc-head: point under the reading line moved 0.0 px, its top edge 0.0 px
+900: scrollY zh 900 > en 900 > zh 900 | block sface front: point under the reading line moved 0.0 px, its top edge 0.0 px
+1000: scrollY zh 1000 > en 1000 > zh 1000 | block past-row: point under the reading line moved 0.0 px, its top edge 0.0 px
+1100: scrollY zh 1100 > en 1100 > zh 1100 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1200: scrollY zh 1200 > en 1200 > zh 1200 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1300: scrollY zh 1300 > en 1300 > zh 1300 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1400: scrollY zh 1400 > en 1400 > zh 1400 | block stage story-stage: point under the reading line moved 0.0 px, its top edge 0.0 px
+1500: scrollY zh 1500 > en 1507 > zh 1500 | block nt: point under the reading line moved 0.0 px, its top edge 7.0 px
+1600: scrollY zh 1600 > en 1621 > zh 1600 | block date-chip: point under the reading line moved 0.2 px, its top edge 0.2 px
+1700: scrollY zh 1700 > en 1721 > zh 1700 | block msg in: point under the reading line moved 0.2 px, its top edge 0.2 px
+1800: scrollY zh 1800 > en 1821 > zh 1800 | block rp-head: point under the reading line moved 0.2 px, its top edge 0.2 px
+1900: scrollY zh 1900 > en 1921 > zh 1900 | block bar sales: point under the reading line moved 0.2 px, its top edge 0.2 px
+2000: scrollY zh 2000 > en 2021 > zh 2000 | block SPAN: point under the reading line moved 0.2 px, its top edge 0.2 px
+2100: scrollY zh 2100 > en 2121 > zh 2100 | block SPAN: point under the reading line moved 0.2 px, its top edge 0.2 px
+2200: scrollY zh 2200 > en 2221 > zh 2200 | block nt: point under the reading line moved 0.2 px, its top edge 0.2 px
+2300: scrollY zh 2300 > en 2342 > zh 2300 | block chat-head: point under the reading line moved 0.4 px, its top edge 0.4 px
+2400: scrollY zh 2400 > en 2442 > zh 2400 | block msg out attach: point under the reading line moved 0.4 px, its top edge 0.4 px
+2500: scrollY zh 2500 > en 2542 > zh 2500 | block ok: point under the reading line moved 0.4 px, its top edge 0.4 px
+2600: scrollY zh 2600 > en 2642 > zh 2600 | block DD: point under the reading line moved 0.4 px, its top edge 0.4 px
+2700: scrollY zh 2700 > en 2742 > zh 2700 | block DD: point under the reading line moved 0.4 px, its top edge 0.4 px
+2800: scrollY zh 2800 > en 2842 > zh 2800 | block stage import-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+2900: scrollY zh 2900 > en 2942 > zh 2900 | block file-bar: point under the reading line moved 0.4 px, its top edge 0.4 px
+3000: scrollY zh 3000 > en 3062 > zh 3000 | block notice: point under the reading line moved 0.0 px, its top edge 20.4 px
+3100: scrollY zh 3100 > en 3162 > zh 3100 | block msg in: point under the reading line moved 0.4 px, its top edge 0.4 px
+3200: scrollY zh 3200 > en 3262 > zh 3200 | block stage pro-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+3300: scrollY zh 3300 > en 3362 > zh 3300 | block stage pro-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+3400: scrollY zh 3400 > en 3462 > zh 3400 | block stage pro-stage: point under the reading line moved 0.4 px, its top edge 0.4 px
+3500: scrollY zh 3500 > en 3562 > zh 3500 | reading line is on a gap
+3600: scrollY zh 3600 > en 3683 > zh 3600 | reading line is on a gap
+3700: scrollY zh 3700 > en 3783 > zh 3700 | block msg in: point under the reading line moved 0.2 px, its top edge 0.2 px
+3800: scrollY zh 3800 > en 3895 > zh 3800 | block plans: point under the reading line moved 0.2 px, its top edge 11.8 px
+3900: scrollY zh 3900 > en 4016 > zh 3900 | block plans: point under the reading line moved 0.2 px, its top edge 32.8 px
+4000: scrollY zh 4000 > en 4136 > zh 4000 | block plans: point under the reading line moved 0.5 px, its top edge 52.8 px
+4100: scrollY zh 4100 > en 4257 > zh 4100 | block plans: point under the reading line moved 0.1 px, its top edge 73.8 px
+4200: scrollY zh 4200 > en 4359 > zh 4200 | block notice: point under the reading line moved 0.4 px, its top edge 0.4 px
+
+language switch at 1280 x 800: worst movement of the point under the reading line 1.0 px (scroll 4000); worst movement of that block top edge 1.0 px (scroll 4000); worst scrollY not restored after zh > en > zh 0 px
+0: scrollY zh 0 > en 0 > zh 0 | block P: point under the reading line moved 0.0 px, its top edge 0.0 px
+100: scrollY zh 100 > en 100 > zh 100 | block ph: point under the reading line moved 0.0 px, its top edge 0.0 px
+200: scrollY zh 200 > en 200 > zh 200 | block set set-end: point under the reading line moved 0.0 px, its top edge 0.0 px
+300: scrollY zh 300 > en 300 > zh 300 | block pk-label: point under the reading line moved 0.0 px, its top edge 0.0 px
+400: scrollY zh 400 > en 400 > zh 400 | block tile: point under the reading line moved 0.0 px, its top edge 0.0 px
+500: scrollY zh 500 > en 500 > zh 500 | reading line is on a gap
+600: scrollY zh 600 > en 600 > zh 600 | reading line is on a gap
+700: scrollY zh 700 > en 700 > zh 700 | block notice: point under the reading line moved 0.0 px, its top edge 0.0 px
+800: scrollY zh 800 > en 800 > zh 800 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+900: scrollY zh 900 > en 900 > zh 900 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1000: scrollY zh 1000 > en 1000 > zh 1000 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1100: scrollY zh 1100 > en 1100 > zh 1100 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1200: scrollY zh 1200 > en 1200 > zh 1200 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1300: scrollY zh 1300 > en 1300 > zh 1300 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1400: scrollY zh 1400 > en 1400 > zh 1400 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1500: scrollY zh 1500 > en 1500 > zh 1500 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+1600: scrollY zh 1600 > en 1600 > zh 1600 | reading line is on a gap
+1700: scrollY zh 1700 > en 1700 > zh 1700 | reading line is on a gap
+1800: scrollY zh 1800 > en 1800 > zh 1800 | block notice: point under the reading line moved 0.0 px, its top edge 0.0 px
+1900: scrollY zh 1900 > en 1900 > zh 1900 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2000: scrollY zh 2000 > en 2000 > zh 2000 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2100: scrollY zh 2100 > en 2100 > zh 2100 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2200: scrollY zh 2200 > en 2200 > zh 2200 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2300: scrollY zh 2300 > en 2300 > zh 2300 | reading line is on a gap
+2400: scrollY zh 2400 > en 2400 > zh 2400 | reading line is on a gap
+2500: scrollY zh 2500 > en 2500 > zh 2500 | block notice: point under the reading line moved 0.0 px, its top edge 0.0 px
+2600: scrollY zh 2600 > en 2600 > zh 2600 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2700: scrollY zh 2700 > en 2700 > zh 2700 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2800: scrollY zh 2800 > en 2800 > zh 2800 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+2900: scrollY zh 2900 > en 2900 > zh 2900 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3000: scrollY zh 3000 > en 3000 > zh 3000 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3100: scrollY zh 3100 > en 3100 > zh 3100 | reading line is on a gap
+3200: scrollY zh 3200 > en 3200 > zh 3200 | reading line is on a gap
+3300: scrollY zh 3300 > en 3300 > zh 3300 | block notice: point under the reading line moved 0.1 px, its top edge 0.0 px
+3400: scrollY zh 3400 > en 3400 > zh 3400 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3500: scrollY zh 3500 > en 3500 > zh 3500 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3600: scrollY zh 3600 > en 3600 > zh 3600 | block nt: point under the reading line moved 0.0 px, its top edge 0.0 px
+3700: scrollY zh 3700 > en 3700 > zh 3700 | block nt: point under the reading line moved 0.2 px, its top edge 0.0 px
+3800: scrollY zh 3800 > en 3800 > zh 3800 | reading line is on a gap
+3900: scrollY zh 3900 > en 3900 > zh 3900 | reading line is on a gap
+4000: scrollY zh 4000 > en 4001 > zh 4000 | block nt: point under the reading line moved 1.0 px, its top edge 1.0 px
+4100: scrollY zh 4100 > en 4107 > zh 4100 | reading line is on a gap
+4200: scrollY zh 4200 > en 4212 > zh 4200 | reading line is on a gap
+4300: scrollY zh 4300 > en 4317 > zh 4300 | reading line is on a gap

@@ -1,0 +1,60 @@
+t390zh300 390x844 zh speed 300 px/s; start scroll 367
+  [down]
+    t 2231 (landing+0) scrollY 979 state sent | word "已发出" | ticks colour rgb(185, 211, 204) | file bar top/bottom 775 815 ON SCREEN
+    t 2497 (landing+266) scrollY 1057 state delivered | word "已送达" | ticks colour rgb(185, 211, 204) | file bar top/bottom 697 737 ON SCREEN
+    t 2767 (landing+536) scrollY 1147 state read | word "已读 01:06" | ticks colour rgb(185, 211, 204) | file bar top/bottom 607 647 ON SCREEN
+  [back up]
+    t 6245  scrollY 1771 state read | word "已读 01:06" | ticks colour rgb(185, 211, 204) | file bar top/bottom -17 23 OFF
+    t 9481  scrollY 913 state empty | word "" | ticks colour rgb(185, 211, 204) | file bar top/bottom 841 881 OFF
+  [down again]
+    t 13997 (landing+0) scrollY 979 state sent | word "已发出" | ticks colour rgb(185, 211, 204) | file bar top/bottom 775 815 ON SCREEN
+    t 14263 (landing+266) scrollY 1063 state delivered | word "已送达" | ticks colour rgb(185, 211, 204) | file bar top/bottom 691 731 ON SCREEN
+    t 14530 (landing+533) scrollY 1153 state read | word "已读 01:06" | ticks colour rgb(185, 211, 204) | file bar top/bottom 601 641 ON SCREEN
+t390zh1500 390x844 zh speed 1500 px/s; start scroll 367
+  [down]
+    t 688 (landing+0) scrollY 1142 state sent | word "已发出" | ticks colour rgb(185, 211, 204) | file bar top/bottom 612 652 ON SCREEN
+    t 954 (landing+266) scrollY 1467 state delivered | word "已送达" | ticks colour rgb(185, 211, 204) | file bar top/bottom 287 327 ON SCREEN
+    t 1225 (landing+537) scrollY 1667 state read | word "已读 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 87 127 ON SCREEN
+  [back up]
+    t 2253  scrollY 1767 state read | word "已读 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom -13 27 OFF
+    t 3087  scrollY 892 state empty | word "" | ticks colour rgb(185, 211, 204) | file bar top/bottom 862 902 OFF
+  [down again]
+    t 4672 (landing+0) scrollY 1167 state sent | word "已发出" | ticks colour rgb(185, 211, 204) | file bar top/bottom 587 627 ON SCREEN
+    t 4937 (landing+265) scrollY 1467 state delivered | word "已送达" | ticks colour rgb(185, 211, 204) | file bar top/bottom 287 327 ON SCREEN
+    t 5205 (landing+533) scrollY 1667 state read | word "已读 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 87 127 ON SCREEN
+t390en1500 390x844 en speed 1500 px/s; start scroll 367
+  [down]
+    t 680 (landing+0) scrollY 1142 state sent | word "Sent" | ticks colour rgb(185, 211, 204) | file bar top/bottom 612 652 ON SCREEN
+    t 946 (landing+266) scrollY 1467 state delivered | word "Delivered" | ticks colour rgb(185, 211, 204) | file bar top/bottom 287 327 ON SCREEN
+    t 1214 (landing+534) scrollY 1667 state read | word "Read 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 87 127 ON SCREEN
+  [back up]
+    t 2228  scrollY 1767 state read | word "Read 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom -13 27 OFF
+    t 3062  scrollY 892 state empty | word "" | ticks colour rgb(185, 211, 204) | file bar top/bottom 862 902 OFF
+  [down again]
+    t 4646 (landing+0) scrollY 1167 state sent | word "Sent" | ticks colour rgb(185, 211, 204) | file bar top/bottom 587 627 ON SCREEN
+    t 4913 (landing+267) scrollY 1492 state delivered | word "Delivered" | ticks colour rgb(185, 211, 204) | file bar top/bottom 262 302 ON SCREEN
+    t 5179 (landing+533) scrollY 1692 state read | word "Read 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 62 102 ON SCREEN
+t1280en800 1280x800 en speed 800 px/s; start scroll 217
+  [down]
+    t 1380 (landing+0) scrollY 1127 state sent | word "Sent" | ticks colour rgb(185, 211, 204) | file bar top/bottom 680 720 ON SCREEN
+    t 1646 (landing+266) scrollY 1296 state delivered | word "Delivered" | ticks colour rgb(185, 211, 204) | file bar top/bottom 511 551 ON SCREEN
+    t 1914 (landing+534) scrollY 1465 state read | word "Read 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 342 382 ON SCREEN
+  [back up]
+    t 3195  scrollY 1621 state read | word "Read 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 186 226 ON SCREEN
+    t 4247  scrollY 984 state empty | word "" | ticks colour rgb(185, 211, 204) | file bar top/bottom 823 863 OFF
+  [down again]
+    t 7113 (landing+0) scrollY 1127 state sent | word "Sent" | ticks colour rgb(185, 211, 204) | file bar top/bottom 680 720 ON SCREEN
+    t 7379 (landing+266) scrollY 1309 state delivered | word "Delivered" | ticks colour rgb(185, 211, 204) | file bar top/bottom 498 538 ON SCREEN
+    t 7645 (landing+532) scrollY 1478 state read | word "Read 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 329 369 ON SCREEN
+t1280zh2500 1280x800 zh speed 2500 px/s; start scroll 217
+  [down]
+    t 629 (landing+0) scrollY 1393 state sent | word "已发出" | ticks colour rgb(185, 211, 204) | file bar top/bottom 414 454 ON SCREEN
+    t 896 (landing+267) scrollY 1645 state delivered | word "已送达" | ticks colour rgb(185, 211, 204) | file bar top/bottom 162 202 ON SCREEN
+    t 1164 (landing+535) scrollY 1645 state read | word "已读 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 162 202 ON SCREEN
+  [back up]
+    t 1711  scrollY 1645 state read | word "已读 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 162 202 ON SCREEN
+    t 2080  scrollY 973 state empty | word "" | ticks colour rgb(185, 211, 204) | file bar top/bottom 834 874 OFF
+  [down again]
+    t 3496 (landing+0) scrollY 1435 state sent | word "已发出" | ticks colour rgb(185, 211, 204) | file bar top/bottom 372 412 ON SCREEN
+    t 3762 (landing+266) scrollY 1645 state delivered | word "已送达" | ticks colour rgb(185, 211, 204) | file bar top/bottom 162 202 ON SCREEN
+    t 4028 (landing+532) scrollY 1645 state read | word "已读 01:07" | ticks colour rgb(185, 211, 204) | file bar top/bottom 162 202 ON SCREEN

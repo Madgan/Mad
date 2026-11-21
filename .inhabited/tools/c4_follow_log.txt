@@ -1,0 +1,125 @@
+
+== Lumen default
+   sheetTotal: RM 2,700.00
+   sheetDraftTape: false
+   sheetCrossing: true
+   sheetRecord: true
+   sheetMachine: true
+   chat: F Farah · Lumen Events sample chat
+   cardClient: LUMEN Lumen Events Sdn Bhd Company client
+   stub: INV-014 RM 2,700.00 21 NOV Filed / front: INV-014 LUMEN RM 2,700.00 21 NOV Stub
+   stubSlot: [no slot]
+   leafName: Lumen Events Sdn Bhd
+   leafSub: Attn: Farah Aziz · Puchong, Selangor
+   leafTotal: RM 2,700.00
+   leafDraft: false
+   leafCrossing: true
+   leafRecord: true
+   leafMachine: true
+   doc: read
+   docTicks: true
+   docLabel: [hidden]
+   tag014: true
+   novDetail: RM 12,400
+   rank: 1 Lumen Events Sdn Bhd 6 invoices 2 Aria Lim 4 invoices 3 Ta
+   past: INV-011,INV-008,INV-006
+
+== Tanjung
+   sheetTotal: RM 2,700.00
+   sheetDraftTape: false
+   sheetCrossing: true
+   sheetRecord: true
+   sheetMachine: true
+   chat: M Mei Ling · Tanjung Bakery sample chat
+   cardClient: TANJUNG Tanjung Bakery Company client
+   stub: INV-014 RM 2,700.00 21 NOV Filed / front: INV-014 TANJUNG RM 2,700.00 21 NOV Stub
+   stubSlot: [no slot]
+   leafName: Tanjung Bakery
+   leafSub: Attn: Mei Ling Tan · Klang, Selangor
+   leafTotal: RM 2,700.00
+   leafDraft: false
+   leafCrossing: true
+   leafRecord: true
+   leafMachine: true
+   doc: read
+   docTicks: true
+   docLabel: [hidden]
+   tag014: true
+   novDetail: RM 12,400
+   rank: 1 Lumen Events Sdn Bhd 5 invoices 2 Tanjung Bakery 5 invoice
+   past: INV-012,INV-009,INV-005
+
+== Aria + photo only
+   sheetTotal: RM 1,200.00
+   sheetDraftTape: false
+   sheetCrossing: true
+   sheetRecord: true
+   sheetMachine: true
+   chat: A Aria Lim sample chat
+   cardClient: ARIA Aria Lim Individual client
+   stub: INV-014 RM 1,200.00 21 NOV Filed / front: INV-014 ARIA RM 1,200.00 21 NOV Stub
+   stubSlot: [no slot]
+   leafName: Aria Lim
+   leafSub: Petaling Jaya, Selangor
+   leafTotal: RM 1,200.00
+   leafDraft: false
+   leafCrossing: true
+   leafRecord: true
+   leafMachine: true
+   doc: read
+   docTicks: true
+   docLabel: [hidden]
+   tag014: true
+   novDetail: RM 10,900
+   rank: 1 Lumen Events Sdn Bhd 5 invoices 2 Aria Lim 5 invoices 3 Ta
+   past: INV-013,INV-010,INV-007
+
+== draft (no rate)
+   sheetTotal: RM 0.00
+   sheetDraftTape: true
+   sheetCrossing: false
+   sheetRecord: false
+   sheetMachine: false
+   chat: F Farah · Lumen Events sample chat
+   cardClient: LUMEN Lumen Events Sdn Bhd Company client
+   stub: [stub hidden]
+   stubSlot: STUB · NEEDS A RATE
+   leafName: Lumen Events Sdn Bhd
+   leafSub: Attn: Farah Aziz · Puchong, Selangor
+   leafTotal: RM 0.00
+   leafDraft: true
+   leafCrossing: false
+   leafRecord: false
+   leafMachine: false
+   doc: empty
+   docTicks: false
+   docLabel: PDF · NEEDS A RATE
+   tag014: false
+   novDetail: RM 9,700
+   rank: 1 Lumen Events Sdn Bhd 5 invoices 2 Aria Lim 4 invoices 3 Ta
+   past: INV-011,INV-008,INV-006
+
+== draft then Tanjung
+   sheetTotal: RM 0.00
+   sheetDraftTape: true
+   sheetCrossing: false
+   sheetRecord: false
+   sheetMachine: false
+   chat: M Mei Ling · Tanjung Bakery sample chat
+   cardClient: TANJUNG Tanjung Bakery Company client
+   stub: [stub hidden]
+   stubSlot: STUB · NEEDS A RATE
+   leafName: Tanjung Bakery
+   leafSub: Attn: Mei Ling Tan · Klang, Selangor
+   leafTotal: RM 0.00
+   leafDraft: true
+   leafCrossing: false
+   leafRecord: false
+   leafMachine: false
+   doc: empty
+   docTicks: false
+   docLabel: PDF · NEEDS A RATE
+   tag014: false
+   novDetail: RM 9,700
+   rank: 1 Lumen Events Sdn Bhd 5 invoices 2 Aria Lim 4 invoices 3 Ta
+   past: INV-012,INV-009,INV-005

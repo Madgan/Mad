@@ -1,0 +1,34 @@
+speed 600
+   receipt 0 t 1 state sent line wholly on screen false top 972
+   receipt 1 t 1 state sent line wholly on screen false top 1718
+   receipt 2 t 1 state sent line wholly on screen false top 2306
+   receipt 3 t 1 state sent line wholly on screen false top 2960
+   receipt 0 t 482 state sent line wholly on screen true top 822
+   receipt 0 t 752 state read line wholly on screen true top 742
+   receipt 1 t 2116 state sent line wholly on screen true top 828
+   receipt 0 t 2233 state read line wholly on screen false top 42
+   receipt 1 t 2384 state read line wholly on screen true top 748
+   receipt 2 t 3299 state sent line wholly on screen true top 826
+   receipt 2 t 3567 state read line wholly on screen true top 676
+   receipt 1 t 3650 state read line wholly on screen false top 48
+   receipt 3 t 4482 state sent line wholly on screen true top 820
+   receipt 2 t 4715 state read line wholly on screen false top 46
+   receipt 3 t 4750 state read line wholly on screen true top 680
+speed 1500
+   receipt 0 t 1 state sent line wholly on screen false top 972
+   receipt 1 t 1 state sent line wholly on screen false top 1718
+   receipt 2 t 1 state sent line wholly on screen false top 2306
+   receipt 3 t 1 state sent line wholly on screen false top 2960
+   receipt 0 t 188 state sent line wholly on screen true top 822
+   receipt 0 t 457 state read line wholly on screen true top 597
+   receipt 1 t 938 state sent line wholly on screen true top 818
+   receipt 0 t 972 state read line wholly on screen false top 47
+   receipt 1 t 1207 state read line wholly on screen true top 643
+   receipt 2 t 1538 state sent line wholly on screen true top 806
+   receipt 1 t 1671 state read line wholly on screen false top 43
+   receipt 2 t 1806 state read line wholly on screen true top 456
+   receipt 3 t 2039 state sent line wholly on screen true top 810
+   receipt 2 t 2155 state read line wholly on screen false top 31
+   receipt 3 t 2306 state read line wholly on screen true top 460
+/home/user/Mad/.inhabited/v1_critic/screens/c4_receipts_390zh_a.png (1560, 844)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_receipts_390zh_b.png (1560, 844)
