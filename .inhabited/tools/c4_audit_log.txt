@@ -1,0 +1,164 @@
+overflow 320 zh scrollWidth 320 client 320 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 4790
+overflow 320 en scrollWidth 320 client 320 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5030
+overflow 390 zh scrollWidth 390 client 390 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5079
+overflow 390 en scrollWidth 390 client 390 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5217
+overflow 768 zh scrollWidth 768 client 768 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5040
+overflow 768 en scrollWidth 768 client 768 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5121
+overflow 1280 zh scrollWidth 1280 client 1280 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5141
+overflow 1280 en scrollWidth 1280 client 1280 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5161
+overflow 1440 zh scrollWidth 1440 client 1440 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5141
+overflow 1440 en scrollWidth 1440 client 1440 scrollX after sideways wheel 0 unclipped elements past the edge 0  height 5161
+first screen 390x844 zh rest {"cta":{"top":575,"bottom":631,"left":16,"right":374,"covered":false,"fs":"17px","fw":"600"},"terms":{"top":608,"bottom":620,"left":99,"right":291,"covered":false,"fs":"12.5px","fw":"600"},"sheet":{"top":181,"bottom":473,"left":94,"right":374,"covered":false,"fs":"10px","fw":"400"},"toggle":{"top":4,"bottom":48,"left":158,"right":230,"covered":false,"fs":"15px","fw":"400"},"topcta":{"top":4,"bottom":48,"left":290,"right":374,"covered":false,"fs":"13px","fw":"600"},"claim":{"top":77,"bottom":147,"left":16,"right":374,"covered":false,"fs":"31px","fw":"700"},"termsText":"Basic RM 199/年 · Pro RM 399/年","vh":844}
+first screen 390x844 en rest {"cta":{"top":575,"bottom":631,"left":16,"right":374,"covered":false,"fs":"17px","fw":"600"},"terms":{"top":608,"bottom":620,"left":83,"right":307,"covered":false,"fs":"12.5px","fw":"600"},"sheet":{"top":181,"bottom":473,"left":94,"right":374,"covered":false,"fs":"10px","fw":"400"},"toggle":{"top":4,"bottom":48,"left":152,"right":224,"covered":false,"fs":"15px","fw":"400"},"topcta":{"top":4,"bottom":48,"left":290,"right":374,"covered":false,"fs":"13px","fw":"600"},"claim":{"top":77,"bottom":147,"left":16,"right":374,"covered":false,"fs":"31px","fw":"700"},"termsText":"Basic RM 199/year · Pro RM 399/year","vh":844}
+first screen 390x844 zh reduced {"cta":{"top":575,"bottom":631,"left":16,"right":374,"covered":false,"fs":"17px","fw":"600"},"terms":{"top":608,"bottom":620,"left":99,"right":291,"covered":false,"fs":"12.5px","fw":"600"},"sheet":{"top":181,"bottom":473,"left":94,"right":374,"covered":false,"fs":"10px","fw":"400"},"toggle":{"top":4,"bottom":48,"left":158,"right":230,"covered":false,"fs":"15px","fw":"400"},"topcta":{"top":4,"bottom":48,"left":290,"right":374,"covered":false,"fs":"13px","fw":"600"},"claim":{"top":77,"bottom":147,"left":16,"right":374,"covered":false,"fs":"31px","fw":"700"},"termsText":"Basic RM 199/年 · Pro RM 399/年","vh":844}
+first screen 390x844 en reduced {"cta":{"top":575,"bottom":631,"left":16,"right":374,"covered":false,"fs":"17px","fw":"600"},"terms":{"top":608,"bottom":620,"left":83,"right":307,"covered":false,"fs":"12.5px","fw":"600"},"sheet":{"top":181,"bottom":473,"left":94,"right":374,"covered":false,"fs":"10px","fw":"400"},"toggle":{"top":4,"bottom":48,"left":152,"right":224,"covered":false,"fs":"15px","fw":"400"},"topcta":{"top":4,"bottom":48,"left":290,"right":374,"covered":false,"fs":"13px","fw":"600"},"claim":{"top":77,"bottom":147,"left":16,"right":374,"covered":false,"fs":"31px","fw":"700"},"termsText":"Basic RM 199/year · Pro RM 399/year","vh":844}
+first screen 390x700 zh rest {"cta":{"top":575,"bottom":631,"left":16,"right":374,"covered":false,"fs":"17px","fw":"600"},"terms":{"top":608,"bottom":620,"left":99,"right":291,"covered":false,"fs":"12.5px","fw":"600"},"sheet":{"top":181,"bottom":473,"left":94,"right":374,"covered":false,"fs":"10px","fw":"400"},"toggle":{"top":4,"bottom":48,"left":158,"right":230,"covered":false,"fs":"15px","fw":"400"},"topcta":{"top":4,"bottom":48,"left":290,"right":374,"covered":false,"fs":"13px","fw":"600"},"claim":{"top":77,"bottom":147,"left":16,"right":374,"covered":false,"fs":"31px","fw":"700"},"termsText":"Basic RM 199/年 · Pro RM 399/年","vh":700}
+first screen 390x700 en rest {"cta":{"top":575,"bottom":631,"left":16,"right":374,"covered":false,"fs":"17px","fw":"600"},"terms":{"top":608,"bottom":620,"left":83,"right":307,"covered":false,"fs":"12.5px","fw":"600"},"sheet":{"top":181,"bottom":473,"left":94,"right":374,"covered":false,"fs":"10px","fw":"400"},"toggle":{"top":4,"bottom":48,"left":152,"right":224,"covered":false,"fs":"15px","fw":"400"},"topcta":{"top":4,"bottom":48,"left":290,"right":374,"covered":false,"fs":"13px","fw":"600"},"claim":{"top":77,"bottom":147,"left":16,"right":374,"covered":false,"fs":"31px","fw":"700"},"termsText":"Basic RM 199/year · Pro RM 399/year","vh":700}
+
+== type 320 zh
+   Bricolage Grotesque / 400 / 100% / normal / latin x2 | e.g. nb:003357155-P ; zh:。
+   Bricolage Grotesque / 400 / 100% / normal / zh x41 | e.g. zh:给马来西亚的摄像师、摄影师和 ; zh:无声 · 拖动逐格看 ; zh:点一位，上面的单马上换
+   Bricolage Grotesque / 500 / 100% / normal / zh x11 | e.g. lt-zh:中文 ; zh:登录 ; zh:免费试用
+   Bricolage Grotesque / 600 / 100% / normal / latin x3 | e.g. lt-en:EN ; H3:S.I.S. Basic ; H3:S.I.S. Pro
+   Bricolage Grotesque / 700 / 100% / normal / zh x2 | e.g. zh:选客户，选价目， ; zh:单就开好了。
+   Bricolage Grotesque / 800 / 100% / normal / latin x5 | e.g. wordmark:SIS ; sis-chip:SIS ; B:SIS
+   Instrument Sans / 400 / 100% / normal / latin x50 | e.g. dur:0:47 ; SPAN:00:32 ; SPAN:00:49
+   Instrument Sans / 400 / 100% / normal / zh x3 | e.g. zh:示例聊天 ; zh:示例聊天 ; zh:示例聊天
+   Instrument Sans / 500 / 100% / italic / latin x1 | e.g. SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / italic / zh x6 | e.g. zh:↪ 已转发 ; zh:↪ 已转发 ; zh:↪ 已转发
+   Instrument Sans / 500 / 100% / normal / latin x6 | e.g. ck:01:13:44 ; LI:Claude ; LI:Claude Code
+   Instrument Sans / 500 / 100% / normal / zh x117 | e.g. zh:单发了吗？ ; zh:上次那张单，可以再发一次吗 ; zh:语音：新地址和价钱都在里面
+   Instrument Sans / 600 / 100% / normal / latin x27 | e.g. name:Lumen Events S ; nm:Lumen Events S ; nm:Tanjung Bakery
+   Instrument Sans / 700 / 100% / normal / latin x45 | e.g. [object SVGAnimate:INV-014 · ; tape-label sample:SAMPLE ; B:Kite & Reel St
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 170 10.6667px zh:单发了吗？ | 9.06667px zh:↪ 已转发 | 10.6667px zh:上次那张单，可以再发一次吗 | 9.06667px dur:0:47 | 10.6667px zh:语音：新地址和价钱都在里面 | Chinese above 700: 0 | figures without tabular-nums: 5 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | zh:确认时付 50% 订金，交片 | zh:10月 | zh:11月
+  targets under 44: 6 mcol 41x92 "6月
+销售 8,200 开销" | mcol 41x92 "7月
+销售 6,400 开销" | mcol 41x92 "8月
+销售 10,900 开" | mcol 41x92 "9月
+销售 7,300 开销" | mcol 41x92 "10月
+销售 11,600 " | mcol 41x92 "11月
+销售 9,700 开"
+
+== type 320 en
+   Bricolage Grotesque / 400 / 100% / normal / latin x43 | e.g. en:For Malaysian  ; en:Silent. Drag t ; en:Tap one. Your 
+   Bricolage Grotesque / 500 / 100% / normal / zh x1 | e.g. lt-zh:中文
+   Bricolage Grotesque / 600 / 100% / normal / latin x13 | e.g. lt-en:EN ; en:Sign in ; en:Free trial
+   Bricolage Grotesque / 800 / 100% / normal / latin x7 | e.g. wordmark:SIS ; en:Pick a client. ; en:Invoice done.
+   Instrument Sans / 400 / 100% / italic / latin x3 | e.g. en:↪ Forwarded ; en:↪ Forwarded ; en:↪ Forwarded
+   Instrument Sans / 400 / 100% / normal / latin x94 | e.g. en:Bill sent yet? ; en:Can you resend ; dur:0:47
+   Instrument Sans / 500 / 100% / italic / latin x4 | e.g. en:↪ SIS · Report ; en:↪ SIS · Readin ; SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / normal / latin x18 | e.g. ck:01:13:46 ; en:Invoice ready. ; en:Company
+   Instrument Sans / 600 / 100% / normal / latin x69 | e.g. en:Bill to ; name:Lumen Events S ; en:Description
+   Instrument Sans / 700 / 100% / normal / latin x66 | e.g. [object SVGAnimate:INV-014 · ; [object SVGAnimate:READY ; tape-label sample:SAMPLE
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 169 10.6667px en:Bill sent yet? | 9.06667px en:↪ Forwarded | 10.6667px en:Can you resend t | 9.06667px dur:0:47 | 10.6667px en:Voice note: new  | Chinese above 700: 0 | figures without tabular-nums: 3 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | en:50% deposit to
+  targets under 44: 6 mcol 41x92 "Jun
+Sales 8,20" | mcol 41x92 "Jul
+Sales 6,40" | mcol 41x92 "Aug
+Sales 10,9" | mcol 41x92 "Sep
+Sales 7,30" | mcol 41x92 "Oct
+Sales 11,6" | mcol 41x92 "Nov
+Sales 9,70"
+
+== type 390 zh
+   Bricolage Grotesque / 400 / 100% / normal / latin x2 | e.g. nb:003357155-P ; zh:。
+   Bricolage Grotesque / 400 / 100% / normal / zh x41 | e.g. zh:给马来西亚的摄像师、摄影师和 ; zh:无声 · 拖动逐格看 ; zh:点一位，上面的单马上换
+   Bricolage Grotesque / 500 / 100% / normal / zh x11 | e.g. lt-zh:中文 ; zh:登录 ; zh:免费试用
+   Bricolage Grotesque / 600 / 100% / normal / latin x3 | e.g. lt-en:EN ; H3:S.I.S. Basic ; H3:S.I.S. Pro
+   Bricolage Grotesque / 700 / 100% / normal / zh x2 | e.g. zh:选客户，选价目， ; zh:单就开好了。
+   Bricolage Grotesque / 800 / 100% / normal / latin x5 | e.g. wordmark:SIS ; sis-chip:SIS ; B:SIS
+   Instrument Sans / 400 / 100% / normal / latin x50 | e.g. dur:0:47 ; SPAN:00:32 ; SPAN:00:49
+   Instrument Sans / 400 / 100% / normal / zh x3 | e.g. zh:示例聊天 ; zh:示例聊天 ; zh:示例聊天
+   Instrument Sans / 500 / 100% / italic / latin x1 | e.g. SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / italic / zh x6 | e.g. zh:↪ 已转发 ; zh:↪ 已转发 ; zh:↪ 已转发
+   Instrument Sans / 500 / 100% / normal / latin x6 | e.g. ck:01:13:47 ; LI:Claude ; LI:Claude Code
+   Instrument Sans / 500 / 100% / normal / zh x117 | e.g. zh:单发了吗？ ; zh:上次那张单，可以再发一次吗 ; zh:语音：新地址和价钱都在里面
+   Instrument Sans / 600 / 100% / normal / latin x27 | e.g. name:Lumen Events S ; nm:Lumen Events S ; nm:Tanjung Bakery
+   Instrument Sans / 700 / 100% / normal / latin x45 | e.g. [object SVGAnimate:INV-014 · ; tape-label sample:SAMPLE ; B:Kite & Reel St
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 0  | Chinese above 700: 0 | figures without tabular-nums: 5 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | zh:确认时付 50% 订金，交片 | zh:10月 | zh:11月
+  targets under 44: 0 
+
+== type 390 en
+   Bricolage Grotesque / 400 / 100% / normal / latin x43 | e.g. en:For Malaysian  ; en:Silent. Drag t ; en:Tap one. Your 
+   Bricolage Grotesque / 500 / 100% / normal / zh x1 | e.g. lt-zh:中文
+   Bricolage Grotesque / 600 / 100% / normal / latin x13 | e.g. lt-en:EN ; en:Sign in ; en:Free trial
+   Bricolage Grotesque / 800 / 100% / normal / latin x7 | e.g. wordmark:SIS ; en:Pick a client. ; en:Invoice done.
+   Instrument Sans / 400 / 100% / italic / latin x3 | e.g. en:↪ Forwarded ; en:↪ Forwarded ; en:↪ Forwarded
+   Instrument Sans / 400 / 100% / normal / latin x94 | e.g. en:Bill sent yet? ; en:Can you resend ; dur:0:47
+   Instrument Sans / 500 / 100% / italic / latin x4 | e.g. en:↪ SIS · Report ; en:↪ SIS · Readin ; SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / normal / latin x18 | e.g. ck:01:13:49 ; en:Invoice ready. ; en:Company
+   Instrument Sans / 600 / 100% / normal / latin x69 | e.g. en:Bill to ; name:Lumen Events S ; en:Description
+   Instrument Sans / 700 / 100% / normal / latin x66 | e.g. [object SVGAnimate:INV-014 · ; [object SVGAnimate:READY ; tape-label sample:SAMPLE
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 0  | Chinese above 700: 0 | figures without tabular-nums: 3 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | en:50% deposit to
+  targets under 44: 0 
+
+== type 768 zh
+   Bricolage Grotesque / 400 / 100% / normal / latin x2 | e.g. nb:003357155-P ; zh:。
+   Bricolage Grotesque / 400 / 100% / normal / zh x41 | e.g. zh:给马来西亚的摄像师、摄影师和 ; zh:无声 · 拖动逐格看 ; zh:点一位，上面的单马上换
+   Bricolage Grotesque / 500 / 100% / normal / zh x11 | e.g. lt-zh:中文 ; zh:登录 ; zh:免费试用
+   Bricolage Grotesque / 600 / 100% / normal / latin x3 | e.g. lt-en:EN ; H3:S.I.S. Basic ; H3:S.I.S. Pro
+   Bricolage Grotesque / 700 / 100% / normal / zh x2 | e.g. zh:选客户，选价目， ; zh:单就开好了。
+   Bricolage Grotesque / 800 / 100% / normal / latin x5 | e.g. wordmark:SIS ; sis-chip:SIS ; B:SIS
+   Instrument Sans / 400 / 100% / normal / latin x50 | e.g. dur:0:47 ; SPAN:00:32 ; SPAN:00:49
+   Instrument Sans / 400 / 100% / normal / zh x3 | e.g. zh:示例聊天 ; zh:示例聊天 ; zh:示例聊天
+   Instrument Sans / 500 / 100% / italic / latin x1 | e.g. SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / italic / zh x6 | e.g. zh:↪ 已转发 ; zh:↪ 已转发 ; zh:↪ 已转发
+   Instrument Sans / 500 / 100% / normal / latin x6 | e.g. ck:01:13:50 ; LI:Claude ; LI:Claude Code
+   Instrument Sans / 500 / 100% / normal / zh x117 | e.g. zh:单发了吗？ ; zh:上次那张单，可以再发一次吗 ; zh:语音：新地址和价钱都在里面
+   Instrument Sans / 600 / 100% / normal / latin x27 | e.g. name:Lumen Events S ; nm:Lumen Events S ; nm:Tanjung Bakery
+   Instrument Sans / 700 / 100% / normal / latin x45 | e.g. [object SVGAnimate:INV-014 · ; tape-label sample:SAMPLE ; B:Kite & Reel St
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 0  | Chinese above 700: 0 | figures without tabular-nums: 5 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | zh:确认时付 50% 订金，交片 | zh:10月 | zh:11月
+  targets under 44: 0 
+
+== type 1280 zh
+   Bricolage Grotesque / 400 / 100% / normal / latin x2 | e.g. nb:003357155-P ; zh:。
+   Bricolage Grotesque / 400 / 100% / normal / zh x41 | e.g. zh:给马来西亚的摄像师、摄影师和 ; zh:无声 · 拖动逐格看 ; zh:点一位，上面的单马上换
+   Bricolage Grotesque / 500 / 100% / normal / zh x11 | e.g. lt-zh:中文 ; zh:登录 ; zh:免费试用
+   Bricolage Grotesque / 600 / 100% / normal / latin x3 | e.g. lt-en:EN ; H3:S.I.S. Basic ; H3:S.I.S. Pro
+   Bricolage Grotesque / 700 / 100% / normal / zh x2 | e.g. zh:选客户，选价目， ; zh:单就开好了。
+   Bricolage Grotesque / 800 / 100% / normal / latin x5 | e.g. wordmark:SIS ; sis-chip:SIS ; B:SIS
+   Instrument Sans / 400 / 100% / normal / latin x50 | e.g. dur:0:47 ; SPAN:00:32 ; SPAN:00:49
+   Instrument Sans / 400 / 100% / normal / zh x3 | e.g. zh:示例聊天 ; zh:示例聊天 ; zh:示例聊天
+   Instrument Sans / 500 / 100% / italic / latin x1 | e.g. SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / italic / zh x6 | e.g. zh:↪ 已转发 ; zh:↪ 已转发 ; zh:↪ 已转发
+   Instrument Sans / 500 / 100% / normal / latin x6 | e.g. ck:01:13:52 ; LI:Claude ; LI:Claude Code
+   Instrument Sans / 500 / 100% / normal / zh x117 | e.g. zh:单发了吗？ ; zh:上次那张单，可以再发一次吗 ; zh:语音：新地址和价钱都在里面
+   Instrument Sans / 600 / 100% / normal / latin x27 | e.g. name:Lumen Events S ; nm:Lumen Events S ; nm:Tanjung Bakery
+   Instrument Sans / 700 / 100% / normal / latin x45 | e.g. [object SVGAnimate:INV-014 · ; tape-label sample:SAMPLE ; B:Kite & Reel St
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 0  | Chinese above 700: 0 | figures without tabular-nums: 5 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | zh:确认时付 50% 订金，交片 | zh:10月 | zh:11月
+  targets under 44: 0 
+
+== type 1280 en
+   Bricolage Grotesque / 400 / 100% / normal / latin x43 | e.g. en:For Malaysian  ; en:Silent. Drag t ; en:Tap one. Your 
+   Bricolage Grotesque / 500 / 100% / normal / zh x1 | e.g. lt-zh:中文
+   Bricolage Grotesque / 600 / 100% / normal / latin x13 | e.g. lt-en:EN ; en:Sign in ; en:Free trial
+   Bricolage Grotesque / 800 / 100% / normal / latin x7 | e.g. wordmark:SIS ; en:Pick a client. ; en:Invoice done.
+   Instrument Sans / 400 / 100% / italic / latin x3 | e.g. en:↪ Forwarded ; en:↪ Forwarded ; en:↪ Forwarded
+   Instrument Sans / 400 / 100% / normal / latin x94 | e.g. en:Bill sent yet? ; en:Can you resend ; dur:0:47
+   Instrument Sans / 500 / 100% / italic / latin x4 | e.g. en:↪ SIS · Report ; en:↪ SIS · Readin ; SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / normal / latin x18 | e.g. ck:01:13:54 ; en:Invoice ready. ; en:Company
+   Instrument Sans / 600 / 100% / normal / latin x69 | e.g. en:Bill to ; name:Lumen Events S ; en:Description
+   Instrument Sans / 700 / 100% / normal / latin x66 | e.g. [object SVGAnimate:INV-014 · ; [object SVGAnimate:READY ; tape-label sample:SAMPLE
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 0  | Chinese above 700: 0 | figures without tabular-nums: 3 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | en:50% deposit to
+  targets under 44: 0 
+
+== type 1440 en
+   Bricolage Grotesque / 400 / 100% / normal / latin x43 | e.g. en:For Malaysian  ; en:Silent. Drag t ; en:Tap one. Your 
+   Bricolage Grotesque / 500 / 100% / normal / zh x1 | e.g. lt-zh:中文
+   Bricolage Grotesque / 600 / 100% / normal / latin x13 | e.g. lt-en:EN ; en:Sign in ; en:Free trial
+   Bricolage Grotesque / 800 / 100% / normal / latin x7 | e.g. wordmark:SIS ; en:Pick a client. ; en:Invoice done.
+   Instrument Sans / 400 / 100% / italic / latin x3 | e.g. en:↪ Forwarded ; en:↪ Forwarded ; en:↪ Forwarded
+   Instrument Sans / 400 / 100% / normal / latin x94 | e.g. en:Bill sent yet? ; en:Can you resend ; dur:0:47
+   Instrument Sans / 500 / 100% / italic / latin x4 | e.g. en:↪ SIS · Report ; en:↪ SIS · Readin ; SPAN:↪ SIS · Pro · 
+   Instrument Sans / 500 / 100% / normal / latin x18 | e.g. ck:01:13:56 ; en:Invoice ready. ; en:Company
+   Instrument Sans / 600 / 100% / normal / latin x69 | e.g. en:Bill to ; name:Lumen Events S ; en:Description
+   Instrument Sans / 700 / 100% / normal / latin x66 | e.g. [object SVGAnimate:INV-014 · ; [object SVGAnimate:READY ; tape-label sample:SAMPLE
+   Kanit / 700 / 100% / normal / latin x1 | e.g. ro-t:0:02.42
+  under 11px: 0  | Chinese above 700: 0 | figures without tabular-nums: 3 [object SVGAnimate:INV-014 · | [object SVGAnimate:INV-014 · | en:50% deposit to
+  targets under 44: 0 

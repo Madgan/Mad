@@ -1,0 +1,16 @@
+390zh paint [["first-paint",700],["first-contentful-paint",700]] SIS_T0 675 | first sampled frames 675R 680R 699R 715R 732R 749R 765R 782R 
+    band starts 882 = T0+207 = FCP+182 | sheet in 1224 = T0+549 = FCP+524 | run ends T0+2057 | sheet-in minus band-start 342
+390zh paint [["first-paint",440],["first-contentful-paint",440]] SIS_T0 415 | first sampled frames 415R 421R 440R 456R 472R 489R 506R 522R 
+    band starts 712 = T0+297 = FCP+272 | sheet in 939 = T0+524 = FCP+499 | run ends T0+2057 | sheet-in minus band-start 227
+390zh paint [["first-paint",412],["first-contentful-paint",412]] SIS_T0 389 | first sampled frames 389R 394R 408R 425R 441R 458R 475R 491R 
+    band starts 644 = T0+254 = FCP+232 | sheet in 908 = T0+519 = FCP+496 | run ends T0+2052 | sheet-in minus band-start 264
+390zh paint [["first-paint",420],["first-contentful-paint",420]] SIS_T0 400 | first sampled frames 399R 404R 423R 440R 457R 473R 490R 555R 
+    band starts 649 = T0+250 = FCP+229 | sheet in 923 = T0+524 = FCP+503 | run ends T0+2057 | sheet-in minus band-start 274
+390en paint [["first-paint",392],["first-contentful-paint",392]] SIS_T0 364 | first sampled frames 364R 371R 383R 396R 413R 430R 446R 463R 
+    band starts 603 = T0+239 = FCP+211 | sheet in 896 = T0+532 = FCP+504 | run ends T0+2049 | sheet-in minus band-start 293
+390en paint [["first-paint",332],["first-contentful-paint",332]] SIS_T0 314 | first sampled frames 313R 318R 337R 354R 371R 387R 404R 420R 
+    band starts 545 = T0+231 = FCP+213 | sheet in 837 = T0+524 = FCP+505 | run ends T0+2057 | sheet-in minus band-start 293
+1280zh paint [["first-paint",576],["first-contentful-paint",576]] SIS_T0 536 | first sampled frames 536R 544R 575R 592R 609R 626R 702R 706R 
+    band starts 859 = T0+323 = FCP+283 | sheet in 1058 = T0+522 = FCP+482 | run ends T0+2056 | sheet-in minus band-start 200
+1280en paint [["first-paint",464],["first-contentful-paint",464]] SIS_T0 421 | first sampled frames 420R 428R 452R 464R 478R 494R 511R 594R 
+    band starts 666 = T0+246 = FCP+202 | sheet in 944 = T0+524 = FCP+480 | run ends T0+2057 | sheet-in minus band-start 278

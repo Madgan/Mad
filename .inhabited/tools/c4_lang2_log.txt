@@ -1,0 +1,24 @@
+NOJS 390 before {"zhShown":191,"enShown":0,"cjkLeafVisible":195,"cjkSample":["跳到内容","登录","免费试用","↪ 已转发","给马来西亚的摄像师、摄影师和小型工作室。","示例聊天记录：一条转发的旧单，一段语音里有地址和"],"lang":"zh-Hans","checked":false,"title":"SIS · 选客户，选价目，单就开好了","sx":0,"sw":390}
+NOJS 390 after click {"zhShown":0,"enShown":190,"cjkLeafVisible":0,"cjkSample":[],"lang":"zh-Hans","checked":true,"title":"SIS · 选客户，选价目，单就开好了","sx":0,"sw":390}
+NOJS 390 after Space {"zhShown":191,"enShown":0,"cjkLeafVisible":195,"cjkSample":["跳到内容","登录","免费试用","↪ 已转发","给马来西亚的摄像师、摄影师和小型工作室。","示例聊天记录：一条转发的旧单，一段语音里有地址和"],"lang":"zh-Hans","checked":false,"title":"SIS · 选客户，选价目，单就开好了","sx":0,"sw":390}
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_nojs_390_a.png (1170, 844)
+JS 390 at 1200 before {"y":1200,"el":"DIV.row","top":337} | after en {"y":1200,"el":"DIV.row","top":337} lang en zhShown 0 cjkLeaf 0 | back zh {"y":1200,"el":"DIV.row","top":337}
+JS 390 at 2600 before {"y":2600,"el":"DD.","top":328} | after en {"y":2642,"el":"DD.","top":327} lang en zhShown 0 cjkLeaf 0 | back zh {"y":2600,"el":"DD.","top":328}
+JS 390 at 3900 before {"y":3900,"el":"LI.","top":308} | after en {"y":4016,"el":"UL.en","top":249} lang en zhShown 0 cjkLeaf 0 | back zh {"y":3900,"el":"LI.","top":308}
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_390_a.png (1560, 844)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_390_b.png (780, 844)
+NOJS 1280 before {"zhShown":191,"enShown":0,"cjkLeafVisible":195,"cjkSample":["跳到内容","登录","免费试用","↪ 已转发","给马来西亚的摄像师、摄影师和小型工作室。","示例聊天记录：一条转发的旧单，一段语音里有地址和"],"lang":"zh-Hans","checked":false,"title":"SIS · 选客户，选价目，单就开好了","sx":0,"sw":1280}
+NOJS 1280 after click {"zhShown":0,"enShown":190,"cjkLeafVisible":0,"cjkSample":[],"lang":"zh-Hans","checked":true,"title":"SIS · 选客户，选价目，单就开好了","sx":0,"sw":1280}
+NOJS 1280 after Space {"zhShown":191,"enShown":0,"cjkLeafVisible":195,"cjkSample":["跳到内容","登录","免费试用","↪ 已转发","给马来西亚的摄像师、摄影师和小型工作室。","示例聊天记录：一条转发的旧单，一段语音里有地址和"],"lang":"zh-Hans","checked":false,"title":"SIS · 选客户，选价目，单就开好了","sx":0,"sw":1280}
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_nojs_1280_a.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_nojs_1280_b.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_nojs_1280_c.png (1280, 800)
+JS 1280 at 1200 before {"y":1200,"el":"SPAN.zh","top":306} | after en {"y":1200,"el":"SPAN.en","top":306} lang en zhShown 0 cjkLeaf 0 | back zh {"y":1200,"el":"SPAN.zh","top":306}
+JS 1280 at 2600 before {"y":2600,"el":"SPAN.face done","top":241} | after en {"y":2600,"el":"SPAN.face done","top":241} lang en zhShown 0 cjkLeaf 0 | back zh {"y":2600,"el":"SPAN.face done","top":241}
+JS 1280 at 3900 before {"y":3900,"el":"DIV.col tc nh","top":299} | after en {"y":3900,"el":"DIV.col tc nh","top":299} lang en zhShown 0 cjkLeaf 0 | back zh {"y":3900,"el":"DIV.col tc nh","top":299}
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_1280_a.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_1280_b.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_1280_c.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_1280_d.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_1280_e.png (1280, 800)
+/home/user/Mad/.inhabited/v1_critic/screens/c4_lang_js_1280_f.png (1280, 800)
